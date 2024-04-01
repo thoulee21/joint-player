@@ -1,11 +1,12 @@
-// import type { PropsWithChildren } from 'react';
-import React, { useEffect, useState } from 'react';
+import React, {
+  useEffect,
+  useState
+} from 'react';
 import {
   SafeAreaView,
   ScrollView,
   useColorScheme
 } from 'react-native';
-
 import { config } from "@gluestack-ui/config";
 import {
   Button,
@@ -14,20 +15,18 @@ import {
   Center,
   CircleIcon,
   GluestackUIProvider,
+  Heading,
   Image,
   PlayIcon,
-  StatusBar,
-  VStack,
   Progress,
   ProgressFilledTrack,
-  Heading,
+  StatusBar,
+  VStack,
 } from "@gluestack-ui/themed";
-
-import TrackPlayer, { State, useProgress } from 'react-native-track-player';
-
-// type SectionProps = PropsWithChildren<{
-//   title: string;
-// }>;
+import TrackPlayer, {
+  State,
+  useProgress
+} from 'react-native-track-player';
 
 const track1 = {
   // Load media from the network
@@ -46,7 +45,12 @@ const track1 = {
 function PlayProgress() {
   const { position, duration } = useProgress();
   return (
-    <Progress value={(position / duration) * 100} w={300} size="md" h="$1">
+    <Progress
+      value={(position / duration) * 100}
+      w={300}
+      size="md"
+      h="$1"
+    >
       <ProgressFilledTrack />
     </Progress>
   )
@@ -68,6 +72,7 @@ function PlayButton() {
       } else {
         TrackPlayer.play();
       }
+
       setIsPlaying(!isPlaying);
     }}>
       <ButtonIcon as={isPlaying ? CircleIcon : PlayIcon} />
