@@ -1,118 +1,120 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+// import type { PropsWithChildren } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
+  useColorScheme
 } from 'react-native';
 
+import { config } from "@gluestack-ui/config";
 import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+  Button,
+  ButtonIcon,
+  ButtonText,
+  Center,
+  CircleIcon,
+  GluestackUIProvider,
+  Image,
+  PlayIcon,
+  StatusBar,
+  VStack,
+  Progress,
+  ProgressFilledTrack,
+  Heading,
+} from "@gluestack-ui/themed";
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+import TrackPlayer, { State, useProgress } from 'react-native-track-player';
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+// type SectionProps = PropsWithChildren<{
+//   title: string;
+// }>;
+
+const track1 = {
+  // Load media from the network
+  url: 'http://music.163.com/song/media/outer/url?id=2078657625.mp3',
+  title: '牢大想你了',
+  artist: 'kobe',
+  album: 'while(1<2)',
+  genre: 'Progressive House, Electro House',
+  date: '2014-05-20T07:00:00+00:00', // RFC 3339
+  // Load artwork from the network
+  artwork:
+    'https://p1.music.126.net/XS6grXCDdSiqbZESp0scGg==/109951168886639260.jpg',
+  duration: 120, // Duration in seconds
+};
+
+function PlayProgress() {
+  const { position, duration } = useProgress();
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
+    <Progress value={(position / duration) * 100} w={300} size="md" h="$1">
+      <ProgressFilledTrack />
+    </Progress>
+  )
+}
+
+function PlayButton() {
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  useEffect(() => {
+    TrackPlayer.getPlaybackState().then((playbackState) => {
+      setIsPlaying(playbackState.state === State.Playing);
+    });
+  }, []);
+
+  return (
+    <Button onPress={() => {
+      if (isPlaying) {
+        TrackPlayer.pause();
+      } else {
+        TrackPlayer.play();
+      }
+      setIsPlaying(!isPlaying);
+    }}>
+      <ButtonIcon as={isPlaying ? CircleIcon : PlayIcon} />
+      <ButtonText>{isPlaying ? "Pause" : "Play"}</ButtonText>
+    </Button>
+  )
 }
 
 function App(): React.JSX.Element {
+  useEffect(() => {
+    const init = async () => {
+      await TrackPlayer.setupPlayer()
+      await TrackPlayer.add([track1])
+    };
+
+    init();
+  }, []);
+
   const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <GluestackUIProvider config={config}>
+      <SafeAreaView>
+        <StatusBar
+          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        />
+        <ScrollView contentInsetAdjustmentBehavior="automatic">
+          <Center alignItems="center">
+            <VStack space="md">
+              <Heading size="2xl">Track Player</Heading>
+              <Image
+                size="2xl"
+                rounded="$2xl"
+                marginLeft="auto"
+                marginRight="auto"
+                alt={track1.title}
+                source={{ uri: track1.artwork }}
+              />
+              <PlayProgress />
+              <PlayButton />
+            </VStack>
+          </Center>
+        </ScrollView>
+      </SafeAreaView>
+    </GluestackUIProvider>
   );
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
