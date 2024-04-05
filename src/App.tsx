@@ -1,5 +1,5 @@
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   SafeAreaView,
   StatusBar,
@@ -20,9 +20,10 @@ import {
   useTheme,
 } from 'react-native-paper';
 import TrackPlayer, {
+  Track,
   useActiveTrack,
   useIsPlaying,
-  usePlaybackState,
+  usePlaybackState
 } from 'react-native-track-player';
 import { version as appVersion } from "../package.json";
 import playlistData from "./assets/data/playlist.json";
@@ -121,11 +122,25 @@ function ErrorText() {
 function TrackList() {
   const appTheme = useTheme();
   const currentTrack = useActiveTrack();
+  const [queue, setQueue] = useState<Track[]>([]);
+
+  useEffect(() => {
+    async function getQueue() {
+      const queue = await TrackPlayer.getQueue();
+      if (queue) {
+        setQueue(queue);
+      }
+    }
+
+    getQueue().finally(() => {
+      console.log(JSON.stringify(queue));
+    });
+  }, []);
 
   return (
     <BottomSheetFlatList
       style={{ height: '100%' }}
-      data={playlistData}
+      data={queue.length != 0 ? queue : playlistData as Track[]}
       renderItem={({ item, index }) => (
         <List.Item
           title={item.title}
@@ -146,7 +161,6 @@ function TrackList() {
         />
       )}
       ItemSeparatorComponent={() => <Divider />}
-      keyExtractor={(item) => item.title}
     />
   );
 }
