@@ -1,7 +1,7 @@
-import TrackPlayer, { Track } from 'react-native-track-player';
+import TrackPlayer, {Track} from 'react-native-track-player';
 
 import playlistData from '../assets/data/playlist.json';
 
 export const QueueInitialTracksService = async (): Promise<void> => {
-  await TrackPlayer.add(playlistData as Track[])
+  await TrackPlayer.add(playlistData as Track[]);
 };

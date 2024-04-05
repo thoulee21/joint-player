@@ -1,153 +1,162 @@
-import { config } from "@gluestack-ui/config";
+import React from 'react';
 import {
-  Button,
-  ButtonIcon,
-  ButtonText,
-  Center,
-  CircleIcon,
-  GluestackUIProvider,
-  Heading,
-  Image,
-  PlayIcon,
-  Progress,
-  ProgressFilledTrack,
+  SafeAreaView,
   StatusBar,
-  Text,
-  VStack
-} from "@gluestack-ui/themed";
-import React, { useEffect, useState } from 'react';
+  StyleSheet,
+  ToastAndroid,
+  View,
+  useColorScheme,
+} from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
   ActivityIndicator,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  useColorScheme
-} from 'react-native';
+  Appbar,
+  HelperText,
+  IconButton,
+  PaperProvider,
+} from 'react-native-paper';
 import TrackPlayer, {
-  State,
   useActiveTrack,
+  useIsPlaying,
   usePlaybackState,
-  useProgress
 } from 'react-native-track-player';
-import { QueueInitialTracksService, SetupService } from './services';
-
-function useSetupPlayer() {
-  const [playerReady, setPlayerReady] = useState<boolean>(false);
-
-  useEffect(() => {
-    let unmounted = false;
-    (async () => {
-      await SetupService();
-      if (unmounted) return;
-      setPlayerReady(true);
-      const queue = await TrackPlayer.getQueue();
-      if (unmounted) return;
-      if (queue.length <= 0) {
-        await QueueInitialTracksService();
-      }
-    })();
-    return () => {
-      unmounted = true;
-    };
-  }, []);
-  return playerReady;
-}
-
-function PlayProgress() {
-  const { position, duration } = useProgress();
-  return (
-    <Progress
-      value={(position / duration) * 100}
-      w={300}
-      size="md"
-      h="$1"
-    >
-      <ProgressFilledTrack />
-    </Progress>
-  )
-}
+import { version as appVersion } from "../package.json";
+import { Progress, ScreenWrapper, Spacer, TrackInfo } from './components';
+import { useSetupPlayer } from './hook';
 
 function PlayButton() {
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  useEffect(() => {
-    TrackPlayer.getPlaybackState().then((playbackState) => {
-      setIsPlaying(playbackState.state === State.Playing);
-    });
-  }, []);
+  const { playing, bufferingDuringPlay } = useIsPlaying();
 
   return (
-    <Button onPress={() => {
-      if (isPlaying) {
-        TrackPlayer.pause();
-      } else {
-        TrackPlayer.play();
-      }
-
-      setIsPlaying(!isPlaying);
-    }}>
-      <ButtonIcon as={isPlaying ? CircleIcon : PlayIcon} />
-      <ButtonText>{isPlaying ? "Pause" : "Play"}</ButtonText>
-    </Button>
-  )
+    <IconButton
+      icon={playing ? 'pause' : 'play'}
+      size={48}
+      loading={bufferingDuringPlay}
+      selected
+      animated
+      onPress={playing ? TrackPlayer.pause : TrackPlayer.play}
+    />
+  );
 }
 
-function App(): React.JSX.Element {
+function BackwardButton() {
+  return (
+    <IconButton
+      icon="rewind"
+      size={28}
+      onPress={async () => {
+        await TrackPlayer.skipToPrevious();
+      }}
+    />
+  );
+}
+
+function ForwardButton() {
+  return (
+    <IconButton
+      icon="fast-forward"
+      size={28}
+      onPress={async () => {
+        await TrackPlayer.skipToNext();
+      }}
+    />
+  );
+}
+
+function PlayControls() {
+  return (
+    <View style={styles.controlsContainer}>
+      <View style={styles.playControls}>
+        <BackwardButton />
+        <PlayButton />
+        <ForwardButton />
+      </View>
+      <ErrorText />
+    </View>
+  );
+}
+
+function LoadingApp() {
+  return (
+    <SafeAreaView style={styles.screenContainer}>
+      <ActivityIndicator size="large" />
+    </SafeAreaView>
+  );
+}
+
+function App() {
+  return (
+    <GestureHandlerRootView style={styles.rootView}>
+      <PaperProvider>
+        <Inner />
+      </PaperProvider>
+    </GestureHandlerRootView>
+  );
+}
+
+function ErrorText() {
+  const playbackState = usePlaybackState();
+  const isError = 'error' in playbackState;
+
+  if (isError) {
+    return (
+      <HelperText type="error">
+        {`${playbackState.error.message} - ${playbackState.error.code}`}
+      </HelperText>
+    );
+  }
+}
+
+function Inner(): React.JSX.Element {
+  const isDarkMode = useColorScheme() === 'dark';
   const track = useActiveTrack();
   const isPlayerReady = useSetupPlayer();
-  const playbackState = usePlaybackState();
-
-  const isDarkMode = useColorScheme() === 'dark';
 
   if (!isPlayerReady) {
-    return (
-      <SafeAreaView style={styles.screenContainer}>
-        <ActivityIndicator />
-      </SafeAreaView>
-    );
+    return <LoadingApp />;
   }
 
   return (
-    <GluestackUIProvider config={config}>
-      <SafeAreaView>
-        <StatusBar
-          barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+    <ScreenWrapper contentContainerStyle={styles.screenContainer}>
+      <StatusBar barStyle={!isDarkMode ? 'light-content' : 'dark-content'} />
+      <Appbar elevated>
+        <Appbar.Action
+          icon="menu"
+          onPress={() => {
+            ToastAndroid.show('Menu button pressed', ToastAndroid.SHORT);
+          }}
         />
-        <ScrollView contentInsetAdjustmentBehavior="automatic">
-          <Center alignItems="center">
-            <VStack space="md">
-              <Heading size="2xl">Track Player</Heading>
-              <Image
-                size="2xl"
-                rounded="$2xl"
-                marginLeft="auto"
-                marginRight="auto"
-                alt={track?.title || "Track"}
-                source={{ uri: track?.artwork || "https://via.placeholder.com/150" }}
-              />
-              <PlayProgress />
-              <PlayButton />
-              <Text>
-                {'error' in playbackState
-                  ? `${playbackState.error.code} - ${playbackState.error.message}`
-                  : undefined}
-              </Text>
-            </VStack>
-          </Center>
-        </ScrollView>
-      </SafeAreaView>
-    </GluestackUIProvider>
+        <Appbar.Content title={`Joint Player v${appVersion}`} />
+      </Appbar>
+      <Spacer />
+      <TrackInfo track={track} />
+      <Progress live={track?.isLiveStream} />
+      <Spacer />
+      <PlayControls />
+      <Spacer mode="expand" />
+    </ScreenWrapper>
   );
 }
 
 const styles = StyleSheet.create({
-  screenContainer: {
+  rootView: {
     flex: 1,
-    backgroundColor: '#212121',
+  },
+  screenContainer: {
+    display: 'flex',
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: '100%',
   },
-})
+  playControls: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+  },
+  controlsContainer: {
+    width: '100%',
+  },
+});
 
 export default App;
