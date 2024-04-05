@@ -8,6 +8,7 @@ buildscript {
         kotlinVersion = "1.8.0"
     }
     repositories {
+        mavenLocal()
         maven { url 'https://mirrors.cloud.tencent.com/nexus/repository/maven-public' }
         maven { url 'https://mirrors.cloud.tencent.com/nexus/repository/maven-google' }
     }

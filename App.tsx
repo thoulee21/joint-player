@@ -1,12 +1,3 @@
-import React, {
-  useEffect,
-  useState
-} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  useColorScheme
-} from 'react-native';
 import { config } from "@gluestack-ui/config";
 import {
   Button,
@@ -21,26 +12,46 @@ import {
   Progress,
   ProgressFilledTrack,
   StatusBar,
-  VStack,
+  Text,
+  VStack
 } from "@gluestack-ui/themed";
+import React, { useEffect, useState } from 'react';
+import {
+  ActivityIndicator,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  useColorScheme
+} from 'react-native';
 import TrackPlayer, {
   State,
+  useActiveTrack,
+  usePlaybackState,
   useProgress
 } from 'react-native-track-player';
+import { QueueInitialTracksService, SetupService } from './src/services';
 
-const track1 = {
-  // Load media from the network
-  url: 'http://music.163.com/song/media/outer/url?id=2078657625.mp3',
-  title: '牢大想你了',
-  artist: 'kobe',
-  album: 'while(1<2)',
-  genre: 'Progressive House, Electro House',
-  date: '2014-05-20T07:00:00+00:00', // RFC 3339
-  // Load artwork from the network
-  artwork:
-    'https://p1.music.126.net/XS6grXCDdSiqbZESp0scGg==/109951168886639260.jpg',
-  duration: 120, // Duration in seconds
-};
+function useSetupPlayer() {
+  const [playerReady, setPlayerReady] = useState<boolean>(false);
+
+  useEffect(() => {
+    let unmounted = false;
+    (async () => {
+      await SetupService();
+      if (unmounted) return;
+      setPlayerReady(true);
+      const queue = await TrackPlayer.getQueue();
+      if (unmounted) return;
+      if (queue.length <= 0) {
+        await QueueInitialTracksService();
+      }
+    })();
+    return () => {
+      unmounted = true;
+    };
+  }, []);
+  return playerReady;
+}
 
 function PlayProgress() {
   const { position, duration } = useProgress();
@@ -82,16 +93,19 @@ function PlayButton() {
 }
 
 function App(): React.JSX.Element {
-  useEffect(() => {
-    const init = async () => {
-      await TrackPlayer.setupPlayer()
-      await TrackPlayer.add([track1])
-    };
-
-    init();
-  }, []);
+  const track = useActiveTrack();
+  const isPlayerReady = useSetupPlayer();
+  const playbackState = usePlaybackState();
 
   const isDarkMode = useColorScheme() === 'dark';
+
+  if (!isPlayerReady) {
+    return (
+      <SafeAreaView style={styles.screenContainer}>
+        <ActivityIndicator />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <GluestackUIProvider config={config}>
@@ -108,11 +122,16 @@ function App(): React.JSX.Element {
                 rounded="$2xl"
                 marginLeft="auto"
                 marginRight="auto"
-                alt={track1.title}
-                source={{ uri: track1.artwork }}
+                alt={track?.title || "Track"}
+                source={{ uri: track?.artwork || "https://via.placeholder.com/150" }}
               />
               <PlayProgress />
               <PlayButton />
+              <Text>
+                {'error' in playbackState
+                  ? `${playbackState.error.code} - ${playbackState.error.message}`
+                  : undefined}
+              </Text>
             </VStack>
           </Center>
         </ScrollView>
@@ -121,5 +140,14 @@ function App(): React.JSX.Element {
   );
 }
 
+const styles = StyleSheet.create({
+  screenContainer: {
+    flex: 1,
+    backgroundColor: '#212121',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: '100%',
+  },
+})
 
 export default App;
