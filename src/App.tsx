@@ -29,7 +29,7 @@ import TrackPlayer, {
   usePlaybackState,
   useProgress
 } from 'react-native-track-player';
-import { QueueInitialTracksService, SetupService } from './src/services';
+import { QueueInitialTracksService, SetupService } from './services';
 
 function useSetupPlayer() {
   const [playerReady, setPlayerReady] = useState<boolean>(false);
