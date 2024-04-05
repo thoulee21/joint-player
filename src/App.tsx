@@ -1,19 +1,23 @@
-import React from 'react';
+import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
+import React, { useRef } from 'react';
 import {
   SafeAreaView,
   StatusBar,
   StyleSheet,
-  ToastAndroid,
   View,
-  useColorScheme,
+  useColorScheme
 } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
   ActivityIndicator,
   Appbar,
+  Divider,
   HelperText,
   IconButton,
+  List,
   PaperProvider,
+  Portal,
+  useTheme,
 } from 'react-native-paper';
 import TrackPlayer, {
   useActiveTrack,
@@ -21,7 +25,14 @@ import TrackPlayer, {
   usePlaybackState,
 } from 'react-native-track-player';
 import { version as appVersion } from "../package.json";
-import { Progress, ScreenWrapper, Spacer, TrackInfo } from './components';
+import playlistData from "./assets/data/playlist.json";
+import {
+  BottomSheetPaper,
+  Progress,
+  ScreenWrapper,
+  Spacer,
+  TrackInfo
+} from './components';
 import { useSetupPlayer } from './hook';
 
 function PlayButton() {
@@ -107,34 +118,83 @@ function ErrorText() {
   }
 }
 
+function TrackList() {
+  const appTheme = useTheme();
+  const currentTrack = useActiveTrack();
+
+  return (
+    <BottomSheetFlatList
+      style={{ height: '100%' }}
+      data={playlistData}
+      renderItem={({ item, index }) => (
+        <List.Item
+          title={item.title}
+          description={item.artist}
+          descriptionStyle={{
+            color: appTheme.colors.secondary,
+          }}
+          style={{
+            backgroundColor:
+              currentTrack?.title === item.title
+                ? appTheme.colors.secondaryContainer
+                : undefined,
+          }}
+          left={(props) => <List.Icon {...props} icon="music-note" />}
+          onPress={async () => {
+            await TrackPlayer.skip(index);
+          }}
+        />
+      )}
+      ItemSeparatorComponent={() => <Divider />}
+      keyExtractor={(item) => item.title}
+    />
+  );
+}
+
+function TrackListSheet({ bottomSheetRef }:
+  { bottomSheetRef: React.RefObject<BottomSheet> }) {
+  return (
+    <BottomSheetPaper bottomSheetRef={bottomSheetRef}>
+      <TrackList />
+    </BottomSheetPaper>
+  );
+}
+
 function Inner(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
   const track = useActiveTrack();
   const isPlayerReady = useSetupPlayer();
+
+  const bottomSheetRef = useRef<BottomSheet>(null);
 
   if (!isPlayerReady) {
     return <LoadingApp />;
   }
 
   return (
-    <ScreenWrapper contentContainerStyle={styles.screenContainer}>
-      <StatusBar barStyle={!isDarkMode ? 'light-content' : 'dark-content'} />
-      <Appbar elevated>
-        <Appbar.Action
-          icon="menu"
-          onPress={() => {
-            ToastAndroid.show('Menu button pressed', ToastAndroid.SHORT);
-          }}
-        />
-        <Appbar.Content title={`Joint Player v${appVersion}`} />
-      </Appbar>
-      <Spacer />
-      <TrackInfo track={track} />
-      <Progress live={track?.isLiveStream} />
-      <Spacer />
-      <PlayControls />
-      <Spacer mode="expand" />
-    </ScreenWrapper>
+    <>
+      <ScreenWrapper contentContainerStyle={styles.screenContainer}>
+        <StatusBar barStyle={!isDarkMode ? 'light-content' : 'dark-content'} />
+        <Appbar elevated>
+          <Appbar.Action
+            icon="menu"
+            onPress={() => {
+              bottomSheetRef.current?.expand();
+            }}
+          />
+          <Appbar.Content title={`Joint Player v${appVersion}`} />
+        </Appbar>
+        <Spacer />
+        <TrackInfo track={track} />
+        <Progress live={track?.isLiveStream} />
+        <Spacer />
+        <PlayControls />
+        <Spacer mode="expand" />
+      </ScreenWrapper>
+      <Portal>
+        <TrackListSheet bottomSheetRef={bottomSheetRef} />
+      </Portal>
+    </>
   );
 }
 
