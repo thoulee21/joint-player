@@ -1,6 +1,6 @@
 import BottomSheet from "@gorhom/bottom-sheet";
 import React, { useContext, useRef, useState } from "react";
-import { StyleSheet } from "react-native";
+import { StatusBar, StyleSheet } from "react-native";
 import {
     Appbar,
     IconButton,
@@ -47,7 +47,7 @@ export function Player({ navigation }: { navigation: any }): React.JSX.Element {
 
     return (
         <>
-            <Surface>
+            <Surface style={styles.searchbarContainer}>
                 <Searchbar
                     icon="menu"
                     placeholder="Search for music"
@@ -124,5 +124,8 @@ const styles = StyleSheet.create({
     },
     searchbar: {
         margin: 10,
+    },
+    searchbarContainer: {
+        paddingTop: StatusBar.currentHeight,
     }
 });

@@ -1,8 +1,6 @@
 import { useMaterial3Theme } from '@pchmn/expo-material3-theme';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import {
-  InitialState,
   NavigationContainer,
   DarkTheme as NavigationDarkTheme,
   DefaultTheme as NavigationDefaultTheme
@@ -26,8 +24,6 @@ import { DrawerItems } from './components';
 import { useImageColors } from './hook';
 import { Player, Settings } from './pages';
 
-export const PERSISTENCE_KEY = 'NAVIGATION_STATE';
-
 export const PreferencesContext = createContext<{
   setKeyword: (keyword: string) => void;
   keyword: string;
@@ -38,9 +34,6 @@ const Drawer = createDrawerNavigator();
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
   const { theme: colorTheme, updateTheme } = useMaterial3Theme();
-
-  const [initialState, setInitialState] = useState<InitialState | undefined>();
-  const [isReady, setIsReady] = useState(false);
 
   const [keyword, setKeyword] = useState('');
 
@@ -69,23 +62,6 @@ function App() {
     });
   }, [imageUri]);
 
-  useEffect(() => {
-    const restoreState = async () => {
-      try {
-        const savedStateString = await AsyncStorage.getItem(PERSISTENCE_KEY);
-        const state = JSON.parse(savedStateString || '');
-
-        setInitialState(state);
-      } finally {
-        setIsReady(true);
-      }
-    };
-
-    if (!isReady) {
-      restoreState();
-    }
-  }, [isReady]);
-
   const preferences = useMemo(
     () => ({
       keyword,
@@ -110,15 +86,11 @@ function App() {
     <GestureHandlerRootView style={styles.rootView}>
       <PaperProvider theme={isDarkMode ? MyDarkTheme : MyLightTheme}>
         <PreferencesContext.Provider value={preferences}>
-          <NavigationContainer
-            theme={combinedTheme}
-            initialState={initialState}
-            onStateChange={(state) =>
-              AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state))
-            }
-          >
+          <NavigationContainer theme={combinedTheme}>
             <StatusBar
-              barStyle={!isDarkMode ? 'light-content' : 'dark-content'}
+              translucent
+              backgroundColor="transparent"
+              barStyle={isDarkMode ? 'light-content' : 'dark-content'}
             />
             <Drawer.Navigator
               drawerContent={(props) => <DrawerItems {...props} />}
