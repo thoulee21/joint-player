@@ -1,6 +1,7 @@
+import Clipboard from "@react-native-clipboard/clipboard";
 import React, { useState } from "react";
-import { Platform, StyleSheet } from "react-native";
-import { Appbar, Divider, List, SegmentedButtons } from "react-native-paper";
+import { Platform, StyleSheet, ToastAndroid } from "react-native";
+import { Appbar, Divider, List, SegmentedButtons, useTheme } from "react-native-paper";
 import TrackPlayer, { RepeatMode } from "react-native-track-player";
 import { version as appVersion } from "../../package.json";
 import { ScreenWrapper } from "../components";
@@ -57,6 +58,30 @@ function RepeatModeButtons() {
     );
 }
 
+function ThemeColorIndicator() {
+    const appTheme = useTheme();
+    return (
+        <List.Item
+            title="Theme Color"
+            description={appTheme.colors.primary}
+            left={(props) =>
+                <List.Icon {...props} icon="palette" />
+            }
+            right={() => (
+                <List.Icon
+                    icon="square-rounded"
+                    color={appTheme.colors.primary}
+                    style={{ marginRight: 10 }}
+                />
+            )}
+            onLongPress={() => {
+                Clipboard.setString(appTheme.colors.primary);
+                ToastAndroid.show("Color copied to clipboard", ToastAndroid.SHORT);
+            }}
+        />
+    );
+}
+
 export function Settings({ navigation }: { navigation: any }) {
     return (
         <>
@@ -72,7 +97,9 @@ export function Settings({ navigation }: { navigation: any }) {
             <ScreenWrapper>
                 <RepeatModeButtons />
                 <Divider />
-                <List.Section>
+                <List.Section title="General Information">
+                    <ThemeColorIndicator />
+                    <Divider />
                     <List.Item
                         title="Version"
                         description={`${Platform.OS} v${appVersion}`}

@@ -1,13 +1,13 @@
 import React from 'react';
-import {Image, StyleSheet, View} from 'react-native';
-import {Surface, Text, useTheme} from 'react-native-paper';
-import type {Track} from 'react-native-track-player';
+import { Image, StyleSheet, View } from 'react-native';
+import { Surface, Text, useTheme } from 'react-native-paper';
+import type { Track } from 'react-native-track-player';
 
 export const placeholderImg = 'https://via.placeholder.com/150';
 
 export const TrackInfo: React.FC<{
   track?: Track;
-}> = ({track}) => {
+}> = ({ track }) => {
   const appTheme = useTheme();
   const imageUri = track?.artwork;
 
@@ -15,7 +15,11 @@ export const TrackInfo: React.FC<{
     <View style={styles.container}>
       <Surface
         elevation={5}
-        style={[styles.imgSurface, {borderRadius: appTheme.roundness * 5}]}>
+        style={[
+          styles.imgSurface,
+          { borderRadius: appTheme.roundness * 5 }
+        ]}
+      >
         <Image
           style={[
             styles.artwork,
@@ -24,7 +28,7 @@ export const TrackInfo: React.FC<{
               backgroundColor: appTheme.colors.surface,
             },
           ]}
-          source={{uri: imageUri || placeholderImg}}
+          source={{ uri: imageUri || placeholderImg }}
         />
       </Surface>
       <Text style={styles.titleText} selectable>
@@ -32,7 +36,11 @@ export const TrackInfo: React.FC<{
       </Text>
       <Text
         selectable
-        style={[styles.artistText, {color: appTheme.colors.primary}]}>
+        style={[
+          styles.artistText,
+          { color: appTheme.colors.primary }
+        ]}
+      >
         {track?.artist}
       </Text>
     </View>

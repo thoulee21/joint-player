@@ -1,4 +1,5 @@
 import BottomSheet from '@gorhom/bottom-sheet';
+import { useMaterial3Theme } from '@pchmn/expo-material3-theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import {
@@ -7,6 +8,7 @@ import {
   DarkTheme as NavigationDarkTheme,
   DefaultTheme as NavigationDefaultTheme
 } from "@react-navigation/native";
+import Color from 'color';
 import React, { useEffect, useRef, useState } from 'react';
 import {
   StatusBar,
@@ -33,7 +35,7 @@ import {
   TrackInfo,
   TrackListSheet
 } from './components';
-import { useSetupPlayer } from './hook';
+import { useImageColors, useSetupPlayer } from './hook';
 import { Settings } from './pages';
 
 export const PERSISTENCE_KEY = 'NAVIGATION_STATE';
@@ -42,9 +44,35 @@ const Drawer = createDrawerNavigator();
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
+  const { theme: colorTheme, updateTheme } = useMaterial3Theme();
 
   const [initialState, setInitialState] = useState<InitialState | undefined>();
   const [isReady, setIsReady] = useState(false);
+
+  const track = useActiveTrack();
+  const imageUri = track?.artwork;
+
+  const MyLightTheme = {
+    ...MD3LightTheme,
+    colors: colorTheme.light,
+  };
+
+  const MyDarkTheme = {
+    ...MD3DarkTheme,
+    colors: colorTheme.dark,
+  };
+
+  useEffect(() => {
+    if (!imageUri) {
+      return;
+    }
+    const colors = useImageColors(imageUri);
+
+    colors.then((colors) => {
+      const color = Color(colors[0])
+      updateTheme(color.hex());
+    });
+  }, [imageUri]);
 
   useEffect(() => {
     const restoreState = async () => {
@@ -65,34 +93,18 @@ function App() {
     }
   }, [isReady]);
 
-  const { LightTheme, DarkTheme } = adaptNavigationTheme({
+  const { LightTheme: NaviLightTheme, DarkTheme: NaviDarkTheme } = adaptNavigationTheme({
     reactNavigationLight: NavigationDefaultTheme,
     reactNavigationDark: NavigationDarkTheme,
+    materialLight: MyLightTheme,
+    materialDark: MyDarkTheme,
   });
 
-  const CombinedDefaultTheme = {
-    ...MD3LightTheme,
-    ...LightTheme,
-    colors: {
-      ...MD3LightTheme.colors,
-      ...LightTheme.colors,
-    },
-  };
-
-  const CombinedDarkTheme = {
-    ...MD3DarkTheme,
-    ...DarkTheme,
-    colors: {
-      ...MD3DarkTheme.colors,
-      ...DarkTheme.colors,
-    },
-  };
-
-  const combinedTheme = isDarkMode ? CombinedDarkTheme : CombinedDefaultTheme;
+  const combinedTheme = isDarkMode ? NaviDarkTheme : NaviLightTheme;
 
   return (
     <GestureHandlerRootView style={styles.rootView}>
-      <PaperProvider>
+      <PaperProvider theme={isDarkMode ? MyDarkTheme : MyLightTheme}>
         <NavigationContainer
           theme={combinedTheme}
           initialState={initialState}
@@ -160,7 +172,7 @@ function Inner({ navigation }: { navigation: any }): React.JSX.Element {
         elevated
       >
         <Appbar.Content
-          title={track?.description || ''}
+          title={track?.type || ''}
           titleStyle={styles.bottomTitle}
         />
         <Appbar.Action
