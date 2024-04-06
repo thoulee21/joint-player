@@ -34,8 +34,6 @@ export const SetupService = async () => {
     android: {
       appKilledPlaybackBehavior: DefaultAudioServiceBehaviour,
     },
-    // This flag is now deprecated. Please use the above to define playback mode.
-    // stoppingAppPausesPlayback: true,
     capabilities: [
       Capability.Play,
       Capability.Pause,

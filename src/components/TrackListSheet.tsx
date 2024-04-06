@@ -19,7 +19,7 @@ function TrackList() {
         }
 
         getQueue().finally(() => {
-            console.log(JSON.stringify(queue));
+            // console.log(JSON.stringify(queue));
         });
     }, []);
 
