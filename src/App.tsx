@@ -144,12 +144,6 @@ function Inner({ navigation }: { navigation: any }): React.JSX.Element {
           }}
         />
         <Appbar.Content title={`Joint Player v${appVersion}`} />
-        <Appbar.Action
-          icon="menu-open"
-          onPress={() => {
-            bottomSheetRef.current?.expand();
-          }}
-        />
       </Appbar.Header>
 
       <ScreenWrapper contentContainerStyle={styles.screenContainer}>
@@ -160,6 +154,23 @@ function Inner({ navigation }: { navigation: any }): React.JSX.Element {
         <PlayControls />
         <Spacer mode="expand" />
       </ScreenWrapper>
+
+      <Appbar.Header
+        style={styles.bottom}
+        mode="center-aligned"
+        elevated
+      >
+        <Appbar.Content
+          title={track?.description || ''}
+          titleStyle={styles.bottomTitle}
+        />
+        <Appbar.Action
+          icon="menu-open"
+          onPress={() => {
+            bottomSheetRef.current?.expand();
+          }}
+        />
+      </Appbar.Header>
 
       <Portal>
         <TrackListSheet bottomSheetRef={bottomSheetRef} />
@@ -178,6 +189,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  bottom: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  bottomTitle: {
+    fontSize: 16,
+  }
 });
 
 export default App;

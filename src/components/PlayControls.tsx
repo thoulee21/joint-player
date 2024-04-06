@@ -1,13 +1,16 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { HelperText, IconButton } from "react-native-paper";
-import TrackPlayer, { useIsPlaying, usePlaybackState } from "react-native-track-player";
+import TrackPlayer, {
+    useIsPlaying,
+    usePlaybackState
+} from "react-native-track-player";
 
 function BackwardButton() {
     return (
         <IconButton
             icon="rewind"
-            size={28}
+            size={30}
             onPress={async () => {
                 await TrackPlayer.skipToPrevious();
             }}
@@ -21,7 +24,7 @@ function PlayButton() {
     return (
         <IconButton
             icon={playing ? 'pause' : 'play'}
-            size={48}
+            size={80}
             loading={bufferingDuringPlay}
             selected
             animated
@@ -34,7 +37,7 @@ function ForwardButton() {
     return (
         <IconButton
             icon="fast-forward"
-            size={28}
+            size={30}
             onPress={async () => {
                 await TrackPlayer.skipToNext();
             }}
