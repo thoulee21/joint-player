@@ -52,7 +52,6 @@ export function Player({ navigation }: { navigation: any }): React.JSX.Element {
                     icon="menu"
                     placeholder="Search for music"
                     style={styles.searchbar}
-                    loading={searching}
                     onIconPress={() => {
                         navigation.openDrawer();
                     }}
@@ -65,6 +64,7 @@ export function Player({ navigation }: { navigation: any }): React.JSX.Element {
                             {...props}
                             icon="search-web"
                             onPress={searchSongs}
+                            loading={searching}
                         />
                     }
                     onSubmitEditing={searchSongs}
