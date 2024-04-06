@@ -5,8 +5,7 @@ import {
   DarkTheme as NavigationDarkTheme,
   DefaultTheme as NavigationDefaultTheme
 } from "@react-navigation/native";
-import Color from 'color';
-import React, { createContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useMemo, useState } from 'react';
 import {
   StatusBar,
   StyleSheet,
@@ -19,12 +18,11 @@ import {
   PaperProvider,
   adaptNavigationTheme
 } from 'react-native-paper';
-import { useActiveTrack } from 'react-native-track-player';
 import { DrawerItems } from './components';
-import { useImageColors } from './hook';
 import { Player, Settings } from './pages';
 
 export const PreferencesContext = createContext<{
+  updateTheme: (sourceColor: string) => void;
   setKeyword: (keyword: string) => void;
   keyword: string;
 } | null>(null);
@@ -34,38 +32,23 @@ const Drawer = createDrawerNavigator();
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
   const { theme: colorTheme, updateTheme } = useMaterial3Theme();
-
   const [keyword, setKeyword] = useState('');
 
-  const track = useActiveTrack();
-  const imageUri = track?.artwork;
-
-  const MyLightTheme = {
+  const MyLightTheme = useMemo(() => ({
     ...MD3LightTheme,
     colors: colorTheme.light,
-  };
+  }), [colorTheme.light]);
 
-  const MyDarkTheme = {
+  const MyDarkTheme = useMemo(() => ({
     ...MD3DarkTheme,
     colors: colorTheme.dark,
-  };
-
-  useEffect(() => {
-    if (!imageUri) {
-      return;
-    }
-    const colors = useImageColors(imageUri);
-
-    colors.then((colors) => {
-      const color = Color(colors[0])
-      updateTheme(color.hex());
-    });
-  }, [imageUri]);
+  }), [colorTheme.dark]);
 
   const preferences = useMemo(
     () => ({
       keyword,
       setKeyword,
+      updateTheme,
     }),
     [keyword]
   );

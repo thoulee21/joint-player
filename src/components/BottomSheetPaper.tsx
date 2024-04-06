@@ -22,10 +22,10 @@ export const BottomSheetPaper = ({ bottomSheetRef, children }:
 
     return <BottomSheet
         ref={bottomSheetRef}
-        index={-1}
+        index={2}
         backgroundStyle={{ backgroundColor: appTheme.colors.background }}
         handleIndicatorStyle={{ backgroundColor: appTheme.colors.primary }}
-        snapPoints={['40%', '80%']}
+        snapPoints={['40%', '80%', '97%']}
         enablePanDownToClose
         backdropComponent={renderBackdrop}
         android_keyboardInputMode="adjustResize"

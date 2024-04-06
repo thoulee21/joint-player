@@ -11,8 +11,7 @@ import {
 } from "react-native-paper";
 import TrackPlayer, {
     Track,
-    useActiveTrack,
-    usePlaybackState
+    useActiveTrack
 } from 'react-native-track-player';
 import { BottomSheetPaper } from ".";
 import playlistData from "../assets/data/playlist.json";
@@ -23,7 +22,6 @@ function TrackList({ bottomSheetRef }:
     const appTheme = useTheme();
     const currentTrack = useActiveTrack();
     const [queue, setQueue] = useState<Track[]>([]);
-    const playbackState = usePlaybackState();
 
     useEffect(() => {
         async function getQueue() {
@@ -34,7 +32,7 @@ function TrackList({ bottomSheetRef }:
         }
 
         getQueue();
-    }, [playbackState, currentTrack]);
+    }, [currentTrack]);
 
     return (
         <BottomSheetFlatList

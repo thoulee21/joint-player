@@ -1,5 +1,6 @@
 import BottomSheet from "@gorhom/bottom-sheet";
-import React, { useContext, useRef, useState } from "react";
+import Color from "color";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { StatusBar, StyleSheet } from "react-native";
 import {
     Appbar,
@@ -20,7 +21,7 @@ import {
     TrackInfo,
     TrackListSheet
 } from "../components";
-import { useSetupPlayer } from "../hook";
+import { useImageColors, useSetupPlayer } from "../hook";
 import { QueueInitialTracksService } from "../services";
 
 export function Player({ navigation }: { navigation: any }): React.JSX.Element {
@@ -29,12 +30,27 @@ export function Player({ navigation }: { navigation: any }): React.JSX.Element {
 
     const appTheme = useTheme();
     const preferences = useContext(PreferencesContext);
-    const [searching, setSearching] = useState(false);
     const bottomSheetRef = useRef<BottomSheet>(null);
 
-    if (!isPlayerReady) {
-        return <LoadingPage />;
-    }
+    const [searching, setSearching] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    useEffect(() => {
+        const imageUri = track?.artwork;
+        if (!imageUri) {
+            return;
+        }
+        const colors = useImageColors(imageUri);
+
+        colors
+            .then((colors) => {
+                const color = Color(colors[0])
+                preferences?.updateTheme(color.hex());
+            })
+            .finally(() => {
+                setIsLoaded(true);
+            });
+    }, [track]);
 
     function searchSongs() {
         setSearching(true);
@@ -45,65 +61,69 @@ export function Player({ navigation }: { navigation: any }): React.JSX.Element {
             });
     }
 
-    return (
-        <>
-            <Surface style={styles.searchbarContainer}>
-                <Searchbar
-                    icon="menu"
-                    placeholder="Search for music"
-                    style={styles.searchbar}
-                    onIconPress={() => {
-                        navigation.openDrawer();
-                    }}
-                    onChangeText={(text) => {
-                        preferences?.setKeyword(text);
-                    }}
-                    value={preferences?.keyword as string}
-                    right={(props) =>
-                        <IconButton
-                            {...props}
-                            icon="search-web"
-                            onPress={searchSongs}
-                            loading={searching}
-                        />
-                    }
-                    onSubmitEditing={searchSongs}
-                    blurOnSubmit
-                    selectTextOnFocus
-                    selectionColor={appTheme.colors.inversePrimary}
-                />
-            </Surface>
-            <ScreenWrapper contentContainerStyle={styles.screenContainer}>
-                <Spacer />
-                <TrackInfo track={track} />
-                <Progress live={track?.isLiveStream} />
-                <Spacer />
-                <PlayControls />
-                <Spacer mode="expand" />
-            </ScreenWrapper>
+    if (isPlayerReady && isLoaded) {
+        return (
+            <>
+                <Surface style={styles.searchbarContainer}>
+                    <Searchbar
+                        icon="menu"
+                        placeholder="Search for music"
+                        style={styles.searchbar}
+                        onIconPress={() => {
+                            navigation.openDrawer();
+                        }}
+                        onChangeText={(text) => {
+                            preferences?.setKeyword(text);
+                        }}
+                        value={preferences?.keyword as string}
+                        right={(props) =>
+                            <IconButton
+                                {...props}
+                                icon="search-web"
+                                onPress={searchSongs}
+                                loading={searching}
+                            />
+                        }
+                        onSubmitEditing={searchSongs}
+                        blurOnSubmit
+                        selectTextOnFocus
+                        selectionColor={appTheme.colors.inversePrimary}
+                    />
+                </Surface>
+                <ScreenWrapper contentContainerStyle={styles.screenContainer}>
+                    <Spacer />
+                    <TrackInfo track={track} />
+                    <Progress live={track?.isLiveStream} />
+                    <Spacer />
+                    <PlayControls />
+                    <Spacer mode="expand" />
+                </ScreenWrapper>
 
-            <Appbar.Header
-                style={styles.bottom}
-                mode="center-aligned"
-                elevated
-            >
-                <Appbar.Content
-                    title={track?.album || ''}
-                    titleStyle={styles.bottomTitle}
-                />
-                <Appbar.Action
-                    icon="menu-open"
-                    onPress={() => {
-                        bottomSheetRef.current?.expand();
-                    }}
-                />
-            </Appbar.Header>
+                <Appbar.Header
+                    style={styles.bottom}
+                    mode="center-aligned"
+                    elevated
+                >
+                    <Appbar.Content
+                        title={track?.album || ''}
+                        titleStyle={styles.bottomTitle}
+                    />
+                    <Appbar.Action
+                        icon="menu-open"
+                        onPress={() => {
+                            bottomSheetRef.current?.expand();
+                        }}
+                    />
+                </Appbar.Header>
 
-            <Portal>
-                <TrackListSheet bottomSheetRef={bottomSheetRef} />
-            </Portal>
-        </>
-    );
+                <Portal>
+                    <TrackListSheet bottomSheetRef={bottomSheetRef} />
+                </Portal>
+            </>
+        );
+    } else {
+        return <LoadingPage />;
+    }
 }
 
 const styles = StyleSheet.create({
