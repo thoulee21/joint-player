@@ -1,6 +1,6 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
-import { HelperText, IconButton } from "react-native-paper";
+import { StyleSheet, ToastAndroid, View } from "react-native";
+import { IconButton } from "react-native-paper";
 import TrackPlayer, {
     useIsPlaying,
     usePlaybackState
@@ -45,20 +45,18 @@ function ForwardButton() {
     );
 }
 
-function ErrorText() {
+export function PlayControls() {
     const playbackState = usePlaybackState();
     const isError = 'error' in playbackState;
 
     if (isError) {
-        return (
-            <HelperText type="error">
-                {`${playbackState.error.message} - ${playbackState.error.code}`}
-            </HelperText>
-        );
-    }
-}
+        const errMsg = `播放出错，自动播放下一首(${playbackState.error.message} - ${playbackState.error.code})`
+        ToastAndroid.show(errMsg, ToastAndroid.SHORT);
 
-export function PlayControls() {
+        TrackPlayer.skipToNext();
+        TrackPlayer.play();
+    }
+
     return (
         <View style={styles.controlsContainer}>
             <View style={styles.playControls}>
@@ -66,7 +64,6 @@ export function PlayControls() {
                 <PlayButton />
                 <ForwardButton />
             </View>
-            <ErrorText />
         </View>
     );
 }

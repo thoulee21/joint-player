@@ -1,8 +1,16 @@
 import BottomSheet from "@gorhom/bottom-sheet";
-import { useRef } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { StyleSheet } from "react-native";
-import { Appbar, Portal } from "react-native-paper";
-import { useActiveTrack } from "react-native-track-player";
+import {
+    Appbar,
+    IconButton,
+    Portal,
+    Searchbar,
+    Surface,
+    useTheme
+} from "react-native-paper";
+import TrackPlayer, { useActiveTrack } from "react-native-track-player";
+import { PreferencesContext } from "../App";
 import {
     LoadingPage,
     PlayControls,
@@ -13,28 +21,58 @@ import {
     TrackListSheet
 } from "../components";
 import { useSetupPlayer } from "../hook";
+import { QueueInitialTracksService } from "../services";
 
 export function Player({ navigation }: { navigation: any }): React.JSX.Element {
-    const track = useActiveTrack();
     const isPlayerReady = useSetupPlayer();
+    const track = useActiveTrack();
+
+    const appTheme = useTheme();
+    const preferences = useContext(PreferencesContext);
+    const [searching, setSearching] = useState(false);
     const bottomSheetRef = useRef<BottomSheet>(null);
 
     if (!isPlayerReady) {
         return <LoadingPage />;
     }
 
+    function searchSongs() {
+        setSearching(true);
+        QueueInitialTracksService(preferences?.keyword as string)
+            .finally(() => {
+                setSearching(false);
+                TrackPlayer.play();
+            });
+    }
+
     return (
         <>
-            <Appbar.Header elevated>
-                <Appbar.Action
+            <Surface>
+                <Searchbar
                     icon="menu"
-                    onPress={() => {
+                    placeholder="Search for music"
+                    style={styles.searchbar}
+                    loading={searching}
+                    onIconPress={() => {
                         navigation.openDrawer();
                     }}
+                    onChangeText={(text) => {
+                        preferences?.setKeyword(text);
+                    }}
+                    value={preferences?.keyword as string}
+                    right={(props) =>
+                        <IconButton
+                            {...props}
+                            icon="search-web"
+                            onPress={searchSongs}
+                        />
+                    }
+                    onSubmitEditing={searchSongs}
+                    blurOnSubmit
+                    selectTextOnFocus
+                    selectionColor={appTheme.colors.inversePrimary}
                 />
-                <Appbar.Content title="Joint Player" />
-            </Appbar.Header>
-
+            </Surface>
             <ScreenWrapper contentContainerStyle={styles.screenContainer}>
                 <Spacer />
                 <TrackInfo track={track} />
@@ -50,7 +88,7 @@ export function Player({ navigation }: { navigation: any }): React.JSX.Element {
                 elevated
             >
                 <Appbar.Content
-                    title={track?.type || ''}
+                    title={track?.album || ''}
                     titleStyle={styles.bottomTitle}
                 />
                 <Appbar.Action
@@ -83,5 +121,8 @@ const styles = StyleSheet.create({
     },
     bottomTitle: {
         fontSize: 16,
+    },
+    searchbar: {
+        margin: 10,
     }
 });

@@ -8,7 +8,7 @@ import {
   DefaultTheme as NavigationDefaultTheme
 } from "@react-navigation/native";
 import Color from 'color';
-import React, { useEffect, useState } from 'react';
+import React, { createContext, useEffect, useMemo, useState } from 'react';
 import {
   StatusBar,
   StyleSheet,
@@ -28,6 +28,11 @@ import { Player, Settings } from './pages';
 
 export const PERSISTENCE_KEY = 'NAVIGATION_STATE';
 
+export const PreferencesContext = createContext<{
+  setKeyword: (keyword: string) => void;
+  keyword: string;
+} | null>(null);
+
 const Drawer = createDrawerNavigator();
 
 function App() {
@@ -36,6 +41,8 @@ function App() {
 
   const [initialState, setInitialState] = useState<InitialState | undefined>();
   const [isReady, setIsReady] = useState(false);
+
+  const [keyword, setKeyword] = useState('');
 
   const track = useActiveTrack();
   const imageUri = track?.artwork;
@@ -79,6 +86,14 @@ function App() {
     }
   }, [isReady]);
 
+  const preferences = useMemo(
+    () => ({
+      keyword,
+      setKeyword,
+    }),
+    [keyword]
+  );
+
   const {
     LightTheme: NaviLightTheme,
     DarkTheme: NaviDarkTheme
@@ -94,32 +109,34 @@ function App() {
   return (
     <GestureHandlerRootView style={styles.rootView}>
       <PaperProvider theme={isDarkMode ? MyDarkTheme : MyLightTheme}>
-        <NavigationContainer
-          theme={combinedTheme}
-          initialState={initialState}
-          onStateChange={(state) =>
-            AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state))
-          }
-        >
-          <StatusBar
-            barStyle={!isDarkMode ? 'light-content' : 'dark-content'}
-          />
-          <Drawer.Navigator
-            drawerContent={(props) => <DrawerItems {...props} />}
-            initialRouteName="Home"
+        <PreferencesContext.Provider value={preferences}>
+          <NavigationContainer
+            theme={combinedTheme}
+            initialState={initialState}
+            onStateChange={(state) =>
+              AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state))
+            }
           >
-            <Drawer.Screen
-              name="Home"
-              options={{ headerShown: false }}
-              component={Player}
+            <StatusBar
+              barStyle={!isDarkMode ? 'light-content' : 'dark-content'}
             />
-            <Drawer.Screen
-              name="Settings"
-              options={{ headerShown: false }}
-              component={Settings}
-            />
-          </Drawer.Navigator>
-        </NavigationContainer>
+            <Drawer.Navigator
+              drawerContent={(props) => <DrawerItems {...props} />}
+              initialRouteName="Home"
+            >
+              <Drawer.Screen
+                name="Home"
+                options={{ headerShown: false }}
+                component={Player}
+              />
+              <Drawer.Screen
+                name="Settings"
+                options={{ headerShown: false }}
+                component={Settings}
+              />
+            </Drawer.Navigator>
+          </NavigationContainer>
+        </PreferencesContext.Provider>
       </PaperProvider>
     </GestureHandlerRootView>
   );
