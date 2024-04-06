@@ -3,3 +3,6 @@ export * from './Progress';
 export * from './Spacer';
 export * from './ScreenWrapper';
 export * from './BottomSheetPaper';
+export * from './PlayControls';
+export * from './TrackListSheet';
+export * from './LoadingPage';
