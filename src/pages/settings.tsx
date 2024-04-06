@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
-import { List, SegmentedButtons } from "react-native-paper";
+import { Appbar, List, SegmentedButtons } from "react-native-paper";
 import TrackPlayer, { RepeatMode } from "react-native-track-player";
 import { ScreenWrapper } from "../components";
 import { DefaultRepeatMode } from "../services";
@@ -56,11 +56,22 @@ function RepeatModeButtons() {
     );
 }
 
-export function Settings() {
+export function Settings({ navigation }: { navigation: any }) {
     return (
-        <ScreenWrapper>
-            <RepeatModeButtons />
-        </ScreenWrapper>
+        <>
+            <Appbar.Header elevated>
+                <Appbar.Action
+                    icon="menu"
+                    onPress={() => {
+                        navigation.openDrawer()
+                    }}
+                />
+                <Appbar.Content title="Settings" />
+            </Appbar.Header>
+            <ScreenWrapper>
+                <RepeatModeButtons />
+            </ScreenWrapper>
+        </>
     );
 }
 

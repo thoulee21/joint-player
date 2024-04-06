@@ -115,6 +115,7 @@ function App() {
             />
             <Drawer.Screen
               name="Settings"
+              options={{ headerShown: false }}
               component={Settings}
             />
           </Drawer.Navigator>
