@@ -23,7 +23,6 @@ import {
   adaptNavigationTheme
 } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
-import { version as appVersion } from "../package.json";
 import {
   DrawerItems,
   LoadingPage,
@@ -143,7 +142,7 @@ function Inner({ navigation }: { navigation: any }): React.JSX.Element {
             navigation.openDrawer();
           }}
         />
-        <Appbar.Content title={`Joint Player v${appVersion}`} />
+        <Appbar.Content title="Joint Player" />
       </Appbar.Header>
 
       <ScreenWrapper contentContainerStyle={styles.screenContainer}>

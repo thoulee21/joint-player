@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { StyleSheet } from "react-native";
-import { Appbar, List, SegmentedButtons } from "react-native-paper";
+import { Platform, StyleSheet } from "react-native";
+import { Appbar, Divider, List, SegmentedButtons } from "react-native-paper";
 import TrackPlayer, { RepeatMode } from "react-native-track-player";
+import { version as appVersion } from "../../package.json";
 import { ScreenWrapper } from "../components";
 import { DefaultRepeatMode } from "../services";
 
@@ -70,6 +71,16 @@ export function Settings({ navigation }: { navigation: any }) {
             </Appbar.Header>
             <ScreenWrapper>
                 <RepeatModeButtons />
+                <Divider />
+                <List.Section>
+                    <List.Item
+                        title="Version"
+                        description={`${Platform.OS} v${appVersion}`}
+                        left={(props) =>
+                            <List.Icon {...props} icon="information-outline" />
+                        }
+                    />
+                </List.Section>
             </ScreenWrapper>
         </>
     );
