@@ -1,4 +1,3 @@
-import BottomSheet from '@gorhom/bottom-sheet';
 import { useMaterial3Theme } from '@pchmn/expo-material3-theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createDrawerNavigator } from "@react-navigation/drawer";
@@ -9,7 +8,7 @@ import {
   DefaultTheme as NavigationDefaultTheme
 } from "@react-navigation/native";
 import Color from 'color';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StatusBar,
   StyleSheet,
@@ -17,26 +16,15 @@ import {
 } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
-  Appbar,
   MD3DarkTheme,
   MD3LightTheme,
   PaperProvider,
-  Portal,
   adaptNavigationTheme
 } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
-import {
-  DrawerItems,
-  LoadingPage,
-  PlayControls,
-  Progress,
-  ScreenWrapper,
-  Spacer,
-  TrackInfo,
-  TrackListSheet
-} from './components';
-import { useImageColors, useSetupPlayer } from './hook';
-import { Settings } from './pages';
+import { DrawerItems } from './components';
+import { useImageColors } from './hook';
+import { Player, Settings } from './pages';
 
 export const PERSISTENCE_KEY = 'NAVIGATION_STATE';
 
@@ -81,8 +69,6 @@ function App() {
         const state = JSON.parse(savedStateString || '');
 
         setInitialState(state);
-      } catch (e) {
-        // ignore error
       } finally {
         setIsReady(true);
       }
@@ -93,7 +79,10 @@ function App() {
     }
   }, [isReady]);
 
-  const { LightTheme: NaviLightTheme, DarkTheme: NaviDarkTheme } = adaptNavigationTheme({
+  const {
+    LightTheme: NaviLightTheme,
+    DarkTheme: NaviDarkTheme
+  } = adaptNavigationTheme({
     reactNavigationLight: NavigationDefaultTheme,
     reactNavigationDark: NavigationDarkTheme,
     materialLight: MyLightTheme,
@@ -122,7 +111,7 @@ function App() {
             <Drawer.Screen
               name="Home"
               options={{ headerShown: false }}
-              component={Inner}
+              component={Player}
             />
             <Drawer.Screen
               name="Settings"
@@ -136,79 +125,10 @@ function App() {
   );
 }
 
-function Inner({ navigation }: { navigation: any }): React.JSX.Element {
-  const track = useActiveTrack();
-  const isPlayerReady = useSetupPlayer();
-  const bottomSheetRef = useRef<BottomSheet>(null);
-
-  if (!isPlayerReady) {
-    return <LoadingPage />;
-  }
-
-  return (
-    <>
-      <Appbar.Header elevated>
-        <Appbar.Action
-          icon="menu"
-          onPress={() => {
-            navigation.openDrawer();
-          }}
-        />
-        <Appbar.Content title="Joint Player" />
-      </Appbar.Header>
-
-      <ScreenWrapper contentContainerStyle={styles.screenContainer}>
-        <Spacer />
-        <TrackInfo track={track} />
-        <Progress live={track?.isLiveStream} />
-        <Spacer />
-        <PlayControls />
-        <Spacer mode="expand" />
-      </ScreenWrapper>
-
-      <Appbar.Header
-        style={styles.bottom}
-        mode="center-aligned"
-        elevated
-      >
-        <Appbar.Content
-          title={track?.type || ''}
-          titleStyle={styles.bottomTitle}
-        />
-        <Appbar.Action
-          icon="menu-open"
-          onPress={() => {
-            bottomSheetRef.current?.expand();
-          }}
-        />
-      </Appbar.Header>
-
-      <Portal>
-        <TrackListSheet bottomSheetRef={bottomSheetRef} />
-      </Portal>
-    </>
-  );
-}
-
 const styles = StyleSheet.create({
   rootView: {
     flex: 1,
   },
-  screenContainer: {
-    display: 'flex',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  bottom: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-  bottomTitle: {
-    fontSize: 16,
-  }
 });
 
 export default App;
