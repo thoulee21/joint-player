@@ -1,12 +1,25 @@
-import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
+import BottomSheet, {
+    BottomSheetFlatList
+} from '@gorhom/bottom-sheet';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { ActivityIndicator, Divider, List, useTheme } from "react-native-paper";
-import TrackPlayer, { Track, useActiveTrack, usePlaybackState } from 'react-native-track-player';
+import {
+    ActivityIndicator,
+    Divider,
+    List,
+    useTheme
+} from "react-native-paper";
+import TrackPlayer, {
+    Track,
+    useActiveTrack,
+    usePlaybackState
+} from 'react-native-track-player';
 import { BottomSheetPaper } from ".";
 import playlistData from "../assets/data/playlist.json";
 
-function TrackList() {
+function TrackList({ bottomSheetRef }:
+    { bottomSheetRef: React.RefObject<BottomSheet> }
+) {
     const appTheme = useTheme();
     const currentTrack = useActiveTrack();
     const [queue, setQueue] = useState<Track[]>([]);
@@ -60,6 +73,10 @@ function TrackList() {
                         left={(props) => <List.Icon {...props} icon="music-note" />}
                         onPress={async () => {
                             await TrackPlayer.skip(index);
+
+                            setTimeout(() => {
+                                bottomSheetRef.current?.close();
+                            }, 300);
                         }}
                     />
                 )
@@ -73,7 +90,7 @@ export function TrackListSheet({ bottomSheetRef }:
     { bottomSheetRef: React.RefObject<BottomSheet> }) {
     return (
         <BottomSheetPaper bottomSheetRef={bottomSheetRef}>
-            <TrackList />
+            <TrackList bottomSheetRef={bottomSheetRef} />
         </BottomSheetPaper>
     );
 }
