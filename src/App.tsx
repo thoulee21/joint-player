@@ -78,6 +78,7 @@ function App() {
             <Drawer.Navigator
               drawerContent={(props) => <DrawerItems {...props} />}
               screenOptions={{ headerShown: false }}
+              backBehavior="none"
             >
               <Drawer.Screen
                 name="Home"
