@@ -5,6 +5,7 @@ import {
   DarkTheme as NavigationDarkTheme,
   DefaultTheme as NavigationDefaultTheme
 } from "@react-navigation/native";
+import * as SplashScreen from 'expo-splash-screen';
 import React, { createContext, useMemo, useState } from 'react';
 import {
   StatusBar,
@@ -20,6 +21,8 @@ import {
 } from 'react-native-paper';
 import { DrawerItems } from './components';
 import { Player, Settings } from './pages';
+
+SplashScreen.preventAutoHideAsync();
 
 export const PreferencesContext = createContext<{
   updateTheme: (sourceColor: string) => void;

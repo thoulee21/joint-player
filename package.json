@@ -18,6 +18,8 @@
     "@react-navigation/native": "^6.1.17",
     "color": "^4.2.3",
     "expo": "^50.0.14",
+    "expo-modules-autolinking": "~1.10.0",
+    "expo-splash-screen": "~0.26.4",
     "install-expo-modules": "^0.8.1",
     "react": "18.2.0",
     "react-dom": "^18.2.0",
