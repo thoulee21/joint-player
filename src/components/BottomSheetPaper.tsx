@@ -12,7 +12,7 @@ export const BottomSheetPaper = ({ bottomSheetRef, children }:
         index={-1}
         backgroundStyle={{ backgroundColor: appTheme.colors.background }}
         handleIndicatorStyle={{ backgroundColor: appTheme.colors.primary }}
-        snapPoints={['40%', '80%', '97%']}
+        snapPoints={['35%', '96%']}
         enablePanDownToClose
         android_keyboardInputMode="adjustResize"
         enableOverDrag={false}//防止与FlatList（ScrollView）冲突
