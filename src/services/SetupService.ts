@@ -8,6 +8,10 @@ export const DefaultRepeatMode = RepeatMode.Queue;
 export const DefaultAudioServiceBehaviour =
   AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification;
 
+/**
+ * 使用指定的选项设置播放器。
+ * @param options - 配置播放器的选项。
+ */
 const setupPlayer = async (
   options: Parameters<typeof TrackPlayer.setupPlayer>[0],
 ) => {
@@ -15,7 +19,7 @@ const setupPlayer = async (
     try {
       await TrackPlayer.setupPlayer(options);
     } catch (error) {
-      return (error as Error & {code?: string}).code;
+      return (error as Error & { code?: string }).code;
     }
   };
   while ((await setup()) === 'android_cannot_setup_player_in_background') {
