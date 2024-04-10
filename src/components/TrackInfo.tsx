@@ -64,9 +64,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     marginTop: 30,
+    textAlign: 'center',
   },
   artistText: {
     fontSize: 16,
     fontWeight: '200',
+    textAlign: 'center',
   },
 });
