@@ -77,16 +77,14 @@ function App() {
             />
             <Drawer.Navigator
               drawerContent={(props) => <DrawerItems {...props} />}
-              initialRouteName="Home"
+              screenOptions={{ headerShown: false }}
             >
               <Drawer.Screen
                 name="Home"
-                options={{ headerShown: false }}
                 component={Player}
               />
               <Drawer.Screen
                 name="Settings"
-                options={{ headerShown: false }}
                 component={Settings}
               />
             </Drawer.Navigator>
