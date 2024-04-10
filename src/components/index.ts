@@ -7,3 +7,4 @@ export * from './PlayControls';
 export * from './TrackListSheet';
 export * from './LoadingPage';
 export * from './DrawerItems';
+export * from './RepeatModeSwitch';

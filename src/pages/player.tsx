@@ -16,10 +16,11 @@ import {
     LoadingPage,
     PlayControls,
     Progress,
+    RepeatModeSwitch,
     ScreenWrapper,
     Spacer,
     TrackInfo,
-    TrackListSheet
+    TrackListSheet,
 } from "../components";
 import { useImageColors, useSetupPlayer } from "../hook";
 import { QueueInitialTracksService } from "../services";
@@ -104,8 +105,9 @@ export function Player({ navigation }: { navigation: any }): React.JSX.Element {
                     mode="center-aligned"
                     elevated
                 >
+                    <RepeatModeSwitch />
                     <Appbar.Content
-                        title={track?.album || ''}
+                        title={track?.album || 'No Album'}
                         titleStyle={styles.bottomTitle}
                     />
                     <Appbar.Action
