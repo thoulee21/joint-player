@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, ToastAndroid, View } from "react-native";
 import { IconButton } from "react-native-paper";
 import TrackPlayer, {
@@ -49,13 +49,15 @@ export function PlayControls() {
     const playbackState = usePlaybackState();
     const isError = 'error' in playbackState;
 
-    if (isError) {
-        const errMsg = `播放出错，自动播放下一首(${playbackState.error.message} - ${playbackState.error.code})`
-        ToastAndroid.show(errMsg, ToastAndroid.SHORT);
+    useEffect(() => {
+        if (isError) {
+            const errMsg = `播放出错，自动播放下一首(${playbackState.error.message} - ${playbackState.error.code})`
+            ToastAndroid.show(errMsg, ToastAndroid.SHORT);
 
-        TrackPlayer.skipToNext();
-        TrackPlayer.play();
-    }
+            TrackPlayer.skipToNext();
+            TrackPlayer.play();
+        }
+    }, [isError]);
 
     return (
         <View style={styles.controlsContainer}>
