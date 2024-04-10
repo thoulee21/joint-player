@@ -34,6 +34,44 @@ function TrackList({ bottomSheetRef }:
         getQueue();
     }, [currentTrack]);
 
+    const renderTrack = ({ item, index }: { item: Track, index: number }) => {
+        let active = false;
+
+        if (currentTrack?.id && item.id) {
+            active = currentTrack?.id === item.id;
+        } else if (index === 0) {
+            active = false;
+        }
+
+        return (
+            <List.Item
+                title={item.title}
+                description={item.artist}
+                style={{
+                    backgroundColor:
+                        active
+                            ? appTheme.colors.secondaryContainer
+                            : undefined,
+                }}
+                left={(props) =>
+                    <List.Icon
+                        {...props}
+                        icon={active
+                            ? "music-circle"
+                            : "music-circle-outline"}
+                    />
+                }
+                onPress={async () => {
+                    await TrackPlayer.skip(index);
+
+                    setTimeout(() => {
+                        bottomSheetRef.current?.close();
+                    }, 300);
+                }}
+            />
+        )
+    }
+
     return (
         <BottomSheetFlatList
             style={{ height: '100%' }}
@@ -47,38 +85,7 @@ function TrackList({ bottomSheetRef }:
                     />
                 </View>
             }
-            renderItem={({ item, index }) => {
-                let active = false;
-                if (currentTrack?.id && item.id) {
-                    active = currentTrack?.id === item.id;
-                } else if (index === 0) {
-                    active = true;
-                }
-
-                return (
-                    <List.Item
-                        title={item.title}
-                        description={item.artist}
-                        descriptionStyle={{
-                            color: appTheme.colors.secondary,
-                        }}
-                        style={{
-                            backgroundColor:
-                                active
-                                    ? appTheme.colors.secondaryContainer
-                                    : undefined,
-                        }}
-                        left={(props) => <List.Icon {...props} icon="music-note" />}
-                        onPress={async () => {
-                            await TrackPlayer.skip(index);
-
-                            setTimeout(() => {
-                                bottomSheetRef.current?.close();
-                            }, 300);
-                        }}
-                    />
-                )
-            }}
+            renderItem={renderTrack}
             ItemSeparatorComponent={() => <Divider />}
         />
     );
