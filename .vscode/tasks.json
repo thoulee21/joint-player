@@ -27,6 +27,14 @@
             },
             "options": {
                 "cwd": "${workspaceFolder}/android",
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
             }
         },
     ]
