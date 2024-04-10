@@ -17,6 +17,16 @@ type Props = ScrollViewProps & {
   contentContainerStyle?: StyleProp<ViewStyle>;
 };
 
+/**
+ * Wraps the screen content with optional ScrollView and applies styling.
+ *
+ * @param children - The content to be wrapped.
+ * @param withScrollView - Determines whether to use ScrollView or View.
+ * @param style - Additional styles to be applied to the container.
+ * @param contentContainerStyle - Additional styles to be applied to the content container.
+ * @param rest - Additional props to be spread on the ScrollView or View.
+ * @returns The wrapped screen content.
+ */
 export function ScreenWrapper({
   children,
   withScrollView = true,
