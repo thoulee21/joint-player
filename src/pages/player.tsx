@@ -6,7 +6,6 @@ import { StatusBar, StyleSheet } from "react-native";
 import {
     Appbar,
     IconButton,
-    Portal,
     Searchbar,
     Surface,
     useTheme
@@ -117,9 +116,7 @@ export function Player({ navigation }: { navigation: any }): React.JSX.Element {
                 />
             </Appbar.Header>
 
-            <Portal>
-                <TrackListSheet bottomSheetRef={bottomSheetRef} />
-            </Portal>
+            <TrackListSheet bottomSheetRef={bottomSheetRef} />
         </>
     );
 }
