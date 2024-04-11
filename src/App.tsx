@@ -21,7 +21,7 @@ import {
   adaptNavigationTheme
 } from 'react-native-paper';
 import { DrawerItems } from './components';
-import { Player, Settings } from './pages';
+import { Player, Settings, WebViewScreen } from './pages';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -105,6 +105,10 @@ function App() {
               <Stack.Screen
                 name='Home'
                 component={HomeScreen}
+              />
+              <Stack.Screen
+                name='WebView'
+                component={WebViewScreen}
               />
             </Stack.Navigator>
           </NavigationContainer>

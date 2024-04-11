@@ -1,15 +1,17 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { Surface, Text, useTheme } from 'react-native-paper';
 import type { Track } from 'react-native-track-player';
-
 export const placeholderImg = 'https://via.placeholder.com/150';
 
 export const TrackInfo: React.FC<{
   track?: Track;
 }> = ({ track }) => {
   const appTheme = useTheme();
-  const imageUri = track?.artwork;
+  const navigation = useNavigation();
+
+  const imageUri = track?.artwork || placeholderImg;
 
   return (
     <View style={styles.container}>
@@ -28,10 +30,19 @@ export const TrackInfo: React.FC<{
               backgroundColor: appTheme.colors.surface,
             },
           ]}
-          source={{ uri: imageUri || placeholderImg }}
+          source={{ uri: imageUri }}
         />
       </Surface>
-      <Text style={styles.titleText} selectable>
+
+      <Text
+        style={styles.titleText}
+        onLongPress={() => {
+          navigation.navigate('WebView', {
+            title: track?.title || 'Artwork',
+            url: imageUri
+          });
+        }}
+      >
         {track?.title}
       </Text>
       <Text
