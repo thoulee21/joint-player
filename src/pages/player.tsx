@@ -87,6 +87,7 @@ export function Player({ navigation }: { navigation: any }): React.JSX.Element {
                     blurOnSubmit
                     selectTextOnFocus
                     selectionColor={appTheme.colors.inversePrimary}
+                    enablesReturnKeyAutomatically
                 />
             </Surface>
             <ScreenWrapper contentContainerStyle={styles.screenContainer}>
