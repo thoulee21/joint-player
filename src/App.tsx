@@ -5,6 +5,7 @@ import {
   DarkTheme as NavigationDarkTheme,
   DefaultTheme as NavigationDefaultTheme
 } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SplashScreen from 'expo-splash-screen';
 import React, { createContext, useMemo, useState } from 'react';
 import {
@@ -31,6 +32,26 @@ export const PreferencesContext = createContext<{
 } | null>(null);
 
 const Drawer = createDrawerNavigator();
+const Stack = createNativeStackNavigator();
+
+function HomeScreen() {
+  return (
+    <Drawer.Navigator
+      drawerContent={(props) => <DrawerItems {...props} />}
+      screenOptions={{ headerShown: false }}
+      backBehavior="none"
+    >
+      <Drawer.Screen
+        name="Player"
+        component={Player}
+      />
+      <Drawer.Screen
+        name="Settings"
+        component={Settings}
+      />
+    </Drawer.Navigator>
+  )
+}
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -78,20 +99,14 @@ function App() {
               backgroundColor="transparent"
               barStyle={isDarkMode ? 'light-content' : 'dark-content'}
             />
-            <Drawer.Navigator
-              drawerContent={(props) => <DrawerItems {...props} />}
+            <Stack.Navigator
               screenOptions={{ headerShown: false }}
-              backBehavior="none"
             >
-              <Drawer.Screen
-                name="Home"
-                component={Player}
+              <Stack.Screen
+                name='Home'
+                component={HomeScreen}
               />
-              <Drawer.Screen
-                name="Settings"
-                component={Settings}
-              />
-            </Drawer.Navigator>
+            </Stack.Navigator>
           </NavigationContainer>
         </PreferencesContext.Provider>
       </PaperProvider>
