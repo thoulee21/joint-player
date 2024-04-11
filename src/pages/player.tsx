@@ -13,6 +13,7 @@ import {
 import TrackPlayer, { useActiveTrack } from "react-native-track-player";
 import { PreferencesContext } from "../App";
 import {
+    MvButton,
     PlayControls,
     Progress,
     RepeatModeSwitch,
@@ -105,6 +106,7 @@ export function Player({ navigation }: { navigation: any }): React.JSX.Element {
                 elevated
             >
                 <RepeatModeSwitch />
+                <MvButton />
                 <Appbar.Content
                     title={track?.album || 'No Album'}
                     titleStyle={styles.bottomTitle}

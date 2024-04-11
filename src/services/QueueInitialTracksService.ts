@@ -1,7 +1,7 @@
 import TrackPlayer, { Track } from 'react-native-track-player';
 import playlistData from "../assets/data/playlist.json";
 
-const RequestInit = {
+export const RequestInit = {
   headers: {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0',
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
@@ -33,18 +33,6 @@ export const QueueInitialTracksService = async (Keyword: string | undefined = un
       );
       const detailData = await detail.json();
 
-      // let mv: string | undefined = undefined;
-      // if (track.mvid !== 0) {
-      //   const mvData = await fetch(
-      //     `http://music.163.com/api/mv/detail?id=${track.mvid}&type=mp4`,
-      //     RequestInit,
-      //   );
-      //   const mvDetail = await mvData.json();
-
-      //   const highRes = Object.keys(mvDetail.data.brs).reverse()[0];
-      //   mv = mvDetail.data.brs[highRes];
-      // }
-
       fetchedData.push({
         id: track.id.toString(),
         url: `https://music.163.com/song/media/outer/url?id=${track.id}.mp3`,
@@ -53,7 +41,7 @@ export const QueueInitialTracksService = async (Keyword: string | undefined = un
         artwork: detailData.songs[0].album.picUrl,
         duration: track.duration / 1000,
         album: track.album.name,
-        // mv
+        mvid: track.mvid,
       });
     }
     await TrackPlayer.reset();
