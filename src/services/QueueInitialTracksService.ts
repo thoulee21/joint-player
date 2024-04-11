@@ -33,6 +33,18 @@ export const QueueInitialTracksService = async (Keyword: string | undefined = un
       );
       const detailData = await detail.json();
 
+      // let mv: string | undefined = undefined;
+      // if (track.mvid !== 0) {
+      //   const mvData = await fetch(
+      //     `http://music.163.com/api/mv/detail?id=${track.mvid}&type=mp4`,
+      //     RequestInit,
+      //   );
+      //   const mvDetail = await mvData.json();
+
+      //   const highRes = Object.keys(mvDetail.data.brs).reverse()[0];
+      //   mv = mvDetail.data.brs[highRes];
+      // }
+
       fetchedData.push({
         id: track.id.toString(),
         url: `https://music.163.com/song/media/outer/url?id=${track.id}.mp3`,
@@ -41,6 +53,7 @@ export const QueueInitialTracksService = async (Keyword: string | undefined = un
         artwork: detailData.songs[0].album.picUrl,
         duration: track.duration / 1000,
         album: track.album.name,
+        // mv
       });
     }
     await TrackPlayer.reset();
