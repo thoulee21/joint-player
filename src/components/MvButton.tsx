@@ -9,7 +9,11 @@ export function MvButton() {
     const [disabled, setDisabled] = useState(true);
 
     useEffect(() => {
-        setDisabled(track?.mvid === 0);
+        if (track && track?.mvid) {
+            setDisabled(track?.mvid === 0);
+        } else {
+            setDisabled(true);
+        }
     }, [track]);
 
     return (

@@ -6,6 +6,7 @@ import { StatusBar, StyleSheet } from "react-native";
 import {
     Appbar,
     IconButton,
+    Portal,
     Searchbar,
     Surface,
     useTheme
@@ -20,7 +21,8 @@ import {
     ScreenWrapper,
     Spacer,
     TrackInfo,
-    TrackListSheet
+    TrackListSheet,
+    placeholderImg
 } from "../components";
 import { useImageColors, useSetupPlayer } from "../hook";
 import { QueueInitialTracksService } from "../services";
@@ -36,17 +38,13 @@ export function Player({ navigation }: { navigation: any }): React.JSX.Element {
 
     useEffect(() => {
         const imageUri = track?.artwork;
-        if (!imageUri) {
-            return;
-        }
-        const colors = useImageColors(imageUri);
+        const colors = useImageColors(imageUri || placeholderImg);
 
         colors
             .then((colors) => {
                 const color = Color(colors[0])
                 preferences?.updateTheme(color.hex());
-            })
-            .finally(() => {
+
                 if (isPlayerReady) {
                     SplashScreen.hideAsync();
                 }
@@ -119,7 +117,9 @@ export function Player({ navigation }: { navigation: any }): React.JSX.Element {
                 />
             </Appbar.Header>
 
-            <TrackListSheet bottomSheetRef={bottomSheetRef} />
+            <Portal>
+                <TrackListSheet bottomSheetRef={bottomSheetRef} />
+            </Portal>
         </>
     );
 }
