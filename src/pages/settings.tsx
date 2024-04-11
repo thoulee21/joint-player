@@ -32,7 +32,7 @@ function ThemeColorIndicator() {
 export function Settings({ navigation }: { navigation: any }) {
     return (
         <>
-            <Appbar.Header elevated>
+            <Appbar.Header>
                 <Appbar.Action
                     icon="menu"
                     onPress={() => {
