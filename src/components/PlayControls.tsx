@@ -51,8 +51,13 @@ export function PlayControls() {
 
     useEffect(() => {
         if (isError) {
-            const errMsg = `播放出错，自动播放下一首(${playbackState.error.message} - ${playbackState.error.code})`
-            ToastAndroid.show(errMsg, ToastAndroid.SHORT);
+            if (__DEV__) {
+                const errMsgDev = `${playbackState.error.message}: ${playbackState.error.code}`;
+                console.error(errMsgDev);
+            } else {
+                const errMsg = "播放出错，自动播放下一首";
+                ToastAndroid.show(errMsg, ToastAndroid.SHORT);
+            }
 
             TrackPlayer.skipToNext();
             TrackPlayer.play();
