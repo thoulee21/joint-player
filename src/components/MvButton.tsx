@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Linking } from "react-native";
-import { Appbar } from "react-native-paper";
+import { Menu } from "react-native-paper";
 import { useActiveTrack } from "react-native-track-player";
 import { RequestInit } from "../services";
 
@@ -17,8 +17,9 @@ export function MvButton() {
     }, [track]);
 
     return (
-        <Appbar.Action
-            icon="video-outline"
+        <Menu.Item
+            title="Watch MV"
+            leadingIcon="video-outline"
             disabled={disabled}
             onPress={async () => {
                 const mvData = await fetch(

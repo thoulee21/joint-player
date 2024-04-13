@@ -1,4 +1,5 @@
 import BottomSheet from "@gorhom/bottom-sheet";
+import { useNavigation } from "@react-navigation/native";
 import Color from "color";
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useContext, useEffect, useRef, useState } from "react";
@@ -14,7 +15,6 @@ import {
 import TrackPlayer, { useActiveTrack } from "react-native-track-player";
 import { PreferencesContext } from "../App";
 import {
-    MvButton,
     PlayControls,
     Progress,
     RepeatModeSwitch,
@@ -22,12 +22,14 @@ import {
     Spacer,
     TrackInfo,
     TrackListSheet,
+    TrackMenu,
     placeholderImg
 } from "../components";
 import { useImageColors, useSetupPlayer } from "../hook";
 import { QueueInitialTracksService } from "../services";
 
-export function Player({ navigation }: { navigation: any }): React.JSX.Element {
+export function Player(): React.JSX.Element {
+    const navigation = useNavigation();
     const isPlayerReady = useSetupPlayer();
     const track = useActiveTrack();
 
@@ -68,6 +70,7 @@ export function Player({ navigation }: { navigation: any }): React.JSX.Element {
                     placeholder="Search for music"
                     style={styles.searchbar}
                     onIconPress={() => {
+                        // @ts-ignore
                         navigation.openDrawer();
                     }}
                     onChangeText={(text) => {
@@ -104,11 +107,11 @@ export function Player({ navigation }: { navigation: any }): React.JSX.Element {
                 elevated
             >
                 <RepeatModeSwitch />
-                <MvButton />
                 <Appbar.Content
                     title={track?.album || 'No Album'}
                     titleStyle={styles.bottomTitle}
                 />
+                <TrackMenu />
                 <Appbar.Action
                     icon="menu-open"
                     onPress={() => {
