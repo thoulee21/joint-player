@@ -7,7 +7,7 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SplashScreen from 'expo-splash-screen';
-import React, { createContext, useMemo, useState } from 'react';
+import React, { createContext, useEffect, useMemo, useState } from 'react';
 import {
   StatusBar,
   StyleSheet,
@@ -22,8 +22,6 @@ import {
 } from 'react-native-paper';
 import { DrawerItems } from './components';
 import { Player, Settings, WebViewScreen } from './pages';
-
-SplashScreen.preventAutoHideAsync();
 
 export const PreferencesContext = createContext<{
   updateTheme: (sourceColor: string) => void;
@@ -57,6 +55,10 @@ function App() {
   const isDarkMode = useColorScheme() === 'dark';
   const { theme: colorTheme, updateTheme } = useMaterial3Theme();
   const [keyword, setKeyword] = useState('');
+
+  useEffect(() => {
+    SplashScreen.preventAutoHideAsync();
+  }, []);
 
   const MyLightTheme = useMemo(() => ({
     ...MD3LightTheme,
