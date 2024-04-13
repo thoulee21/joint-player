@@ -1,8 +1,15 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View
+} from 'react-native';
+import HapticFeedback from 'react-native-haptic-feedback';
 import { Surface, Text, useTheme } from 'react-native-paper';
 import type { Track } from 'react-native-track-player';
+
 export const placeholderImg = 'https://via.placeholder.com/150';
 
 export const TrackInfo: React.FC<{
@@ -22,26 +29,36 @@ export const TrackInfo: React.FC<{
           { borderRadius: appTheme.roundness * 5 }
         ]}
       >
-        <Image
+        <TouchableWithoutFeedback
           style={[
             styles.artwork,
-            {
-              borderRadius: appTheme.roundness * 5,
-              backgroundColor: appTheme.colors.surface,
-            },
+            { borderRadius: appTheme.roundness * 5 }
           ]}
-          source={{ uri: imageUri }}
-        />
+          onLongPress={() => {
+            HapticFeedback.trigger('effectTick');
+            // @ts-ignore
+            navigation.navigate('WebView', {
+              title: track?.title || 'Artwork',
+              url: imageUri
+            });
+          }}
+        >
+          <Image
+            style={[
+              styles.artwork,
+              {
+                borderRadius: appTheme.roundness * 5,
+                backgroundColor: appTheme.colors.surface,
+              },
+            ]}
+            source={{ uri: imageUri }}
+          />
+        </TouchableWithoutFeedback>
       </Surface>
 
       <Text
+        selectable
         style={styles.titleText}
-        onLongPress={() => {
-          navigation.navigate('WebView', {
-            title: track?.title || 'Artwork',
-            url: imageUri
-          });
-        }}
       >
         {track?.title}
       </Text>
