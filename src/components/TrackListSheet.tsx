@@ -67,6 +67,7 @@ function TrackList({ bottomSheetRef }:
 
                     setTimeout(() => {
                         bottomSheetRef.current?.close();
+                        TrackPlayer.play();
                     }, 300);
                 }}
             />
