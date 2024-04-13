@@ -10,7 +10,7 @@ import HapticFeedback from 'react-native-haptic-feedback';
 import { Surface, Text, useTheme } from 'react-native-paper';
 import type { Track } from 'react-native-track-player';
 
-export const placeholderImg = 'https://via.placeholder.com/150';
+export const placeholderImg = 'https://via.placeholder.com/800';
 
 export const TrackInfo: React.FC<{
   track?: Track;
