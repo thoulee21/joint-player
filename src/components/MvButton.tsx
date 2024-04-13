@@ -22,7 +22,7 @@ export function MvButton() {
             disabled={disabled}
             onPress={async () => {
                 const mvData = await fetch(
-                    `http://music.163.com/api/mv/detail?id=${track?.mvid}&type=mp4`,
+                    `https://music.163.com/api/mv/detail?id=${track?.mvid}&type=mp4`,
                     RequestInit,
                 );
                 const mvDetail = await mvData.json();
