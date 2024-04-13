@@ -35,15 +35,11 @@ function TrackList({ bottomSheetRef }:
         getQueue();
     }, [currentTrack]);
 
-    const renderTrack = ({ item, index }: { item: Track, index: number }) => {
-        let active = false;
-
-        if (currentTrack?.id && item.id) {
-            active = currentTrack?.id === item.id;
-        } else if (index === 0) {
-            active = false;
-        }
-
+    const renderTrack = ({ item, index }: {
+        item: Track,
+        index: number
+    }) => {
+        const active = currentTrack?.url === item.url;
         return (
             <List.Item
                 title={item.title}
