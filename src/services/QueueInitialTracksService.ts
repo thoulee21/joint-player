@@ -1,3 +1,4 @@
+import { ToastAndroid } from 'react-native';
 import TrackPlayer, { Track } from 'react-native-track-player';
 import playlistData from "../assets/data/playlist.json";
 
@@ -58,8 +59,9 @@ export const QueueInitialTracksService = async (keyword?: string): Promise<void>
       data = await fetchSearchResults(keyword);
     } else {
       // Startup with a predefined playlist
-      TrackPlayer.add(playlistData as Track[]);
+      await TrackPlayer.add(playlistData as Track[]);
 
+      ToastAndroid.show('Loaded playlist', ToastAndroid.SHORT);
       return;
     }
 
