@@ -1,8 +1,8 @@
-import {DrawerContentScrollView} from '@react-navigation/drawer';
-import React, {useState} from 'react';
-import {Drawer} from 'react-native-paper';
+import { DrawerContentScrollView } from '@react-navigation/drawer';
+import React, { useState } from 'react';
+import { Drawer } from 'react-native-paper';
 
-export function DrawerItems({navigation}: {navigation: any}) {
+export function DrawerItems({ navigation }: { navigation: any }) {
   const [drawerItemIndex, setDrawerItemIndex] = useState(0);
 
   return (
@@ -10,7 +10,7 @@ export function DrawerItems({navigation}: {navigation: any}) {
       <Drawer.Section title="Pages">
         <Drawer.Item
           label="Player"
-          icon="play-circle"
+          icon={drawerItemIndex === 0 ? "play-circle" : "play-circle-outline"}
           active={drawerItemIndex === 0}
           onPress={() => {
             navigation.navigate('Player');
@@ -19,7 +19,7 @@ export function DrawerItems({navigation}: {navigation: any}) {
         />
         <Drawer.Item
           label="Settings"
-          icon="cog"
+          icon={drawerItemIndex === 1 ? "cog" : "cog-outline"}
           active={drawerItemIndex === 1}
           onPress={() => {
             navigation.navigate('Settings');
