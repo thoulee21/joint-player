@@ -1,27 +1,28 @@
 import { useMaterial3Theme } from '@pchmn/expo-material3-theme';
-import { createDrawerNavigator } from "@react-navigation/drawer";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import {
   NavigationContainer,
   DarkTheme as NavigationDarkTheme,
   DefaultTheme as NavigationDefaultTheme
-} from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+} from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { createContext, useEffect, useMemo, useState } from 'react';
-import {
-  StatusBar,
-  StyleSheet,
-  useColorScheme
-} from 'react-native';
+import { StatusBar, StyleSheet, useColorScheme } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
   MD3DarkTheme,
   MD3LightTheme,
   PaperProvider,
-  adaptNavigationTheme
+  adaptNavigationTheme,
 } from 'react-native-paper';
 import { DrawerItems } from './components';
 import { Player, Settings, WebViewScreen } from './pages';
+
+export enum StorageKeys {
+  Keyword = 'keyword',
+}
 
 export const PreferencesContext = createContext<{
   updateTheme: (sourceColor: string) => void;
@@ -35,20 +36,13 @@ const Stack = createNativeStackNavigator();
 function HomeScreen() {
   return (
     <Drawer.Navigator
-      drawerContent={(props) => <DrawerItems {...props} />}
+      drawerContent={DrawerItems}
       screenOptions={{ headerShown: false }}
-      backBehavior="none"
-    >
-      <Drawer.Screen
-        name="Player"
-        component={Player}
-      />
-      <Drawer.Screen
-        name="Settings"
-        component={Settings}
-      />
+      backBehavior="none">
+      <Drawer.Screen name="Player" component={Player} />
+      <Drawer.Screen name="Settings" component={Settings} />
     </Drawer.Navigator>
-  )
+  );
 }
 
 function App() {
@@ -60,15 +54,32 @@ function App() {
     SplashScreen.preventAutoHideAsync();
   }, []);
 
-  const MyLightTheme = useMemo(() => ({
-    ...MD3LightTheme,
-    colors: colorTheme.light,
-  }), [colorTheme.light]);
+  useEffect(() => {
+    async function restorePrefs() {
+      const storedKeyword = await AsyncStorage.getItem(StorageKeys.Keyword);
+      if (storedKeyword) {
+        setKeyword(storedKeyword);
+      }
+    }
 
-  const MyDarkTheme = useMemo(() => ({
-    ...MD3DarkTheme,
-    colors: colorTheme.dark,
-  }), [colorTheme.dark]);
+    restorePrefs();
+  }, []);
+
+  const MyLightTheme = useMemo(
+    () => ({
+      ...MD3LightTheme,
+      colors: colorTheme.light,
+    }),
+    [colorTheme.light],
+  );
+
+  const MyDarkTheme = useMemo(
+    () => ({
+      ...MD3DarkTheme,
+      colors: colorTheme.dark,
+    }),
+    [colorTheme.dark],
+  );
 
   const preferences = useMemo(
     () => ({
@@ -76,18 +87,16 @@ function App() {
       setKeyword,
       updateTheme,
     }),
-    [keyword]
+    [keyword],
   );
 
-  const {
-    LightTheme: NaviLightTheme,
-    DarkTheme: NaviDarkTheme
-  } = adaptNavigationTheme({
-    reactNavigationLight: NavigationDefaultTheme,
-    reactNavigationDark: NavigationDarkTheme,
-    materialLight: MyLightTheme,
-    materialDark: MyDarkTheme,
-  });
+  const { LightTheme: NaviLightTheme, DarkTheme: NaviDarkTheme } =
+    adaptNavigationTheme({
+      reactNavigationLight: NavigationDefaultTheme,
+      reactNavigationDark: NavigationDarkTheme,
+      materialLight: MyLightTheme,
+      materialDark: MyDarkTheme,
+    });
 
   const combinedTheme = isDarkMode ? NaviDarkTheme : NaviLightTheme;
 
@@ -101,17 +110,9 @@ function App() {
               backgroundColor="transparent"
               barStyle={isDarkMode ? 'light-content' : 'dark-content'}
             />
-            <Stack.Navigator
-              screenOptions={{ headerShown: false }}
-            >
-              <Stack.Screen
-                name='Home'
-                component={HomeScreen}
-              />
-              <Stack.Screen
-                name='WebView'
-                component={WebViewScreen}
-              />
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="Home" component={HomeScreen} />
+              <Stack.Screen name="WebView" component={WebViewScreen} />
             </Stack.Navigator>
           </NavigationContainer>
         </PreferencesContext.Provider>
