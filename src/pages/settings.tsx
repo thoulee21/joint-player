@@ -8,6 +8,24 @@ import {
   ThemeColorIndicator,
 } from '../components';
 
+export const upperFirst = (str: string) =>
+  str.slice(0, 1).toUpperCase() + str.slice(1);
+
+const VersionIcon = (props: any) => {
+  return (
+    <List.Icon {...props}
+      icon={Platform.select({
+        android: 'android',
+        ios: 'apple-ios',
+        macos: 'desktop-mac',
+        windows: 'microsoft-windows',
+        web: 'web',
+        native: 'information',
+      })}
+    />
+  )
+}
+
 export function Settings({ navigation }: { navigation: any }) {
   return (
     <>
@@ -25,8 +43,8 @@ export function Settings({ navigation }: { navigation: any }) {
           <Divider />
           <List.Item
             title="Version"
-            description={`${Platform.OS} v${appVersion}`}
-            left={props => <List.Icon {...props} icon="information-outline" />}
+            description={`${upperFirst(Platform.OS)} v${appVersion}`}
+            left={VersionIcon}
           />
         </List.Section>
       </ScreenWrapper>
