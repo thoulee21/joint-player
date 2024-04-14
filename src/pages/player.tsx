@@ -1,152 +1,146 @@
-import BottomSheet from "@gorhom/bottom-sheet";
-import { useNavigation } from "@react-navigation/native";
-import Color from "color";
+import BottomSheet from '@gorhom/bottom-sheet';
+import { useNavigation } from '@react-navigation/native';
+import Color from 'color';
 import * as SplashScreen from 'expo-splash-screen';
-import React, { useContext, useEffect, useRef, useState } from "react";
-import { StatusBar, StyleSheet } from "react-native";
+import React, { useContext, useEffect, useRef, useState } from 'react';
+import { StatusBar, StyleSheet } from 'react-native';
 import {
-    Appbar,
-    IconButton,
-    Portal,
-    Searchbar,
-    Surface,
-    useTheme
-} from "react-native-paper";
-import TrackPlayer, { useActiveTrack } from "react-native-track-player";
-import { PreferencesContext } from "../App";
+  Appbar,
+  IconButton,
+  Portal,
+  Searchbar,
+  Surface,
+  useTheme,
+} from 'react-native-paper';
+import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
+import { PreferencesContext } from '../App';
 import {
-    PlayControls,
-    Progress,
-    RepeatModeSwitch,
-    ScreenWrapper,
-    Spacer,
-    TrackInfo,
-    TrackListSheet,
-    TrackMenu,
-    placeholderImg
-} from "../components";
-import { useImageColors, useSetupPlayer } from "../hook";
-import { QueueInitialTracksService } from "../services";
+  PlayControls,
+  Progress,
+  RepeatModeSwitch,
+  ScreenWrapper,
+  Spacer,
+  TrackInfo,
+  TrackListSheet,
+  TrackMenu,
+  placeholderImg,
+} from '../components';
+import { useImageColors, useSetupPlayer } from '../hook';
+import { QueueInitialTracksService } from '../services';
 
 export function Player(): React.JSX.Element {
-    const navigation = useNavigation();
-    const isPlayerReady = useSetupPlayer();
-    const track = useActiveTrack();
+  const navigation = useNavigation();
+  const isPlayerReady = useSetupPlayer();
+  const track = useActiveTrack();
 
-    const appTheme = useTheme();
-    const preferences = useContext(PreferencesContext);
-    const bottomSheetRef = useRef<BottomSheet>(null);
-    const [searching, setSearching] = useState(false);
+  const appTheme = useTheme();
+  const preferences = useContext(PreferencesContext);
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const [searching, setSearching] = useState(false);
 
-    useEffect(() => {
-        const imageUri = track?.artwork;
-        const colors = useImageColors(imageUri || placeholderImg);
+  const imageUri = track?.artwork;
+  const colors = useImageColors(imageUri || placeholderImg);
 
-        colors
-            .then((colors) => {
-                const color = Color(colors[0])
-                preferences?.updateTheme(color.hex());
+  useEffect(() => {
+    colors.then(imgColors => {
+      const color = Color(imgColors[0]);
+      preferences?.updateTheme(color.hex());
 
-                if (isPlayerReady) {
-                    SplashScreen.hideAsync();
-                }
-            });
-    }, [track]);
+      if (isPlayerReady) {
+        SplashScreen.hideAsync();
+      }
+    });
+  }, [track, isPlayerReady, preferences]);
 
-    function searchSongs() {
-        setSearching(true);
-        QueueInitialTracksService(preferences?.keyword as string)
-            .finally(() => {
-                setSearching(false);
-                TrackPlayer.play();
-            });
-    }
+  function searchSongs() {
+    setSearching(true);
+    QueueInitialTracksService(preferences?.keyword as string).finally(() => {
+      setSearching(false);
+      TrackPlayer.play();
+    });
+  }
 
-    return (
-        <>
-            <Surface style={styles.searchbarContainer}>
-                <Searchbar
-                    icon="menu"
-                    placeholder="Search for music"
-                    style={styles.searchbar}
-                    onIconPress={() => {
-                        // @ts-ignore
-                        navigation.openDrawer();
-                    }}
-                    onChangeText={(text) => {
-                        preferences?.setKeyword(text);
-                    }}
-                    value={preferences?.keyword as string}
-                    right={(props) =>
-                        <IconButton
-                            {...props}
-                            icon="search-web"
-                            onPress={searchSongs}
-                            loading={searching}
-                        />
-                    }
-                    onSubmitEditing={searchSongs}
-                    blurOnSubmit
-                    selectTextOnFocus
-                    selectionColor={appTheme.colors.inversePrimary}
-                    enablesReturnKeyAutomatically
-                />
-            </Surface>
-            <ScreenWrapper contentContainerStyle={styles.screenContainer}>
-                <Spacer />
-                <TrackInfo track={track} />
-                <Progress live={track?.isLiveStream} />
-                <Spacer />
-                <PlayControls />
-                <Spacer mode="expand" />
-            </ScreenWrapper>
+  return (
+    <>
+      <Surface style={styles.searchbarContainer}>
+        <Searchbar
+          icon="menu"
+          placeholder="Search for music"
+          style={styles.searchbar}
+          onIconPress={() => {
+            // @ts-ignore
+            navigation.openDrawer();
+          }}
+          onChangeText={text => {
+            preferences?.setKeyword(text);
+          }}
+          value={preferences?.keyword as string}
+          right={props => (
+            <IconButton
+              {...props}
+              icon="search-web"
+              onPress={searchSongs}
+              loading={searching}
+            />
+          )}
+          onSubmitEditing={searchSongs}
+          blurOnSubmit
+          selectTextOnFocus
+          selectionColor={appTheme.colors.inversePrimary}
+          enablesReturnKeyAutomatically
+        />
+      </Surface>
+      <ScreenWrapper contentContainerStyle={styles.screenContainer}>
+        <Spacer />
+        <TrackInfo track={track} />
+        <Progress live={track?.isLiveStream} />
+        <Spacer />
+        <PlayControls />
+        <Spacer mode="expand" />
+      </ScreenWrapper>
 
-            <Appbar.Header
-                style={styles.bottom}
-                mode="center-aligned"
-                elevated
-            >
-                <RepeatModeSwitch />
-                <Appbar.Content
-                    title={track?.album || 'No Album'}
-                    titleStyle={styles.bottomTitle}
-                />
-                <TrackMenu />
-                <Appbar.Action
-                    icon="menu-open"
-                    onPress={() => {
-                        bottomSheetRef.current?.expand();
-                    }}
-                />
-            </Appbar.Header>
+      <Appbar.Header style={styles.bottom} mode="center-aligned" elevated>
+        <RepeatModeSwitch />
+        <Appbar.Content
+          title={track?.album || 'No Album'}
+          titleStyle={styles.bottomTitle}
+        />
+        <TrackMenu />
+        <Appbar.Action
+          icon="menu-open"
+          onPress={() => {
+            bottomSheetRef.current?.expand();
+          }}
+        />
+      </Appbar.Header>
 
-            <Portal>
-                <TrackListSheet bottomSheetRef={bottomSheetRef} />
-            </Portal>
-        </>
-    );
+      <Portal>
+        <TrackListSheet bottomSheetRef={bottomSheetRef} />
+      </Portal>
+    </>
+  );
 }
 
 const styles = StyleSheet.create({
-    screenContainer: {
-        display: 'flex',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    bottom: {
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 0,
-    },
-    bottomTitle: {
-        fontSize: 16,
-    },
-    searchbar: {
-        margin: 10,
-    },
-    searchbarContainer: {
-        paddingTop: StatusBar.currentHeight,
-    }
+  screenContainer: {
+    display: 'flex',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bottom: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  bottomTitle: {
+    fontSize: 16,
+  },
+  searchbar: {
+    margin: 10,
+  },
+  searchbarContainer: {
+    paddingTop: StatusBar.currentHeight,
+  },
 });

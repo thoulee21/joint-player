@@ -19,7 +19,7 @@ const setupPlayer = async (
     try {
       await TrackPlayer.setupPlayer(options);
     } catch (error) {
-      return (error as Error & { code?: string }).code;
+      return (error as Error & {code?: string}).code;
     }
   };
   while ((await setup()) === 'android_cannot_setup_player_in_background') {

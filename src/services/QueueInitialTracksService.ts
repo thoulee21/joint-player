@@ -1,16 +1,18 @@
-import { ToastAndroid } from 'react-native';
-import TrackPlayer, { Track } from 'react-native-track-player';
-import playlistData from "../assets/data/playlist.json";
+import {ToastAndroid} from 'react-native';
+import TrackPlayer, {Track} from 'react-native-track-player';
+import playlistData from '../assets/data/playlist.json';
 
 export const RequestInit = {
   headers: {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0',
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+    'User-Agent':
+      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0',
+    Accept:
+      'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
   },
 };
 
 const fetchSearchResults = async (keyword: string): Promise<any> => {
-  const { Type, Limit, Offset, Total } = {
+  const {Type, Limit, Offset, Total} = {
     Type: 1,
     Limit: 20,
     Offset: 0,
@@ -21,7 +23,7 @@ const fetchSearchResults = async (keyword: string): Promise<any> => {
     `https://music.163.com/api/search/get/web?csrf_token=hlpretag=&hlposttag=&s=${keyword}&type=${Type}&offset=${Offset}&total=${Total}&limit=${Limit}`,
     RequestInit,
   );
-  const { code, result } = await fetchResult.json();
+  const {code, result} = await fetchResult.json();
 
   if (code !== 200) {
     throw new Error('Failed to fetch search results');
@@ -35,7 +37,7 @@ const fetchTrackDetails = async (trackId: string): Promise<Track> => {
     `https://music.163.com/api/song/detail/?id=${trackId}&ids=%5B${trackId}%5D`,
     RequestInit,
   );
-  const { songs } = await detail.json();
+  const {songs} = await detail.json();
 
   const track = songs[0];
 
@@ -51,7 +53,9 @@ const fetchTrackDetails = async (trackId: string): Promise<Track> => {
   };
 };
 
-export const QueueInitialTracksService = async (keyword?: string): Promise<void> => {
+export const QueueInitialTracksService = async (
+  keyword?: string,
+): Promise<void> => {
   try {
     let data: any;
 
@@ -65,9 +69,11 @@ export const QueueInitialTracksService = async (keyword?: string): Promise<void>
       return;
     }
 
-    const fetchedData: Track[] = await Promise.all(data.songs.map(async (track: any) => {
-      return await fetchTrackDetails(track.id.toString());
-    }));
+    const fetchedData: Track[] = await Promise.all(
+      data.songs.map(async (track: any) => {
+        return await fetchTrackDetails(track.id.toString());
+      }),
+    );
 
     await TrackPlayer.reset();
     await TrackPlayer.add(fetchedData);
