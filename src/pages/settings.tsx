@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Platform } from 'react-native';
 import { Appbar, Divider, List } from 'react-native-paper';
@@ -27,12 +28,14 @@ const VersionIcon = (props: any) => {
   )
 }
 
-export function Settings({ navigation }: { navigation: any }) {
+export function Settings() {
+  const navigation = useNavigation();
   return (
     <>
       <Appbar.Header>
         <Appbar.Action
           icon="menu"
+          // @ts-ignore
           onPress={() => navigation.openDrawer()}
         />
         <Appbar.Content title="Settings" />
