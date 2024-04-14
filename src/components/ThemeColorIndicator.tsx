@@ -9,7 +9,7 @@ export function ThemeColorIndicator() {
         <List.Item
             title="Theme Color"
             description={appTheme.colors.primary}
-            left={props => <List.Icon {...props} icon="palette" />}
+            left={props => <List.Icon {...props} icon="palette-outline" />}
             right={() => (
                 <List.Icon
                     icon="square-rounded"
