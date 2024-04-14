@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
-import { ToastAndroid } from 'react-native';
+import { StyleSheet, ToastAndroid } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { StorageKeys } from '../App';
 
@@ -31,6 +31,8 @@ export function InitKeywordItem() {
     <TextInput
       label="Initial Keyword"
       placeholder="Enter a keyword"
+      mode="outlined"
+      style={styles.input}
       enablesReturnKeyAutomatically
       value={keyword}
       onChangeText={(text) => {
@@ -48,3 +50,9 @@ export function InitKeywordItem() {
     />
   );
 }
+
+const styles = StyleSheet.create({
+  input: {
+    marginHorizontal: '2%'
+  },
+});
