@@ -4,6 +4,7 @@ import { Appbar, Divider, List } from 'react-native-paper';
 import { version as appVersion } from '../../package.json';
 import {
   InitKeywordItem,
+  PlayAtStartupSwitch,
   ScreenWrapper,
   ThemeColorIndicator,
 } from '../components';
@@ -38,6 +39,10 @@ export function Settings({ navigation }: { navigation: any }) {
       </Appbar.Header>
       <ScreenWrapper>
         <InitKeywordItem />
+        <List.Section title="Startup">
+          <PlayAtStartupSwitch />
+        </List.Section>
+        <Divider />
         <List.Section title="General">
           <ThemeColorIndicator />
           <Divider />

@@ -47,10 +47,15 @@ export function Player(): React.JSX.Element {
       preferences?.updateTheme(color.hex());
 
       if (isPlayerReady) {
-        SplashScreen.hideAsync();
+        SplashScreen.hideAsync()
+          .then(() => {
+            if (preferences?.playAtStartup) {
+              TrackPlayer.play();
+            }
+          });
       }
     });
-  }, [track, isPlayerReady, preferences]);
+  }, [track, isPlayerReady]);
 
   function searchSongs() {
     setSearching(true);

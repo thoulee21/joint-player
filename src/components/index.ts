@@ -2,13 +2,14 @@ export * from './BottomSheetPaper';
 export * from './DrawerItems';
 export * from './InitKeywordItem';
 export * from './MvButton';
+export * from './PlayAtStartupSwitch';
 export * from './PlayControls';
 export * from './Progress';
 export * from './RepeatModeSwitch';
+export * from './RightSwitch';
 export * from './ScreenWrapper';
 export * from './Spacer';
 export * from './ThemeColorIndicator';
 export * from './TrackInfo';
 export * from './TrackListSheet';
 export * from './TrackMenu';
-

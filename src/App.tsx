@@ -22,12 +22,15 @@ import { Player, Settings, WebViewScreen } from './pages';
 
 export enum StorageKeys {
   Keyword = 'keyword',
+  PlayAtStartup = 'playAtStartup',
 }
 
 export const PreferencesContext = createContext<{
   updateTheme: (sourceColor: string) => void;
-  setKeyword: (keyword: string) => void;
   keyword: string;
+  setKeyword: (keyword: string) => void;
+  playAtStartup: boolean;
+  setPlayAtStartup: (playAtStartup: boolean) => void;
 } | null>(null);
 
 const Drawer = createDrawerNavigator();
@@ -48,7 +51,9 @@ function HomeScreen() {
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
   const { theme: colorTheme, updateTheme } = useMaterial3Theme();
+
   const [keyword, setKeyword] = useState('');
+  const [playAtStartup, setPlayAtStartup] = useState(false);
 
   useEffect(() => {
     SplashScreen.preventAutoHideAsync();
@@ -59,6 +64,11 @@ function App() {
       const storedKeyword = await AsyncStorage.getItem(StorageKeys.Keyword);
       if (storedKeyword) {
         setKeyword(storedKeyword);
+      }
+
+      const storedPlayAtStartup = await AsyncStorage.getItem(StorageKeys.PlayAtStartup);
+      if (storedPlayAtStartup) {
+        setPlayAtStartup(storedPlayAtStartup === 'true');
       }
     }
 
@@ -83,11 +93,13 @@ function App() {
 
   const preferences = useMemo(
     () => ({
+      updateTheme,
       keyword,
       setKeyword,
-      updateTheme,
+      playAtStartup,
+      setPlayAtStartup,
     }),
-    [keyword],
+    [keyword, playAtStartup],
   );
 
   const { LightTheme: NaviLightTheme, DarkTheme: NaviDarkTheme } =
