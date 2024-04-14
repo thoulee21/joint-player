@@ -30,13 +30,13 @@ import { QueueInitialTracksService } from '../services';
 
 export function Player(): React.JSX.Element {
   const navigation = useNavigation();
-  const isPlayerReady = useSetupPlayer();
-  const track = useActiveTrack();
-
   const appTheme = useTheme();
   const preferences = useContext(PreferencesContext);
-  const bottomSheetRef = useRef<BottomSheet>(null);
+
+  const isPlayerReady = useSetupPlayer();
+  const track = useActiveTrack();
   const [searching, setSearching] = useState(false);
+  const bottomSheetRef = useRef<BottomSheet>(null);
 
   const imageUri = track?.artwork;
   const colors = useImageColors(imageUri || placeholderImg);
@@ -59,10 +59,11 @@ export function Player(): React.JSX.Element {
 
   function searchSongs() {
     setSearching(true);
-    QueueInitialTracksService(preferences?.keyword as string).finally(() => {
-      setSearching(false);
-      TrackPlayer.play();
-    });
+    QueueInitialTracksService(preferences?.keyword as string)
+      .then(() => {
+        setSearching(false);
+        TrackPlayer.play();
+      });
   }
 
   return (
