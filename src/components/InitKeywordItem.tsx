@@ -33,7 +33,6 @@ export function InitKeywordItem() {
       placeholder="Enter a keyword"
       mode="outlined"
       style={styles.input}
-      enablesReturnKeyAutomatically
       value={keyword}
       onChangeText={(text) => {
         setKeyword(text);
