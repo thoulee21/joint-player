@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Linking} from 'react-native';
 import {Menu} from 'react-native-paper';
 import {useActiveTrack} from 'react-native-track-player';
-import {RequestInit} from '../services';
+import {requestInit} from '../services';
 
 export function MvButton() {
   const track = useActiveTrack();
@@ -24,7 +24,7 @@ export function MvButton() {
       onPress={async () => {
         const mvData = await fetch(
           `https://music.163.com/api/mv/detail?id=${track?.mvid}&type=mp4`,
-          RequestInit,
+          requestInit,
         );
         const mvDetail = await mvData.json();
 

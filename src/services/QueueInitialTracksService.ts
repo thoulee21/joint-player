@@ -2,7 +2,7 @@ import {ToastAndroid} from 'react-native';
 import TrackPlayer, {Track} from 'react-native-track-player';
 import playlistData from '../assets/data/playlist.json';
 
-export const RequestInit = {
+export const requestInit = {
   headers: {
     'User-Agent':
       'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0',
@@ -21,7 +21,7 @@ const fetchSearchResults = async (keyword: string): Promise<any> => {
 
   const fetchResult = await fetch(
     `https://music.163.com/api/search/get/web?csrf_token=hlpretag=&hlposttag=&s=${keyword}&type=${Type}&offset=${Offset}&total=${Total}&limit=${Limit}`,
-    RequestInit,
+    requestInit,
   );
   const {code, result} = await fetchResult.json();
 
@@ -35,7 +35,7 @@ const fetchSearchResults = async (keyword: string): Promise<any> => {
 const fetchTrackDetails = async (trackId: string): Promise<Track> => {
   const detail = await fetch(
     `https://music.163.com/api/song/detail/?id=${trackId}&ids=%5B${trackId}%5D`,
-    RequestInit,
+    requestInit,
   );
   const {songs} = await detail.json();
 
