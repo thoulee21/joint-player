@@ -4,7 +4,7 @@ import { Menu } from 'react-native-paper';
 import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
 import { requestInit } from '../services';
 
-export function MvButton() {
+export function MvButton({ onPostPressed }: { onPostPressed: () => void }) {
   const track = useActiveTrack();
   const [disabled, setDisabled] = useState(true);
 
@@ -33,6 +33,8 @@ export function MvButton() {
 
         await Linking.openURL(mv as string);
         await TrackPlayer.pause();
+
+        onPostPressed();
       }}
     />
   );

@@ -21,7 +21,7 @@ export function TrackMenu() {
           onPress={openMenu}
         />
       }>
-      <MvButton />
+      <MvButton onPostPressed={closeMenu} />
     </Menu>
   );
 }
