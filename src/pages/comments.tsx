@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { FlatList, SafeAreaView, StyleSheet, ToastAndroid } from "react-native";
 import HapticFeedback from "react-native-haptic-feedback";
-import { Appbar, Avatar, Divider, List, useTheme } from 'react-native-paper';
+import { ActivityIndicator, Appbar, Avatar, Divider, List, useTheme } from 'react-native-paper';
 import { useActiveTrack } from "react-native-track-player";
 import { requestInit } from "../services";
 import { Comment, Main } from '../types/comments';
@@ -11,7 +11,9 @@ import { Comment, Main } from '../types/comments';
 function CommentList() {
     const appTheme = useTheme();
     const track = useActiveTrack();
+
     const [comments, setComments] = useState<Comment[]>([]);
+    const [isEmpty, setIsEmpty] = useState(false);
 
     const id = track?.id;
     const limit = 30;
@@ -25,11 +27,21 @@ function CommentList() {
             );
 
             const data: Main = await response.json();
+            setIsEmpty(data.total === 0);
             setComments(data.comments);
         };
 
         fetchComments();
     }, [id]);
+
+    if (isEmpty) {
+        return (
+            <List.Item
+                title="No comments"
+                titleStyle={styles.emptyContent}
+            />
+        );
+    }
 
     return (
         <FlatList
@@ -54,7 +66,10 @@ function CommentList() {
                 />
             }
             ItemSeparatorComponent={() => <Divider />}
-            ListEmptyComponent={() => <List.Item title="No comments" />}
+            // Component to render when loading data
+            ListEmptyComponent={() =>
+                <ActivityIndicator size="large" style={styles.loading} />
+            }
         />
     )
 }
@@ -78,4 +93,10 @@ const styles = StyleSheet.create({
         flex: 1,
         display: 'flex',
     },
+    emptyContent: {
+        alignSelf: 'center',
+    },
+    loading: {
+        marginTop: "20%",
+    }
 });
