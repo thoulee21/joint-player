@@ -1,15 +1,15 @@
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import {Image, StyleSheet, TouchableWithoutFeedback, View} from 'react-native';
+import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import HapticFeedback from 'react-native-haptic-feedback';
-import {Surface, Text, useTheme} from 'react-native-paper';
-import type {Track} from 'react-native-track-player';
+import { Surface, Text, useTheme } from 'react-native-paper';
+import type { Track } from 'react-native-track-player';
 
-export const placeholderImg = 'https://via.placeholder.com/800';
+export const placeholderImg = 'https://picsum.photos/800';
 
 export const TrackInfo: React.FC<{
   track?: Track;
-}> = ({track}) => {
+}> = ({ track }) => {
   const appTheme = useTheme();
   const navigation = useNavigation();
 
@@ -19,9 +19,9 @@ export const TrackInfo: React.FC<{
     <View style={styles.container}>
       <Surface
         elevation={5}
-        style={[styles.imgSurface, {borderRadius: appTheme.roundness * 5}]}>
+        style={[styles.imgSurface, { borderRadius: appTheme.roundness * 5 }]}>
         <TouchableWithoutFeedback
-          style={[styles.artwork, {borderRadius: appTheme.roundness * 5}]}
+          style={[styles.artwork, { borderRadius: appTheme.roundness * 5 }]}
           onLongPress={() => {
             HapticFeedback.trigger('effectTick');
             // @ts-ignore
@@ -38,7 +38,7 @@ export const TrackInfo: React.FC<{
                 backgroundColor: appTheme.colors.surface,
               },
             ]}
-            source={{uri: imageUri}}
+            source={{ uri: imageUri }}
           />
         </TouchableWithoutFeedback>
       </Surface>
@@ -48,7 +48,7 @@ export const TrackInfo: React.FC<{
       </Text>
       <Text
         selectable
-        style={[styles.artistText, {color: appTheme.colors.primary}]}>
+        style={[styles.artistText, { color: appTheme.colors.primary }]}>
         {track?.artist}
       </Text>
     </View>
