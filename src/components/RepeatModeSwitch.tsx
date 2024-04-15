@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {Appbar} from 'react-native-paper';
-import TrackPlayer, {RepeatMode} from 'react-native-track-player';
-import {DefaultRepeatMode} from '../services';
+import React, { useState } from 'react';
+import { IconButton } from 'react-native-paper';
+import TrackPlayer, { RepeatMode } from 'react-native-track-player';
+import { DefaultRepeatMode } from '../services';
 
 /**
  * A component that displays a switch for changing the repeat mode.
@@ -27,7 +27,8 @@ export function RepeatModeSwitch() {
   };
 
   return (
-    <Appbar.Action
+    <IconButton
+      size={24}
       icon={repeatMode === RepeatMode.Track ? 'repeat-once' : 'repeat'}
       onPress={toggleRepeatMode}
     />

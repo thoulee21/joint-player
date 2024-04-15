@@ -5,12 +5,13 @@ import TrackPlayer, {
   useIsPlaying,
   usePlaybackState,
 } from 'react-native-track-player';
+import { RepeatModeSwitch, TrackMenu } from ".";
 
 function BackwardButton() {
   return (
     <IconButton
-      icon="rewind"
-      size={30}
+      icon="skip-previous"
+      size={50}
       onPress={async () => {
         await TrackPlayer.skipToPrevious();
       }}
@@ -24,7 +25,7 @@ function PlayButton() {
   return (
     <IconButton
       icon={playing ? 'pause' : 'play'}
-      size={80}
+      size={90}
       loading={bufferingDuringPlay}
       selected
       animated
@@ -36,8 +37,8 @@ function PlayButton() {
 function ForwardButton() {
   return (
     <IconButton
-      icon="fast-forward"
-      size={30}
+      icon="skip-next"
+      size={50}
       onPress={async () => {
         await TrackPlayer.skipToNext();
       }}
@@ -67,9 +68,11 @@ export function PlayControls() {
   return (
     <View style={styles.controlsContainer}>
       <View style={styles.playControls}>
+        <RepeatModeSwitch />
         <BackwardButton />
         <PlayButton />
         <ForwardButton />
+        <TrackMenu />
       </View>
     </View>
   );

@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {StatusBar} from 'react-native';
-import {Appbar, Menu} from 'react-native-paper';
-import {MvButton} from './MvButton';
+import React, { useState } from 'react';
+import { StatusBar } from 'react-native';
+import { IconButton, Menu } from 'react-native-paper';
+import { MvButton } from './MvButton';
 
 export function TrackMenu() {
   const [visible, setVisible] = useState(false);
@@ -14,7 +14,13 @@ export function TrackMenu() {
       visible={visible}
       onDismiss={closeMenu}
       statusBarHeight={StatusBar.currentHeight}
-      anchor={<Appbar.Action icon="dots-vertical" onPress={openMenu} />}>
+      anchor={
+        <IconButton
+          size={24}
+          icon="dots-vertical"
+          onPress={openMenu}
+        />
+      }>
       <MvButton />
     </Menu>
   );

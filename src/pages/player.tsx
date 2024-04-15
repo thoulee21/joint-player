@@ -17,13 +17,11 @@ import { PreferencesContext } from '../App';
 import {
   PlayControls,
   Progress,
-  RepeatModeSwitch,
   ScreenWrapper,
   Spacer,
   TrackInfo,
   TrackListSheet,
-  TrackMenu,
-  placeholderImg,
+  placeholderImg
 } from '../components';
 import { useImageColors, useSetupPlayer } from '../hook';
 import { QueueInitialTracksService } from '../services';
@@ -106,12 +104,10 @@ export function Player(): React.JSX.Element {
       </ScreenWrapper>
 
       <Appbar.Header style={styles.bottom} mode="center-aligned" elevated>
-        <RepeatModeSwitch />
         <Appbar.Content
           title={track?.album || 'No Album'}
           titleStyle={styles.bottomTitle}
         />
-        <TrackMenu />
         <Appbar.Action
           icon="menu-open"
           onPress={() => {
