@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import {Linking} from 'react-native';
-import {Menu} from 'react-native-paper';
-import {useActiveTrack} from 'react-native-track-player';
-import {requestInit} from '../services';
+import React, { useEffect, useState } from 'react';
+import { Linking } from 'react-native';
+import { Menu } from 'react-native-paper';
+import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
+import { requestInit } from '../services';
 
 export function MvButton() {
   const track = useActiveTrack();
@@ -31,7 +31,8 @@ export function MvButton() {
         const highRes = Object.keys(mvDetail.data.brs).reverse()[0];
         const mv = mvDetail.data.brs[highRes];
 
-        Linking.openURL(mv as string);
+        await Linking.openURL(mv as string);
+        await TrackPlayer.pause();
       }}
     />
   );
