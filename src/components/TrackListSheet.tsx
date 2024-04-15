@@ -1,9 +1,9 @@
-import BottomSheet, {BottomSheetFlatList} from '@gorhom/bottom-sheet';
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
-import {ActivityIndicator, Divider, List, useTheme} from 'react-native-paper';
-import TrackPlayer, {Track, useActiveTrack} from 'react-native-track-player';
-import {BottomSheetPaper} from '.';
+import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Divider, List, useTheme } from 'react-native-paper';
+import TrackPlayer, { Track, useActiveTrack } from 'react-native-track-player';
+import { BottomSheetPaper } from '.';
 import playlistData from '../assets/data/playlist.json';
 
 function TrackList({
@@ -27,7 +27,7 @@ function TrackList({
     getQueue();
   }, [currentTrack]);
 
-  const renderTrack = ({item, index}: {item: Track; index: number}) => {
+  const renderTrack = ({ item, index }: { item: Track; index: number }) => {
     const active = currentTrack?.url === item.url;
     return (
       <List.Item
@@ -58,7 +58,7 @@ function TrackList({
 
   return (
     <BottomSheetFlatList
-      style={{height: '100%'}}
+      style={{ height: '100%' }}
       // Use playlistData as a fallback
       data={tracks.length > 0 ? tracks : (playlistData as Track[])}
       ListEmptyComponent={() => (
