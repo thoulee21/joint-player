@@ -11,5 +11,6 @@ export * from './ScreenWrapper';
 export * from './Spacer';
 export * from './ThemeColorIndicator';
 export * from './TrackInfo';
+export * from './TrackInfoBar';
 export * from './TrackListSheet';
 export * from './TrackMenu';

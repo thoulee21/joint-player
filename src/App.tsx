@@ -18,7 +18,13 @@ import {
   adaptNavigationTheme,
 } from 'react-native-paper';
 import { DrawerItems } from './components';
-import { Comments, Player, Settings, WebViewScreen } from './pages';
+import {
+  Comments,
+  LyricsScreen,
+  Player,
+  Settings,
+  WebViewScreen
+} from './pages';
 
 export enum StorageKeys {
   Keyword = 'keyword',
@@ -126,6 +132,7 @@ function App() {
               <Stack.Screen name="Home" component={HomeScreen} />
               <Stack.Screen name="WebView" component={WebViewScreen} />
               <Stack.Screen name="Comments" component={Comments} />
+              <Stack.Screen name="Lyrics" component={LyricsScreen} />
             </Stack.Navigator>
           </NavigationContainer>
         </PreferencesContext.Provider>

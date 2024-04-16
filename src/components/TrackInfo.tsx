@@ -22,6 +22,12 @@ export const TrackInfo: React.FC<{
         style={[styles.imgSurface, { borderRadius: appTheme.roundness * 5 }]}>
         <TouchableWithoutFeedback
           style={[styles.artwork, { borderRadius: appTheme.roundness * 5 }]}
+          onPress={() => {
+            if (track?.id) {
+              // @ts-ignore
+              navigation.navigate('Lyrics');
+            }
+          }}
           onLongPress={() => {
             HapticFeedback.trigger('effectTick');
             // @ts-ignore

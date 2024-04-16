@@ -29,6 +29,7 @@
     "react-native-gesture-handler": "^2.16.0",
     "react-native-haptic-feedback": "^2.2.0",
     "react-native-image-colors": "^2.4.0",
+    "react-native-lyric": "^1.0.2",
     "react-native-macos": "^0.73.24",
     "react-native-paper": "^5.12.3",
     "react-native-reanimated": "^3.8.1",

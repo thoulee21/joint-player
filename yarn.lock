@@ -8385,6 +8385,11 @@ react-native-image-colors@^2.4.0:
   dependencies:
     node-vibrant "3.1.6"
 
+react-native-lyric@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.npmmirror.com/react-native-lyric/-/react-native-lyric-1.0.2.tgz#5ab3de43754610b6beebf1b32ead72f0ffac8da2"
+  integrity sha512-gdzwFkwCkTiQ61/ileW1CVIP3G9pTzE48MNmn/Ltw+dXqakdYRTB9EVUhb6UWO6sWSFaTuGZXjapdwMo3Ss4qw==
+
 react-native-macos@^0.73.24:
   version "0.73.24"
   resolved "https://registry.npmmirror.com/react-native-macos/-/react-native-macos-0.73.24.tgz#ffa810c784970490348c5d2dfb8daa547a4ddf4f"
