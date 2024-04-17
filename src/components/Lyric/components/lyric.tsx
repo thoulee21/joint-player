@@ -10,6 +10,7 @@ import {
   View,
   ViewStyle
 } from 'react-native';
+import { useDebounce } from '../../../hook';
 import { useCurrentIndex, useLocalAutoScroll } from '../hook';
 import type { LyricLine } from '../lyric';
 import { parseLyric } from '../util';
@@ -84,7 +85,7 @@ const Lyric = React.forwardRef<
     autoScrollAfterUserScroll,
   );
 
-  const scrollToCurrentIndex = () => {
+  const scrollToCurrentIndex = useDebounce(() => {
     try {
       lrcRef.current?.scrollToIndex({
         index: currentIndex,
@@ -93,7 +94,7 @@ const Lyric = React.forwardRef<
     } catch (e) {
       // ignore scrollToIndex failed
     }
-  };
+  });
 
   // auto scroll
   useEffect(() => {
@@ -144,6 +145,8 @@ const Lyric = React.forwardRef<
       onScrollToIndexFailed={() => { }}
       ListHeaderComponent={MarginVerticalView}
       ListFooterComponent={MarginVerticalView}
+      onStartReached={scrollToCurrentIndex}
+      onStartReachedThreshold={0.01}
     />
   );
 });
