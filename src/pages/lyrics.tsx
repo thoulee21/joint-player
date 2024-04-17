@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
-import { Lyric } from 'react-native-lyric';
 import {
     ActivityIndicator,
     Text,
     useTheme
 } from 'react-native-paper';
 import { useActiveTrack, useProgress } from 'react-native-track-player';
-import { TrackInfoBar } from '../components';
+import { Lyric, TrackInfoBar } from '../components';
+import { useDebounce } from '../hook';
 import { requestInit } from '../services';
 import { Main } from '../types/lyrics';
 
@@ -22,7 +22,7 @@ const LyricView = ({ lrc, currentTime }:
         return (
             <Text
                 variant="displayMedium"
-                numberOfLines={2}
+                numberOfLines={10}
                 style={[
                     styles.lyricText,
                     {
@@ -42,10 +42,7 @@ const LyricView = ({ lrc, currentTime }:
             style={styles.lyricView}
             lrc={lrc}
             currentTime={currentTime}
-            lineHeight={120}
             lineRenderer={lineRenderer}
-            autoScroll
-            autoScrollAfterUserScroll={500}
         />
     );
 };
@@ -54,18 +51,25 @@ export function LyricsScreen() {
     const track = useActiveTrack();
     const { position } = useProgress();
 
-    const [lyric, setLyric] = useState<Main | null>(null);
+    const [lyric, setLyric] = useState<Main>();
+    const [noLyric, setNoLyric] = useState(false);
 
-    useEffect(() => {
-        const getLyric = async () => {
-            const data = await fetch(
-                `https://music.163.com/api/song/lyric?id=${track?.id}&lv=1&kv=1&tv=-1`,
-                requestInit
-            )
-            const lyricData: Main = await data.json();
-            setLyric(lyricData);
+    const getLyric = useDebounce(async () => {
+        if (!track?.id) {
+            return;
         }
 
+        const data = await fetch(
+            `https://music.163.com/api/song/lyric?id=${track?.id}&lv=1&kv=1&tv=-1`,
+            requestInit
+        )
+        const lyricData: Main = await data.json();
+
+        setNoLyric(!lyricData.lrc.lyric);
+        setLyric(lyricData);
+    });
+
+    useEffect(() => {
         getLyric();
     }, [track]);
 
@@ -73,16 +77,25 @@ export function LyricsScreen() {
         <SafeAreaView style={styles.rootView}>
             <TrackInfoBar />
 
-            {lyric ? (
+            {lyric?.lrc.lyric ? (
                 <LyricView
                     lrc={lyric.lrc.lyric}
                     currentTime={position * 1000}
                 />
             ) : (
-                <ActivityIndicator
-                    size="large"
-                    style={styles.loading}
-                />
+                !noLyric ? (
+                    <ActivityIndicator
+                        size="large"
+                        style={styles.loading}
+                    />
+                ) : (
+                    <Text
+                        style={styles.notFound}
+                        variant="headlineSmall"
+                    >
+                        No lyric found
+                    </Text>
+                )
             )}
         </SafeAreaView>
     )
@@ -99,9 +112,14 @@ const styles = StyleSheet.create({
     },
     lyricView: {
         height: 500,
-        marginHorizontal: "2%"
+        paddingHorizontal: "2%",
+        paddingVertical: "60%"
     },
     loading: {
         marginTop: '20%'
     },
+    notFound: {
+        marginTop: '20%',
+        textAlign: 'center'
+    }
 });
