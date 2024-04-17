@@ -1,3 +1,4 @@
+import { BlurView } from 'expo-blur';
 import React, { useEffect, useState } from 'react';
 import { ImageBackground, StyleSheet } from 'react-native';
 import {
@@ -57,6 +58,7 @@ const LyricView = ({ lrc, currentTime }:
 export function LyricsScreen() {
     const track = useActiveTrack();
     const { position } = useProgress();
+    const appTheme = useTheme();
 
     const [lyric, setLyric] = useState<Main>();
     const [noLyric, setNoLyric] = useState(false);
@@ -84,30 +86,34 @@ export function LyricsScreen() {
         <ImageBackground
             source={{ uri: track?.artwork || placeholderImg }}
             style={styles.rootView}
-            blurRadius={90}
+            blurRadius={20}
         >
             <TrackInfoBar />
 
-            {lyric?.lrc.lyric ? (
-                <LyricView
-                    lrc={lyric.lrc.lyric}
-                    currentTime={position * 1000}
-                />
-            ) : (
-                !noLyric ? (
-                    <ActivityIndicator
-                        size="large"
-                        style={styles.loading}
+            <BlurView
+                tint={appTheme.dark ? 'dark' : 'light'}
+            >
+                {lyric?.lrc.lyric ? (
+                    <LyricView
+                        lrc={lyric.lrc.lyric}
+                        currentTime={position * 1000}
                     />
                 ) : (
-                    <Text
-                        style={styles.notFound}
-                        variant="headlineSmall"
-                    >
-                        No lyric found
-                    </Text>
-                )
-            )}
+                    !noLyric ? (
+                        <ActivityIndicator
+                            size="large"
+                            style={styles.loading}
+                        />
+                    ) : (
+                        <Text
+                            style={styles.notFound}
+                            variant="headlineSmall"
+                        >
+                            No lyric found
+                        </Text>
+                    )
+                )}
+            </BlurView>
         </ImageBackground>
     )
 }
