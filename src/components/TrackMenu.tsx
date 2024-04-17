@@ -17,7 +17,7 @@ export function TrackMenu() {
       anchor={
         <IconButton
           size={24}
-          icon="dots-vertical"
+          icon="dots-vertical-circle-outline"
           onPress={openMenu}
         />
       }>
