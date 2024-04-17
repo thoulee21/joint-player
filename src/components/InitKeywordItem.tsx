@@ -39,6 +39,8 @@ export function InitKeywordItem() {
         setSaved(false);
       }}
       onSubmitEditing={saveKeyword}
+      selectTextOnFocus
+      blurOnSubmit
       right={
         <TextInput.Icon
           icon={saved ? 'content-save-check' : 'content-save'}
