@@ -4,6 +4,7 @@ import { Platform } from 'react-native';
 import { Appbar, Divider, List } from 'react-native-paper';
 import { version as appVersion } from '../../package.json';
 import {
+  BlurRadiusSlider,
   InitKeywordItem,
   PlayAtStartupSwitch,
   ScreenWrapper,
@@ -40,15 +41,24 @@ export function Settings() {
         />
         <Appbar.Content title="Settings" />
       </Appbar.Header>
+
       <ScreenWrapper>
-        <InitKeywordItem />
         <List.Section title="Startup">
+          <List.Section>
+            <InitKeywordItem />
+          </List.Section>
           <PlayAtStartupSwitch />
+          <Divider />
         </List.Section>
-        <Divider />
-        <List.Section title="General">
+
+        <List.Section title='Appearance'>
           <ThemeColorIndicator />
           <Divider />
+          <BlurRadiusSlider />
+        </List.Section>
+        <Divider />
+
+        <List.Section title="General">
           <List.Item
             title="Version"
             description={`${upperFirst(Platform.OS)} v${appVersion}`}

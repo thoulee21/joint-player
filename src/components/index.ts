@@ -1,6 +1,8 @@
+export * from './BlurRadiusSlider';
 export * from './BottomSheetPaper';
 export * from './DrawerItems';
 export * from './InitKeywordItem';
+export * from './Lyric';
 export * from './MvButton';
 export * from './PlayAtStartupSwitch';
 export * from './PlayControls';
@@ -14,4 +16,4 @@ export * from './TrackInfo';
 export * from './TrackInfoBar';
 export * from './TrackListSheet';
 export * from './TrackMenu';
-export * from './Lyric';
+

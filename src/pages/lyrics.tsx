@@ -1,5 +1,5 @@
 import { BlurView } from 'expo-blur';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ImageBackground, StyleSheet } from 'react-native';
 import {
     ActivityIndicator,
@@ -10,6 +10,7 @@ import {
     useActiveTrack,
     useProgress
 } from 'react-native-track-player';
+import { PreferencesContext } from '../App';
 import {
     Lyric,
     TrackInfoBar,
@@ -62,6 +63,7 @@ export function LyricsScreen() {
     const { position } = useProgress();
     const appTheme = useTheme();
 
+    const prefs = useContext(PreferencesContext);
     const [lyric, setLyric] = useState<Main>();
     const [noLyric, setNoLyric] = useState(false);
 
@@ -88,7 +90,7 @@ export function LyricsScreen() {
         <ImageBackground
             source={{ uri: track?.artwork || placeholderImg }}
             style={styles.rootView}
-            blurRadius={20}
+            blurRadius={prefs?.blurRadius}
         >
             <TrackInfoBar />
 

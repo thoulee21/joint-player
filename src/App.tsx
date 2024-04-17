@@ -29,6 +29,7 @@ import {
 export enum StorageKeys {
   Keyword = 'keyword',
   PlayAtStartup = 'playAtStartup',
+  BlurRadius = 'blurRadius',
 }
 
 export const PreferencesContext = createContext<{
@@ -37,6 +38,8 @@ export const PreferencesContext = createContext<{
   setKeyword: (keyword: string) => void;
   playAtStartup: boolean;
   setPlayAtStartup: (playAtStartup: boolean) => void;
+  blurRadius: number;
+  setBlurRadius: (blurRadius: number) => void;
 } | null>(null);
 
 const Drawer = createDrawerNavigator();
@@ -60,6 +63,7 @@ function App() {
 
   const [keyword, setKeyword] = useState('');
   const [playAtStartup, setPlayAtStartup] = useState(false);
+  const [blurRadius, setBlurRadius] = useState(20);
 
   useEffect(() => {
     SplashScreen.preventAutoHideAsync();
@@ -75,6 +79,11 @@ function App() {
       const storedPlayAtStartup = await AsyncStorage.getItem(StorageKeys.PlayAtStartup);
       if (storedPlayAtStartup) {
         setPlayAtStartup(storedPlayAtStartup === 'true');
+      }
+
+      const storedBlurRadius = await AsyncStorage.getItem(StorageKeys.BlurRadius);
+      if (storedBlurRadius) {
+        setBlurRadius(parseInt(storedBlurRadius, 10));
       }
     }
 
@@ -104,8 +113,10 @@ function App() {
       setKeyword,
       playAtStartup,
       setPlayAtStartup,
+      blurRadius,
+      setBlurRadius,
     }),
-    [keyword, playAtStartup],
+    [keyword, playAtStartup, blurRadius, updateTheme],
   );
 
   const { LightTheme: NaviLightTheme, DarkTheme: NaviDarkTheme } =
