@@ -1,5 +1,15 @@
-import React, { useEffect, useImperativeHandle, useRef } from 'react';
-import { FlatList, StyleProp, ViewStyle } from 'react-native';
+import React, {
+  useEffect,
+  useImperativeHandle,
+  useRef
+} from 'react';
+import {
+  Dimensions,
+  FlatList,
+  StyleProp,
+  View,
+  ViewStyle
+} from 'react-native';
 import { useCurrentIndex, useLocalAutoScroll } from '../hook';
 import type { LyricLine } from '../lyric';
 import { parseLyric } from '../util';
@@ -33,6 +43,14 @@ interface Props {
   }) => void;
   style: StyleProp<ViewStyle>;
   [key: string]: any;
+}
+
+const MarginVerticalView = () => {
+  return (
+    <View
+      style={{ height: Dimensions.get('window').height / 3 }}
+    />
+  );
 }
 
 const Lyric = React.forwardRef<
@@ -70,6 +88,7 @@ const Lyric = React.forwardRef<
     try {
       lrcRef.current?.scrollToIndex({
         index: currentIndex,
+        viewPosition: 0.5,
       });
     } catch (e) {
       // ignore scrollToIndex failed
@@ -123,6 +142,8 @@ const Lyric = React.forwardRef<
       )}
       // ignore scrollToIndex failed
       onScrollToIndexFailed={() => { }}
+      ListHeaderComponent={MarginVerticalView}
+      ListFooterComponent={MarginVerticalView}
     />
   );
 });

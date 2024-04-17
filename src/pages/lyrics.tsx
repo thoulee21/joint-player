@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
+import { ImageBackground, StyleSheet } from 'react-native';
 import {
     ActivityIndicator,
     Text,
     useTheme
 } from 'react-native-paper';
-import { useActiveTrack, useProgress } from 'react-native-track-player';
-import { Lyric, TrackInfoBar } from '../components';
+import {
+    useActiveTrack,
+    useProgress
+} from 'react-native-track-player';
+import {
+    Lyric,
+    TrackInfoBar,
+    placeholderImg
+} from '../components';
 import { useDebounce } from '../hook';
 import { requestInit } from '../services';
 import { Main } from '../types/lyrics';
@@ -28,7 +35,7 @@ const LyricView = ({ lrc, currentTime }:
                     {
                         color: active
                             ? appTheme.colors.primary
-                            : appTheme.colors.outlineVariant,
+                            : appTheme.colors.backdrop,
                     }
                 ]}
             >
@@ -74,7 +81,11 @@ export function LyricsScreen() {
     }, [track]);
 
     return (
-        <SafeAreaView style={styles.rootView}>
+        <ImageBackground
+            source={{ uri: track?.artwork || placeholderImg }}
+            style={styles.rootView}
+            blurRadius={90}
+        >
             <TrackInfoBar />
 
             {lyric?.lrc.lyric ? (
@@ -97,7 +108,7 @@ export function LyricsScreen() {
                     </Text>
                 )
             )}
-        </SafeAreaView>
+        </ImageBackground>
     )
 }
 
@@ -111,9 +122,7 @@ const styles = StyleSheet.create({
         paddingBottom: "5%",
     },
     lyricView: {
-        height: 500,
         paddingHorizontal: "2%",
-        paddingVertical: "60%"
     },
     loading: {
         marginTop: '20%'
