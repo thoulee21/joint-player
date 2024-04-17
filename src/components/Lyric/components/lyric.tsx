@@ -46,10 +46,18 @@ interface Props {
   [key: string]: any;
 }
 
-const MarginVerticalView = () => {
+const MarginTopView = () => {
   return (
     <View
-      style={{ height: Dimensions.get('window').height / 3 }}
+      style={{ height: Dimensions.get('window').height / 10 }}
+    />
+  );
+}
+
+const MarginBottomView = () => {
+  return (
+    <View
+      style={{ height: Dimensions.get('window').height / 4.5 }}
     />
   );
 }
@@ -143,8 +151,8 @@ const Lyric = React.forwardRef<
       )}
       // ignore scrollToIndex failed
       onScrollToIndexFailed={() => { }}
-      ListHeaderComponent={MarginVerticalView}
-      ListFooterComponent={MarginVerticalView}
+      ListHeaderComponent={MarginTopView}
+      ListFooterComponent={MarginBottomView}
       onStartReached={scrollToCurrentIndex}
       onStartReachedThreshold={0.01}
     />
