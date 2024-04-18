@@ -4,7 +4,7 @@ import { Menu } from 'react-native-paper';
 import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
 import { requestInit } from '../services';
 
-export function MvButton({ onPostPressed }: { onPostPressed: () => void }) {
+export function MvMenu({ onPostPressed }: { onPostPressed: () => void }) {
   const track = useActiveTrack();
   const [disabled, setDisabled] = useState(true);
 

@@ -1,15 +1,23 @@
 import { BlurView } from "expo-blur";
 import React from "react";
 import { StatusBar } from "react-native";
-import { Avatar, Card, useTheme } from "react-native-paper";
+import {
+    Avatar,
+    Card,
+    TouchableRipple,
+    useTheme
+} from "react-native-paper";
 import { useActiveTrack } from "react-native-track-player";
 import { TrackMenu } from "./TrackMenu";
+import { useNavigation } from "@react-navigation/native";
 
 const placeholderImg = 'https://picsum.photos/100';
 
 export const TrackInfoBar = () => {
-    const track = useActiveTrack();
+    const navigation = useNavigation();
     const appTheme = useTheme();
+
+    const track = useActiveTrack();
 
     return (
         <BlurView
@@ -21,10 +29,18 @@ export const TrackInfoBar = () => {
                 subtitle={track?.artist}
                 subtitleStyle={{ color: appTheme.colors.primary }}
                 left={(props) =>
-                    <Avatar.Image
+                    <TouchableRipple
                         {...props}
-                        source={{ uri: track?.artwork || placeholderImg }}
-                    />
+                        onPress={() => {
+                            // @ts-ignore
+                            navigation.navigate('Player');
+                        }}
+                    >
+                        <Avatar.Image
+                            {...props}
+                            source={{ uri: track?.artwork || placeholderImg }}
+                        />
+                    </TouchableRipple>
                 }
                 right={() => <TrackMenu />}
             />

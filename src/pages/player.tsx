@@ -103,15 +103,11 @@ export function Player(): React.JSX.Element {
         <Spacer mode="expand" />
       </ScreenWrapper>
 
-      <Appbar.Header style={styles.bottom} mode="center-aligned" elevated>
-        <Appbar.Action
-          icon="comment-outline"
-          disabled={typeof track?.id === 'undefined'}
-          onPress={() => {
-            // @ts-ignore
-            navigation.navigate('Comments');
-          }}
-        />
+      <Appbar.Header
+        style={styles.bottom}
+        mode="center-aligned"
+        elevated
+      >
         <Appbar.Content
           title={track?.album || 'No Album'}
           titleStyle={styles.bottomTitle}
