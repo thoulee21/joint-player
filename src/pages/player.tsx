@@ -92,7 +92,10 @@ export function Player(): React.JSX.Element {
       blurRadius={preferences?.blurRadius}
     >
       <BlurView
-        style={styles.searchbarContainer}
+        style={[
+          styles.screenContainer,
+          styles.searchbarContainer
+        ]}
         tint={appTheme.dark ? 'dark' : 'light'}
       >
         <Searchbar
@@ -121,18 +124,16 @@ export function Player(): React.JSX.Element {
           selectionColor={appTheme.colors.inversePrimary}
           enablesReturnKeyAutomatically
         />
-      </BlurView>
 
-      <ScrollView style={styles.screenContainer}>
-        <Spacer />
-        <TrackInfo track={track} />
-        <Progress live={track?.isLiveStream} />
-        <Spacer />
-        <PlayControls />
-        <Spacer mode="expand" />
-      </ScrollView>
+        <ScrollView style={styles.screenContainer}>
+          <Spacer />
+          <TrackInfo track={track} />
+          <Progress live={track?.isLiveStream} />
+          <Spacer />
+          <PlayControls />
+          <Spacer mode="expand" />
+        </ScrollView>
 
-      <BlurView tint={appTheme.dark ? 'dark' : 'light'}>
         <Appbar.Header
           style={styles.bottom}
           mode="center-aligned"
