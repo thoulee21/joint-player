@@ -1,10 +1,24 @@
 import BottomSheet from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
-import Color from 'color';
 import { BlurView } from 'expo-blur';
 import * as SplashScreen from 'expo-splash-screen';
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { ImageBackground, ScrollView, StatusBar, StyleSheet, ToastAndroid } from 'react-native';
+import React, {
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from 'react';
+import {
+  ImageBackground,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  ToastAndroid
+} from 'react-native';
+import { getColors } from 'react-native-image-colors';
+import type {
+  AndroidImageColors
+} from 'react-native-image-colors/build/types';
 import {
   Appbar,
   IconButton,
@@ -12,7 +26,9 @@ import {
   Searchbar,
   useTheme
 } from 'react-native-paper';
-import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
+import TrackPlayer, {
+  useActiveTrack
+} from 'react-native-track-player';
 import { PreferencesContext } from '../App';
 import {
   PlayControls,
@@ -22,7 +38,7 @@ import {
   TrackListSheet,
   placeholderImg
 } from '../components';
-import { useImageColors, useSetupPlayer } from '../hook';
+import { useSetupPlayer } from '../hook';
 import { QueueInitialTracksService } from '../services';
 
 export function Player(): React.JSX.Element {
@@ -32,26 +48,32 @@ export function Player(): React.JSX.Element {
 
   const isPlayerReady = useSetupPlayer();
   const track = useActiveTrack();
-  const [searching, setSearching] = useState(false);
   const bottomSheetRef = useRef<BottomSheet>(null);
 
-  const imageUri = track?.artwork;
-  const colors = useImageColors(imageUri || placeholderImg);
+  const [searching, setSearching] = useState(false);
+  const [firstLoad, setFirstLoad] = useState(true);
 
   useEffect(() => {
-    colors.then(imgColors => {
-      const color = Color(imgColors[0]);
-      preferences?.updateTheme(color.hex());
+    const changeTheme = async () => {
+      const colors = await getColors(track?.artwork || placeholderImg);
+      preferences?.updateTheme(
+        (colors as AndroidImageColors).dominant
+      );
+    }
 
-      if (isPlayerReady) {
-        SplashScreen.hideAsync()
-          .then(() => {
-            if (preferences?.playAtStartup) {
-              TrackPlayer.play();
-            }
-          });
-      }
-    });
+    changeTheme()
+      .then(() => {
+        if (isPlayerReady && firstLoad) {
+          SplashScreen.hideAsync();
+
+          if (preferences?.playAtStartup) {
+            TrackPlayer.play();
+          }
+        }
+      })
+      .finally(() => {
+        setFirstLoad(false);
+      });
   }, [track, isPlayerReady]);
 
   function searchSongs() {
