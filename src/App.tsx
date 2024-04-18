@@ -1,6 +1,5 @@
 import { useMaterial3Theme } from '@pchmn/expo-material3-theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import {
   NavigationContainer,
   DarkTheme as NavigationDarkTheme,
@@ -17,7 +16,6 @@ import {
   PaperProvider,
   adaptNavigationTheme,
 } from 'react-native-paper';
-import { DrawerItems } from './components';
 import {
   Comments,
   LyricsScreen,
@@ -42,25 +40,7 @@ export const PreferencesContext = createContext<{
   setBlurRadius: (blurRadius: number) => void;
 } | null>(null);
 
-const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
-
-function HomeScreen() {
-  return (
-    <Drawer.Navigator
-      drawerContent={DrawerItems}
-      screenOptions={{
-        headerShown: false,
-        drawerStyle: {
-          backgroundColor: 'transparent'
-        },
-      }}
-    >
-      <Drawer.Screen name="Player" component={Player} />
-      <Drawer.Screen name="Settings" component={Settings} />
-    </Drawer.Navigator>
-  );
-}
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -68,7 +48,7 @@ function App() {
 
   const [keyword, setKeyword] = useState('');
   const [playAtStartup, setPlayAtStartup] = useState(false);
-  const [blurRadius, setBlurRadius] = useState(20);
+  const [blurRadius, setBlurRadius] = useState(50);
 
   useEffect(() => {
     SplashScreen.preventAutoHideAsync();
@@ -145,7 +125,8 @@ function App() {
               barStyle={isDarkMode ? 'light-content' : 'dark-content'}
             />
             <Stack.Navigator screenOptions={{ headerShown: false, }}>
-              <Stack.Screen name="Home" component={HomeScreen} />
+              <Stack.Screen name="Player" component={Player} />
+              <Stack.Screen name="Settings" component={Settings} />
               <Stack.Screen name="WebView" component={WebViewScreen} />
               <Stack.Screen name="Comments" component={Comments} />
               <Stack.Screen name="Lyrics" component={LyricsScreen} />

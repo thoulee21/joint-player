@@ -1,6 +1,5 @@
 export * from './BlurRadiusSlider';
 export * from './BottomSheetPaper';
-export * from './DrawerItems';
 export * from './InitKeywordItem';
 export * from './Lyric';
 export * from './MvMenu';

@@ -21,7 +21,6 @@ import type {
 } from 'react-native-image-colors/build/types';
 import {
   Appbar,
-  IconButton,
   Portal,
   Searchbar,
   useTheme
@@ -92,33 +91,22 @@ export function Player(): React.JSX.Element {
       blurRadius={preferences?.blurRadius}
     >
       <BlurView
+        tint={appTheme.dark ? 'dark' : 'light'}
         style={[
           styles.screenContainer,
           styles.searchbarContainer
         ]}
-        tint={appTheme.dark ? 'dark' : 'light'}
       >
         <Searchbar
-          icon="menu"
           placeholder="Search for music"
           style={styles.searchbar}
-          onIconPress={() => {
-            // @ts-ignore
-            navigation.openDrawer();
-          }}
           onChangeText={text => {
             preferences?.setKeyword(text);
           }}
           value={preferences?.keyword as string}
-          right={props => (
-            <IconButton
-              {...props}
-              icon="search-web"
-              onPress={searchSongs}
-              loading={searching}
-            />
-          )}
+          loading={searching}
           onSubmitEditing={searchSongs}
+          onIconPress={searchSongs}
           blurOnSubmit
           selectTextOnFocus
           selectionColor={appTheme.colors.inversePrimary}
@@ -140,6 +128,13 @@ export function Player(): React.JSX.Element {
           elevated
           statusBarHeight={0}
         >
+          <Appbar.Action
+            icon="cog-outline"
+            onPress={() => {
+              // @ts-ignore
+              navigation.push('Settings');
+            }}
+          />
           <Appbar.Content
             title={track?.album || 'No Album'}
             titleStyle={styles.bottomTitle}

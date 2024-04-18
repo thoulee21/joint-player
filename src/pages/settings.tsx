@@ -59,11 +59,7 @@ export function Settings() {
         style={styles.root}
       >
         <Appbar.Header style={styles.header}>
-          <Appbar.Action
-            icon="menu"
-            // @ts-ignore
-            onPress={() => navigation.openDrawer()}
-          />
+          <Appbar.BackAction onPress={navigation.goBack} />
           <Appbar.Content title="Settings" />
         </Appbar.Header>
 
