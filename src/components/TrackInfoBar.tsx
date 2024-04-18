@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import { BlurView } from "expo-blur";
 import React from "react";
 import { StatusBar } from "react-native";
@@ -9,7 +10,6 @@ import {
 } from "react-native-paper";
 import { useActiveTrack } from "react-native-track-player";
 import { TrackMenu } from "./TrackMenu";
-import { useNavigation } from "@react-navigation/native";
 
 const placeholderImg = 'https://picsum.photos/100';
 
@@ -33,7 +33,7 @@ export const TrackInfoBar = () => {
                         {...props}
                         onPress={() => {
                             // @ts-ignore
-                            navigation.navigate('Player');
+                            navigation.push('Player');
                         }}
                     >
                         <Avatar.Image

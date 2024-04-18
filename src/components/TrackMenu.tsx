@@ -16,7 +16,7 @@ function CommentsMenu(
       disabled={typeof track?.id === 'undefined'}
       onPress={() => {
         // @ts-ignore
-        navigation.navigate('Comments');
+        navigation.push('Comments');
         onPostPressed();
       }}
     />

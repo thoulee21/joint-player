@@ -24,13 +24,13 @@ export const TrackInfo = () => {
           onPress={() => {
             if (track?.id) {
               // @ts-ignore
-              navigation.navigate('Lyrics');
+              navigation.push('Lyrics');
             }
           }}
           onLongPress={() => {
             HapticFeedback.trigger('effectTick');
             // @ts-ignore
-            navigation.navigate('WebView', {
+            navigation.push('WebView', {
               title: track?.title || 'Artwork',
               url: imageUri,
             });
