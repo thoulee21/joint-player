@@ -1,19 +1,16 @@
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
+import { BlurView } from 'expo-blur';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { ActivityIndicator, Divider, List, useTheme } from 'react-native-paper';
+import { ActivityIndicator, List, useTheme } from 'react-native-paper';
 import TrackPlayer, { Track, useActiveTrack } from 'react-native-track-player';
 import { BottomSheetPaper } from '.';
 import playlistData from '../assets/data/playlist.json';
 
-function TrackList({
-  bottomSheetRef,
-}: {
-  bottomSheetRef: React.RefObject<BottomSheet>;
-}) {
+function TrackList() {
   const appTheme = useTheme();
-
   const currentTrack = useActiveTrack();
+
   const [tracks, setTracks] = useState<Track[]>([]);
 
   useEffect(() => {
@@ -33,24 +30,22 @@ function TrackList({
       <List.Item
         title={item.title}
         description={item.artist}
-        style={{
-          backgroundColor: active
-            ? appTheme.colors.secondaryContainer
-            : undefined,
+        titleStyle={{
+          color: active
+            ? appTheme.colors.primary
+            : appTheme.colors.onBackground,
+          fontWeight: active ? 'bold' : 'normal',
         }}
         left={props => (
           <List.Icon
             {...props}
+            color={active ? appTheme.colors.primary : undefined}
             icon={active ? 'music-circle' : 'music-circle-outline'}
           />
         )}
         onPress={async () => {
           await TrackPlayer.skip(index);
-
-          setTimeout(() => {
-            bottomSheetRef.current?.close();
-            TrackPlayer.play();
-          }, 300);
+          await TrackPlayer.play();
         }}
       />
     );
@@ -58,7 +53,7 @@ function TrackList({
 
   return (
     <BottomSheetFlatList
-      style={{ height: '100%' }}
+      style={styles.trackList}
       // Use playlistData as a fallback
       data={tracks.length > 0 ? tracks : (playlistData as Track[])}
       ListEmptyComponent={() => (
@@ -67,7 +62,6 @@ function TrackList({
         </View>
       )}
       renderItem={renderTrack}
-      ItemSeparatorComponent={() => <Divider />}
     />
   );
 }
@@ -77,9 +71,17 @@ export function TrackListSheet({
 }: {
   bottomSheetRef: React.RefObject<BottomSheet>;
 }) {
+  const appTheme = useTheme();
+
   return (
     <BottomSheetPaper bottomSheetRef={bottomSheetRef}>
-      <TrackList bottomSheetRef={bottomSheetRef} />
+      <BlurView
+        style={styles.trackList}
+        tint={appTheme.dark ? 'dark' : 'light'}
+        experimentalBlurMethod="dimezisBlurView"
+      >
+        <TrackList />
+      </BlurView>
     </BottomSheetPaper>
   );
 }
@@ -88,4 +90,7 @@ const styles = StyleSheet.create({
   loading: {
     marginTop: '20%',
   },
+  trackList: {
+    height: '100%',
+  }
 });
