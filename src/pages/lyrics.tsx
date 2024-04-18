@@ -96,7 +96,6 @@ export function LyricsScreen() {
 
             <BlurView
                 tint={appTheme.dark ? 'dark' : 'light'}
-                intensity={prefs?.blurRadius}
                 style={styles.rootView}
             >
                 {lyric?.lrc.lyric ? (
