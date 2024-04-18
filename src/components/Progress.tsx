@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     height: 80,
     width: '90%',
     alignItems: 'center',
+    alignSelf: 'center',
     justifyContent: 'center',
   },
   liveText: {

@@ -1,23 +1,22 @@
 import BottomSheet from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
+import { BlurView } from 'expo-blur';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { StatusBar, StyleSheet } from 'react-native';
+import { ImageBackground, ScrollView, StatusBar, StyleSheet, ToastAndroid } from 'react-native';
 import {
   Appbar,
   IconButton,
   Portal,
   Searchbar,
-  Surface,
-  useTheme,
+  useTheme
 } from 'react-native-paper';
 import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
 import { PreferencesContext } from '../App';
 import {
   PlayControls,
   Progress,
-  ScreenWrapper,
   Spacer,
   TrackInfo,
   TrackListSheet,
@@ -65,65 +64,81 @@ export function Player(): React.JSX.Element {
   }
 
   return (
-    <>
-      <Surface style={styles.searchbarContainer}>
-        <Searchbar
-          icon="menu"
-          placeholder="Search for music"
-          style={styles.searchbar}
-          onIconPress={() => {
-            // @ts-ignore
-            navigation.openDrawer();
-          }}
-          onChangeText={text => {
-            preferences?.setKeyword(text);
-          }}
-          value={preferences?.keyword as string}
-          right={props => (
-            <IconButton
-              {...props}
-              icon="search-web"
-              onPress={searchSongs}
-              loading={searching}
-            />
-          )}
-          onSubmitEditing={searchSongs}
-          blurOnSubmit
-          selectTextOnFocus
-          selectionColor={appTheme.colors.inversePrimary}
-          enablesReturnKeyAutomatically
-        />
-      </Surface>
-      <ScreenWrapper contentContainerStyle={styles.screenContainer}>
+    <ImageBackground
+      source={{ uri: track?.artwork || placeholderImg }}
+      style={styles.screenContainer}
+      blurRadius={preferences?.blurRadius}
+    >
+      <ScrollView style={styles.screenContainer}>
+        <BlurView
+          style={styles.searchbarContainer}
+          tint={appTheme.dark ? 'dark' : 'light'}
+        >
+          <Searchbar
+            icon="menu"
+            placeholder="Search for music"
+            style={styles.searchbar}
+            onIconPress={() => {
+              // @ts-ignore
+              navigation.openDrawer();
+            }}
+            onChangeText={text => {
+              preferences?.setKeyword(text);
+            }}
+            value={preferences?.keyword as string}
+            right={props => (
+              <IconButton
+                {...props}
+                icon="search-web"
+                onPress={searchSongs}
+                loading={searching}
+              />
+            )}
+            onSubmitEditing={searchSongs}
+            blurOnSubmit
+            selectTextOnFocus
+            selectionColor={appTheme.colors.inversePrimary}
+            enablesReturnKeyAutomatically
+          />
+        </BlurView>
+
         <Spacer />
         <TrackInfo track={track} />
         <Progress live={track?.isLiveStream} />
         <Spacer />
         <PlayControls />
         <Spacer mode="expand" />
-      </ScreenWrapper>
+      </ScrollView>
 
-      <Appbar.Header
-        style={styles.bottom}
-        mode="center-aligned"
-        elevated
-      >
-        <Appbar.Content
-          title={track?.album || 'No Album'}
-          titleStyle={styles.bottomTitle}
-        />
-        <Appbar.Action
-          icon="menu-open"
-          onPress={() => {
-            bottomSheetRef.current?.expand();
-          }}
-        />
-      </Appbar.Header>
+      <BlurView tint={appTheme.dark ? 'dark' : 'light'}>
+        <Appbar.Header
+          style={styles.bottom}
+          mode="center-aligned"
+          elevated
+          statusBarHeight={0}
+        >
+          <Appbar.Content
+            title={track?.album || 'No Album'}
+            titleStyle={styles.bottomTitle}
+            onPress={() => {
+              if (track?.album) {
+                ToastAndroid.show(track.album, ToastAndroid.SHORT);
+              }
+            }}
+          />
+          <Appbar.Action
+            icon="menu-open"
+            onPress={() => {
+              bottomSheetRef.current?.expand();
+            }}
+          />
+        </Appbar.Header>
+      </BlurView>
 
       <Portal>
         <TrackListSheet bottomSheetRef={bottomSheetRef} />
       </Portal>
-    </>
+    </ImageBackground>
   );
 }
 
@@ -131,20 +146,16 @@ const styles = StyleSheet.create({
   screenContainer: {
     display: 'flex',
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   bottom: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
+    backgroundColor: 'transparent',
   },
   bottomTitle: {
     fontSize: 16,
   },
   searchbar: {
     margin: 10,
+    backgroundColor: 'transparent',
   },
   searchbarContainer: {
     paddingTop: StatusBar.currentHeight,
