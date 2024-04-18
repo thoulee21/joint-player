@@ -2,16 +2,15 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import HapticFeedback from 'react-native-haptic-feedback';
-import { Surface, Text, useTheme } from 'react-native-paper';
-import type { Track } from 'react-native-track-player';
+import { Surface, Text, useTheme, } from 'react-native-paper';
+import { useActiveTrack } from 'react-native-track-player';
 
 export const placeholderImg = 'https://picsum.photos/800';
 
-export const TrackInfo: React.FC<{
-  track?: Track;
-}> = ({ track }) => {
-  const appTheme = useTheme();
+export const TrackInfo = () => {
   const navigation = useNavigation();
+  const appTheme = useTheme();
+  const track = useActiveTrack();
 
   const imageUri = track?.artwork || placeholderImg;
 

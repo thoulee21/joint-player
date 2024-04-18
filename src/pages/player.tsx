@@ -127,7 +127,7 @@ export function Player(): React.JSX.Element {
 
         <ScrollView style={styles.screenContainer}>
           <Spacer />
-          <TrackInfo track={track} />
+          <TrackInfo />
           <Progress live={track?.isLiveStream} />
           <Spacer />
           <PlayControls />
