@@ -78,7 +78,7 @@ export const QueueInitialTracksService = async (
     await TrackPlayer.reset();
     await TrackPlayer.add(fetchedData);
   } catch (error) {
-    console.error('An error occurred:', error);
+    console.warn('An error occurred:', error);
     await TrackPlayer.add(playlistData as Track[]);
   }
 };

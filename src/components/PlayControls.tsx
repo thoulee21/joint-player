@@ -54,7 +54,7 @@ export function PlayControls() {
     if (isError) {
       if (__DEV__) {
         const errMsgDev = `${playbackState.error.message}: ${playbackState.error.code}`;
-        console.error(errMsgDev);
+        console.warn(errMsgDev);
       } else {
         const errMsg = '播放出错，自动播放下一首';
         ToastAndroid.show(errMsg, ToastAndroid.SHORT);
