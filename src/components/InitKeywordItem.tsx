@@ -1,29 +1,21 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { StyleSheet, ToastAndroid } from 'react-native';
 import { List, TextInput } from 'react-native-paper';
-import { StorageKeys } from '../App';
+import { PreferencesContext, StorageKeys } from '../App';
 
 export function InitKeywordItem() {
-  const [keyword, setKeyword] = useState<string | undefined>();
-  const [saved, setSaved] = useState<boolean>(true);
+  const prefs = useContext(PreferencesContext);
+  const { keyword, setKeyword } = prefs || { keyword: '', setKeyword: () => { } };
 
-  useEffect(() => {
-    async function loadKeyword() {
-      const storedKeyword = await AsyncStorage.getItem(StorageKeys.Keyword);
-      if (storedKeyword) {
-        setKeyword(storedKeyword);
-      }
-    }
-
-    loadKeyword();
-  }, []);
+  const [savedCheck, setSavedCheck] = useState(false);
 
   const saveKeyword = async () => {
     await AsyncStorage.setItem(
       StorageKeys.Keyword, keyword || '',
     );
-    setSaved(true);
+
+    setSavedCheck(true);
     ToastAndroid.show('Keyword saved!', ToastAndroid.SHORT);
   };
 
@@ -37,14 +29,14 @@ export function InitKeywordItem() {
         value={keyword}
         onChangeText={(text) => {
           setKeyword(text);
-          setSaved(false);
+          setSavedCheck(false);
         }}
         onSubmitEditing={saveKeyword}
         selectTextOnFocus
         blurOnSubmit
         right={
           <TextInput.Icon
-            icon={saved ? 'content-save-check' : 'content-save'}
+            icon={savedCheck ? 'content-save-check' : 'content-save'}
             onPress={saveKeyword}
             animated
           />
