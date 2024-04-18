@@ -154,7 +154,8 @@ const Lyric = React.forwardRef<
       ListHeaderComponent={MarginTopView}
       ListFooterComponent={MarginBottomView}
       onStartReached={scrollToCurrentIndex}
-      onStartReachedThreshold={0.01}
+      onStartReachedThreshold={0.1}
+      showsVerticalScrollIndicator={false}
     />
   );
 });
