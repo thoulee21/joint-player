@@ -1,10 +1,11 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import { BlurView } from 'expo-blur';
+import React, { useContext, useEffect, useState } from 'react';
 import {
     FlatList,
+    ImageBackground,
     RefreshControl,
-    SafeAreaView,
     StyleSheet,
     ToastAndroid
 } from "react-native";
@@ -13,11 +14,13 @@ import {
     ActivityIndicator,
     Appbar,
     Avatar,
-    Divider,
     List,
     useTheme
 } from 'react-native-paper';
 import { useActiveTrack } from "react-native-track-player";
+import { PreferencesContext } from '../App';
+import { placeholderImg } from '../components';
+import { useDebounce } from '../hook';
 import { requestInit } from "../services";
 import { Comment, Main } from '../types/comments';
 
@@ -33,7 +36,7 @@ function CommentList() {
     const limit = 20;
     const offset = 1;
 
-    const fetchComments = async () => {
+    const fetchComments = useDebounce(async () => {
         const response = await fetch(
             `http://music.163.com/api/v1/resource/comments/R_SO_4_${id}?limit=${limit}&offset=${offset}`,
             requestInit
@@ -42,7 +45,8 @@ function CommentList() {
 
         setIsEmpty(data.total === 0);
         setComments(data.comments);
-    };
+        setRefreshing(false);
+    });
 
     useEffect(() => {
         fetchComments();
@@ -51,9 +55,6 @@ function CommentList() {
     const onRefresh = () => {
         setRefreshing(true);
         fetchComments()
-            .then(() => {
-                setRefreshing(false);
-            });
     }
 
     if (isEmpty) {
@@ -69,7 +70,7 @@ function CommentList() {
         <List.Item
             title={item.user.nickname}
             description={item.content}
-            titleStyle={{ color: appTheme.colors.secondary }}
+            titleStyle={{ color: appTheme.colors.primary }}
             descriptionNumberOfLines={10}
             left={props =>
                 <Avatar.Image {...props}
@@ -98,7 +99,6 @@ function CommentList() {
             }
             keyExtractor={(item) => item.commentId.toString()}
             renderItem={renderComment}
-            ItemSeparatorComponent={() => <Divider />}
             // Component to render when loading data
             ListEmptyComponent={() =>
                 <ActivityIndicator size="large" style={styles.loading} />
@@ -109,15 +109,29 @@ function CommentList() {
 
 export function Comments(): React.JSX.Element {
     const navigation = useNavigation();
-    return (
-        <SafeAreaView style={styles.rootView}>
-            <Appbar.Header>
-                <Appbar.BackAction onPress={navigation.goBack} />
-                <Appbar.Content title="Comments" />
-            </Appbar.Header>
+    const preferences = useContext(PreferencesContext);
+    const appTheme = useTheme();
 
-            <CommentList />
-        </SafeAreaView>
+    const track = useActiveTrack();
+
+    return (
+        <ImageBackground
+            style={styles.rootView}
+            source={{ uri: track?.artwork || placeholderImg }}
+            blurRadius={preferences?.blurRadius}
+        >
+            <BlurView
+                tint={appTheme.dark ? 'dark' : 'light'}
+                style={styles.rootView}
+            >
+                <Appbar.Header style={styles.heder}>
+                    <Appbar.BackAction onPress={navigation.goBack} />
+                    <Appbar.Content title="Comments" />
+                </Appbar.Header>
+
+                <CommentList />
+            </BlurView>
+        </ImageBackground>
     );
 }
 
@@ -125,6 +139,9 @@ const styles = StyleSheet.create({
     rootView: {
         flex: 1,
         display: 'flex',
+    },
+    heder: {
+        backgroundColor: 'transparent',
     },
     emptyContent: {
         alignSelf: 'center',
