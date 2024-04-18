@@ -91,39 +91,39 @@ export function Player(): React.JSX.Element {
       style={styles.screenContainer}
       blurRadius={preferences?.blurRadius}
     >
-      <ScrollView style={styles.screenContainer}>
-        <BlurView
-          style={styles.searchbarContainer}
-          tint={appTheme.dark ? 'dark' : 'light'}
-        >
-          <Searchbar
-            icon="menu"
-            placeholder="Search for music"
-            style={styles.searchbar}
-            onIconPress={() => {
-              // @ts-ignore
-              navigation.openDrawer();
-            }}
-            onChangeText={text => {
-              preferences?.setKeyword(text);
-            }}
-            value={preferences?.keyword as string}
-            right={props => (
-              <IconButton
-                {...props}
-                icon="search-web"
-                onPress={searchSongs}
-                loading={searching}
-              />
-            )}
-            onSubmitEditing={searchSongs}
-            blurOnSubmit
-            selectTextOnFocus
-            selectionColor={appTheme.colors.inversePrimary}
-            enablesReturnKeyAutomatically
-          />
-        </BlurView>
+      <BlurView
+        style={styles.searchbarContainer}
+        tint={appTheme.dark ? 'dark' : 'light'}
+      >
+        <Searchbar
+          icon="menu"
+          placeholder="Search for music"
+          style={styles.searchbar}
+          onIconPress={() => {
+            // @ts-ignore
+            navigation.openDrawer();
+          }}
+          onChangeText={text => {
+            preferences?.setKeyword(text);
+          }}
+          value={preferences?.keyword as string}
+          right={props => (
+            <IconButton
+              {...props}
+              icon="search-web"
+              onPress={searchSongs}
+              loading={searching}
+            />
+          )}
+          onSubmitEditing={searchSongs}
+          blurOnSubmit
+          selectTextOnFocus
+          selectionColor={appTheme.colors.inversePrimary}
+          enablesReturnKeyAutomatically
+        />
+      </BlurView>
 
+      <ScrollView style={styles.screenContainer}>
         <Spacer />
         <TrackInfo track={track} />
         <Progress live={track?.isLiveStream} />
