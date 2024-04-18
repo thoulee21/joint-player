@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, ToastAndroid } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { List, TextInput } from 'react-native-paper';
 import { StorageKeys } from '../App';
 
 export function InitKeywordItem() {
@@ -28,27 +28,29 @@ export function InitKeywordItem() {
   };
 
   return (
-    <TextInput
-      label="Initial Keyword"
-      placeholder="Enter a keyword"
-      mode="outlined"
-      style={styles.input}
-      value={keyword}
-      onChangeText={(text) => {
-        setKeyword(text);
-        setSaved(false);
-      }}
-      onSubmitEditing={saveKeyword}
-      selectTextOnFocus
-      blurOnSubmit
-      right={
-        <TextInput.Icon
-          icon={saved ? 'content-save-check' : 'content-save'}
-          onPress={saveKeyword}
-          animated
-        />
-      }
-    />
+    <List.Section>
+      <TextInput
+        label="Initial Keyword"
+        placeholder="Enter a keyword"
+        mode="outlined"
+        style={styles.input}
+        value={keyword}
+        onChangeText={(text) => {
+          setKeyword(text);
+          setSaved(false);
+        }}
+        onSubmitEditing={saveKeyword}
+        selectTextOnFocus
+        blurOnSubmit
+        right={
+          <TextInput.Icon
+            icon={saved ? 'content-save-check' : 'content-save'}
+            onPress={saveKeyword}
+            animated
+          />
+        }
+      />
+    </List.Section>
   );
 }
 

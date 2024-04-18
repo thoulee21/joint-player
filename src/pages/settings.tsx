@@ -29,6 +29,16 @@ const VersionIcon = (props: any) => {
   )
 }
 
+const VersionItem = () => {
+  return (
+    <List.Item
+      title="Version"
+      description={`${upperFirst(Platform.OS)} v${appVersion}`}
+      left={VersionIcon}
+    />
+  )
+}
+
 export function Settings() {
   const navigation = useNavigation();
   return (
@@ -44,9 +54,7 @@ export function Settings() {
 
       <ScreenWrapper>
         <List.Section title="Startup">
-          <List.Section>
-            <InitKeywordItem />
-          </List.Section>
+          <InitKeywordItem />
           <PlayAtStartupSwitch />
           <Divider />
         </List.Section>
@@ -54,16 +62,12 @@ export function Settings() {
         <List.Section title='Appearance'>
           <ThemeColorIndicator />
           <Divider />
-          <BlurRadiusSlider />
         </List.Section>
+        <BlurRadiusSlider />
         <Divider />
 
         <List.Section title="General">
-          <List.Item
-            title="Version"
-            description={`${upperFirst(Platform.OS)} v${appVersion}`}
-            left={VersionIcon}
-          />
+          <VersionItem />
         </List.Section>
       </ScreenWrapper>
     </>
