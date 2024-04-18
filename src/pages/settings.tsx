@@ -1,14 +1,17 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
-import { Platform } from 'react-native';
-import { Appbar, Divider, List } from 'react-native-paper';
+import { BlurView } from 'expo-blur';
+import React, { useContext } from 'react';
+import { ImageBackground, Platform, ScrollView, StyleSheet } from 'react-native';
+import { Appbar, List, useTheme } from 'react-native-paper';
+import { useActiveTrack } from 'react-native-track-player';
 import { version as appVersion } from '../../package.json';
+import { PreferencesContext } from '../App';
 import {
   BlurRadiusSlider,
   InitKeywordItem,
   PlayAtStartupSwitch,
-  ScreenWrapper,
   ThemeColorIndicator,
+  placeholderImg
 } from '../components';
 
 export const upperFirst = (str: string) =>
@@ -41,35 +44,54 @@ const VersionItem = () => {
 
 export function Settings() {
   const navigation = useNavigation();
+  const appTheme = useTheme();
+  const preferences = useContext(PreferencesContext);
+  const track = useActiveTrack();
+
   return (
-    <>
-      <Appbar.Header>
-        <Appbar.Action
-          icon="menu"
-          // @ts-ignore
-          onPress={() => navigation.openDrawer()}
-        />
-        <Appbar.Content title="Settings" />
-      </Appbar.Header>
+    <ImageBackground
+      style={styles.root}
+      source={{ uri: track?.artwork || placeholderImg }}
+      blurRadius={preferences?.blurRadius}
+    >
+      <BlurView
+        tint={appTheme.dark ? 'dark' : 'light'}
+        style={styles.root}
+      >
+        <Appbar.Header style={styles.header}>
+          <Appbar.Action
+            icon="menu"
+            // @ts-ignore
+            onPress={() => navigation.openDrawer()}
+          />
+          <Appbar.Content title="Settings" />
+        </Appbar.Header>
 
-      <ScreenWrapper>
-        <List.Section title="Startup">
-          <InitKeywordItem />
-          <PlayAtStartupSwitch />
-          <Divider />
-        </List.Section>
+        <ScrollView>
+          <List.Section title="Startup">
+            <PlayAtStartupSwitch />
+            <InitKeywordItem />
+          </List.Section>
 
-        <List.Section title='Appearance'>
-          <ThemeColorIndicator />
-          <Divider />
-        </List.Section>
-        <BlurRadiusSlider />
-        <Divider />
+          <List.Section title='Appearance'>
+            <ThemeColorIndicator />
+          </List.Section>
+          <BlurRadiusSlider />
 
-        <List.Section title="General">
-          <VersionItem />
-        </List.Section>
-      </ScreenWrapper>
-    </>
+          <List.Section title="General">
+            <VersionItem />
+          </List.Section>
+        </ScrollView>
+      </BlurView>
+    </ImageBackground>
   );
 }
+
+const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+  },
+  header: {
+    backgroundColor: 'transparent'
+  }
+});

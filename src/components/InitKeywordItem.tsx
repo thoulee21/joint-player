@@ -20,34 +20,31 @@ export function InitKeywordItem() {
   };
 
   return (
-    <List.Section>
-      <TextInput
-        label="Initial Keyword"
-        placeholder="Enter a keyword"
-        mode="outlined"
-        style={styles.input}
-        value={keyword}
-        onChangeText={(text) => {
-          setKeyword(text);
-          setSavedCheck(false);
-        }}
-        onSubmitEditing={saveKeyword}
-        selectTextOnFocus
-        blurOnSubmit
-        right={
-          <TextInput.Icon
-            icon={savedCheck ? 'content-save-check' : 'content-save'}
-            onPress={saveKeyword}
-            animated
-          />
-        }
-      />
-    </List.Section>
+    <TextInput
+      label="Set Initial Keyword"
+      placeholder="A keyword to search when app opens"
+      style={styles.input}
+      value={keyword}
+      onChangeText={(text) => {
+        setKeyword(text);
+        setSavedCheck(false);
+      }}
+      onSubmitEditing={saveKeyword}
+      selectTextOnFocus
+      blurOnSubmit
+      right={
+        <TextInput.Icon
+          icon={savedCheck ? 'content-save-check' : 'content-save'}
+          onPress={saveKeyword}
+          animated
+        />
+      }
+    />
   );
 }
 
 const styles = StyleSheet.create({
   input: {
-    marginHorizontal: '2%'
+    backgroundColor: 'transparent',
   },
 });
