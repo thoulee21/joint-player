@@ -49,8 +49,13 @@ function HomeScreen() {
   return (
     <Drawer.Navigator
       drawerContent={DrawerItems}
-      screenOptions={{ headerShown: false }}
-      backBehavior="none">
+      screenOptions={{
+        headerShown: false,
+        drawerStyle: {
+          backgroundColor: 'transparent'
+        },
+      }}
+    >
       <Drawer.Screen name="Player" component={Player} />
       <Drawer.Screen name="Settings" component={Settings} />
     </Drawer.Navigator>
@@ -139,7 +144,7 @@ function App() {
               backgroundColor="transparent"
               barStyle={isDarkMode ? 'light-content' : 'dark-content'}
             />
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Navigator screenOptions={{ headerShown: false, }}>
               <Stack.Screen name="Home" component={HomeScreen} />
               <Stack.Screen name="WebView" component={WebViewScreen} />
               <Stack.Screen name="Comments" component={Comments} />
