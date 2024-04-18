@@ -1,19 +1,19 @@
-import BottomSheet, {BottomSheetView} from '@gorhom/bottom-sheet';
-import React, {PropsWithChildren} from 'react';
-import {StyleSheet} from 'react-native';
-import {useTheme} from 'react-native-paper';
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import React, { PropsWithChildren } from 'react';
+import { StyleSheet } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 export const BottomSheetPaper = ({
   bottomSheetRef,
   children,
-}: PropsWithChildren<{bottomSheetRef: React.RefObject<BottomSheet>}>) => {
+}: PropsWithChildren<{ bottomSheetRef: React.RefObject<BottomSheet> }>) => {
   const appTheme = useTheme();
   return (
     <BottomSheet
       ref={bottomSheetRef}
       index={-1}
-      backgroundStyle={{backgroundColor: appTheme.colors.background}}
-      handleIndicatorStyle={{backgroundColor: appTheme.colors.primary}}
+      backgroundStyle={{ backgroundColor: appTheme.colors.background }}
+      handleIndicatorStyle={{ backgroundColor: appTheme.colors.secondary }}
       snapPoints={['96%']}
       enablePanDownToClose
       android_keyboardInputMode="adjustResize"
