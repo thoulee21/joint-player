@@ -97,6 +97,7 @@ export function Player(): React.JSX.Element {
         <Searchbar
           placeholder="Search for music"
           style={styles.searchbar}
+          inputStyle={{ color: appTheme.colors.onBackground }}
           onChangeText={preferences?.setKeyword}
           value={preferences?.keyword as string}
           loading={searching}
