@@ -61,18 +61,16 @@ export function Player(): React.JSX.Element {
     );
   }
 
-  useEffect(useDebounce(() => {
-    changeTheme()
-      .then(() => {
-        if (firstLoad) {
-          if (isPlayerReady) {
-            SplashScreen.hideAsync();
-          }
-        }
-      })
-      .finally(() => {
-        setFirstLoad(false);
-      });
+  useEffect(useDebounce(async () => {
+    await changeTheme();
+
+    if (firstLoad) {
+      if (isPlayerReady) {
+        SplashScreen.hideAsync();
+      }
+    }
+
+    setFirstLoad(false);
   }), [track, isPlayerReady]);
 
   const searchSongs = useDebounce(async () => {
@@ -99,9 +97,7 @@ export function Player(): React.JSX.Element {
         <Searchbar
           placeholder="Search for music"
           style={styles.searchbar}
-          onChangeText={text => {
-            preferences?.setKeyword(text);
-          }}
+          onChangeText={preferences?.setKeyword}
           value={preferences?.keyword as string}
           loading={searching}
           onSubmitEditing={searchSongs}
