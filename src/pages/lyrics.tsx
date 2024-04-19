@@ -1,3 +1,4 @@
+import Color from 'color';
 import { BlurView } from 'expo-blur';
 import React, { useContext, useEffect, useState } from 'react';
 import { ImageBackground, StyleSheet } from 'react-native';
@@ -28,19 +29,25 @@ const LyricView = ({ lrc, currentTime }:
     const lineRenderer = ({ lrcLine: { content }, active }:
         { lrcLine: { content: string }, active: boolean }
     ) => {
+        const lineColor =
+            active
+                ? appTheme.colors.primary
+                : appTheme.dark
+                    ? appTheme.colors.onSurfaceDisabled
+                    : appTheme.colors.backdrop
+
         return (
             <Text
                 variant="displaySmall"
                 selectable
-                selectionColor={appTheme.colors.inversePrimary}
+                selectionColor={
+                    Color(appTheme.colors.inversePrimary)
+                        .fade(0.5).string()
+                }
                 numberOfLines={10}
                 style={[
                     styles.lyricText,
-                    {
-                        color: active
-                            ? appTheme.colors.primary
-                            : appTheme.colors.backdrop,
-                    }
+                    { color: lineColor }
                 ]}
             >
                 {content}

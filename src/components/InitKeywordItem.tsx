@@ -1,13 +1,15 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Color from 'color';
 import React, { useContext, useState } from 'react';
 import { StyleSheet, ToastAndroid } from 'react-native';
-import { List, TextInput } from 'react-native-paper';
+import { TextInput, useTheme } from 'react-native-paper';
 import { PreferencesContext, StorageKeys } from '../App';
 
 export function InitKeywordItem() {
   const prefs = useContext(PreferencesContext);
-  const { keyword, setKeyword } = prefs || { keyword: '', setKeyword: () => { } };
+  const appTheme = useTheme();
 
+  const { keyword, setKeyword } = prefs || { keyword: '', setKeyword: () => { } };
   const [savedCheck, setSavedCheck] = useState(false);
 
   const saveKeyword = async () => {
@@ -30,6 +32,10 @@ export function InitKeywordItem() {
         setSavedCheck(false);
       }}
       onSubmitEditing={saveKeyword}
+      selectionColor={
+        Color(appTheme.colors.inversePrimary)
+          .fade(0.5).string()
+      }
       selectTextOnFocus
       blurOnSubmit
       right={

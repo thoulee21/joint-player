@@ -108,7 +108,10 @@ export function Player(): React.JSX.Element {
           onIconPress={searchSongs}
           blurOnSubmit
           selectTextOnFocus
-          selectionColor={appTheme.colors.inversePrimary}
+          selectionColor={
+            Color(appTheme.colors.inversePrimary)
+              .fade(0.5).string()
+          }
         />
 
         <ScrollView style={styles.screenContainer}>
