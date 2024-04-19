@@ -31,7 +31,7 @@ const LyricView = ({ lrc, currentTime }:
     ) => {
         const lineColor =
             active
-                ? appTheme.colors.primary
+                ? appTheme.colors.onSurface
                 : appTheme.dark
                     ? appTheme.colors.onSurfaceDisabled
                     : appTheme.colors.backdrop
@@ -99,12 +99,15 @@ export function LyricsScreen() {
             style={styles.rootView}
             blurRadius={prefs?.blurRadius}
         >
-            <TrackInfoBar />
-
             <BlurView
                 tint={appTheme.dark ? 'dark' : 'light'}
-                style={styles.rootView}
+                style={[
+                    styles.rootView,
+                    styles.blurView
+                ]}
             >
+                <TrackInfoBar />
+
                 {lyric?.lrc.lyric ? (
                     <LyricView
                         lrc={lyric.lrc.lyric}
@@ -121,7 +124,7 @@ export function LyricsScreen() {
                             style={styles.notFound}
                             variant="headlineSmall"
                         >
-                            No lyric found
+                            Pure music, no lyrics.
                         </Text>
                     )
                 )}
@@ -135,12 +138,15 @@ const styles = StyleSheet.create({
         flex: 1,
         display: 'flex',
     },
+    blurView: {
+        paddingHorizontal: "5%"
+    },
     lyricText: {
         fontWeight: 'bold',
         paddingBottom: "5%",
     },
     lyricView: {
-        paddingHorizontal: "2%",
+        paddingHorizontal: "3.5%",
     },
     loading: {
         marginTop: '20%'

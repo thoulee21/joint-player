@@ -23,7 +23,7 @@ function CommentsMenu(
   );
 }
 
-export function TrackMenu() {
+export function TrackMenu(props: any) {
   const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
 
@@ -39,6 +39,7 @@ export function TrackMenu() {
           size={24}
           icon="dots-vertical-circle-outline"
           onPress={openMenu}
+          {...props}
         />
       }>
       <MvMenu onPostPressed={closeMenu} />
