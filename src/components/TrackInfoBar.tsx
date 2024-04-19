@@ -31,10 +31,7 @@ export const TrackInfoBar = () => {
                 left={(props) =>
                     <TouchableRipple
                         {...props}
-                        onPress={() => {
-                            // @ts-ignore
-                            navigation.push('Player');
-                        }}
+                        onPress={() => navigation.goBack()}
                     >
                         <Avatar.Image
                             {...props}
