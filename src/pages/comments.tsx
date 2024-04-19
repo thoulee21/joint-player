@@ -41,10 +41,17 @@ function CommentList() {
             `http://music.163.com/api/v1/resource/comments/R_SO_4_${id}?limit=${limit}&offset=${offset}`,
             requestInit
         );
-        const data: Main = await response.json();
+        if (response.status === 200) {
+            const data: Main = await response.json();
 
-        setIsEmpty(data.total === 0);
-        setComments(data.comments);
+            setIsEmpty(data.total === 0);
+            setComments(data.comments);
+        } else {
+            ToastAndroid.show(
+                `Failed to fetch comments: ${response.status} ${response.statusText}`,
+                ToastAndroid.SHORT,
+            );
+        }
         setRefreshing(false);
     });
 

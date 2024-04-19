@@ -23,10 +23,13 @@ const fetchSearchResults = async (keyword: string): Promise<any> => {
     `https://music.163.com/api/search/get/web?csrf_token=hlpretag=&hlposttag=&s=${keyword}&type=${Type}&offset=${Offset}&total=${Total}&limit=${Limit}`,
     requestInit,
   );
-  const { code, result } = await fetchResult.json();
+  const { result } = await fetchResult.json();
 
-  if (code !== 200) {
-    throw new Error('Failed to fetch search results');
+  if (fetchResult.status !== 200) {
+    ToastAndroid.show(
+      `Failed to fetch search results: ${fetchResult.status} ${fetchResult.statusText}`,
+      ToastAndroid.SHORT
+    );
   }
 
   return result;
@@ -37,9 +40,16 @@ const fetchTrackDetails = async (trackId: string): Promise<Track> => {
     `https://music.163.com/api/song/detail/?id=${trackId}&ids=%5B${trackId}%5D`,
     requestInit,
   );
-  const { songs } = await detail.json();
+  const detailJson = await detail.json();
 
-  const track = songs[0];
+  if (detailJson.code !== 200 && __DEV__) {
+    ToastAndroid.show(
+      `Failed to fetch track details: ${detailJson.code} ${detailJson.msg}`,
+      ToastAndroid.SHORT
+    )
+  }
+
+  const track = detailJson.songs[0];
 
   return {
     id: track.id.toString(),
@@ -56,32 +66,27 @@ const fetchTrackDetails = async (trackId: string): Promise<Track> => {
 export const QueueInitialTracksService = async (
   keyword?: string,
 ): Promise<void> => {
-  try {
-    let data: any;
+  let data: any;
 
-    if (keyword) {
-      data = await fetchSearchResults(keyword);
-    } else {
-      // Startup with a predefined playlist
-      await TrackPlayer.add(playlistData as Track[]);
-
-      ToastAndroid.show(
-        'Local playlist loaded',
-        ToastAndroid.SHORT
-      );
-      return;
-    }
-
-    const fetchedData: Track[] = await Promise.all(
-      data.songs.map(async (track: any) => {
-        return await fetchTrackDetails(track.id.toString());
-      }),
-    );
-
-    await TrackPlayer.reset();
-    await TrackPlayer.add(fetchedData);
-  } catch (error) {
-    console.warn('An error occurred:', error);
+  if (keyword) {
+    data = await fetchSearchResults(keyword);
+  } else {
+    // Startup with a predefined playlist
     await TrackPlayer.add(playlistData as Track[]);
+
+    ToastAndroid.show(
+      'Local playlist loaded',
+      ToastAndroid.SHORT
+    );
+    return;
   }
+
+  const fetchedData: Track[] = await Promise.all(
+    data.songs.map(async (track: any) => {
+      return await fetchTrackDetails(track.id.toString());
+    }),
+  );
+
+  await TrackPlayer.reset();
+  await TrackPlayer.add(fetchedData);
 };

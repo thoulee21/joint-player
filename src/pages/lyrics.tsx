@@ -1,7 +1,7 @@
 import Color from 'color';
 import { BlurView } from 'expo-blur';
 import React, { useContext, useEffect, useState } from 'react';
-import { ImageBackground, StyleSheet } from 'react-native';
+import { ImageBackground, StyleSheet, ToastAndroid } from 'react-native';
 import {
     ActivityIndicator,
     Text,
@@ -82,7 +82,15 @@ export function LyricsScreen() {
         const data = await fetch(
             `https://music.163.com/api/song/lyric?id=${track?.id}&lv=1&kv=1&tv=-1`,
             requestInit
-        )
+        );
+
+        if (data.status !== 200) {
+            ToastAndroid.show(
+                `Failed to fetch lyric: ${data.status} ${data.statusText}`,
+                ToastAndroid.SHORT
+            );
+        }
+
         const lyricData: Main = await data.json();
 
         setNoLyric(!lyricData.lrc.lyric);

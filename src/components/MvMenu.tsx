@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Linking } from 'react-native';
+import { Linking, ToastAndroid } from 'react-native';
 import { Menu } from 'react-native-paper';
 import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
 import { requestInit } from '../services';
@@ -26,15 +26,23 @@ export function MvMenu({ onPostPressed }: { onPostPressed: () => void }) {
           `https://music.163.com/api/mv/detail?id=${track?.mvid}&type=mp4`,
           requestInit,
         );
-        const mvDetail = await mvData.json();
 
-        const highRes = Object.keys(mvDetail.data.brs).reverse()[0];
-        const mv = mvDetail.data.brs[highRes];
+        if (mvData.status === 200) {
+          const mvDetail = await mvData.json();
 
-        await Linking.openURL(mv as string);
-        await TrackPlayer.pause();
+          const highRes = Object.keys(mvDetail.data.brs).reverse()[0];
+          const mv = mvDetail.data.brs[highRes];
 
-        onPostPressed();
+          await Linking.openURL(mv as string);
+          await TrackPlayer.pause();
+
+          onPostPressed();
+        } else {
+          ToastAndroid.show(
+            `Failed to fetch MV data: ${mvData.status} ${mvData.statusText}`,
+            ToastAndroid.SHORT,
+          );
+        }
       }}
     />
   );
