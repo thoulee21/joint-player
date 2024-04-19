@@ -26,7 +26,6 @@ import {
 
 export enum StorageKeys {
   Keyword = 'keyword',
-  PlayAtStartup = 'playAtStartup',
   BlurRadius = 'blurRadius',
 }
 
@@ -36,8 +35,6 @@ export const PreferencesContext = createContext<{
   setIsDarkMode: (isDarkMode: boolean) => void;
   keyword: string;
   setKeyword: (keyword: string) => void;
-  playAtStartup: boolean;
-  setPlayAtStartup: (playAtStartup: boolean) => void;
   blurRadius: number;
   setBlurRadius: (blurRadius: number) => void;
 } | null>(null);
@@ -49,7 +46,6 @@ function App() {
   const { theme: colorTheme, updateTheme } = useMaterial3Theme();
 
   const [keyword, setKeyword] = useState('');
-  const [playAtStartup, setPlayAtStartup] = useState(false);
   const [blurRadius, setBlurRadius] = useState(50);
 
   useEffect(() => {
@@ -61,11 +57,6 @@ function App() {
       const storedKeyword = await AsyncStorage.getItem(StorageKeys.Keyword);
       if (storedKeyword) {
         setKeyword(storedKeyword);
-      }
-
-      const storedPlayAtStartup = await AsyncStorage.getItem(StorageKeys.PlayAtStartup);
-      if (storedPlayAtStartup) {
-        setPlayAtStartup(storedPlayAtStartup === 'true');
       }
 
       const storedBlurRadius = await AsyncStorage.getItem(StorageKeys.BlurRadius);
@@ -100,12 +91,10 @@ function App() {
       setIsDarkMode,
       keyword,
       setKeyword,
-      playAtStartup,
-      setPlayAtStartup,
       blurRadius,
       setBlurRadius,
     }),
-    [isDarkMode, keyword, playAtStartup, blurRadius, updateTheme],
+    [isDarkMode, keyword, blurRadius, updateTheme],
   );
 
   const { LightTheme: NaviLightTheme, DarkTheme: NaviDarkTheme } =

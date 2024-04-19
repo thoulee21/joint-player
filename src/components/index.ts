@@ -3,7 +3,6 @@ export * from './BottomSheetPaper';
 export * from './InitKeywordItem';
 export * from './Lyric';
 export * from './MvMenu';
-export * from './PlayAtStartupSwitch';
 export * from './PlayControls';
 export * from './Progress';
 export * from './RepeatModeSwitch';

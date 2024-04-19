@@ -68,10 +68,6 @@ export function Player(): React.JSX.Element {
       .then(() => {
         if (isPlayerReady && firstLoad) {
           SplashScreen.hideAsync();
-
-          if (preferences?.playAtStartup) {
-            TrackPlayer.play();
-          }
         }
       })
       .finally(() => {

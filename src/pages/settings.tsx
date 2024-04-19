@@ -9,7 +9,6 @@ import { PreferencesContext } from '../App';
 import {
   BlurRadiusSlider,
   InitKeywordItem,
-  PlayAtStartupSwitch,
   ThemeColorIndicator,
   placeholderImg
 } from '../components';
@@ -65,7 +64,6 @@ export function Settings() {
 
         <ScrollView>
           <List.Section title="Startup">
-            <PlayAtStartupSwitch />
             <InitKeywordItem />
           </List.Section>
 
