@@ -30,7 +30,7 @@ const LyricView = ({ lrc, currentTime }:
     ) => {
         return (
             <Text
-                variant="displayMedium"
+                variant="displaySmall"
                 selectable
                 selectionColor={appTheme.colors.inversePrimary}
                 numberOfLines={10}
