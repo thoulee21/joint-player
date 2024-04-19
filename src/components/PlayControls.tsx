@@ -6,6 +6,7 @@ import TrackPlayer, {
   usePlaybackState,
 } from 'react-native-track-player';
 import { RepeatModeSwitch, TrackMenu } from ".";
+import { useThrottle } from '../hook';
 
 function BackwardButton() {
   return (
@@ -50,18 +51,21 @@ export function PlayControls() {
   const playbackState = usePlaybackState();
   const isError = 'error' in playbackState;
 
+  const handleError = useThrottle(() => {
+    //@ts-ignore
+    const errMsgDev = `${playbackState.error.message}: ${playbackState.error.code}`;
+    console.warn(errMsgDev);
+
+    const errMsg = '播放出错，自动播放下一首';
+    ToastAndroid.show(errMsg, ToastAndroid.SHORT);
+
+    TrackPlayer.skipToNext();
+    TrackPlayer.play();
+  }, ToastAndroid.SHORT);
+
   useEffect(() => {
     if (isError) {
-      if (__DEV__) {
-        const errMsgDev = `${playbackState.error.message}: ${playbackState.error.code}`;
-        console.warn(errMsgDev);
-      } else {
-        const errMsg = '播放出错，自动播放下一首';
-        ToastAndroid.show(errMsg, ToastAndroid.SHORT);
-      }
-
-      TrackPlayer.skipToNext();
-      TrackPlayer.play();
+      handleError();
     }
   }, [isError]);
 
