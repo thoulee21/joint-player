@@ -23,6 +23,7 @@ export const TrackInfo = () => {
           style={[styles.artwork, { borderRadius: appTheme.roundness * 5 }]}
           onPress={() => {
             if (track?.id) {
+              HapticFeedback.trigger("effectHeavyClick");
               // @ts-ignore
               navigation.push('Lyrics');
             }
