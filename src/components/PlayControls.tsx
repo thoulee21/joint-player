@@ -6,7 +6,6 @@ import TrackPlayer, {
   usePlaybackState,
 } from 'react-native-track-player';
 import { RepeatModeSwitch, TrackMenu } from ".";
-import { useThrottle } from '../hook';
 
 function BackwardButton() {
   return (
@@ -51,7 +50,7 @@ export function PlayControls() {
   const playbackState = usePlaybackState();
   const isError = 'error' in playbackState;
 
-  const handleError = useThrottle(() => {
+  const handleError = () => {
     if (isError) {
       const errMsg = `${playbackState.error.message}: ${playbackState.error.code}`;
       ToastAndroid.show(errMsg, ToastAndroid.SHORT);
@@ -59,7 +58,7 @@ export function PlayControls() {
       TrackPlayer.skipToNext();
       TrackPlayer.play();
     }
-  });
+  };
 
   useEffect(() => {
     handleError();
