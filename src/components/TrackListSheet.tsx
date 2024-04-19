@@ -33,14 +33,15 @@ function TrackList() {
         description={item.artist}
         titleStyle={{
           color: active
-            ? appTheme.colors.secondary
+            ? appTheme.colors.primary
             : appTheme.colors.onBackground,
+          fontWeight: active ? 'bold' : 'normal'
         }}
         style={{
           backgroundColor:
             active
               ? Color(appTheme.colors.secondaryContainer)
-                .fade(0.5).string()
+                .fade(appTheme.dark ? 0.4 : 0.6).string()
               : undefined
         }}
         left={props => (
@@ -85,7 +86,9 @@ export function TrackListSheet({
     <BottomSheetPaper bottomSheetRef={bottomSheetRef}>
       <BlurView
         style={styles.trackList}
-        tint={appTheme.dark ? 'dark' : 'light'}
+        tint={appTheme.dark
+          ? "systemUltraThinMaterialDark"
+          : "systemUltraThinMaterialLight"}
         experimentalBlurMethod="dimezisBlurView"
       >
         <TrackList />
