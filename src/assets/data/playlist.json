@@ -1,10 +1,13 @@
 [
   {
+    "title": "牢大处刑曲",
+    "album": "牢大处刑曲 老大我想泥了",
+    "mvid": 0,
+    "id": "2078657625",
+    "duration": 44.048,
     "url": "https://music.163.com/song/media/outer/url?id=2078657625.mp3",
-    "title": "牢大想你了",
-    "artist": "kobe",
-    "album": "扣 1 复活牢大",
-    "artwork": "https://p1.music.126.net/XS6grXCDdSiqbZESp0scGg==/109951168886639260.jpg"
+    "artwork": "https://p2.music.126.net/XS6grXCDdSiqbZESp0scGg==/109951168886639260.jpg",
+    "artist": "沧凌"
   },
   {
     "url": "https://rntp.dev/example/Longing.mp3",
@@ -50,10 +53,12 @@
   },
   {
     "url": "https://traffic.libsyn.com/atpfm/atp545.mp3",
-    "title": "Chapters"
+    "title": "Chapters",
+    "artwork": "https://picsum.photos/800"
   },
   {
     "url": "https://kut.streamguys1.com/kutx-app.aac?listenerId=123456784123",
-    "title": "KUTX"
+    "title": "KUTX",
+    "artwork": "https://picsum.photos/800"
   }
 ]
