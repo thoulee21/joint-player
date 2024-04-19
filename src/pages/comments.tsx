@@ -71,7 +71,7 @@ function CommentList() {
             title={item.user.nickname}
             description={item.content}
             titleStyle={{ color: appTheme.colors.primary }}
-            descriptionNumberOfLines={10}
+            descriptionNumberOfLines={20}
             left={props =>
                 <Avatar.Image {...props}
                     source={{ uri: item.user.avatarUrl }}
