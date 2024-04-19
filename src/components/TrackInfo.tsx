@@ -18,9 +18,16 @@ export const TrackInfo = () => {
     <View style={styles.container}>
       <Surface
         elevation={5}
-        style={[styles.imgSurface, { borderRadius: appTheme.roundness * 5 }]}>
+        style={[
+          styles.imgSurface,
+          { borderRadius: appTheme.roundness * 5 }
+        ]}
+      >
         <TouchableWithoutFeedback
-          style={[styles.artwork, { borderRadius: appTheme.roundness * 5 }]}
+          style={[
+            styles.artwork,
+            { borderRadius: appTheme.roundness * 5 }
+          ]}
           onPress={() => {
             if (track?.id) {
               HapticFeedback.trigger("effectHeavyClick");
@@ -30,12 +37,15 @@ export const TrackInfo = () => {
           }}
           onLongPress={() => {
             HapticFeedback.trigger('effectTick');
-            // @ts-ignore
-            navigation.push('WebView', {
-              title: track?.title || 'Artwork',
-              url: imageUri,
-            });
-          }}>
+            if (track?.artwork !== placeholderImg) {
+              // @ts-ignore
+              navigation.push('WebView', {
+                title: track?.title || 'Artwork',
+                url: imageUri,
+              });
+            }
+          }}
+        >
           <Image
             style={[
               styles.artwork,
