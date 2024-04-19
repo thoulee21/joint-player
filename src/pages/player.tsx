@@ -38,7 +38,7 @@ import {
   TrackListSheet,
   placeholderImg
 } from '../components';
-import { useSetupPlayer } from '../hook';
+import { useDebounce, useSetupPlayer } from '../hook';
 import { QueueInitialTracksService } from '../services';
 
 export function Player(): React.JSX.Element {
@@ -53,27 +53,29 @@ export function Player(): React.JSX.Element {
   const [searching, setSearching] = useState(false);
   const [firstLoad, setFirstLoad] = useState(true);
 
-  useEffect(() => {
-    const changeTheme = async () => {
-      const colors = await getColors(track?.artwork || placeholderImg);
-      const dominantColor = (colors as AndroidImageColors).dominant;
+  const changeTheme = async () => {
+    const colors = await getColors(track?.artwork || placeholderImg);
+    const dominantColor = (colors as AndroidImageColors).dominant;
 
-      preferences?.updateTheme(dominantColor);
-      preferences?.setIsDarkMode(
-        Color(dominantColor).isDark()
-      );
-    }
+    preferences?.updateTheme(dominantColor);
+    preferences?.setIsDarkMode(
+      Color(dominantColor).isDark()
+    );
+  }
 
+  useEffect(useDebounce(() => {
     changeTheme()
       .then(() => {
-        if (isPlayerReady && firstLoad) {
-          SplashScreen.hideAsync();
+        if (firstLoad) {
+          if (isPlayerReady) {
+            SplashScreen.hideAsync();
+          }
         }
       })
       .finally(() => {
         setFirstLoad(false);
       });
-  }, [track, isPlayerReady]);
+  }), [track, isPlayerReady]);
 
   function searchSongs() {
     setSearching(true);
