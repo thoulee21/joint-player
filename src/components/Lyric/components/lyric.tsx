@@ -97,7 +97,7 @@ const Lyric = React.forwardRef<
     try {
       lrcRef.current?.scrollToIndex({
         index: currentIndex,
-        viewPosition: 0.5,
+        viewPosition: 0.1,
       });
     } catch (e) {
       // ignore scrollToIndex failed
