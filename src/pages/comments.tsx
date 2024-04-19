@@ -66,11 +66,12 @@ function CommentList() {
         );
     }
 
-    const renderComment = ({ item }: { item: Comment }) =>
+    const renderComment = ({ item }: { item: Comment }) => (
         <List.Item
             title={item.user.nickname}
+            titleStyle={{ color: appTheme.colors.secondary }}
             description={item.content}
-            titleStyle={{ color: appTheme.colors.primary }}
+            descriptionStyle={{ color: appTheme.colors.onBackground }}
             descriptionNumberOfLines={20}
             left={props =>
                 <Avatar.Image {...props}
@@ -83,6 +84,7 @@ function CommentList() {
                 ToastAndroid.show('Copied to clipboard', ToastAndroid.SHORT);
             }}
         />
+    )
 
     return (
         <FlatList
