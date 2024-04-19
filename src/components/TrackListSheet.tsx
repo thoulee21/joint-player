@@ -54,6 +54,7 @@ function TrackList() {
   return (
     <BottomSheetFlatList
       style={styles.trackList}
+      showsVerticalScrollIndicator={false}
       // Use playlistData as a fallback
       data={tracks.length > 0 ? tracks : (playlistData as Track[])}
       ListEmptyComponent={() => (
