@@ -1,4 +1,5 @@
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
+import Color from 'color';
 import { BlurView } from 'expo-blur';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -32,9 +33,15 @@ function TrackList() {
         description={item.artist}
         titleStyle={{
           color: active
-            ? appTheme.colors.primary
+            ? appTheme.colors.secondary
             : appTheme.colors.onBackground,
-          fontWeight: active ? 'bold' : 'normal',
+        }}
+        style={{
+          backgroundColor:
+            active
+              ? Color(appTheme.colors.secondaryContainer)
+                .fade(0.5).string()
+              : undefined
         }}
         left={props => (
           <List.Icon
