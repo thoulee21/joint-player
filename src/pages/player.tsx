@@ -26,9 +26,7 @@ import {
   Searchbar,
   useTheme
 } from 'react-native-paper';
-import TrackPlayer, {
-  useActiveTrack
-} from 'react-native-track-player';
+import { useActiveTrack } from 'react-native-track-player';
 import { PreferencesContext } from '../App';
 import {
   PlayControls,
@@ -77,14 +75,13 @@ export function Player(): React.JSX.Element {
       });
   }), [track, isPlayerReady]);
 
-  function searchSongs() {
-    setSearching(true);
-    QueueInitialTracksService(preferences?.keyword as string)
-      .then(() => {
-        setSearching(false);
-        TrackPlayer.play();
-      });
-  }
+  const searchSongs = useDebounce(async () => {
+    if (preferences?.keyword) {
+      setSearching(true);
+      await QueueInitialTracksService(preferences.keyword);
+      setSearching(false);
+    }
+  })
 
   return (
     <ImageBackground
@@ -112,7 +109,6 @@ export function Player(): React.JSX.Element {
           blurOnSubmit
           selectTextOnFocus
           selectionColor={appTheme.colors.inversePrimary}
-          enablesReturnKeyAutomatically
         />
 
         <ScrollView style={styles.screenContainer}>
