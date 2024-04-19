@@ -52,21 +52,17 @@ export function PlayControls() {
   const isError = 'error' in playbackState;
 
   const handleError = useThrottle(() => {
-    //@ts-ignore
-    const errMsgDev = `${playbackState.error.message}: ${playbackState.error.code}`;
-    console.warn(errMsgDev);
+    if (isError) {
+      const errMsg = `${playbackState.error.message}: ${playbackState.error.code}`;
+      ToastAndroid.show(errMsg, ToastAndroid.SHORT);
 
-    const errMsg = '播放出错，自动播放下一首';
-    ToastAndroid.show(errMsg, ToastAndroid.SHORT);
-
-    TrackPlayer.skipToNext();
-    TrackPlayer.play();
-  }, ToastAndroid.SHORT);
+      TrackPlayer.skipToNext();
+      TrackPlayer.play();
+    }
+  });
 
   useEffect(() => {
-    if (isError) {
-      handleError();
-    }
+    handleError();
   }, [isError]);
 
   return (
