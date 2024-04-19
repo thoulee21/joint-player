@@ -1,5 +1,5 @@
-import {ToastAndroid} from 'react-native';
-import TrackPlayer, {Track} from 'react-native-track-player';
+import { ToastAndroid } from 'react-native';
+import TrackPlayer, { Track } from 'react-native-track-player';
 import playlistData from '../assets/data/playlist.json';
 
 export const requestInit = {
@@ -12,7 +12,7 @@ export const requestInit = {
 };
 
 const fetchSearchResults = async (keyword: string): Promise<any> => {
-  const {Type, Limit, Offset, Total} = {
+  const { Type, Limit, Offset, Total } = {
     Type: 1,
     Limit: 20,
     Offset: 0,
@@ -23,7 +23,7 @@ const fetchSearchResults = async (keyword: string): Promise<any> => {
     `https://music.163.com/api/search/get/web?csrf_token=hlpretag=&hlposttag=&s=${keyword}&type=${Type}&offset=${Offset}&total=${Total}&limit=${Limit}`,
     requestInit,
   );
-  const {code, result} = await fetchResult.json();
+  const { code, result } = await fetchResult.json();
 
   if (code !== 200) {
     throw new Error('Failed to fetch search results');
@@ -37,7 +37,7 @@ const fetchTrackDetails = async (trackId: string): Promise<Track> => {
     `https://music.163.com/api/song/detail/?id=${trackId}&ids=%5B${trackId}%5D`,
     requestInit,
   );
-  const {songs} = await detail.json();
+  const { songs } = await detail.json();
 
   const track = songs[0];
 
@@ -65,7 +65,10 @@ export const QueueInitialTracksService = async (
       // Startup with a predefined playlist
       await TrackPlayer.add(playlistData as Track[]);
 
-      ToastAndroid.show('Loaded playlist', ToastAndroid.SHORT);
+      ToastAndroid.show(
+        'Local playlist loaded',
+        ToastAndroid.SHORT
+      );
       return;
     }
 
