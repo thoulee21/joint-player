@@ -32,6 +32,8 @@ export enum StorageKeys {
 
 export const PreferencesContext = createContext<{
   updateTheme: (sourceColor: string) => void;
+  isDarkMode: boolean;
+  setIsDarkMode: (isDarkMode: boolean) => void;
   keyword: string;
   setKeyword: (keyword: string) => void;
   playAtStartup: boolean;
@@ -43,7 +45,7 @@ export const PreferencesContext = createContext<{
 const Stack = createNativeStackNavigator();
 
 function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [isDarkMode, setIsDarkMode] = useState(useColorScheme() === 'dark');
   const { theme: colorTheme, updateTheme } = useMaterial3Theme();
 
   const [keyword, setKeyword] = useState('');
@@ -94,6 +96,8 @@ function App() {
   const preferences = useMemo(
     () => ({
       updateTheme,
+      isDarkMode,
+      setIsDarkMode,
       keyword,
       setKeyword,
       playAtStartup,
@@ -101,7 +105,7 @@ function App() {
       blurRadius,
       setBlurRadius,
     }),
-    [keyword, playAtStartup, blurRadius, updateTheme],
+    [isDarkMode, keyword, playAtStartup, blurRadius, updateTheme],
   );
 
   const { LightTheme: NaviLightTheme, DarkTheme: NaviDarkTheme } =

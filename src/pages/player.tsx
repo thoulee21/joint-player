@@ -1,5 +1,6 @@
 import BottomSheet from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
+import Color from 'color';
 import { BlurView } from 'expo-blur';
 import * as SplashScreen from 'expo-splash-screen';
 import React, {
@@ -55,8 +56,11 @@ export function Player(): React.JSX.Element {
   useEffect(() => {
     const changeTheme = async () => {
       const colors = await getColors(track?.artwork || placeholderImg);
-      preferences?.updateTheme(
-        (colors as AndroidImageColors).dominant
+      const dominantColor = (colors as AndroidImageColors).dominant;
+
+      preferences?.updateTheme(dominantColor);
+      preferences?.setIsDarkMode(
+        Color(dominantColor).isDark()
       );
     }
 
