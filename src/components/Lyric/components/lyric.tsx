@@ -1,14 +1,14 @@
 import React, {
   useEffect,
   useImperativeHandle,
-  useRef
+  useRef,
 } from 'react';
 import {
   Dimensions,
   FlatList,
   StyleProp,
   View,
-  ViewStyle
+  ViewStyle,
 } from 'react-native';
 import { useDebounce } from '../../../hook';
 import { useCurrentIndex, useLocalAutoScroll } from '../hook';
@@ -52,7 +52,7 @@ const MarginTopView = () => {
       style={{ height: Dimensions.get('window').height / 10 }}
     />
   );
-}
+};
 
 const MarginBottomView = () => {
   return (
@@ -60,7 +60,7 @@ const MarginBottomView = () => {
       style={{ height: Dimensions.get('window').height / 4.5 }}
     />
   );
-}
+};
 
 const Lyric = React.forwardRef<
   {
@@ -109,7 +109,7 @@ const Lyric = React.forwardRef<
     if (localAutoScroll) {
       scrollToCurrentIndex();
     }
-  }, [currentIndex, localAutoScroll]);
+  }, [currentIndex, localAutoScroll, scrollToCurrentIndex]);
 
   // on current line change
   useEffect(() => {
@@ -145,7 +145,7 @@ const Lyric = React.forwardRef<
           {lineRenderer({
             lrcLine: item,
             index,
-            active: currentIndex === index
+            active: currentIndex === index,
           })}
         </>
       )}

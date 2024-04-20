@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import type { LyricLine } from "../lyric";
+import { useEffect, useState } from 'react';
+import type { LyricLine } from '../lyric';
 
 /**
  * Custom hook that calculates the current index of a lyric line based on the current time.
@@ -26,4 +26,4 @@ export function useCurrentIndex(
   }, [currentTime, lrcLineList]);
 
   return currentIndex;
-};
+}

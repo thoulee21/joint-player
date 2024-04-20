@@ -1,6 +1,6 @@
-import React from "react";
-import { StyleSheet, View } from "react-native";
-import { Switch } from "react-native-paper";
+import React from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Switch } from 'react-native-paper';
 
 export const RightSwitch = ({ value, disabled = false, ...props }:
     {
@@ -22,5 +22,5 @@ export const RightSwitch = ({ value, disabled = false, ...props }:
 const styles = StyleSheet.create({
     switch: {
         marginRight: -15,
-    }
+    },
 });

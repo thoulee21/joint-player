@@ -7,24 +7,24 @@ import React, {
   useContext,
   useEffect,
   useRef,
-  useState
+  useState,
 } from 'react';
 import {
   ImageBackground,
   ScrollView,
   StatusBar,
   StyleSheet,
-  ToastAndroid
+  ToastAndroid,
 } from 'react-native';
 import { getColors } from 'react-native-image-colors';
 import type {
-  AndroidImageColors
+  AndroidImageColors,
 } from 'react-native-image-colors/build/types';
 import {
   Appbar,
   Portal,
   Searchbar,
-  useTheme
+  useTheme,
 } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
 import { PreferencesContext } from '../App';
@@ -34,7 +34,7 @@ import {
   Spacer,
   TrackInfo,
   TrackListSheet,
-  placeholderImg
+  placeholderImg,
 } from '../components';
 import { useDebounce, useSetupPlayer } from '../hook';
 import { QueueInitialTracksService } from '../services';
@@ -59,9 +59,9 @@ export function Player(): React.JSX.Element {
     preferences?.setIsDarkMode(
       Color(dominantColor).isDark()
     );
-  }
+  };
 
-  useEffect(useDebounce(async () => {
+  const onFirstLoad = useDebounce(async () => {
     await changeTheme();
 
     if (firstLoad) {
@@ -71,7 +71,11 @@ export function Player(): React.JSX.Element {
     }
 
     setFirstLoad(false);
-  }), [track, isPlayerReady]);
+  });
+
+  useEffect(() => {
+    onFirstLoad();
+  }, [onFirstLoad]);
 
   const searchSongs = useDebounce(async () => {
     if (preferences?.keyword) {
@@ -79,7 +83,7 @@ export function Player(): React.JSX.Element {
       await QueueInitialTracksService(preferences.keyword);
       setSearching(false);
     }
-  })
+  });
 
   return (
     <ImageBackground
@@ -91,7 +95,7 @@ export function Player(): React.JSX.Element {
         tint={appTheme.dark ? 'dark' : 'light'}
         style={[
           styles.screenContainer,
-          styles.searchbarContainer
+          styles.searchbarContainer,
         ]}
       >
         <Searchbar

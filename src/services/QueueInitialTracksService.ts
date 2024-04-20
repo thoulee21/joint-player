@@ -46,7 +46,7 @@ const fetchTrackDetails = async (trackId: string): Promise<Track> => {
     ToastAndroid.show(
       `Failed to fetch track details: ${detailJson.code} ${detailJson.msg}`,
       ToastAndroid.SHORT
-    )
+    );
   }
 
   const track = detailJson.songs[0];

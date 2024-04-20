@@ -5,17 +5,17 @@ import { ImageBackground, StyleSheet, ToastAndroid } from 'react-native';
 import {
     ActivityIndicator,
     Text,
-    useTheme
+    useTheme,
 } from 'react-native-paper';
 import {
     useActiveTrack,
-    useProgress
+    useProgress,
 } from 'react-native-track-player';
 import { PreferencesContext } from '../App';
 import {
     Lyric,
     TrackInfoBar,
-    placeholderImg
+    placeholderImg,
 } from '../components';
 import { useDebounce } from '../hook';
 import { requestInit } from '../services';
@@ -34,7 +34,7 @@ const LyricView = ({ lrc, currentTime }:
                 ? appTheme.colors.onSurface
                 : appTheme.dark
                     ? appTheme.colors.onSurfaceDisabled
-                    : appTheme.colors.backdrop
+                    : appTheme.colors.backdrop;
 
         return (
             <Text
@@ -47,12 +47,12 @@ const LyricView = ({ lrc, currentTime }:
                 numberOfLines={10}
                 style={[
                     styles.lyricText,
-                    { color: lineColor }
+                    { color: lineColor },
                 ]}
             >
                 {content}
             </Text>
-        )
+        );
     };
 
     return (
@@ -99,7 +99,7 @@ export function LyricsScreen() {
 
     useEffect(() => {
         getLyric();
-    }, [track]);
+    }, [getLyric, track]);
 
     return (
         <ImageBackground
@@ -111,7 +111,7 @@ export function LyricsScreen() {
                 tint={appTheme.dark ? 'dark' : 'light'}
                 style={[
                     styles.rootView,
-                    styles.blurView
+                    styles.blurView,
                 ]}
             >
                 <TrackInfoBar />
@@ -138,7 +138,7 @@ export function LyricsScreen() {
                 )}
             </BlurView>
         </ImageBackground>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -147,20 +147,20 @@ const styles = StyleSheet.create({
         display: 'flex',
     },
     blurView: {
-        paddingHorizontal: "5%"
+        paddingHorizontal: '5%',
     },
     lyricText: {
         fontWeight: 'bold',
-        paddingBottom: "5%",
+        paddingBottom: '5%',
     },
     lyricView: {
-        paddingHorizontal: "3.5%",
+        paddingHorizontal: '3.5%',
     },
     loading: {
-        marginTop: '20%'
+        marginTop: '20%',
     },
     notFound: {
         marginTop: '20%',
-        textAlign: 'center'
-    }
+        textAlign: 'center',
+    },
 });

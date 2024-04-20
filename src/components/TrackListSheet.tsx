@@ -31,18 +31,19 @@ function TrackList() {
       <List.Item
         title={item.title}
         description={item.artist}
+        // eslint-disable-next-line react-native/no-inline-styles
         titleStyle={{
           color: active
             ? appTheme.colors.primary
             : appTheme.colors.onBackground,
-          fontWeight: active ? 'bold' : 'normal'
+          fontWeight: active ? 'bold' : 'normal',
         }}
         style={{
           backgroundColor:
             active
               ? Color(appTheme.colors.secondaryContainer)
                 .fade(appTheme.dark ? 0.4 : 0.6).string()
-              : undefined
+              : undefined,
         }}
         left={props => (
           <List.Icon
@@ -87,8 +88,8 @@ export function TrackListSheet({
       <BlurView
         style={styles.trackList}
         tint={appTheme.dark
-          ? "systemUltraThinMaterialDark"
-          : "systemUltraThinMaterialLight"}
+          ? 'systemUltraThinMaterialDark'
+          : 'systemUltraThinMaterialLight'}
         experimentalBlurMethod="dimezisBlurView"
       >
         <TrackList />
@@ -103,5 +104,5 @@ const styles = StyleSheet.create({
   },
   trackList: {
     height: '100%',
-  }
+  },
 });

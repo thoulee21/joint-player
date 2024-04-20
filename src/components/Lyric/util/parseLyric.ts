@@ -27,4 +27,4 @@ export function parseLyric(lrc: string): LyricLine[] {
     }
   }
   return lrcLineList.sort((a, b) => a.millisecond - b.millisecond);
-};
+}

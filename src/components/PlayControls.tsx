@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { StyleSheet, ToastAndroid, View } from 'react-native';
 import { IconButton } from 'react-native-paper';
 import TrackPlayer, {
   useIsPlaying,
   usePlaybackState,
 } from 'react-native-track-player';
-import { RepeatModeSwitch, TrackMenu } from ".";
+import { RepeatModeSwitch, TrackMenu } from '.';
 
 function BackwardButton() {
   return (
@@ -50,7 +50,7 @@ export function PlayControls() {
   const playbackState = usePlaybackState();
   const isError = 'error' in playbackState;
 
-  const handleError = () => {
+  const handleError = useCallback(() => {
     if (isError) {
       const errMsg = `${playbackState.error.message}: ${playbackState.error.code}`;
       ToastAndroid.show(errMsg, ToastAndroid.SHORT);
@@ -58,11 +58,11 @@ export function PlayControls() {
       TrackPlayer.skipToNext();
       TrackPlayer.play();
     }
-  };
+  }, [isError, playbackState]);
 
   useEffect(() => {
     handleError();
-  }, [isError]);
+  }, [handleError, isError]);
 
   return (
     <View style={styles.controlsContainer}>

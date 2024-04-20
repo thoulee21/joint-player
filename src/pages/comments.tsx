@@ -7,21 +7,21 @@ import {
     ImageBackground,
     RefreshControl,
     StyleSheet,
-    ToastAndroid
-} from "react-native";
-import HapticFeedback from "react-native-haptic-feedback";
+    ToastAndroid,
+} from 'react-native';
+import HapticFeedback from 'react-native-haptic-feedback';
 import {
     ActivityIndicator,
     Appbar,
     Avatar,
     List,
-    useTheme
+    useTheme,
 } from 'react-native-paper';
-import { useActiveTrack } from "react-native-track-player";
+import { useActiveTrack } from 'react-native-track-player';
 import { PreferencesContext } from '../App';
 import { placeholderImg } from '../components';
 import { useDebounce } from '../hook';
-import { requestInit } from "../services";
+import { requestInit } from '../services';
 import { Comment, Main } from '../types/comments';
 
 function CommentList() {
@@ -57,12 +57,12 @@ function CommentList() {
 
     useEffect(() => {
         fetchComments();
-    }, [id]);
+    }, [fetchComments, id]);
 
     const onRefresh = () => {
         setRefreshing(true);
-        fetchComments()
-    }
+        fetchComments();
+    };
 
     if (isEmpty) {
         return (
@@ -91,7 +91,7 @@ function CommentList() {
                 ToastAndroid.show('Copied to clipboard', ToastAndroid.SHORT);
             }}
         />
-    )
+    );
 
     return (
         <FlatList
@@ -113,7 +113,7 @@ function CommentList() {
                 <ActivityIndicator size="large" style={styles.loading} />
             }
         />
-    )
+    );
 }
 
 export function Comments(): React.JSX.Element {
@@ -156,6 +156,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     loading: {
-        marginTop: "20%",
-    }
+        marginTop: '20%',
+    },
 });

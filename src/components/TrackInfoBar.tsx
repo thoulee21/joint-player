@@ -1,14 +1,14 @@
-import { useNavigation } from "@react-navigation/native";
-import React from "react";
+import { useNavigation } from '@react-navigation/native';
+import React from 'react';
 import {
     StatusBar,
     StyleSheet,
-    TouchableWithoutFeedback
-} from "react-native";
-import HapticFeedback from "react-native-haptic-feedback";
-import { Avatar, Card, useTheme } from "react-native-paper";
-import { useActiveTrack } from "react-native-track-player";
-import { TrackMenu } from ".";
+    TouchableWithoutFeedback,
+} from 'react-native';
+import HapticFeedback from 'react-native-haptic-feedback';
+import { Avatar, Card, useTheme } from 'react-native-paper';
+import { useActiveTrack } from 'react-native-track-player';
+import { TrackMenu } from '.';
 
 const placeholderImg = 'https://picsum.photos/100';
 
@@ -24,12 +24,12 @@ export const TrackInfoBar = () => {
             subtitleStyle={{ color: appTheme.colors.primary }}
             style={[
                 styles.infoBar,
-                { paddingTop: StatusBar.currentHeight }
+                { paddingTop: StatusBar.currentHeight },
             ]}
             left={({ size }) =>
                 <TouchableWithoutFeedback
                     onPress={() => {
-                        HapticFeedback.trigger("effectHeavyClick");
+                        HapticFeedback.trigger('effectHeavyClick');
                         navigation.goBack();
                     }}
                 >
@@ -41,11 +41,11 @@ export const TrackInfoBar = () => {
             }
             right={TrackMenu}
         />
-    )
-}
+    );
+};
 
 const styles = StyleSheet.create({
     infoBar: {
-        marginVertical: "5%",
+        marginVertical: '5%',
     },
-})
+});

@@ -32,4 +32,4 @@ export function useLocalAutoScroll(
   });
 
   return { localAutoScroll, resetLocalAutoScroll, onScroll };
-};
+}

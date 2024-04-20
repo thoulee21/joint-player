@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import HapticFeedback from 'react-native-haptic-feedback';
-import { Surface, Text, useTheme, } from 'react-native-paper';
+import { Surface, Text, useTheme } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
 
 export const placeholderImg = 'https://picsum.photos/800';
@@ -20,17 +20,17 @@ export const TrackInfo = () => {
         elevation={5}
         style={[
           styles.imgSurface,
-          { borderRadius: appTheme.roundness * 5 }
+          { borderRadius: appTheme.roundness * 5 },
         ]}
       >
         <TouchableWithoutFeedback
           style={[
             styles.artwork,
-            { borderRadius: appTheme.roundness * 5 }
+            { borderRadius: appTheme.roundness * 5 },
           ]}
           onPress={() => {
             if (track?.id) {
-              HapticFeedback.trigger("effectHeavyClick");
+              HapticFeedback.trigger('effectHeavyClick');
               // @ts-ignore
               navigation.push('Lyrics');
             }

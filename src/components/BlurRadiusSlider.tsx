@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Slider from '@react-native-community/slider';
 import React, { useContext, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import HapticFeedback from "react-native-haptic-feedback";
+import HapticFeedback from 'react-native-haptic-feedback';
 import { List, Text, useTheme } from 'react-native-paper';
 import { PreferencesContext, StorageKeys } from '../App';
 
@@ -15,7 +15,7 @@ export function BlurRadiusSlider() {
 
     const vibrate = (value: number) => {
         if (value % step === 0) {
-            HapticFeedback.trigger("effectHeavyClick");
+            HapticFeedback.trigger('effectHeavyClick');
             setShowValue(value);
         }
     };

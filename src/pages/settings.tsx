@@ -10,7 +10,7 @@ import {
   BlurRadiusSlider,
   InitKeywordItem,
   ThemeColorIndicator,
-  placeholderImg
+  placeholderImg,
 } from '../components';
 
 export const upperFirst = (str: string) =>
@@ -28,8 +28,8 @@ const VersionIcon = (props: any) => {
         native: 'information',
       })}
     />
-  )
-}
+  );
+};
 
 const VersionItem = () => {
   return (
@@ -38,8 +38,8 @@ const VersionItem = () => {
       description={`${upperFirst(Platform.OS)} v${appVersion}`}
       left={VersionIcon}
     />
-  )
-}
+  );
+};
 
 export function Settings() {
   const navigation = useNavigation();
@@ -67,7 +67,7 @@ export function Settings() {
             <InitKeywordItem />
           </List.Section>
 
-          <List.Section title='Appearance'>
+          <List.Section title="Appearance">
             <ThemeColorIndicator />
           </List.Section>
           <BlurRadiusSlider />
@@ -86,6 +86,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    backgroundColor: 'transparent'
-  }
+    backgroundColor: 'transparent',
+  },
 });
