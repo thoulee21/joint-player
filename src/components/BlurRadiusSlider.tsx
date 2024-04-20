@@ -53,6 +53,6 @@ export function BlurRadiusSlider() {
 
 const styles = StyleSheet.create({
     slider: {
-        height: 30,
+        height: 20,
     },
 });

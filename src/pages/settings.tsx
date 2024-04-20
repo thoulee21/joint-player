@@ -8,6 +8,7 @@ import { version as appVersion } from '../../package.json';
 import { PreferencesContext } from '../App';
 import {
   BlurRadiusSlider,
+  ExperimentalBlurSwitch,
   InitKeywordItem,
   ThemeColorIndicator,
   placeholderImg,
@@ -69,8 +70,9 @@ export function Settings() {
 
           <List.Section title="Appearance">
             <ThemeColorIndicator />
+            <BlurRadiusSlider />
+            <ExperimentalBlurSwitch />
           </List.Section>
-          <BlurRadiusSlider />
 
           <List.Section title="General">
             <VersionItem />

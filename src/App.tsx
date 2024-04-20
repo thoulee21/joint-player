@@ -37,6 +37,8 @@ export const PreferencesContext = createContext<{
   setKeyword: (keyword: string) => void;
   blurRadius: number;
   setBlurRadius: (blurRadius: number) => void;
+  experimentalBlur: boolean;
+  setExperimentalBlur: (experimentalBlur: boolean) => void;
 } | null>(null);
 
 const Stack = createNativeStackNavigator();
@@ -47,6 +49,7 @@ function App() {
 
   const [keyword, setKeyword] = useState('');
   const [blurRadius, setBlurRadius] = useState(50);
+  const [experimentalBlur, setExperimentalBlur] = useState(true);
 
   useEffect(() => {
     SplashScreen.preventAutoHideAsync();
@@ -93,8 +96,10 @@ function App() {
       setKeyword,
       blurRadius,
       setBlurRadius,
+      experimentalBlur,
+      setExperimentalBlur,
     }),
-    [isDarkMode, keyword, blurRadius, updateTheme],
+    [updateTheme, isDarkMode, keyword, blurRadius, experimentalBlur],
   );
 
   const { LightTheme: NaviLightTheme, DarkTheme: NaviDarkTheme } =

@@ -1,5 +1,6 @@
 export * from './BlurRadiusSlider';
 export * from './BottomSheetPaper';
+export * from './ExperimentalBlurSwitch';
 export * from './InitKeywordItem';
 export * from './Lyric';
 export * from './MvMenu';

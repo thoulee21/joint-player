@@ -1,19 +1,32 @@
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import Color from 'color';
 import React, { PropsWithChildren } from 'react';
 import { StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
 export const BottomSheetPaper = ({
   bottomSheetRef,
+  experimentalBlurEnabled,
   children,
-}: PropsWithChildren<{ bottomSheetRef: React.RefObject<BottomSheet> }>) => {
+}: PropsWithChildren<{
+  bottomSheetRef: React.RefObject<BottomSheet>;
+  experimentalBlurEnabled: boolean
+}>) => {
   const appTheme = useTheme();
 
   return (
     <BottomSheet
       ref={bottomSheetRef}
       index={-1}
-      backgroundStyle={styles.transparent}
+      backgroundStyle={
+        experimentalBlurEnabled
+          ? styles.transparent
+          : {
+            backgroundColor:
+              Color(appTheme.colors.surface)
+                .fade(0.1).string(),
+          }
+      }
       handleIndicatorStyle={{ backgroundColor: appTheme.colors.onSurface }}
       snapPoints={['97%']}
       enablePanDownToClose

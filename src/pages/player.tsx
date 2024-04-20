@@ -156,7 +156,12 @@ export function Player(): React.JSX.Element {
       </BlurView>
 
       <Portal>
-        <TrackListSheet bottomSheetRef={bottomSheetRef} />
+        <TrackListSheet
+          bottomSheetRef={bottomSheetRef}
+          experimentalBlurEnabled={
+            preferences?.experimentalBlur ?? true
+          }
+        />
       </Portal>
     </ImageBackground>
   );

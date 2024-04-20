@@ -77,20 +77,26 @@ function TrackList() {
 }
 
 export function TrackListSheet({
-  bottomSheetRef,
+  bottomSheetRef, experimentalBlurEnabled,
 }: {
   bottomSheetRef: React.RefObject<BottomSheet>;
+  experimentalBlurEnabled: boolean;
 }) {
   const appTheme = useTheme();
 
   return (
-    <BottomSheetPaper bottomSheetRef={bottomSheetRef}>
+    <BottomSheetPaper
+      bottomSheetRef={bottomSheetRef}
+      experimentalBlurEnabled={experimentalBlurEnabled}
+    >
       <BlurView
         style={styles.trackList}
         tint={appTheme.dark
           ? 'systemUltraThinMaterialDark'
           : 'systemUltraThinMaterialLight'}
-        experimentalBlurMethod="dimezisBlurView"
+        experimentalBlurMethod={
+          experimentalBlurEnabled ? 'dimezisBlurView' : 'none'
+        }
       >
         <TrackList />
       </BlurView>
