@@ -61,20 +61,9 @@ export function Player(): React.JSX.Element {
   });
 
   useEffect(() => {
-    const onLoad = async () => {
-      if (track?.artwork) {
-        setTheme();
-        setThemeSet(true);
-      }
-    };
-
-    onLoad()
-      .finally(() => {
-        if (isPlayerReady && themeSet) {
-          SplashScreen.hideAsync();
-        }
-      });
-      // 不添加 setTheme 以防重复执行
+    if (isPlayerReady && themeSet) {
+      SplashScreen.hideAsync();
+    }
   }, [isPlayerReady, themeSet, track?.artwork]);
 
   const searchSongs = useDebounce(async () => {
@@ -90,6 +79,12 @@ export function Player(): React.JSX.Element {
       source={{ uri: track?.artwork || placeholderImg }}
       style={styles.screenContainer}
       blurRadius={preferences?.blurRadius}
+      onLoadEnd={() => {
+        if (track?.artwork) {
+          setTheme();
+          setThemeSet(true);
+        }
+      }}
     >
       <BlurView
         tint={appTheme.dark ? 'dark' : 'light'}
