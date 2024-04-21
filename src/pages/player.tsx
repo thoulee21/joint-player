@@ -48,34 +48,33 @@ export function Player(): React.JSX.Element {
   const track = useActiveTrack();
   const bottomSheetRef = useRef<BottomSheet>(null);
 
+  const [themeSet, setThemeSet] = useState(false);
   const [searching, setSearching] = useState(false);
-  const [firstLoad, setFirstLoad] = useState(true);
 
-  const changeTheme = async () => {
+  const setTheme = useDebounce(async () => {
     const colors = await getColors(track?.artwork || placeholderImg);
-    const dominantColor = (colors as AndroidImageColors).dominant;
-
-    preferences?.updateTheme(dominantColor);
+    const sourceColor = (colors as AndroidImageColors).dominant;
+    preferences?.updateTheme(sourceColor);
     preferences?.setIsDarkMode(
-      Color(dominantColor).isDark()
+      Color(sourceColor).isDark()
     );
-  };
-
-  const onFirstLoad = useDebounce(async () => {
-    await changeTheme();
-
-    if (firstLoad) {
-      if (isPlayerReady) {
-        SplashScreen.hideAsync();
-      }
-    }
-
-    setFirstLoad(false);
   });
 
   useEffect(() => {
-    onFirstLoad();
-  }, [onFirstLoad]);
+    const onLoad = async () => {
+      if (track?.artwork) {
+        setTheme();
+        setThemeSet(true);
+      }
+    };
+
+    onLoad()
+      .finally(() => {
+        if (isPlayerReady && themeSet) {
+          SplashScreen.hideAsync();
+        }
+      });
+  }, [isPlayerReady, themeSet, track?.artwork]);
 
   const searchSongs = useDebounce(async () => {
     if (preferences?.keyword) {
