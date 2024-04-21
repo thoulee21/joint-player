@@ -33,8 +33,6 @@ export const PreferencesContext = createContext<{
   updateTheme: (sourceColor: string) => void;
   isDarkMode: boolean;
   setIsDarkMode: (isDarkMode: boolean) => void;
-  keyword: string;
-  setKeyword: (keyword: string) => void;
   blurRadius: number;
   setBlurRadius: (blurRadius: number) => void;
   experimentalBlur: boolean;
@@ -47,7 +45,6 @@ function App() {
   const [isDarkMode, setIsDarkMode] = useState(useColorScheme() === 'dark');
   const { theme: colorTheme, updateTheme } = useMaterial3Theme();
 
-  const [keyword, setKeyword] = useState('');
   const [blurRadius, setBlurRadius] = useState(50);
   const [experimentalBlur, setExperimentalBlur] = useState(__DEV__);
 
@@ -57,11 +54,6 @@ function App() {
 
   useEffect(() => {
     async function restorePrefs() {
-      const storedKeyword = await AsyncStorage.getItem(StorageKeys.Keyword);
-      if (storedKeyword) {
-        setKeyword(storedKeyword);
-      }
-
       const storedBlurRadius = await AsyncStorage.getItem(StorageKeys.BlurRadius);
       if (storedBlurRadius) {
         setBlurRadius(parseInt(storedBlurRadius, 10));
@@ -92,14 +84,12 @@ function App() {
       updateTheme,
       isDarkMode,
       setIsDarkMode,
-      keyword,
-      setKeyword,
       blurRadius,
       setBlurRadius,
       experimentalBlur,
       setExperimentalBlur,
     }),
-    [updateTheme, isDarkMode, keyword, blurRadius, experimentalBlur],
+    [updateTheme, isDarkMode, blurRadius, experimentalBlur],
   );
 
   const { LightTheme: NaviLightTheme, DarkTheme: NaviDarkTheme } =

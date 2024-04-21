@@ -1,16 +1,26 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Color from 'color';
-import React, { useContext, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, ToastAndroid } from 'react-native';
 import { TextInput, useTheme } from 'react-native-paper';
-import { PreferencesContext, StorageKeys } from '../App';
+import { StorageKeys } from '../App';
 
 export function InitKeywordItem() {
-  const prefs = useContext(PreferencesContext);
   const appTheme = useTheme();
 
-  const { keyword, setKeyword } = prefs || { keyword: '', setKeyword: () => { } };
+  const [keyword, setKeyword] = useState('');
   const [savedCheck, setSavedCheck] = useState(false);
+
+  useEffect(() => {
+    const restoreKeyword = async () => {
+      const storedKeyword = await AsyncStorage.getItem(StorageKeys.Keyword);
+      if (storedKeyword) {
+        setKeyword(storedKeyword);
+      }
+    };
+
+    restoreKeyword();
+  }, []);
 
   const saveKeyword = async () => {
     await AsyncStorage.setItem(

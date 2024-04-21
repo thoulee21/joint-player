@@ -1,4 +1,5 @@
 import BottomSheet from '@gorhom/bottom-sheet';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
 import { BlurView } from 'expo-blur';
@@ -27,7 +28,7 @@ import {
   useTheme,
 } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
-import { PreferencesContext } from '../App';
+import { PreferencesContext, StorageKeys } from '../App';
 import {
   PlayControls,
   Progress,
@@ -50,15 +51,27 @@ export function Player(): React.JSX.Element {
 
   const [themeSet, setThemeSet] = useState(false);
   const [searching, setSearching] = useState(false);
+  const [keyword, setKeyword] = useState('');
+  const [placeholderKeyword, setPlaceholderKeyword] = useState('');
 
   const setTheme = useDebounce(async () => {
     const colors = await getColors(track?.artwork || placeholderImg);
-    const sourceColor = (colors as AndroidImageColors).dominant;
-    preferences?.updateTheme(sourceColor);
-    preferences?.setIsDarkMode(
-      Color(sourceColor).isDark()
-    );
+    const sourceColor = Color((colors as AndroidImageColors).dominant);
+
+    preferences?.setIsDarkMode(sourceColor.isDark());
+    preferences?.updateTheme(sourceColor.hex().toString());
   });
+
+  useEffect(() => {
+    const restoreInitKeyword = async () => {
+      const storedKeyword = await AsyncStorage.getItem(StorageKeys.Keyword);
+      if (storedKeyword) {
+        setPlaceholderKeyword(storedKeyword);
+      }
+    };
+
+    restoreInitKeyword();
+  }, []);
 
   useEffect(() => {
     if (isPlayerReady && themeSet) {
@@ -67,11 +80,16 @@ export function Player(): React.JSX.Element {
   }, [isPlayerReady, themeSet, track?.artwork]);
 
   const searchSongs = useDebounce(async () => {
-    if (preferences?.keyword) {
-      setSearching(true);
-      await QueueInitialTracksService(preferences.keyword);
-      setSearching(false);
+    setSearching(true);
+
+    if (keyword) {
+      await QueueInitialTracksService(keyword);
+    } else if (placeholderKeyword) {
+      setKeyword(placeholderKeyword);
+      await QueueInitialTracksService(placeholderKeyword);
     }
+
+    setSearching(false);
   });
 
   return (
@@ -94,11 +112,12 @@ export function Player(): React.JSX.Element {
         ]}
       >
         <Searchbar
-          placeholder="Search for music"
+          placeholder={placeholderKeyword || 'Search for songs'}
+          placeholderTextColor={appTheme.colors.onSurfaceVariant}
           style={styles.searchbar}
-          inputStyle={{ color: appTheme.colors.onBackground }}
-          onChangeText={preferences?.setKeyword}
-          value={preferences?.keyword as string}
+          inputStyle={{ color: appTheme.colors.onSurface }}
+          onChangeText={setKeyword}
+          value={keyword}
           loading={searching}
           onSubmitEditing={searchSongs}
           onIconPress={searchSongs}
