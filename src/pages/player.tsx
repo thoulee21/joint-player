@@ -74,6 +74,7 @@ export function Player(): React.JSX.Element {
           SplashScreen.hideAsync();
         }
       });
+      // 不添加 setTheme 以防重复执行
   }, [isPlayerReady, themeSet, track?.artwork]);
 
   const searchSongs = useDebounce(async () => {
