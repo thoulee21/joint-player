@@ -58,8 +58,12 @@ const BeRepliedComment = ({ reply }: { reply: BeReplied }) => {
 const CommentItem = ({ item }: { item: Comment }) => {
     const appTheme = useTheme();
 
-    const commentContent =
-        `${item.content}\n\n❤️ ${item.likedCount}    🏠  ${item.ipLocation.location}`;
+    const commentContent = item.content.concat(
+        '\n\n❤️ ',
+        item.likedCount.toString(),
+        '  •  ',
+        item.timeStr,
+    );
 
     return (
         <List.Section>
