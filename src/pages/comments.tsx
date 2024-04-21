@@ -5,7 +5,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import {
     FlatList,
     ImageBackground,
-    RefreshControl,
     StyleSheet,
     ToastAndroid,
 } from 'react-native';
@@ -30,7 +29,6 @@ function CommentList() {
 
     const [comments, setComments] = useState<Comment[]>([]);
     const [isEmpty, setIsEmpty] = useState(false);
-    const [refreshing, setRefreshing] = useState(false);
 
     const id = track?.id;
     const limit = 20;
@@ -52,17 +50,11 @@ function CommentList() {
                 ToastAndroid.SHORT,
             );
         }
-        setRefreshing(false);
     });
 
     useEffect(() => {
         fetchComments();
-    }, [fetchComments, id]);
-
-    const onRefresh = () => {
-        setRefreshing(true);
-        fetchComments();
-    };
+    }, [fetchComments]);
 
     if (isEmpty) {
         return (
@@ -96,16 +88,6 @@ function CommentList() {
     return (
         <FlatList
             data={comments}
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            refreshControl={
-                <RefreshControl
-                    refreshing={refreshing}
-                    onRefresh={onRefresh}
-                    colors={[appTheme.colors.primary]}
-                    progressBackgroundColor={appTheme.colors.background}
-                />
-            }
             keyExtractor={(item) => item.commentId.toString()}
             renderItem={renderComment}
             // Component to render when loading data
