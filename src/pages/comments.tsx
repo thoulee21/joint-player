@@ -1,5 +1,5 @@
-import Clipboard from '@react-native-clipboard/clipboard';
 import { useNavigation } from '@react-navigation/native';
+import Color from 'color';
 import { BlurView } from 'expo-blur';
 import React, { useContext, useEffect, useState } from 'react';
 import {
@@ -8,7 +8,6 @@ import {
     StyleSheet,
     ToastAndroid,
 } from 'react-native';
-import HapticFeedback from 'react-native-haptic-feedback';
 import {
     ActivityIndicator,
     Appbar,
@@ -18,32 +17,94 @@ import {
 } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
 import { PreferencesContext } from '../App';
-import { placeholderImg } from '../components';
+import { MoreBtn, placeholderImg } from '../components';
 import { useDebounce } from '../hook';
 import { requestInit } from '../services';
-import { Comment, Main } from '../types/comments';
+import { BeReplied, Comment, Main } from '../types/comments';
+
+const BeRepliedComment = ({ reply }: { reply: BeReplied }) => {
+    const appTheme = useTheme();
+
+    const beRepliedStyle = [
+        styles.beReplied,
+        {
+            borderTopStartRadius: appTheme.roundness,
+            borderBottomLeftRadius: appTheme.roundness,
+            backgroundColor:
+                Color(appTheme.colors.surface)
+                    .fade(0.8).string(),
+        }];
+
+    return (
+        <List.Item
+            style={beRepliedStyle}
+            title={reply.user.nickname}
+            titleStyle={{ color: appTheme.colors.secondary }}
+            description={reply.content}
+            descriptionStyle={{ color: appTheme.colors.onSurfaceVariant }}
+            descriptionNumberOfLines={20}
+            left={props =>
+                <Avatar.Image
+                    {...props}
+                    size={30}
+                    source={{ uri: reply.user.avatarUrl }}
+                />
+            }
+            right={() => <MoreBtn data={reply.content} />}
+        />
+    );
+};
+
+const CommentItem = ({ item }: { item: Comment }) => {
+    const appTheme = useTheme();
+
+    const commentContent =
+        `${item.content}\n\n❤️ ${item.likedCount}    🏠  ${item.ipLocation.location}`;
+
+    return (
+        <List.Section>
+            <List.Item
+                title={item.user.nickname}
+                titleStyle={{ color: appTheme.colors.primary }}
+                description={commentContent}
+                descriptionStyle={{ color: appTheme.colors.onBackground }}
+                descriptionNumberOfLines={20}
+                left={props =>
+                    <Avatar.Image
+                        {...props}
+                        size={40}
+                        source={{ uri: item.user.avatarUrl }}
+                    />
+                }
+                right={() => <MoreBtn data={item.content} />}
+            />
+
+            <FlatList
+                data={item.beReplied}
+                keyExtractor={(reply) => reply.beRepliedCommentId.toString()}
+                renderItem={({ item: reply }) => <BeRepliedComment reply={reply} />}
+            />
+        </List.Section>
+    );
+};
 
 function CommentList() {
-    const appTheme = useTheme();
     const track = useActiveTrack();
 
     const [comments, setComments] = useState<Comment[]>([]);
     const [isEmpty, setIsEmpty] = useState(false);
 
-    const id = track?.id;
-    const limit = 20;
-    const offset = 1;
-
     const fetchComments = useDebounce(async () => {
         const response = await fetch(
-            `http://music.163.com/api/v1/resource/comments/R_SO_4_${id}?limit=${limit}&offset=${offset}`,
+            `http://music.163.com/api/v1/resource/comments/R_SO_4_${track?.id}`,
             requestInit
         );
+
         if (response.status === 200) {
             const data: Main = await response.json();
 
             setIsEmpty(data.total === 0);
-            setComments(data.comments);
+            setComments(data.hotComments);
         } else {
             ToastAndroid.show(
                 `Failed to fetch comments: ${response.status} ${response.statusText}`,
@@ -54,7 +115,8 @@ function CommentList() {
 
     useEffect(() => {
         fetchComments();
-    }, [fetchComments]);
+        // no fetchComments in deps to avoid infinite loop
+    }, [track?.id]);
 
     if (isEmpty) {
         return (
@@ -63,46 +125,25 @@ function CommentList() {
                 titleStyle={styles.emptyContent}
             />
         );
+    } else {
+        return (
+            <FlatList
+                data={comments}
+                keyExtractor={(item) => item.commentId.toString()}
+                renderItem={({ item }) => <CommentItem item={item} />}
+                // Component to render when loading data
+                ListEmptyComponent={() =>
+                    <ActivityIndicator size="large" style={styles.loading} />
+                }
+            />
+        );
     }
-
-    const renderComment = ({ item }: { item: Comment }) => (
-        <List.Item
-            title={item.user.nickname}
-            titleStyle={{ color: appTheme.colors.secondary }}
-            description={item.content}
-            descriptionStyle={{ color: appTheme.colors.onBackground }}
-            descriptionNumberOfLines={20}
-            left={props =>
-                <Avatar.Image {...props}
-                    source={{ uri: item.user.avatarUrl }}
-                />
-            }
-            onLongPress={() => {
-                Clipboard.setString(item.content);
-                HapticFeedback.trigger('effectClick');
-                ToastAndroid.show('Copied to clipboard', ToastAndroid.SHORT);
-            }}
-        />
-    );
-
-    return (
-        <FlatList
-            data={comments}
-            keyExtractor={(item) => item.commentId.toString()}
-            renderItem={renderComment}
-            // Component to render when loading data
-            ListEmptyComponent={() =>
-                <ActivityIndicator size="large" style={styles.loading} />
-            }
-        />
-    );
 }
 
 export function Comments(): React.JSX.Element {
     const navigation = useNavigation();
-    const preferences = useContext(PreferencesContext);
     const appTheme = useTheme();
-
+    const preferences = useContext(PreferencesContext);
     const track = useActiveTrack();
 
     return (
@@ -115,7 +156,7 @@ export function Comments(): React.JSX.Element {
                 tint={appTheme.dark ? 'dark' : 'light'}
                 style={styles.rootView}
             >
-                <Appbar.Header style={styles.heder}>
+                <Appbar.Header style={styles.header}>
                     <Appbar.BackAction onPress={navigation.goBack} />
                     <Appbar.Content title="Comments" />
                 </Appbar.Header>
@@ -131,7 +172,7 @@ const styles = StyleSheet.create({
         flex: 1,
         display: 'flex',
     },
-    heder: {
+    header: {
         backgroundColor: 'transparent',
     },
     emptyContent: {
@@ -139,5 +180,8 @@ const styles = StyleSheet.create({
     },
     loading: {
         marginTop: '20%',
+    },
+    beReplied: {
+        marginLeft: '10%',
     },
 });

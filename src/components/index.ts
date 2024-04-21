@@ -3,6 +3,7 @@ export * from './BottomSheetPaper';
 export * from './ExperimentalBlurSwitch';
 export * from './InitKeywordItem';
 export * from './Lyric';
+export * from './MoreButton';
 export * from './MvMenu';
 export * from './PlayControls';
 export * from './Progress';

@@ -1,11 +1,14 @@
 export interface Main {
-    isMusician:  boolean;
-    userId:      number;
-    topComments: any[];
-    code:        number;
-    comments:    Comment[];
-    total:       number;
-    more:        boolean;
+    isMusician:    boolean;
+    userId:        number;
+    topComments:   any[];
+    moreHot:       boolean;
+    hotComments:   Comment[];
+    commentBanner: null;
+    code:          number;
+    comments:      Comment[];
+    total:         number;
+    more:          boolean;
 }
 
 export interface Comment {
@@ -56,8 +59,8 @@ export interface User {
     liveInfo:       null;
     anonym:         number;
     commonIdentity: null;
+    avatarDetail:   AvatarDetail | null;
     userType:       number;
-    avatarDetail:   null;
     avatarUrl:      string;
     followed:       boolean;
     mutual:         boolean;
@@ -73,10 +76,16 @@ export interface User {
     target:         null;
 }
 
+export interface AvatarDetail {
+    userType:        number;
+    identityLevel:   number;
+    identityIconUrl: string;
+}
+
 export interface VipRights {
     associator:        Associator | null;
     musicPackage:      Associator | null;
-    redplus:           Associator | null;
+    redplus:           null;
     redVipAnnualCount: number;
     redVipLevel:       number;
     relationType:      number;
