@@ -49,7 +49,7 @@ function App() {
 
   const [keyword, setKeyword] = useState('');
   const [blurRadius, setBlurRadius] = useState(50);
-  const [experimentalBlur, setExperimentalBlur] = useState(true);
+  const [experimentalBlur, setExperimentalBlur] = useState(__DEV__);
 
   useEffect(() => {
     SplashScreen.preventAutoHideAsync();
