@@ -1,6 +1,5 @@
 import BottomSheet from '@gorhom/bottom-sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
 import { BlurView } from 'expo-blur';
 import * as SplashScreen from 'expo-splash-screen';
@@ -11,21 +10,16 @@ import React, {
   useState,
 } from 'react';
 import {
-  Alert,
   ImageBackground,
   ScrollView,
   StatusBar,
   StyleSheet,
 } from 'react-native';
-import HapticFeedback, {
-  HapticFeedbackTypes,
-} from 'react-native-haptic-feedback';
 import { getColors } from 'react-native-image-colors';
 import type {
   AndroidImageColors,
 } from 'react-native-image-colors/build/types';
 import {
-  Appbar,
   Portal,
   Searchbar,
   useTheme,
@@ -35,6 +29,7 @@ import TrackPlayer, {
 } from 'react-native-track-player';
 import { PreferencesContext, StorageKeys } from '../App';
 import {
+  BottomBar,
   PlayControls,
   Progress,
   Spacer,
@@ -46,7 +41,6 @@ import { useDebounce, useSetupPlayer } from '../hook';
 import { QueueInitialTracksService } from '../services';
 
 export function Player(): React.JSX.Element {
-  const navigation = useNavigation();
   const appTheme = useTheme();
   const preferences = useContext(PreferencesContext);
 
@@ -144,44 +138,7 @@ export function Player(): React.JSX.Element {
           <Spacer mode="expand" />
         </ScrollView>
 
-        <Appbar.Header
-          style={styles.bottom}
-          mode="center-aligned"
-          elevated
-          statusBarHeight={0}
-        >
-          <Appbar.Action
-            icon="cog-outline"
-            onPress={() => {
-              // @ts-ignore
-              navigation.push('Settings');
-            }}
-          />
-          <Appbar.Content
-            title={track?.album || 'No Album'}
-            titleStyle={styles.bottomTitle}
-            onPress={() => {
-              if (track) {
-                HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
-                Alert.alert('Details',
-                  JSON.stringify(track, null, 2),
-                  [{
-                    text: 'OK',
-                    style: 'default',
-                    isPreferred: true,
-                  }],
-                  { cancelable: true }
-                );
-              }
-            }}
-          />
-          <Appbar.Action
-            icon="menu-open"
-            onPress={() => {
-              bottomSheetRef.current?.expand();
-            }}
-          />
-        </Appbar.Header>
+        <BottomBar bottomSheetRef={bottomSheetRef} />
       </BlurView>
 
       <Portal>
@@ -200,12 +157,6 @@ const styles = StyleSheet.create({
   screenContainer: {
     display: 'flex',
     flex: 1,
-  },
-  bottom: {
-    backgroundColor: 'transparent',
-  },
-  bottomTitle: {
-    fontSize: 16,
   },
   searchbar: {
     margin: 10,

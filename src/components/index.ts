@@ -1,5 +1,6 @@
 export * from './BackwardButton';
 export * from './BlurRadiusSlider';
+export * from './BottomBar';
 export * from './BottomSheetPaper';
 export * from './ExperimentalBlurSwitch';
 export * from './ForwardButton';
