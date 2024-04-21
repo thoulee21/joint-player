@@ -27,7 +27,9 @@ import {
   Searchbar,
   useTheme,
 } from 'react-native-paper';
-import { useActiveTrack } from 'react-native-track-player';
+import TrackPlayer, {
+  useActiveTrack,
+} from 'react-native-track-player';
 import { PreferencesContext, StorageKeys } from '../App';
 import {
   PlayControls,
@@ -90,6 +92,7 @@ export function Player(): React.JSX.Element {
     }
 
     setSearching(false);
+    await TrackPlayer.play();
   });
 
   return (
