@@ -29,6 +29,7 @@ export function RepeatModeSwitch() {
   return (
     <IconButton
       size={24}
+      animated
       icon={repeatMode === RepeatMode.Track ? 'repeat-once' : 'repeat'}
       onPress={toggleRepeatMode}
     />
