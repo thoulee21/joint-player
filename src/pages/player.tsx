@@ -11,11 +11,11 @@ import React, {
   useState,
 } from 'react';
 import {
+  Alert,
   ImageBackground,
   ScrollView,
   StatusBar,
   StyleSheet,
-  ToastAndroid,
 } from 'react-native';
 import { getColors } from 'react-native-image-colors';
 import type {
@@ -158,8 +158,16 @@ export function Player(): React.JSX.Element {
             title={track?.album || 'No Album'}
             titleStyle={styles.bottomTitle}
             onPress={() => {
-              if (track?.album) {
-                ToastAndroid.show(track.album, ToastAndroid.SHORT);
+              if (track) {
+                Alert.alert('Details',
+                  JSON.stringify(track, null, 2),
+                  [{
+                    text: 'OK',
+                    style: 'default',
+                    isPreferred: true,
+                  }],
+                  { cancelable: true }
+                );
               }
             }}
           />
