@@ -1,5 +1,8 @@
 import React, { useCallback, useEffect } from 'react';
 import { StyleSheet, ToastAndroid, View } from 'react-native';
+import HapticFeedback, {
+  HapticFeedbackTypes,
+} from 'react-native-haptic-feedback';
 import { IconButton } from 'react-native-paper';
 import TrackPlayer, {
   useIsPlaying,
@@ -13,7 +16,21 @@ function BackwardButton() {
       icon="skip-previous"
       size={50}
       onPress={async () => {
+        HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
         await TrackPlayer.skipToPrevious();
+      }}
+    />
+  );
+}
+
+function ForwardButton() {
+  return (
+    <IconButton
+      icon="skip-next"
+      size={50}
+      onPress={async () => {
+        HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
+        await TrackPlayer.skipToNext();
       }}
     />
   );
@@ -29,18 +46,14 @@ function PlayButton() {
       loading={bufferingDuringPlay}
       selected
       animated
-      onPress={playing ? TrackPlayer.pause : TrackPlayer.play}
-    />
-  );
-}
+      onPress={() => {
+        HapticFeedback.trigger(HapticFeedbackTypes.effectClick);
 
-function ForwardButton() {
-  return (
-    <IconButton
-      icon="skip-next"
-      size={50}
-      onPress={async () => {
-        await TrackPlayer.skipToNext();
+        if (playing) {
+          TrackPlayer.pause();
+        } else {
+          TrackPlayer.play();
+        }
       }}
     />
   );

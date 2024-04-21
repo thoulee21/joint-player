@@ -1,5 +1,5 @@
 import Clipboard from '@react-native-clipboard/clipboard';
-import React, {useRef, useState} from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Linking,
   SafeAreaView,
@@ -9,8 +9,17 @@ import {
   ToastAndroid,
   View,
 } from 'react-native';
-import {Appbar, Menu, ProgressBar, Tooltip, useTheme} from 'react-native-paper';
-import {WebView} from 'react-native-webview';
+import HapticFeedback, {
+  HapticFeedbackTypes,
+} from 'react-native-haptic-feedback';
+import {
+  Appbar,
+  Menu,
+  ProgressBar,
+  Tooltip,
+  useTheme,
+} from 'react-native-paper';
+import { WebView } from 'react-native-webview';
 
 export const WebViewScreen = ({
   route,
@@ -26,15 +35,16 @@ export const WebViewScreen = ({
 
   const appTheme = useTheme();
 
-  const {url, title} = route.params;
+  const { url, title } = route.params;
 
   const showMenu = () => {
+    HapticFeedback.trigger(HapticFeedbackTypes.effectTick);
     setMenuVisible(true);
   };
 
   return (
     <SafeAreaView style={styles.webview}>
-      <View style={{marginTop: StatusBar.currentHeight}}>
+      <View style={{ marginTop: StatusBar.currentHeight }}>
         <Appbar>
           <Appbar.BackAction onPress={() => navigation.goBack()} />
           <Tooltip title="Reload">
@@ -109,15 +119,14 @@ export const WebViewScreen = ({
 
       <WebView
         ref={webViewRef}
-        style={{backgroundColor: appTheme.colors.background}}
-        source={{uri: url}}
-        onLoadProgress={({nativeEvent}: {nativeEvent: any}) => {
+        style={{ backgroundColor: appTheme.colors.background }}
+        source={{ uri: url }}
+        onLoadProgress={({ nativeEvent }: { nativeEvent: any }) => {
           setLoadProgress(nativeEvent.progress);
         }}
         onHttpError={(event: any) => {
           ToastAndroid.show(
-            `${event.nativeEvent.statusCode.toString()}: ${
-              event.nativeEvent.description
+            `${event.nativeEvent.statusCode.toString()}: ${event.nativeEvent.description
             }`,
             ToastAndroid.LONG,
           );

@@ -17,6 +17,9 @@ import {
   StatusBar,
   StyleSheet,
 } from 'react-native';
+import HapticFeedback, {
+  HapticFeedbackTypes,
+} from 'react-native-haptic-feedback';
 import { getColors } from 'react-native-image-colors';
 import type {
   AndroidImageColors,
@@ -159,6 +162,7 @@ export function Player(): React.JSX.Element {
             titleStyle={styles.bottomTitle}
             onPress={() => {
               if (track) {
+                HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
                 Alert.alert('Details',
                   JSON.stringify(track, null, 2),
                   [{

@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
-import HapticFeedback from 'react-native-haptic-feedback';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Surface, Text, useTheme } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
 
@@ -36,7 +36,7 @@ export const TrackInfo = () => {
             }
           }}
           onLongPress={() => {
-            HapticFeedback.trigger('effectTick');
+            HapticFeedback.trigger(HapticFeedbackTypes.effectTick);
             if (track?.artwork !== placeholderImg) {
               // @ts-ignore
               navigation.push('WebView', {

@@ -1,6 +1,9 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import React from 'react';
 import { ToastAndroid } from 'react-native';
+import HapticFeedback, {
+    HapticFeedbackTypes,
+} from 'react-native-haptic-feedback';
 import { List, useTheme } from 'react-native-paper';
 
 export function ThemeColorIndicator() {
@@ -9,6 +12,7 @@ export function ThemeColorIndicator() {
         <List.Item
             title="Theme Color"
             description={appTheme.colors.primary}
+            rippleColor="transparent"
             left={props => <List.Icon {...props} icon="palette-outline" />}
             right={() => (
                 <List.Icon
@@ -18,6 +22,7 @@ export function ThemeColorIndicator() {
             )}
             onLongPress={() => {
                 Clipboard.setString(appTheme.colors.primary);
+                HapticFeedback.trigger(HapticFeedbackTypes.effectTick);
                 ToastAndroid.show('Color copied to clipboard', ToastAndroid.SHORT);
             }}
         />
