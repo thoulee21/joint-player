@@ -1,6 +1,7 @@
 import { ToastAndroid } from 'react-native';
 import TrackPlayer, { Track } from 'react-native-track-player';
 import playlistData from '../assets/data/playlist.json';
+import type { Main, Track as TrackData } from '../types/playlist';
 
 export const requestInit = {
   headers: {
@@ -9,6 +10,25 @@ export const requestInit = {
     Accept:
       'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
   },
+};
+
+const fetchPlaylist = async () => {
+  const playlistId = 2279582982;
+
+  const playlist = await fetch(
+    `https://music.163.com/api/playlist/detail?id=${playlistId}`,
+    requestInit,
+  );
+  const playlistJson: Main = await playlist.json();
+
+  if (playlistJson.code !== 200 && __DEV__) {
+    ToastAndroid.show(
+      `Failed to fetch playlist: ${playlistJson.code} ${playlistJson.msg || playlistJson.message}`,
+      ToastAndroid.SHORT
+    );
+  }
+
+  return playlistJson.result;
 };
 
 const fetchSearchResults = async (keyword: string): Promise<any> => {
@@ -63,30 +83,34 @@ const fetchTrackDetails = async (trackId: string): Promise<Track> => {
   };
 };
 
-export const QueueInitialTracksService = async (
-  keyword?: string,
-): Promise<void> => {
-  let data: any;
+export const QueueInitialTracksService = async (keyword?: string): Promise<void> => {
+  try {
+    let songs: TrackData[] = [];
 
-  if (keyword) {
-    data = await fetchSearchResults(keyword);
-  } else {
-    // Startup with a predefined playlist
-    await TrackPlayer.add(playlistData as Track[]);
+    if (keyword) {
+      const data = await fetchSearchResults(keyword);
+      songs = data.songs;
 
-    ToastAndroid.show(
-      'Local playlist loaded',
-      ToastAndroid.SHORT
+    } else {
+      const result = await fetchPlaylist();
+
+      //取前20首歌曲
+      const tracks = result.tracks.slice(0, 20);
+      songs = tracks;
+    }
+
+    const fetchedData = await Promise.all(
+      songs.map(async (track: TrackData) => {
+        return await fetchTrackDetails(track.id.toString());
+      }),
     );
-    return;
+
+    await TrackPlayer.reset();
+    await TrackPlayer.add(fetchedData);
   }
-
-  const fetchedData: Track[] = await Promise.all(
-    data.songs.map(async (track: any) => {
-      return await fetchTrackDetails(track.id.toString());
-    }),
-  );
-
-  await TrackPlayer.reset();
-  await TrackPlayer.add(fetchedData);
+  catch {
+    // Fallback to local playlist if network request fails
+    await TrackPlayer.reset();
+    await TrackPlayer.add(playlistData as Track[]);
+  }
 };
