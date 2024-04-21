@@ -1,6 +1,5 @@
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import Color from 'color';
-import { BlurView } from 'expo-blur';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ActivityIndicator, List, useTheme } from 'react-native-paper';
@@ -8,7 +7,9 @@ import TrackPlayer, { Track, useActiveTrack } from 'react-native-track-player';
 import { BottomSheetPaper } from '.';
 import playlistData from '../assets/data/playlist.json';
 
-function TrackList() {
+function TrackList({ bottomSheetRef }:
+  { bottomSheetRef: React.RefObject<BottomSheet> }
+) {
   const appTheme = useTheme();
   const currentTrack = useActiveTrack();
 
@@ -55,6 +56,7 @@ function TrackList() {
         onPress={async () => {
           await TrackPlayer.skip(index);
           await TrackPlayer.play();
+          bottomSheetRef.current?.close();
         }}
       />
     );
@@ -82,24 +84,12 @@ export function TrackListSheet({
   bottomSheetRef: React.RefObject<BottomSheet>;
   experimentalBlurEnabled: boolean;
 }) {
-  const appTheme = useTheme();
-
   return (
     <BottomSheetPaper
       bottomSheetRef={bottomSheetRef}
       experimentalBlurEnabled={experimentalBlurEnabled}
     >
-      <BlurView
-        style={styles.trackList}
-        tint={appTheme.dark
-          ? 'systemUltraThinMaterialDark'
-          : 'systemUltraThinMaterialLight'}
-        experimentalBlurMethod={
-          experimentalBlurEnabled ? 'dimezisBlurView' : 'none'
-        }
-      >
-        <TrackList />
-      </BlurView>
+      <TrackList bottomSheetRef={bottomSheetRef} />
     </BottomSheetPaper>
   );
 }

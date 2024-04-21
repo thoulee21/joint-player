@@ -1,5 +1,6 @@
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import Color from 'color';
+import { BlurView } from 'expo-blur';
 import React, { PropsWithChildren } from 'react';
 import { StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
@@ -32,6 +33,14 @@ export const BottomSheetPaper = ({
       enablePanDownToClose
       android_keyboardInputMode="adjustResize"
       enableOverDrag={false} //防止与FlatList（ScrollView）冲突
+      backgroundComponent={(props) =>
+        <BlurView {...props}
+          tint={appTheme.dark ? 'dark' : 'light'}
+          experimentalBlurMethod={
+            experimentalBlurEnabled ? 'dimezisBlurView' : 'none'
+          }
+        />
+      }
     >
       <BottomSheetView style={styles.bottomView}>{children}</BottomSheetView>
     </BottomSheet>
