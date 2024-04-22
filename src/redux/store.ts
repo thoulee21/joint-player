@@ -1,10 +1,16 @@
 import { Action, ThunkAction, configureStore } from '@reduxjs/toolkit';
-import { darkModeSlice, experimentalBlurSlice } from './slices';
+import {
+    blurRadiusSlice,
+    darkModeSlice,
+    experimentalBlurSlice,
+} from './slices';
+
 
 export const store = configureStore({
     reducer: {
         experimentalBlur: experimentalBlurSlice.reducer,
         darkMode: darkModeSlice.reducer,
+        blurRadius: blurRadiusSlice.reducer,
     },
 });
 

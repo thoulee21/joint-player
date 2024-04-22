@@ -1,11 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
 import { BlurView } from 'expo-blur';
-import React, { useContext } from 'react';
+import React from 'react';
 import { ImageBackground, Platform, ScrollView, StyleSheet } from 'react-native';
 import { Appbar, List, useTheme } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
 import { version as appVersion } from '../../package.json';
-import { PreferencesContext } from '../App';
 import {
   BlurRadiusSlider,
   ExperimentalBlurSwitch,
@@ -13,6 +12,8 @@ import {
   ThemeColorIndicator,
   placeholderImg,
 } from '../components';
+import { useAppSelector } from '../hook/reduxHooks';
+import { blurRadius } from '../redux/slices';
 
 export const upperFirst = (str: string) =>
   str.slice(0, 1).toUpperCase() + str.slice(1);
@@ -45,14 +46,14 @@ const VersionItem = () => {
 export function Settings() {
   const navigation = useNavigation();
   const appTheme = useTheme();
-  const preferences = useContext(PreferencesContext);
   const track = useActiveTrack();
+  const blurRadiusValue = useAppSelector(blurRadius);
 
   return (
     <ImageBackground
       style={styles.root}
       source={{ uri: track?.artwork || placeholderImg }}
-      blurRadius={preferences?.blurRadius}
+      blurRadius={blurRadiusValue}
     >
       <BlurView
         tint={appTheme.dark ? 'dark' : 'light'}

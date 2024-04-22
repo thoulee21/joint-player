@@ -38,8 +38,8 @@ import {
   placeholderImg,
 } from '../components';
 import { useDebounce, useSetupPlayer } from '../hook';
-import { useAppDispatch } from '../hook/reduxHooks';
-import { toggleDarkMode } from '../redux/slices';
+import { useAppDispatch, useAppSelector } from '../hook/reduxHooks';
+import { blurRadius, toggleDarkMode } from '../redux/slices';
 import { QueueInitialTracksService } from '../services';
 
 export function Player(): React.JSX.Element {
@@ -55,6 +55,7 @@ export function Player(): React.JSX.Element {
   const [keyword, setKeyword] = useState('');
   const [placeholderKeyword, setPlaceholderKeyword] = useState('');
   const dispatch = useAppDispatch();
+  const blurRadiusValue = useAppSelector(blurRadius);
 
   const setTheme = async () => {
     const colors = await getColors(track?.artwork || placeholderImg);
@@ -101,7 +102,7 @@ export function Player(): React.JSX.Element {
     <ImageBackground
       source={{ uri: track?.artwork || placeholderImg }}
       style={styles.screenContainer}
-      blurRadius={preferences?.blurRadius}
+      blurRadius={blurRadiusValue}
       onLoadEnd={() => {
         if (track?.artwork) {
           setTheme();

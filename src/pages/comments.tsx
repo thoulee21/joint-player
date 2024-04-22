@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
 import { BlurView } from 'expo-blur';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     FlatList,
     ImageBackground,
@@ -16,12 +16,12 @@ import {
     useTheme,
 } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
-import { PreferencesContext } from '../App';
 import { MoreBtn, placeholderImg } from '../components';
 import { useDebounce } from '../hook';
+import { useAppSelector } from '../hook/reduxHooks';
+import { blurRadius } from '../redux/slices';
 import { fetchPlus, requestInit } from '../services';
 import { BeReplied, Comment, Main } from '../types/comments';
-
 const BeRepliedComment = ({ reply }: { reply: BeReplied }) => {
     const appTheme = useTheme();
 
@@ -148,14 +148,14 @@ function CommentList() {
 export function Comments(): React.JSX.Element {
     const navigation = useNavigation();
     const appTheme = useTheme();
-    const preferences = useContext(PreferencesContext);
     const track = useActiveTrack();
+    const blurRadiusValue = useAppSelector(blurRadius);
 
     return (
         <ImageBackground
             style={styles.rootView}
             source={{ uri: track?.artwork || placeholderImg }}
-            blurRadius={preferences?.blurRadius}
+            blurRadius={blurRadiusValue}
         >
             <BlurView
                 tint={appTheme.dark ? 'dark' : 'light'}

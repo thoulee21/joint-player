@@ -1,6 +1,6 @@
 import Color from 'color';
 import { BlurView } from 'expo-blur';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ImageBackground, StyleSheet, ToastAndroid } from 'react-native';
 import {
     ActivityIndicator,
@@ -11,16 +11,16 @@ import {
     useActiveTrack,
     useProgress,
 } from 'react-native-track-player';
-import { PreferencesContext } from '../App';
 import {
     Lyric,
     TrackInfoBar,
     placeholderImg,
 } from '../components';
 import { useDebounce } from '../hook';
+import { useAppSelector } from '../hook/reduxHooks';
+import { blurRadius } from '../redux/slices';
 import { fetchPlus, requestInit } from '../services';
 import { Main } from '../types/lyrics';
-
 const LyricView = ({ lrc, currentTime }:
     { lrc: string, currentTime: number }
 ) => {
@@ -70,9 +70,9 @@ export function LyricsScreen() {
     const { position } = useProgress();
     const appTheme = useTheme();
 
-    const prefs = useContext(PreferencesContext);
     const [lyric, setLyric] = useState<Main>();
     const [noLyric, setNoLyric] = useState(false);
+    const blurRadiusValue = useAppSelector(blurRadius);
 
     const getLyric = useDebounce(async () => {
         if (!track?.id) {
@@ -105,7 +105,7 @@ export function LyricsScreen() {
         <ImageBackground
             source={{ uri: track?.artwork || placeholderImg }}
             style={styles.rootView}
-            blurRadius={prefs?.blurRadius}
+            blurRadius={blurRadiusValue}
         >
             <BlurView
                 tint={appTheme.dark ? 'dark' : 'light'}

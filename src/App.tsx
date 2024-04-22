@@ -7,7 +7,7 @@ import {
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as SplashScreen from 'expo-splash-screen';
-import React, { createContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useEffect, useMemo } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
@@ -16,7 +16,7 @@ import {
   PaperProvider,
   adaptNavigationTheme,
 } from 'react-native-paper';
-import { useAppSelector } from './hook/reduxHooks';
+import { useAppDispatch, useAppSelector } from './hook/reduxHooks';
 import {
   Comments,
   LyricsScreen,
@@ -24,7 +24,7 @@ import {
   Settings,
   WebViewScreen,
 } from './pages';
-import { selectDarkModeEnabled } from './redux/slices';
+import { selectDarkModeEnabled, setBlurRadius } from './redux/slices';
 
 export enum StorageKeys {
   // eslint-disable-next-line no-unused-vars
@@ -35,17 +35,14 @@ export enum StorageKeys {
 
 export const PreferencesContext = createContext<{
   updateTheme: (sourceColor: string) => void;
-  blurRadius: number;
-  setBlurRadius: (blurRadius: number) => void;
 } | null>(null);
 
 const Stack = createNativeStackNavigator();
 
 function App() {
   const isDarkMode = useAppSelector(selectDarkModeEnabled);
-  const [blurRadius, setBlurRadius] = useState(50);
-
   const { theme: colorTheme, updateTheme } = useMaterial3Theme();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     SplashScreen.preventAutoHideAsync();
@@ -55,11 +52,12 @@ function App() {
     async function restorePrefs() {
       const storedBlurRadius = await AsyncStorage.getItem(StorageKeys.BlurRadius);
       if (storedBlurRadius) {
-        setBlurRadius(parseInt(storedBlurRadius, 10));
+        dispatch(setBlurRadius(Number(storedBlurRadius)));
       }
     }
 
     restorePrefs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const MyLightTheme = useMemo(
@@ -81,12 +79,10 @@ function App() {
   const preferences = useMemo(
     () => ({
       updateTheme,
-      blurRadius,
-      setBlurRadius,
     }),
     // no updateTheme
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [blurRadius],
+    [],
   );
 
   const { LightTheme: NaviLightTheme, DarkTheme: NaviDarkTheme } = useMemo(

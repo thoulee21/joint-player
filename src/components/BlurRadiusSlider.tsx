@@ -1,16 +1,19 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Slider from '@react-native-community/slider';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import HapticFeedback from 'react-native-haptic-feedback';
 import { List, Text, useTheme } from 'react-native-paper';
-import { PreferencesContext, StorageKeys } from '../App';
+import { StorageKeys } from '../App';
+import { useAppDispatch, useAppSelector } from '../hook/reduxHooks';
+import { blurRadius, setBlurRadius } from '../redux/slices';
 
 export function BlurRadiusSlider() {
     const appTheme = useTheme();
-    const preferences = useContext(PreferencesContext);
+    const dispatch = useAppDispatch();
+    const blurRadiusValue = useAppSelector(blurRadius);
+    const [showValue, setShowValue] = useState(blurRadiusValue);
 
-    const [showValue, setShowValue] = useState(preferences?.blurRadius);
     const step = 5;
 
     const vibrate = (value: number) => {
@@ -37,13 +40,13 @@ export function BlurRadiusSlider() {
                     minimumTrackTintColor={appTheme.colors.primary}
                     maximumTrackTintColor={appTheme.colors.tertiary}
                     onSlidingComplete={async (value) => {
-                        preferences?.setBlurRadius(value);
+                        dispatch(setBlurRadius(value));
                         await AsyncStorage.setItem(
                             StorageKeys.BlurRadius, String(value)
                         );
                     }}
                     onValueChange={vibrate}
-                    minimumValue={0}
+                    minimumValue={15}
                     maximumValue={100}
                     step={step}
                     value={showValue}
