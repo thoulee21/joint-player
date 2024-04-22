@@ -8,7 +8,7 @@ import {
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { createContext, useEffect, useMemo, useState } from 'react';
-import { StatusBar, StyleSheet, useColorScheme } from 'react-native';
+import { StatusBar, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import {
   MD3DarkTheme,
@@ -42,7 +42,7 @@ export const PreferencesContext = createContext<{
 const Stack = createNativeStackNavigator();
 
 function App() {
-  const [isDarkMode, setIsDarkMode] = useState(useColorScheme() === 'dark');
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const { theme: colorTheme, updateTheme } = useMaterial3Theme();
 
   const [blurRadius, setBlurRadius] = useState(50);
