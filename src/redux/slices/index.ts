@@ -1,3 +1,3 @@
 export * from './darkMode';
-export * from './experimentalBlurSlice';
+export * from './experimentalBlur';
 
