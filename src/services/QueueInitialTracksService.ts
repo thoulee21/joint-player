@@ -1,9 +1,9 @@
-import fetchRetry from "fetch-retry";
+import fetchRetry from 'fetch-retry';
 import { ToastAndroid } from 'react-native';
 import TrackPlayer, { Track } from 'react-native-track-player';
 import UserAgent from 'user-agents';
 import playlistData from '../assets/data/playlist.json';
-import type { Main, Track as TrackData } from '../types/playlist';
+import type { Track as TrackData } from '../types/playlist';
 
 const randomUserAgent = new UserAgent({ deviceCategory: 'mobile' });
 export const fetchPlus = fetchRetry(fetch, { retries: 3, retryDelay: 1000 });
@@ -16,24 +16,24 @@ export const requestInit = {
   },
 };
 
-const fetchPlaylist = async () => {
-  const playlistId = 2279582982;
+// const fetchPlaylist = async () => {
+//   const playlistId = 2279582982;
 
-  const playlist = await fetchPlus(
-    `https://music.163.com/api/playlist/detail?id=${playlistId}`,
-    requestInit,
-  );
-  const playlistJson: Main = await playlist.json();
+//   const playlist = await fetchPlus(
+//     `https://music.163.com/api/playlist/detail?id=${playlistId}`,
+//     requestInit,
+//   );
+//   const playlistJson: Main = await playlist.json();
 
-  if (playlistJson.code !== 200 && __DEV__) {
-    ToastAndroid.show(
-      `Failed to fetch playlist: ${playlistJson.code} ${playlistJson.msg || playlistJson.message}`,
-      ToastAndroid.SHORT
-    );
-  }
+//   if (playlistJson.code !== 200 && __DEV__) {
+//     ToastAndroid.show(
+//       `Failed to fetch playlist: ${playlistJson.code} ${playlistJson.msg || playlistJson.message}`,
+//       ToastAndroid.SHORT
+//     );
+//   }
 
-  return playlistJson.result;
-};
+//   return playlistJson.result;
+// };
 
 const fetchSearchResults = async (keyword: string): Promise<any> => {
   const { Type, Limit, Offset, Total } = {

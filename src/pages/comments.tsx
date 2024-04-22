@@ -120,6 +120,7 @@ function CommentList() {
     useEffect(() => {
         fetchComments();
         // no fetchComments in deps to avoid infinite loop
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [track?.id]);
 
     if (isEmpty) {

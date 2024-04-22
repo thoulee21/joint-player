@@ -25,7 +25,9 @@ import {
 } from './pages';
 
 export enum StorageKeys {
+  // eslint-disable-next-line no-unused-vars
   Keyword = 'keyword',
+  // eslint-disable-next-line no-unused-vars
   BlurRadius = 'blurRadius',
 }
 
