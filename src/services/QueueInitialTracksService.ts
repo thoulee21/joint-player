@@ -1,13 +1,17 @@
+import fetchRetry from "fetch-retry";
 import { ToastAndroid } from 'react-native';
 import TrackPlayer, { Track } from 'react-native-track-player';
+import UserAgent from 'user-agents';
 import playlistData from '../assets/data/playlist.json';
 import type { Main, Track as TrackData } from '../types/playlist';
 
+const randomUserAgent = new UserAgent({ deviceCategory: 'mobile' });
+export const fetchPlus = fetchRetry(fetch, { retries: 3, retryDelay: 1000 });
+
 export const requestInit = {
   headers: {
-    'User-Agent':
-      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0',
-    Accept:
+    'User-Agent': randomUserAgent.toString(),
+    'Accept':
       'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
   },
 };
@@ -15,7 +19,7 @@ export const requestInit = {
 const fetchPlaylist = async () => {
   const playlistId = 2279582982;
 
-  const playlist = await fetch(
+  const playlist = await fetchPlus(
     `https://music.163.com/api/playlist/detail?id=${playlistId}`,
     requestInit,
   );
@@ -39,7 +43,7 @@ const fetchSearchResults = async (keyword: string): Promise<any> => {
     Total: true,
   };
 
-  const fetchResult = await fetch(
+  const fetchResult = await fetchPlus(
     `https://music.163.com/api/search/get/web?csrf_token=hlpretag=&hlposttag=&s=${keyword}&type=${Type}&offset=${Offset}&total=${Total}&limit=${Limit}`,
     requestInit,
   );
@@ -56,7 +60,7 @@ const fetchSearchResults = async (keyword: string): Promise<any> => {
 };
 
 const fetchTrackDetails = async (trackId: string): Promise<Track> => {
-  const detail = await fetch(
+  const detail = await fetchPlus(
     `https://music.163.com/api/song/detail/?id=${trackId}&ids=%5B${trackId}%5D`,
     requestInit,
   );
@@ -92,11 +96,12 @@ export const QueueInitialTracksService = async (keyword?: string): Promise<void>
       songs = data.songs;
 
     } else {
-      const result = await fetchPlaylist();
+      // const result = await fetchPlaylist();
 
-      //取前20首歌曲
-      const tracks = result.tracks.slice(0, 20);
-      songs = tracks;
+      // //取前20首歌曲
+      // const tracks = result.tracks.slice(0, 20);
+      // songs = tracks;
+      throw new Error('No keyword provided');
     }
 
     const fetchedData = await Promise.all(

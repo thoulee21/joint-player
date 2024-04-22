@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Linking, ToastAndroid } from 'react-native';
 import { Menu } from 'react-native-paper';
 import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
-import { requestInit } from '../services';
+import { fetchPlus, requestInit } from '../services';
 
 export function MvMenu({ onPostPressed }: { onPostPressed: () => void }) {
   const track = useActiveTrack();
@@ -22,7 +22,7 @@ export function MvMenu({ onPostPressed }: { onPostPressed: () => void }) {
       leadingIcon="video-outline"
       disabled={disabled}
       onPress={async () => {
-        const mvData = await fetch(
+        const mvData = await fetchPlus(
           `https://music.163.com/api/mv/detail?id=${track?.mvid}&type=mp4`,
           requestInit,
         );

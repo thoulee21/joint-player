@@ -18,7 +18,7 @@ import {
     placeholderImg,
 } from '../components';
 import { useDebounce } from '../hook';
-import { requestInit } from '../services';
+import { fetchPlus, requestInit } from '../services';
 import { Main } from '../types/lyrics';
 
 const LyricView = ({ lrc, currentTime }:
@@ -79,7 +79,7 @@ export function LyricsScreen() {
             return;
         }
 
-        const data = await fetch(
+        const data = await fetchPlus(
             `https://music.163.com/api/song/lyric?id=${track?.id}&lv=1&kv=1&tv=-1`,
             requestInit
         );

@@ -19,7 +19,7 @@ import { useActiveTrack } from 'react-native-track-player';
 import { PreferencesContext } from '../App';
 import { MoreBtn, placeholderImg } from '../components';
 import { useDebounce } from '../hook';
-import { requestInit } from '../services';
+import { fetchPlus, requestInit } from '../services';
 import { BeReplied, Comment, Main } from '../types/comments';
 
 const BeRepliedComment = ({ reply }: { reply: BeReplied }) => {
@@ -99,7 +99,7 @@ function CommentList() {
     const [isEmpty, setIsEmpty] = useState(false);
 
     const fetchComments = useDebounce(async () => {
-        const response = await fetch(
+        const response = await fetchPlus(
             `http://music.163.com/api/v1/resource/comments/R_SO_4_${track?.id}`,
             requestInit
         );
