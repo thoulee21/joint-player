@@ -23,7 +23,9 @@ export function BlurRadiusSlider() {
     return (
         <List.Item
             title="Blur Radius"
-            left={(props) => <List.Icon {...props} icon="blur" />}
+            left={(props) =>
+                <List.Icon {...props} icon="blur-linear" />
+            }
             right={(props) => (
                 <Text {...props}>{showValue}</Text>
             )}

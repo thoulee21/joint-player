@@ -79,15 +79,13 @@ function TrackList({ bottomSheetRef }:
 }
 
 export function TrackListSheet({
-  bottomSheetRef, experimentalBlurEnabled,
+  bottomSheetRef,
 }: {
   bottomSheetRef: React.RefObject<BottomSheet>;
-  experimentalBlurEnabled: boolean;
 }) {
   return (
     <BottomSheetPaper
       bottomSheetRef={bottomSheetRef}
-      experimentalBlurEnabled={experimentalBlurEnabled}
     >
       <TrackList bottomSheetRef={bottomSheetRef} />
     </BottomSheetPaper>

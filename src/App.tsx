@@ -16,6 +16,7 @@ import {
   PaperProvider,
   adaptNavigationTheme,
 } from 'react-native-paper';
+import { Provider } from 'react-redux';
 import {
   Comments,
   LyricsScreen,
@@ -23,6 +24,7 @@ import {
   Settings,
   WebViewScreen,
 } from './pages';
+import { store } from './redux/store';
 
 export enum StorageKeys {
   // eslint-disable-next-line no-unused-vars
@@ -37,8 +39,6 @@ export const PreferencesContext = createContext<{
   setIsDarkMode: (isDarkMode: boolean) => void;
   blurRadius: number;
   setBlurRadius: (blurRadius: number) => void;
-  experimentalBlur: boolean;
-  setExperimentalBlur: (experimentalBlur: boolean) => void;
 } | null>(null);
 
 const Stack = createNativeStackNavigator();
@@ -48,7 +48,6 @@ function App() {
   const { theme: colorTheme, updateTheme } = useMaterial3Theme();
 
   const [blurRadius, setBlurRadius] = useState(50);
-  const [experimentalBlur, setExperimentalBlur] = useState(__DEV__);
 
   useEffect(() => {
     SplashScreen.preventAutoHideAsync();
@@ -88,10 +87,10 @@ function App() {
       setIsDarkMode,
       blurRadius,
       setBlurRadius,
-      experimentalBlur,
-      setExperimentalBlur,
     }),
-    [updateTheme, isDarkMode, blurRadius, experimentalBlur],
+    // no updateTheme
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [isDarkMode, blurRadius],
   );
 
   const { LightTheme: NaviLightTheme, DarkTheme: NaviDarkTheme } =
@@ -105,26 +104,28 @@ function App() {
   const combinedTheme = isDarkMode ? NaviDarkTheme : NaviLightTheme;
 
   return (
-    <GestureHandlerRootView style={styles.rootView}>
-      <PaperProvider theme={isDarkMode ? MyDarkTheme : MyLightTheme}>
-        <PreferencesContext.Provider value={preferences}>
-          <NavigationContainer theme={combinedTheme}>
-            <StatusBar
-              translucent
-              backgroundColor="transparent"
-              barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-            />
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="Player" component={Player} />
-              <Stack.Screen name="Settings" component={Settings} />
-              <Stack.Screen name="WebView" component={WebViewScreen} />
-              <Stack.Screen name="Comments" component={Comments} />
-              <Stack.Screen name="Lyrics" component={LyricsScreen} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </PreferencesContext.Provider>
-      </PaperProvider>
-    </GestureHandlerRootView>
+    <Provider store={store}>
+      <GestureHandlerRootView style={styles.rootView}>
+        <PaperProvider theme={isDarkMode ? MyDarkTheme : MyLightTheme}>
+          <PreferencesContext.Provider value={preferences}>
+            <NavigationContainer theme={combinedTheme}>
+              <StatusBar
+                translucent
+                backgroundColor="transparent"
+                barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+              />
+              <Stack.Navigator screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="Player" component={Player} />
+                <Stack.Screen name="Settings" component={Settings} />
+                <Stack.Screen name="WebView" component={WebViewScreen} />
+                <Stack.Screen name="Comments" component={Comments} />
+                <Stack.Screen name="Lyrics" component={LyricsScreen} />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </PreferencesContext.Provider>
+        </PaperProvider>
+      </GestureHandlerRootView>
+    </Provider>
   );
 }
 

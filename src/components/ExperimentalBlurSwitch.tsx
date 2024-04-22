@@ -1,17 +1,19 @@
-import React, { useContext } from 'react';
-import HapticFeedback from 'react-native-haptic-feedback';
+import React from 'react';
+import HapticFeedback, {
+    HapticFeedbackTypes,
+} from 'react-native-haptic-feedback';
 import { List } from 'react-native-paper';
 import { RightSwitch } from '.';
-import { PreferencesContext } from '../App';
+import { useAppDispatch, useAppSelector } from '../hook/reduxHooks';
+import { selectBlurEnabled, toggleBlur } from '../redux/slices';
 
 export function ExperimentalBlurSwitch() {
-    const prefs = useContext(PreferencesContext);
+    const experimentalBlurEnabled = useAppSelector(selectBlurEnabled);
+    const dispatch = useAppDispatch();
 
-    const togglePlayAtStartup = () => {
-        HapticFeedback.trigger('effectClick');
-        const newValue = !prefs?.experimentalBlur;
-
-        prefs?.setExperimentalBlur(newValue);
+    const toggleExperimentalBlur = () => {
+        HapticFeedback.trigger(HapticFeedbackTypes.effectTick);
+        dispatch(toggleBlur());
     };
 
     return (
@@ -19,16 +21,14 @@ export function ExperimentalBlurSwitch() {
             title="Experimental Blur"
             description="Enable experimental blur effect"
             left={(props) =>
-                <List.Icon {...props}
-                    icon="blur-linear"
-                />
+                <List.Icon {...props} icon="blur" />
             }
             right={(props) =>
                 <RightSwitch {...props}
-                    value={prefs?.experimentalBlur ?? false}
+                    value={experimentalBlurEnabled}
                 />
             }
-            onPress={togglePlayAtStartup}
+            onPress={toggleExperimentalBlur}
         />
     );
 }

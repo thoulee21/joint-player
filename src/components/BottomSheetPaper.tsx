@@ -4,17 +4,17 @@ import { BlurView } from 'expo-blur';
 import React, { PropsWithChildren } from 'react';
 import { StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
+import { useAppSelector } from '../hook/reduxHooks';
+import { selectBlurEnabled } from '../redux/slices';
 
 export const BottomSheetPaper = ({
   bottomSheetRef,
-  experimentalBlurEnabled,
   children,
 }: PropsWithChildren<{
   bottomSheetRef: React.RefObject<BottomSheet>;
-  experimentalBlurEnabled: boolean
 }>) => {
   const appTheme = useTheme();
-
+  const experimentalBlurEnabled = useAppSelector(selectBlurEnabled);
   return (
     <BottomSheet
       ref={bottomSheetRef}

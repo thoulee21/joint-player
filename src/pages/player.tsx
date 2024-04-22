@@ -144,9 +144,6 @@ export function Player(): React.JSX.Element {
       <Portal>
         <TrackListSheet
           bottomSheetRef={bottomSheetRef}
-          experimentalBlurEnabled={
-            preferences?.experimentalBlur ?? true
-          }
         />
       </Portal>
     </ImageBackground>
