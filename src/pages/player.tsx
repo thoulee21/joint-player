@@ -38,6 +38,8 @@ import {
   placeholderImg,
 } from '../components';
 import { useDebounce, useSetupPlayer } from '../hook';
+import { useAppDispatch } from '../hook/reduxHooks';
+import { toggleDarkMode } from '../redux/slices';
 import { QueueInitialTracksService } from '../services';
 
 export function Player(): React.JSX.Element {
@@ -52,14 +54,17 @@ export function Player(): React.JSX.Element {
   const [searching, setSearching] = useState(false);
   const [keyword, setKeyword] = useState('');
   const [placeholderKeyword, setPlaceholderKeyword] = useState('');
+  const dispatch = useAppDispatch();
 
-  const setTheme = useDebounce(async () => {
+  const setTheme = async () => {
     const colors = await getColors(track?.artwork || placeholderImg);
     const sourceColor = Color((colors as AndroidImageColors).dominant);
 
-    preferences?.setIsDarkMode(sourceColor.isDark());
     preferences?.updateTheme(sourceColor.hex().toString());
-  });
+    if (appTheme.dark !== sourceColor.isDark()) {
+      dispatch(toggleDarkMode());
+    }
+  };
 
   useEffect(() => {
     const restoreInitKeyword = async () => {

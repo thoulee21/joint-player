@@ -16,7 +16,7 @@ import {
   PaperProvider,
   adaptNavigationTheme,
 } from 'react-native-paper';
-import { Provider } from 'react-redux';
+import { useAppSelector } from './hook/reduxHooks';
 import {
   Comments,
   LyricsScreen,
@@ -24,7 +24,7 @@ import {
   Settings,
   WebViewScreen,
 } from './pages';
-import { store } from './redux/store';
+import { selectDarkModeEnabled } from './redux/slices';
 
 export enum StorageKeys {
   // eslint-disable-next-line no-unused-vars
@@ -35,8 +35,6 @@ export enum StorageKeys {
 
 export const PreferencesContext = createContext<{
   updateTheme: (sourceColor: string) => void;
-  isDarkMode: boolean;
-  setIsDarkMode: (isDarkMode: boolean) => void;
   blurRadius: number;
   setBlurRadius: (blurRadius: number) => void;
 } | null>(null);
@@ -44,10 +42,10 @@ export const PreferencesContext = createContext<{
 const Stack = createNativeStackNavigator();
 
 function App() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const { theme: colorTheme, updateTheme } = useMaterial3Theme();
-
+  const isDarkMode = useAppSelector(selectDarkModeEnabled);
   const [blurRadius, setBlurRadius] = useState(50);
+
+  const { theme: colorTheme, updateTheme } = useMaterial3Theme();
 
   useEffect(() => {
     SplashScreen.preventAutoHideAsync();
@@ -83,49 +81,43 @@ function App() {
   const preferences = useMemo(
     () => ({
       updateTheme,
-      isDarkMode,
-      setIsDarkMode,
       blurRadius,
       setBlurRadius,
     }),
     // no updateTheme
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [isDarkMode, blurRadius],
+    [blurRadius],
   );
 
-  const { LightTheme: NaviLightTheme, DarkTheme: NaviDarkTheme } =
-    adaptNavigationTheme({
+  const { LightTheme: NaviLightTheme, DarkTheme: NaviDarkTheme } = useMemo(
+    () => adaptNavigationTheme({
       reactNavigationLight: NavigationDefaultTheme,
       reactNavigationDark: NavigationDarkTheme,
       materialLight: MyLightTheme,
       materialDark: MyDarkTheme,
-    });
-
-  const combinedTheme = isDarkMode ? NaviDarkTheme : NaviLightTheme;
+    }), [MyDarkTheme, MyLightTheme]);
 
   return (
-    <Provider store={store}>
-      <GestureHandlerRootView style={styles.rootView}>
-        <PaperProvider theme={isDarkMode ? MyDarkTheme : MyLightTheme}>
-          <PreferencesContext.Provider value={preferences}>
-            <NavigationContainer theme={combinedTheme}>
-              <StatusBar
-                translucent
-                backgroundColor="transparent"
-                barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-              />
-              <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Player" component={Player} />
-                <Stack.Screen name="Settings" component={Settings} />
-                <Stack.Screen name="WebView" component={WebViewScreen} />
-                <Stack.Screen name="Comments" component={Comments} />
-                <Stack.Screen name="Lyrics" component={LyricsScreen} />
-              </Stack.Navigator>
-            </NavigationContainer>
-          </PreferencesContext.Provider>
-        </PaperProvider>
-      </GestureHandlerRootView>
-    </Provider>
+    <GestureHandlerRootView style={styles.rootView}>
+      <PaperProvider theme={isDarkMode ? MyDarkTheme : MyLightTheme}>
+        <PreferencesContext.Provider value={preferences}>
+          <NavigationContainer theme={isDarkMode ? NaviDarkTheme : NaviLightTheme}>
+            <StatusBar
+              translucent
+              backgroundColor="transparent"
+              barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+            />
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="Player" component={Player} />
+              <Stack.Screen name="Settings" component={Settings} />
+              <Stack.Screen name="WebView" component={WebViewScreen} />
+              <Stack.Screen name="Comments" component={Comments} />
+              <Stack.Screen name="Lyrics" component={LyricsScreen} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </PreferencesContext.Provider>
+      </PaperProvider>
+    </GestureHandlerRootView>
   );
 }
 
