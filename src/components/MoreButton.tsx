@@ -36,6 +36,7 @@ export const MoreBtn = ({ data }: { data: string }) => {
         <Menu.Item
             leadingIcon="share-outline"
             title="Share"
+            disabled={typeof data === 'undefined' || data === ''}
             onPress={() => {
                 Share.share({ message: data });
                 onPostPressed();

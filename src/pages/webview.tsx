@@ -81,6 +81,7 @@ export const WebViewScreen = ({
             <Menu.Item
               title="Share link"
               leadingIcon="share"
+              disabled={!url || !title}
               onPress={() => {
                 Share.share({
                   message: url,
