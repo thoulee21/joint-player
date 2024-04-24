@@ -1,7 +1,16 @@
 import { useNavigation } from '@react-navigation/native';
 import { BlurView } from 'expo-blur';
-import React from 'react';
-import { ImageBackground, Platform, ScrollView, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  ImageBackground,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  ToastAndroid,
+} from 'react-native';
+import HapticFeedback, {
+  HapticFeedbackTypes,
+} from 'react-native-haptic-feedback';
 import { Appbar, List, useTheme } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
 import { version as appVersion } from '../../package.json';
@@ -12,8 +21,15 @@ import {
   ThemeColorIndicator,
   placeholderImg,
 } from '../components';
-import { useAppSelector } from '../hook/reduxHooks';
-import { blurRadius } from '../redux/slices';
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '../hook/reduxHooks';
+import {
+  blurRadius,
+  selectDevModeEnabled,
+  setDevModeValue,
+} from '../redux/slices';
 
 export const upperFirst = (str: string) =>
   str.slice(0, 1).toUpperCase() + str.slice(1);
@@ -34,11 +50,30 @@ const VersionIcon = (props: any) => {
 };
 
 const VersionItem = () => {
+  const dispatch = useAppDispatch();
+
+  const [hitCount, setHitCount] = useState(0);
+  const devModeEnabled = useAppSelector(selectDevModeEnabled);
+
+  useEffect(() => {
+    if (hitCount >= 5) {
+      dispatch(setDevModeValue(true));
+      HapticFeedback.trigger(HapticFeedbackTypes.effectClick);
+      ToastAndroid.show('Developer mode enabled', ToastAndroid.SHORT);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [hitCount]);
+
   return (
     <List.Item
       title="Version"
       description={`${upperFirst(Platform.OS)} v${appVersion}`}
       left={VersionIcon}
+      onPress={() => {
+        if (hitCount < 5 && !devModeEnabled) {
+          setHitCount(hitCount + 1);
+        }
+      }}
     />
   );
 };

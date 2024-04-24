@@ -7,15 +7,19 @@ import HapticFeedback, {
 } from 'react-native-haptic-feedback';
 import { Appbar } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
+import { useAppSelector } from '../hook/reduxHooks';
+import { selectDevModeEnabled } from '../redux/slices';
 
 export const BottomBar = ({ bottomSheetRef }:
     { bottomSheetRef: RefObject<BottomSheet> }
 ) => {
-    const track = useActiveTrack();
     const navigation = useNavigation();
 
+    const track = useActiveTrack();
+    const devModeEnabled = useAppSelector(selectDevModeEnabled);
+
     const showDetails = () => {
-        if (track) {
+        if (track && devModeEnabled) {
             HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
             Alert.alert(
                 track.title || 'Details',
