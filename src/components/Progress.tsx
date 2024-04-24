@@ -1,25 +1,29 @@
 import Slider from '@react-native-community/slider';
 import React from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
-import {Text, useTheme} from 'react-native-paper';
-import TrackPlayer, {useProgress} from 'react-native-track-player';
-import {Spacer} from './Spacer';
+import { Dimensions, StyleSheet, View } from 'react-native';
+import { Text, useTheme } from 'react-native-paper';
+import TrackPlayer, {
+  useActiveTrack,
+  useProgress,
+} from 'react-native-track-player';
+import { Spacer } from './Spacer';
 
-export const Progress: React.FC<{live?: boolean}> = ({live}) => {
+export const Progress = () => {
   const appTheme = useTheme();
-  const {position, duration} = useProgress();
 
+  const { position, duration } = useProgress();
+  const track = useActiveTrack();
   // This is a workaround since the slider component only takes absolute widths
   const progressBarWidth = Dimensions.get('window').width * 0.92;
 
   return (
     <View style={styles.container}>
-      {live || duration === Infinity ? (
+      {track?.isLiveStream || duration === Infinity ? (
         <Text style={styles.liveText}>Live Streaming...</Text>
       ) : (
         <View>
           <Slider
-            style={{...styles.slider, width: progressBarWidth}}
+            style={{ ...styles.slider, width: progressBarWidth }}
             value={position}
             minimumValue={0}
             maximumValue={duration}
