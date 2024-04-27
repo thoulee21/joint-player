@@ -16,6 +16,8 @@ import {
   PaperProvider,
   adaptNavigationTheme,
 } from 'react-native-paper';
+import { SWRConfig, SWRConfiguration } from 'swr';
+import UserAgent from 'user-agents';
 import { useAppDispatch, useAppSelector } from './hook/reduxHooks';
 import {
   Comments,
@@ -38,6 +40,22 @@ export const PreferencesContext = createContext<{
 } | null>(null);
 
 const Stack = createNativeStackNavigator();
+
+const randomUserAgent = new UserAgent({ deviceCategory: 'mobile' });
+
+const requestInit = {
+  headers: {
+    'User-Agent': randomUserAgent.toString(),
+    'Accept':
+      'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+  },
+};
+
+const swrConfig: SWRConfiguration = {
+  fetcher: (resource) =>
+    fetch(resource, requestInit)
+      .then((res) => res.json()),
+};
 
 function App() {
   const isDarkMode = useAppSelector(selectDarkModeEnabled);
@@ -95,24 +113,26 @@ function App() {
 
   return (
     <GestureHandlerRootView style={styles.rootView}>
-      <PaperProvider theme={isDarkMode ? MyDarkTheme : MyLightTheme}>
-        <PreferencesContext.Provider value={preferences}>
-          <NavigationContainer theme={isDarkMode ? NaviDarkTheme : NaviLightTheme}>
-            <StatusBar
-              translucent
-              backgroundColor="transparent"
-              barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-            />
-            <Stack.Navigator screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="Player" component={Player} />
-              <Stack.Screen name="Settings" component={Settings} />
-              <Stack.Screen name="WebView" component={WebViewScreen} />
-              <Stack.Screen name="Comments" component={Comments} />
-              <Stack.Screen name="Lyrics" component={LyricsScreen} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </PreferencesContext.Provider>
-      </PaperProvider>
+      <SWRConfig value={swrConfig}>
+        <PaperProvider theme={isDarkMode ? MyDarkTheme : MyLightTheme}>
+          <PreferencesContext.Provider value={preferences}>
+            <NavigationContainer theme={isDarkMode ? NaviDarkTheme : NaviLightTheme}>
+              <StatusBar
+                translucent
+                backgroundColor="transparent"
+                barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+              />
+              <Stack.Navigator screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="Player" component={Player} />
+                <Stack.Screen name="Settings" component={Settings} />
+                <Stack.Screen name="WebView" component={WebViewScreen} />
+                <Stack.Screen name="Comments" component={Comments} />
+                <Stack.Screen name="Lyrics" component={LyricsScreen} />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </PreferencesContext.Provider>
+        </PaperProvider>
+      </SWRConfig>
     </GestureHandlerRootView>
   );
 }

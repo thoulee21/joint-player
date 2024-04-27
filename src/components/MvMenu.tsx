@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { Linking, ToastAndroid } from 'react-native';
+import { Linking } from 'react-native';
 import { Menu } from 'react-native-paper';
 import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
-import { fetchPlus, requestInit } from '../services';
+import useSWR from 'swr';
 
-export function MvMenu({ onPostPressed }: { onPostPressed: () => void }) {
+export function MvMenu({ onPostPressed }:
+  { onPostPressed: () => void }
+) {
   const track = useActiveTrack();
   const [disabled, setDisabled] = useState(true);
+
+  const { data: mvData, isLoading, error } = useSWR(
+    track ? `https://music.163.com/api/mv/detail?id=${track?.mvid}&type=mp4` : null,
+  );
 
   useEffect(() => {
     if (track && track?.mvid) {
@@ -20,29 +26,16 @@ export function MvMenu({ onPostPressed }: { onPostPressed: () => void }) {
     <Menu.Item
       title="Watch MV"
       leadingIcon="video-outline"
-      disabled={disabled}
+      trailingIcon={isLoading ? 'loading' : undefined}
+      disabled={disabled || isLoading || error}
       onPress={async () => {
-        const mvData = await fetchPlus(
-          `https://music.163.com/api/mv/detail?id=${track?.mvid}&type=mp4`,
-          requestInit,
-        );
+        const highRes = Object.keys(mvData.data.brs).reverse()[0];
+        const mv = mvData.data.brs[highRes];
 
-        if (mvData.status === 200) {
-          const mvDetail = await mvData.json();
+        await Linking.openURL(mv as string);
+        await TrackPlayer.pause();
 
-          const highRes = Object.keys(mvDetail.data.brs).reverse()[0];
-          const mv = mvDetail.data.brs[highRes];
-
-          await Linking.openURL(mv as string);
-          await TrackPlayer.pause();
-
-          onPostPressed();
-        } else {
-          ToastAndroid.show(
-            `Failed to fetch MV data: ${mvData.status} ${mvData.statusText}`,
-            ToastAndroid.SHORT,
-          );
-        }
+        onPostPressed();
       }}
     />
   );
