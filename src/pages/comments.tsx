@@ -1,12 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
 import { BlurView } from 'expo-blur';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
     FlatList,
     ImageBackground,
     StyleSheet,
-    ToastAndroid,
 } from 'react-native';
 import {
     ActivityIndicator,
@@ -16,12 +15,12 @@ import {
     useTheme,
 } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
+import useSWR from 'swr';
 import { MoreBtn, placeholderImg } from '../components';
-import { useDebounce } from '../hook';
 import { useAppSelector } from '../hook/reduxHooks';
 import { blurRadius } from '../redux/slices';
-import { fetchPlus, requestInit } from '../services';
-import { BeReplied, Comment, Main } from '../types/comments';
+import { BeReplied, Comment, Main as CommentsMain } from '../types/comments';
+
 const BeRepliedComment = ({ reply }: { reply: BeReplied }) => {
     const appTheme = useTheme();
 
@@ -92,56 +91,43 @@ const CommentItem = ({ item }: { item: Comment }) => {
     );
 };
 
+function CommentsView({ comments }: { comments: Comment[] }) {
+    return (
+        <FlatList
+            data={comments}
+            keyExtractor={(item) => item.commentId.toString()}
+            renderItem={({ item }) => <CommentItem item={item} />}
+            ListEmptyComponent={
+                <List.Item
+                    title="No comments"
+                    titleStyle={styles.emptyContent}
+                />
+            }
+        />
+    );
+}
+
 function CommentList() {
     const track = useActiveTrack();
 
-    const [comments, setComments] = useState<Comment[]>([]);
-    const [isEmpty, setIsEmpty] = useState(false);
+    const { data: commentsData, error, isLoading } = useSWR<CommentsMain>(
+        `http://music.163.com/api/v1/resource/comments/R_SO_4_${track?.id}`,
+    );
 
-    const fetchComments = useDebounce(async () => {
-        const response = await fetchPlus(
-            `http://music.163.com/api/v1/resource/comments/R_SO_4_${track?.id}`,
-            requestInit
-        );
-
-        if (response.status === 200) {
-            const data: Main = await response.json();
-
-            setIsEmpty(data.total === 0);
-            setComments(data.hotComments);
-        } else {
-            ToastAndroid.show(
-                `Failed to fetch comments: ${response.status} ${response.statusText}`,
-                ToastAndroid.SHORT,
-            );
-        }
-    });
-
-    useEffect(() => {
-        fetchComments();
-        // no fetchComments in deps to avoid infinite loop
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [track?.id]);
-
-    if (isEmpty) {
-        return (
-            <List.Item
-                title="No comments"
-                titleStyle={styles.emptyContent}
-            />
-        );
+    if (isLoading) {
+        return <ActivityIndicator
+            style={styles.loading}
+            size="large"
+        />;
+    } else if (error) {
+        return <List.Item
+            title="Failed to load comments"
+            titleStyle={styles.emptyContent}
+        />;
+    } else if (!commentsData?.hotComments || commentsData?.hotComments.length === 0) {
+        return <CommentsView comments={commentsData?.comments || []} />;
     } else {
-        return (
-            <FlatList
-                data={comments}
-                keyExtractor={(item) => item.commentId.toString()}
-                renderItem={({ item }) => <CommentItem item={item} />}
-                // Component to render when loading data
-                ListEmptyComponent={() =>
-                    <ActivityIndicator size="large" style={styles.loading} />
-                }
-            />
-        );
+        return <CommentsView comments={commentsData.hotComments} />;
     }
 }
 
