@@ -94,12 +94,6 @@ function CommentsView({ comments }: { comments: Comment[] }) {
             data={comments}
             keyExtractor={(item) => item.commentId.toString()}
             renderItem={({ item }) => <CommentItem item={item} />}
-            ListEmptyComponent={
-                <List.Item
-                    title="No comments"
-                    titleStyle={styles.emptyContent}
-                />
-            }
         />
     );
 }
@@ -150,6 +144,11 @@ function CommentList() {
             titleStyle={styles.emptyContent}
             description={error.message}
             onPress={() => mutate()}
+        />;
+    } else if (commentsData?.total === 0) {
+        return <List.Item
+            title="No comments"
+            titleStyle={styles.emptyContent}
         />;
     } else if (!commentsData?.hotComments || commentsData?.hotComments.length === 0) {
         // show all comments if there are no hot comments

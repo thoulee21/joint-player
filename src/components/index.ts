@@ -2,6 +2,7 @@ export * from './BackwardButton';
 export * from './BlurRadiusSlider';
 export * from './BottomBar';
 export * from './BottomSheetPaper';
+export * from './CommentsMenu';
 export * from './ExperimentalBlurSwitch';
 export * from './ForwardButton';
 export * from './InitKeywordItem';

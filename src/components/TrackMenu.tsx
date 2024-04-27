@@ -1,27 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { IconButton, Menu } from 'react-native-paper';
-import { useActiveTrack } from 'react-native-track-player';
-import { MvMenu } from '.';
-
-function CommentsMenu(
-  { onPostPressed, navigation }:
-    { onPostPressed: () => void, navigation: any }) {
-  const track = useActiveTrack();
-
-  return (
-    <Menu.Item
-      title="Comments"
-      leadingIcon="comment-outline"
-      disabled={typeof track?.id === 'undefined'}
-      onPress={() => {
-        // @ts-ignore
-        navigation.push('Comments');
-        onPostPressed();
-      }}
-    />
-  );
-}
+import { CommentsMenu, MvMenu } from '.';
 
 export function TrackMenu(props: any) {
   const navigation = useNavigation();
