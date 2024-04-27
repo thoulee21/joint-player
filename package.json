@@ -24,7 +24,6 @@
     "expo-blur": "~12.9.2",
     "expo-modules-autolinking": "~1.10.0",
     "expo-splash-screen": "~0.26.4",
-    "fetch-retry": "^6.0.0",
     "install-expo-modules": "^0.8.1",
     "react": "18.2.0",
     "react-dom": "^18.2.0",

@@ -17,7 +17,6 @@ import {
   adaptNavigationTheme,
 } from 'react-native-paper';
 import { SWRConfig, SWRConfiguration } from 'swr';
-import UserAgent from 'user-agents';
 import { useAppDispatch, useAppSelector } from './hook/reduxHooks';
 import {
   Comments,
@@ -27,6 +26,7 @@ import {
   WebViewScreen,
 } from './pages';
 import { selectDarkModeEnabled, setBlurRadius } from './redux/slices';
+import { requestInit } from './services';
 
 export enum StorageKeys {
   // eslint-disable-next-line no-unused-vars
@@ -40,16 +40,6 @@ export const PreferencesContext = createContext<{
 } | null>(null);
 
 const Stack = createNativeStackNavigator();
-
-const randomUserAgent = new UserAgent({ deviceCategory: 'mobile' });
-
-const requestInit = {
-  headers: {
-    'User-Agent': randomUserAgent.toString(),
-    'Accept':
-      'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-  },
-};
 
 const swrConfig: SWRConfiguration = {
   fetcher: (resource, init) =>
