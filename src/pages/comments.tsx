@@ -1,12 +1,9 @@
+import { useNetInfoInstance } from '@react-native-community/netinfo';
 import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
 import { BlurView } from 'expo-blur';
 import React from 'react';
-import {
-    FlatList,
-    ImageBackground,
-    StyleSheet,
-} from 'react-native';
+import { FlatList, ImageBackground, StyleSheet } from 'react-native';
 import {
     ActivityIndicator,
     Appbar,
@@ -108,9 +105,11 @@ function CommentsView({ comments }: { comments: Comment[] }) {
 }
 
 function CommentList() {
-    const track = useActiveTrack();
+    const appTheme = useTheme();
+    const { netInfo } = useNetInfoInstance();
 
-    const { data: commentsData, error, isLoading } = useSWR<CommentsMain>(
+    const track = useActiveTrack();
+    const { data: commentsData, error, isLoading, mutate } = useSWR<CommentsMain>(
         `http://music.163.com/api/v1/resource/comments/R_SO_4_${track?.id}`,
     );
 
@@ -120,11 +119,40 @@ function CommentList() {
             size="large"
         />;
     } else if (error) {
+        // network error
+        if (!netInfo.isConnected) {
+            return <List.Item
+                left={props => <List.Icon {...props}
+                    color={appTheme.colors.error}
+                    icon="alert-circle-outline"
+                />}
+                title="No internet connection."
+                description={error.message}
+            />;
+        } else if (netInfo.isConnected) {
+            return <List.Item
+                left={props => <List.Icon {...props}
+                    color={appTheme.colors.tertiary}
+                    icon="reload"
+                />}
+                title="Connected! Tap to retry."
+                description={error.message}
+                onPress={() => mutate()}
+            />;
+        }
+
+        // other errors
         return <List.Item
-            title="Failed to load comments"
+            left={props => <List.Icon {...props}
+                icon="alert-circle"
+                color={appTheme.colors.error} />}
+            title="Failed to load comments. Tap to retry."
             titleStyle={styles.emptyContent}
+            description={error.message}
+            onPress={() => mutate()}
         />;
     } else if (!commentsData?.hotComments || commentsData?.hotComments.length === 0) {
+        // show all comments if there are no hot comments
         return <CommentsView comments={commentsData?.comments || []} />;
     } else {
         return <CommentsView comments={commentsData.hotComments} />;
@@ -134,6 +162,7 @@ function CommentList() {
 export function Comments(): React.JSX.Element {
     const navigation = useNavigation();
     const appTheme = useTheme();
+
     const track = useActiveTrack();
     const blurRadiusValue = useAppSelector(blurRadius);
 
