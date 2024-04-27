@@ -1,7 +1,7 @@
 import Color from 'color';
 import { BlurView } from 'expo-blur';
-import React, { useEffect, useState } from 'react';
-import { ImageBackground, StyleSheet, ToastAndroid } from 'react-native';
+import React from 'react';
+import { ImageBackground, StyleSheet } from 'react-native';
 import {
     ActivityIndicator,
     Text,
@@ -11,16 +11,16 @@ import {
     useActiveTrack,
     useProgress,
 } from 'react-native-track-player';
+import useSWR from 'swr';
 import {
     Lyric,
     TrackInfoBar,
     placeholderImg,
 } from '../components';
-import { useDebounce } from '../hook';
 import { useAppSelector } from '../hook/reduxHooks';
 import { blurRadius } from '../redux/slices';
-import { fetchPlus, requestInit } from '../services';
-import { Main } from '../types/lyrics';
+import { Main as LyricMain } from '../types/lyrics';
+
 const LyricView = ({ lrc, currentTime }:
     { lrc: string, currentTime: number }
 ) => {
@@ -66,40 +66,17 @@ const LyricView = ({ lrc, currentTime }:
 };
 
 export function LyricsScreen() {
-    const track = useActiveTrack();
-    const { position } = useProgress();
     const appTheme = useTheme();
 
-    const [lyric, setLyric] = useState<Main>();
-    const [noLyric, setNoLyric] = useState(false);
+    const track = useActiveTrack();
+    const { position } = useProgress();
+
+    const timeOffset = 1003;
     const blurRadiusValue = useAppSelector(blurRadius);
 
-    const getLyric = useDebounce(async () => {
-        if (!track?.id) {
-            return;
-        }
-
-        const data = await fetchPlus(
-            `https://music.163.com/api/song/lyric?id=${track?.id}&lv=1&kv=1&tv=-1`,
-            requestInit
-        );
-
-        if (data.status !== 200) {
-            ToastAndroid.show(
-                `Failed to fetch lyric: ${data.status} ${data.statusText}`,
-                ToastAndroid.SHORT
-            );
-        }
-
-        const lyricData: Main = await data.json();
-
-        setNoLyric(!lyricData.lrc.lyric);
-        setLyric(lyricData);
-    });
-
-    useEffect(() => {
-        getLyric();
-    }, [getLyric, track]);
+    const { data: lyric, error, isLoading } = useSWR<LyricMain>(
+        `https://music.163.com/api/song/lyric?id=${track?.id}&lv=1&kv=1&tv=-1`
+    );
 
     return (
         <ImageBackground
@@ -115,27 +92,24 @@ export function LyricsScreen() {
                 ]}
             >
                 <TrackInfoBar />
-
-                {lyric?.lrc.lyric ? (
-                    <LyricView
-                        lrc={lyric.lrc.lyric}
-                        currentTime={position * 1000}
-                    />
-                ) : (
-                    !noLyric ? (
+                {
+                    isLoading ?
                         <ActivityIndicator
                             size="large"
                             style={styles.loading}
                         />
-                    ) : (
-                        <Text
-                            style={styles.notFound}
-                            variant="headlineSmall"
-                        >
-                            Pure music, no lyrics.
-                        </Text>
-                    )
-                )}
+                        : (lyric?.lrc.lyric && !error) ?
+                            <LyricView
+                                lrc={lyric.lrc.lyric}
+                                currentTime={position * timeOffset}
+                            />
+                            : <Text
+                                style={styles.notFound}
+                                variant="headlineSmall"
+                            >
+                                No lyrics.
+                            </Text>
+                }
             </BlurView>
         </ImageBackground>
     );
