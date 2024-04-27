@@ -5,7 +5,12 @@ import {
   DarkTheme as NavigationDarkTheme,
   DefaultTheme as NavigationDefaultTheme,
 } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {
+  StackCardInterpolationProps,
+  StackNavigationOptions,
+  TransitionPresets,
+  createStackNavigator
+} from '@react-navigation/stack';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { createContext, useEffect, useMemo } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
@@ -39,7 +44,29 @@ export const PreferencesContext = createContext<{
   updateTheme: (sourceColor: string) => void;
 } | null>(null);
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
+
+// 弹性动画
+const flexAnimation = ({ current, layouts }:
+  StackCardInterpolationProps
+) => ({
+  cardStyle: {
+    transform: [
+      {
+        translateX: current.progress.interpolate({
+          inputRange: [0, 1],
+          outputRange: [layouts.screen.width, 0],
+        }),
+      },
+    ],
+  },
+});
+
+const screenOptions: StackNavigationOptions = {
+  headerShown: false,
+  ...TransitionPresets.SlideFromRightIOS,
+  cardStyleInterpolator: flexAnimation,
+};
 
 const swrConfig: SWRConfiguration = {
   fetcher: (resource, init) =>
@@ -112,7 +139,7 @@ function App() {
                 backgroundColor="transparent"
                 barStyle={isDarkMode ? 'light-content' : 'dark-content'}
               />
-              <Stack.Navigator screenOptions={{ headerShown: false }}>
+              <Stack.Navigator screenOptions={screenOptions}>
                 <Stack.Screen name="Player" component={Player} />
                 <Stack.Screen name="Settings" component={Settings} />
                 <Stack.Screen name="WebView" component={WebViewScreen} />

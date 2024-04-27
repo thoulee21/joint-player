@@ -8,5 +8,6 @@ module.exports = {
     'react-hooks/exhaustive-deps': 1,
     'no-unused-vars': 1,
     '@typescript-eslint/no-unused-vars': 0,
+    'comma-dangle': 0,
   },
 };
