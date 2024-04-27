@@ -1,4 +1,5 @@
 import BottomSheet from '@gorhom/bottom-sheet';
+import { useNetInfoInstance } from '@react-native-community/netinfo';
 import { useNavigation } from '@react-navigation/native';
 import React, { RefObject } from 'react';
 import { Alert, StyleSheet } from 'react-native';
@@ -16,6 +17,7 @@ export const BottomBar = ({ bottomSheetRef }:
     const navigation = useNavigation();
 
     const track = useActiveTrack();
+    const netInfo = useNetInfoInstance();
     const devModeEnabled = useAppSelector(selectDevModeEnabled);
 
     const showDetails = () => {
@@ -23,7 +25,7 @@ export const BottomBar = ({ bottomSheetRef }:
             HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
             Alert.alert(
                 track.title || 'Details',
-                JSON.stringify(track, null, 2),
+                JSON.stringify(Object.assign(track, netInfo.netInfo), null, 2),
                 [{ text: 'OK' }],
                 { cancelable: true }
             );
