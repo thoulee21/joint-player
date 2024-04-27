@@ -35,8 +35,14 @@ export const upperFirst = (str: string) =>
   str.slice(0, 1).toUpperCase() + str.slice(1);
 
 const VersionIcon = (props: any) => {
+  const appTheme = useTheme();
+  const devModeEnabled = useAppSelector(selectDevModeEnabled);
+
   return (
     <List.Icon {...props}
+      color={devModeEnabled
+        ? appTheme.colors.primary
+        : undefined}
       icon={Platform.select({
         android: 'android',
         ios: 'apple-ios',
@@ -61,7 +67,7 @@ const VersionItem = () => {
       HapticFeedback.trigger(HapticFeedbackTypes.effectClick);
       ToastAndroid.show('Developer mode enabled', ToastAndroid.SHORT);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hitCount]);
 
   return (
