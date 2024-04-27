@@ -1,6 +1,6 @@
-import {useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import TrackPlayer from 'react-native-track-player';
-import {QueueInitialTracksService, SetupService} from '../services';
+import { SetupService, addTracks } from '../services';
 
 /**
  * 自定义 hook 用于设置播放器。
@@ -22,7 +22,7 @@ export function useSetupPlayer() {
         return;
       }
       if (queue.length <= 0) {
-        await QueueInitialTracksService();
+        await addTracks();
       }
     })();
     return () => {

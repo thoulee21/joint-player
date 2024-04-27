@@ -52,8 +52,8 @@ const requestInit = {
 };
 
 const swrConfig: SWRConfiguration = {
-  fetcher: (resource) =>
-    fetch(resource, requestInit)
+  fetcher: (resource, init) =>
+    fetch(resource, { ...requestInit, ...init })
       .then((res) => res.json()),
 };
 

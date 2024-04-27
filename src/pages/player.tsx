@@ -40,7 +40,7 @@ import {
 import { useDebounce, useSetupPlayer } from '../hook';
 import { useAppDispatch, useAppSelector } from '../hook/reduxHooks';
 import { blurRadius, toggleDarkMode } from '../redux/slices';
-import { QueueInitialTracksService } from '../services';
+import { addTracks } from '../services';
 
 export function Player(): React.JSX.Element {
   const appTheme = useTheme();
@@ -88,10 +88,10 @@ export function Player(): React.JSX.Element {
     setSearching(true);
 
     if (keyword) {
-      await QueueInitialTracksService(keyword);
+      await addTracks(keyword);
     } else if (placeholderKeyword) {
       setKeyword(placeholderKeyword);
-      await QueueInitialTracksService(placeholderKeyword);
+      await addTracks(placeholderKeyword);
     }
 
     setSearching(false);
