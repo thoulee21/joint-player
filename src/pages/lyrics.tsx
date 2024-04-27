@@ -4,6 +4,7 @@ import React from 'react';
 import { ImageBackground, StyleSheet } from 'react-native';
 import {
     ActivityIndicator,
+    List,
     Text,
     useTheme,
 } from 'react-native-paper';
@@ -103,12 +104,18 @@ export function LyricsScreen() {
                                 lrc={lyric.lrc.lyric}
                                 currentTime={position * timeOffset}
                             />
-                            : <Text
-                                style={styles.notFound}
-                                variant="headlineSmall"
-                            >
-                                No lyrics.
-                            </Text>
+                            : <List.Item
+                                title={error
+                                    ? 'Failed to load lyrics'
+                                    : 'No lyrics found'}
+                                titleStyle={[
+                                    styles.center, styles.notFoundTitle,
+                                ]}
+                                description={error?.message}
+                                descriptionStyle={[styles.center, {
+                                    color: appTheme.colors.error,
+                                }]}
+                            />
                 }
             </BlurView>
         </ImageBackground>
@@ -133,8 +140,12 @@ const styles = StyleSheet.create({
     loading: {
         marginTop: '20%',
     },
-    notFound: {
-        marginTop: '20%',
+    center: {
         textAlign: 'center',
+    },
+    notFoundTitle: {
+        marginTop: '10%',
+        fontSize: 25,
+        fontWeight: 'bold',
     },
 });
