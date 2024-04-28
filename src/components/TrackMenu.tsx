@@ -22,7 +22,10 @@ export function TrackMenu(props: any) {
           {...props}
         />
       }>
-      <MvMenu onPostPressed={closeMenu} />
+      <MvMenu
+        onPostPressed={closeMenu}
+        navigation={navigation}
+      />
       <CommentsMenu
         onPostPressed={closeMenu}
         navigation={navigation}
