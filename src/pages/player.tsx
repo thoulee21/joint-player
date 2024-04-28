@@ -10,7 +10,6 @@ import React, {
   useState,
 } from 'react';
 import {
-  Appearance,
   ImageBackground,
   ScrollView,
   StatusBar,
@@ -64,12 +63,7 @@ export function Player(): React.JSX.Element {
   const setTheme = async () => {
     const colors = await getColors(track?.artwork || placeholderImg);
     const androidColors = (colors as AndroidImageColors);
-
-    const sourceColor = Color(
-      Appearance.getColorScheme() === 'dark'
-        ? androidColors.darkMuted
-        : androidColors.lightVibrant
-    );
+    const sourceColor = Color(androidColors.vibrant);
 
     preferences?.updateTheme(sourceColor.hex().toString());
     if (appTheme.dark !== sourceColor.isDark()) {

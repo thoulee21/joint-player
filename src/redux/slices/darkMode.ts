@@ -1,10 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Appearance } from 'react-native';
 import { RootState } from '../store';
 
 // Define the initial state using that type
 const initialState = {
-    enabled: Appearance.getColorScheme() === 'dark',
+    enabled: false,
 };
 
 export const darkModeSlice = createSlice({
