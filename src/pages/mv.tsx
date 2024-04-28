@@ -36,7 +36,6 @@ export const MvPlayer = () => {
         <VideoPlayer
             containerStyle={styles.root}
             useAnimations={useAnimations}
-            //@ts-ignore
             source={{ uri: mvLink }}
             isFullscreen
             disableFullscreen
