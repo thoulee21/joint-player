@@ -41,6 +41,9 @@ export const BottomBar = ({ bottomSheetRef }:
             <Appbar.Action
                 icon="cog-outline"
                 onPress={() => {
+                    HapticFeedback.trigger(
+                        HapticFeedbackTypes.effectHeavyClick
+                    );
                     // @ts-ignore
                     navigation.push('Settings');
                 }}
@@ -53,6 +56,9 @@ export const BottomBar = ({ bottomSheetRef }:
             <Appbar.Action
                 icon="menu-open"
                 onPress={() => {
+                    HapticFeedback.trigger(
+                        HapticFeedbackTypes.effectHeavyClick
+                    );
                     bottomSheetRef.current?.expand();
                 }}
             />

@@ -1,5 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
+import HapticFeedback, {
+  HapticFeedbackTypes
+} from 'react-native-haptic-feedback';
 import { IconButton, Menu } from 'react-native-paper';
 import { CommentsMenu, MvMenu } from '.';
 
@@ -20,7 +23,12 @@ export function TrackMenu(props: any) {
           {...props}
           size={24}
           icon="dots-vertical"
-          onPress={openMenu}
+          onPress={() => {
+            HapticFeedback.trigger(
+              HapticFeedbackTypes.effectHeavyClick
+            );
+            openMenu();
+          }}
         />
       }
     >

@@ -6,6 +6,9 @@ import { ActivityIndicator, List, useTheme } from 'react-native-paper';
 import TrackPlayer, { Track, useActiveTrack } from 'react-native-track-player';
 import { BottomSheetPaper } from '.';
 import playlistData from '../assets/data/playlist.json';
+import HapticFeedback, {
+  HapticFeedbackTypes
+} from 'react-native-haptic-feedback';
 
 function TrackList({ bottomSheetRef }:
   { bottomSheetRef: React.RefObject<BottomSheet> }
@@ -54,6 +57,7 @@ function TrackList({ bottomSheetRef }:
           />
         )}
         onPress={async () => {
+          HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
           await TrackPlayer.skip(index);
           await TrackPlayer.play();
           bottomSheetRef.current?.close();

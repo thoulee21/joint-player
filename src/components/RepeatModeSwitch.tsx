@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import HapticFeedback, {
+  HapticFeedbackTypes
+} from 'react-native-haptic-feedback';
 import { IconButton } from 'react-native-paper';
 import TrackPlayer, { RepeatMode } from 'react-native-track-player';
 import { DefaultRepeatMode } from '../services';
@@ -18,6 +21,7 @@ export function RepeatModeSwitch() {
    * Toggles the repeat mode to the next available mode.
    */
   const toggleRepeatMode = () => {
+    HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
     const currentIndex = repeatModes.indexOf(repeatMode);
     const nextIndex = (currentIndex + 1) % repeatModes.length;
     const nextRepeatMode = repeatModes[nextIndex];

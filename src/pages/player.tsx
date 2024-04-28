@@ -15,6 +15,9 @@ import {
   StatusBar,
   StyleSheet,
 } from 'react-native';
+import HapticFeedback, {
+  HapticFeedbackTypes
+} from 'react-native-haptic-feedback';
 import { getColors } from 'react-native-image-colors';
 import type {
   AndroidImageColors,
@@ -45,6 +48,7 @@ import { addTracks } from '../services';
 export function Player(): React.JSX.Element {
   const appTheme = useTheme();
   const preferences = useContext(PreferencesContext);
+  const dispatch = useAppDispatch();
 
   const isPlayerReady = useSetupPlayer();
   const track = useActiveTrack();
@@ -54,7 +58,6 @@ export function Player(): React.JSX.Element {
   const [searching, setSearching] = useState(false);
   const [keyword, setKeyword] = useState('');
   const [placeholderKeyword, setPlaceholderKeyword] = useState('');
-  const dispatch = useAppDispatch();
   const blurRadiusValue = useAppSelector(blurRadius);
 
   const setTheme = async () => {
@@ -126,7 +129,12 @@ export function Player(): React.JSX.Element {
           value={keyword}
           loading={searching}
           onSubmitEditing={searchSongs}
-          onIconPress={searchSongs}
+          onIconPress={() => {
+            searchSongs();
+            HapticFeedback.trigger(
+              HapticFeedbackTypes.effectHeavyClick
+            );
+          }}
           blurOnSubmit
           selectTextOnFocus
           selectionColor={
