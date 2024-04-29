@@ -34,6 +34,8 @@ import {
 import { selectDarkModeEnabled, setBlurRadius } from './redux/slices';
 import { requestInit } from './services';
 
+SplashScreen.preventAutoHideAsync();
+
 export enum StorageKeys {
   // eslint-disable-next-line no-unused-vars
   Keyword = 'keyword',
@@ -76,13 +78,9 @@ const swrConfig: SWRConfiguration = {
 };
 
 function App() {
-  const isDarkMode = useAppSelector(selectDarkModeEnabled);
-  const { theme: colorTheme, updateTheme } = useMaterial3Theme();
   const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    SplashScreen.preventAutoHideAsync();
-  }, []);
+  const { theme: colorTheme, updateTheme } = useMaterial3Theme();
+  const isDarkMode = useAppSelector(selectDarkModeEnabled);
 
   useEffect(() => {
     async function restorePrefs() {
