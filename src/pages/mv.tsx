@@ -59,9 +59,8 @@ export const MvPlayer = () => {
             navigator={navigator}
             showOnEnd
             title={data?.data.name || 'MV'}
-            controlTimeoutDelay={2000}
+            controlTimeoutDelay={1500}
             preventsDisplaySleepDuringVideoPlayback
-            tapAnywhereToPause
             seekColor={appTheme.colors.primary}
             onShowControls={() => StatusBar.setHidden(false)}
             onHideControls={() => StatusBar.setHidden(true)}
