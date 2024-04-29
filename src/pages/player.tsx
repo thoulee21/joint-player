@@ -66,7 +66,7 @@ export function Player(): React.JSX.Element {
     const sourceColor = Color(androidColors.vibrant);
 
     preferences?.updateTheme(sourceColor.hex().toString());
-    if (appTheme.dark !== sourceColor.isDark()) {
+    if (appTheme.dark !== Color(androidColors.average).isDark()) {
       dispatch(toggleDarkMode());
     }
   };
