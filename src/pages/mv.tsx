@@ -44,6 +44,8 @@ export const MvPlayer = () => {
             navigator={navigator}
             showOnEnd
             title={data?.data.name || 'MV'}
+            controlTimeoutDelay={2000}
+            preventsDisplaySleepDuringVideoPlayback
         />
     );
 };
