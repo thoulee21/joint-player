@@ -1,14 +1,18 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useMemo, useState } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
-import { ActivityIndicator, Portal, Text } from 'react-native-paper';
+import {
+    ActivityIndicator,
+    Button,
+    Portal,
+    Text
+} from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
 import useSWR from 'swr';
 import {
     BlurBackground,
     CommentList,
     DialogWithRadioBtns,
-    MvArgsMenu,
     MvCover,
     MvInfoButtons,
     TrackInfoBar
@@ -40,15 +44,23 @@ export function MvDetail() {
         `http://music.163.com/api/mv/detail?id=${track?.mvid}`
     );
 
-    const btns = useMemo(() => {
+    const [btns, highestRes] = useMemo(() => {
         if (!isLoading && track?.mvid !== 0) {
-            return Object.keys(data?.data.brs || { '240': '' })
-                .map((value) => ({
-                    key: value,
-                    value: data?.data.brs[value] as string
-                }));
+            const mvData = data?.data.brs || { '240': '' };
+
+            return [
+                Object.keys(mvData)
+                    .map((value) => ({
+                        key: value,
+                        value: data?.data.brs[value] as string
+                    })),
+                Object.keys(mvData).reverse()[0]
+            ];
         } else {
-            return [{ key: '240', value: '' }];
+            return [
+                [{ key: '240', value: '' }],
+                '240'
+            ];
         }
     }, [data, isLoading, track?.mvid]);
 
@@ -68,9 +80,14 @@ export function MvDetail() {
                     <MvCover>
                         <TrackInfoBar
                             right={(props) =>
-                                <MvArgsMenu {...props}
-                                    setDialogVisible={setDialogVisible}
-                                />
+                                <Button {...props}
+                                    icon="video-switch-outline"
+                                    onPress={() => {
+                                        setDialogVisible(true);
+                                    }}
+                                >
+                                    {res || highestRes}p
+                                </Button>
                             }
                         />
                         <MvInfoButtons res={res} />

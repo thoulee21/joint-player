@@ -13,7 +13,6 @@ export * from './ForwardButton';
 export * from './InitKeywordItem';
 export * from './Lyric';
 export * from './MoreButton';
-export * from './MvArgMenu';
 export * from './MvCover';
 export * from './MvInfoButtons';
 export * from './MvMenu';
