@@ -8,13 +8,8 @@ import {
     TouchableRipple
 } from 'react-native-paper';
 
-interface BtnItem {
-    key: string,
-    value: string,
-}
-
 type DialogProps = {
-    btns: BtnItem[];
+    btns: string[];
     visible: boolean;
     close: () => void;
     setValue: (res: string | null) => void;
@@ -23,24 +18,24 @@ type DialogProps = {
 export const DialogWithRadioBtns = ({
     btns, visible, close, setValue
 }: DialogProps) => {
-    const highestRes = btns[btns.length - 1].key;
+    const highestRes = btns[btns.length - 1];
     const [checkedItem, setCheckedItem] = useState(highestRes);
 
-    const renderItem = useCallback(({ item }: { item: BtnItem }) => (
+    const renderItem = useCallback(({ item }: { item: string }) => (
         <TouchableRipple
-            onPress={() => setCheckedItem(item.key)}
+            onPress={() => { setCheckedItem(item); }}
         >
             <View style={styles.row}>
                 <View pointerEvents="none">
                     <RadioButton
-                        value={item.key}
-                        status={checkedItem === item.key
+                        value={item}
+                        status={checkedItem === item
                             ? 'checked'
                             : 'unchecked'}
                     />
                 </View>
                 <Text style={styles.btnText}>
-                    {item.key}
+                    {item}
                 </Text>
             </View>
         </TouchableRipple>
@@ -51,7 +46,7 @@ export const DialogWithRadioBtns = ({
             visible={visible}
             onDismiss={close}
             dismissable={false}
-            dismissableBackButton
+            dismissableBackButton={false}
         >
             <Dialog.Icon icon="video-switch-outline" size={60} />
             <Dialog.Title style={styles.title}>

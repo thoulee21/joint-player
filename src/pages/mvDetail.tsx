@@ -44,24 +44,13 @@ export function MvDetail() {
         `http://music.163.com/api/mv/detail?id=${track?.mvid}`
     );
 
-    const [btns, highestRes] = useMemo(() => {
+    const btns = useMemo(() => {
         if (!isLoading && track?.mvid !== 0) {
             const mvData = data?.data.brs || { '240': '' };
-
-            return [
-                Object.keys(mvData)
-                    .map((value) => ({
-                        key: value,
-                        value: data?.data.brs[value] as string
-                    })),
-                Object.keys(mvData).reverse()[0]
-            ];
+            return Object.keys(mvData);
         } else {
             setDialogVisible(false);
-            return [
-                [{ key: '240', value: '' }],
-                '240'
-            ];
+            return ['240'];
         }
     }, [data, isLoading, track?.mvid]);
 
@@ -79,22 +68,22 @@ export function MvDetail() {
             {track?.mvid !== 0
                 ? <>
                     <MvCover>
-                        <TrackInfoBar
-                            right={(props) =>
-                                <Button {...props}
-                                    icon="video-switch-outline"
-                                    onPress={() => {
-                                        setDialogVisible(true);
-                                    }}
-                                >
-                                    {res || highestRes}p
-                                </Button>
-                            }
+                        <TrackInfoBar right={(props) =>
+                            <Button {...props}
+                                icon="video-switch-outline"
+                                onPress={() => {
+                                    setDialogVisible(true);
+                                }}
+                            >
+                                {res || btns[btns.length - 1]}p
+                            </Button>}
                         />
                         <MvInfoButtons res={res} />
                     </MvCover>
 
-                    <CommentList commentThreadId={`R_MV_5_${track?.mvid}`} />
+                    <CommentList
+                        commentThreadId={`R_MV_5_${track?.mvid}`}
+                    />
                 </>
                 : <NoMV />}
 
