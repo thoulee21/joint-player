@@ -1,35 +1,18 @@
 import { useNavigation } from '@react-navigation/native';
-import { BlurView } from 'expo-blur';
 import React, { useEffect, useState } from 'react';
-import {
-  ImageBackground,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  ToastAndroid,
-} from 'react-native';
-import HapticFeedback, {
-  HapticFeedbackTypes,
-} from 'react-native-haptic-feedback';
+import { Platform, ScrollView, StyleSheet, ToastAndroid } from 'react-native';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Appbar, List, useTheme } from 'react-native-paper';
-import { useActiveTrack } from 'react-native-track-player';
 import { version as appVersion } from '../../package.json';
 import {
+  BlurBackground,
   BlurRadiusSlider,
   ExperimentalBlurSwitch,
   InitKeywordItem,
-  ThemeColorIndicator,
-  placeholderImg,
+  ThemeColorIndicator
 } from '../components';
-import {
-  useAppDispatch,
-  useAppSelector,
-} from '../hook/reduxHooks';
-import {
-  blurRadius,
-  selectDevModeEnabled,
-  setDevModeValue,
-} from '../redux/slices';
+import { useAppDispatch, useAppSelector } from '../hook/reduxHooks';
+import { selectDevModeEnabled, setDevModeValue } from '../redux/slices';
 
 export const upperFirst = (str: string) =>
   str.slice(0, 1).toUpperCase() + str.slice(1);
@@ -86,42 +69,29 @@ const VersionItem = () => {
 
 export function Settings() {
   const navigation = useNavigation();
-  const appTheme = useTheme();
-  const track = useActiveTrack();
-  const blurRadiusValue = useAppSelector(blurRadius);
-
   return (
-    <ImageBackground
-      style={styles.root}
-      source={{ uri: track?.artwork || placeholderImg }}
-      blurRadius={blurRadiusValue}
-    >
-      <BlurView
-        tint={appTheme.dark ? 'dark' : 'light'}
-        style={styles.root}
-      >
-        <Appbar.Header style={styles.header}>
-          <Appbar.BackAction onPress={navigation.goBack} />
-          <Appbar.Content title="Settings" />
-        </Appbar.Header>
+    <BlurBackground>
+      <Appbar.Header style={styles.header}>
+        <Appbar.BackAction onPress={navigation.goBack} />
+        <Appbar.Content title="Settings" />
+      </Appbar.Header>
 
-        <ScrollView>
-          <List.Section title="Startup">
-            <InitKeywordItem />
-          </List.Section>
+      <ScrollView>
+        <List.Section title="Startup">
+          <InitKeywordItem />
+        </List.Section>
 
-          <List.Section title="Appearance">
-            <ThemeColorIndicator />
-            <BlurRadiusSlider />
-            <ExperimentalBlurSwitch />
-          </List.Section>
+        <List.Section title="Appearance">
+          <ThemeColorIndicator />
+          <BlurRadiusSlider />
+          <ExperimentalBlurSwitch />
+        </List.Section>
 
-          <List.Section title="General">
-            <VersionItem />
-          </List.Section>
-        </ScrollView>
-      </BlurView>
-    </ImageBackground>
+        <List.Section title="General">
+          <VersionItem />
+        </List.Section>
+      </ScrollView>
+    </BlurBackground>
   );
 }
 
