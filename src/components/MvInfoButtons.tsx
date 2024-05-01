@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, useTheme } from 'react-native-paper';
@@ -5,7 +6,11 @@ import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
 import useSWR from 'swr';
 import { Main as MvMain } from '../types/mv';
 
-export const MvInfoButtons = ({ res }: { res: string | null }) => {
+export const MvInfoButtons = ({ res }:
+    { res: string | null }
+) => {
+    const navigator = useNavigation();
+
     const appTheme = useTheme();
     const track = useActiveTrack();
 
