@@ -21,15 +21,15 @@ export const MvCover = ({ children }: PropsWithChildren) => {
                 imageStyle={{ borderRadius: appTheme.roundness * 3 }}
                 source={{ uri: data?.data.cover || placeholderImg }}
             >
-                <View style={styles.cover}>
-                    <View style={{
+                <View
+                    style={[styles.cover, {
                         backgroundColor:
                             Color(appTheme.colors.surface)
                                 .fade(0.3).toString(),
                         borderRadius: appTheme.roundness * 3
-                    }}>
-                        {children}
-                    </View>
+                    }]}
+                >
+                    {children}
                 </View>
             </ImageBackground>
         </Card>
@@ -39,7 +39,7 @@ export const MvCover = ({ children }: PropsWithChildren) => {
 const styles = StyleSheet.create({
     cover: {
         height: 200,
-        justifyContent: 'flex-end'
+        justifyContent: 'space-between'
     },
     card: {
         marginHorizontal: '2%',
