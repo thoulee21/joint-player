@@ -13,6 +13,7 @@ export const MoreBtn = ({ data }: { data: string }) => {
     };
 
     return <Menu
+        elevation={1}
         anchor={
             <IconButton
                 icon="dots-vertical"

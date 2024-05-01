@@ -58,6 +58,7 @@ export const WebViewScreen = ({
           <Appbar.Content title={title} />
 
           <Menu
+            elevation={1}
             visible={menuVisible}
             onDismiss={() => setMenuVisible(false)}
             statusBarHeight={StatusBar.currentHeight}
