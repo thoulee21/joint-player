@@ -1,3 +1,4 @@
+export * from './AppContainer';
 export * from './BackwardButton';
 export * from './BlurBackground';
 export * from './BlurRadiusSlider';
@@ -21,6 +22,7 @@ export * from './PlayPauseButton';
 export * from './Progress';
 export * from './RepeatModeSwitch';
 export * from './RightSwitch';
+export * from './RootStack';
 export * from './ScreenWrapper';
 export * from './Spacer';
 export * from './ThemeColorIndicator';
