@@ -1,32 +1,31 @@
 import { useNavigation } from '@react-navigation/native';
-import { BlurView } from 'expo-blur';
 import React, { useMemo, useState } from 'react';
-import {
-    ImageBackground,
-    Platform,
-    StyleSheet,
-    View
-} from 'react-native';
-import {
-    ActivityIndicator,
-    Portal,
-    Text,
-    useTheme
-} from 'react-native-paper';
+import { StyleSheet } from 'react-native';
+import { ActivityIndicator, Portal, Text } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
 import useSWR from 'swr';
 import {
+    BlurBackground,
     CommentList,
     DialogWithRadioBtns,
     MvArgsMenu,
     MvCover,
     MvInfoButtons,
-    TrackInfoBar,
-    placeholderImg
+    TrackInfoBar
 } from '../components';
-import { useAppSelector } from '../hook/reduxHooks';
-import { blurRadius } from '../redux/slices';
 import { Main as MvMain } from '../types/mv';
+
+const CommentsView = () => {
+    const track = useActiveTrack();
+    const { data } = useSWR<MvMain>(
+        `http://music.163.com/api/mv/detail?id=${track?.mvid}`
+    );
+    return (
+        <CommentList
+            commentThreadId={data?.data.commentThreadId as string}
+        />
+    );
+};
 
 const NoMV = () => {
     const navigator = useNavigation();
@@ -42,9 +41,6 @@ const NoMV = () => {
 };
 
 export function MvDetail() {
-    const appTheme = useTheme();
-    const blurRadiusValue = useAppSelector(blurRadius);
-
     const [dialogVisible, setDialogVisible] = useState(false);
     const [res, setRes] = useState<string | null>(null);
 
@@ -75,58 +71,39 @@ export function MvDetail() {
     }
 
     return (
-        <ImageBackground
-            style={styles.root}
-            source={{ uri: track?.artwork || placeholderImg }}
-            blurRadius={blurRadiusValue}
-        >
-            <BlurView
-                tint={appTheme.dark ? 'dark' : 'light'}
-                style={styles.root}
-            >
-                {track?.mvid !== 0
-                    ? <>
-                        <MvCover>
-                            <TrackInfoBar
-                                right={(props) =>
-                                    <MvArgsMenu {...props}
-                                        setDialogVisible={setDialogVisible}
-                                    />
-                                }
-                            />
-                            <MvInfoButtons res={res} />
-                        </MvCover>
-
-                        <CommentList
-                            commentThreadId={data?.data.commentThreadId as string}
+        <BlurBackground>
+            {track?.mvid !== 0
+                ? <>
+                    <MvCover>
+                        <TrackInfoBar
+                            right={(props) =>
+                                <MvArgsMenu {...props}
+                                    setDialogVisible={setDialogVisible}
+                                />
+                            }
                         />
-                        <View style={styles.footer} />
-                    </>
-                    : <NoMV />}
+                        <MvInfoButtons res={res} />
+                    </MvCover>
 
-                <Portal>
-                    <DialogWithRadioBtns
-                        visible={dialogVisible}
-                        close={() => setDialogVisible(false)}
-                        btns={btns}
-                        setValue={setRes as (res: string | null) => void}
-                    />
-                </Portal>
-            </BlurView>
-        </ImageBackground>
+                    <CommentsView />
+                </>
+                : <NoMV />}
+
+            <Portal>
+                <DialogWithRadioBtns
+                    visible={dialogVisible}
+                    close={() => setDialogVisible(false)}
+                    btns={btns}
+                    setValue={setRes as (res: string | null) => void}
+                />
+            </Portal>
+        </BlurBackground>
     );
 }
 
 const styles = StyleSheet.create({
-    root: {
-        flex: 1,
-        display: 'flex',
-    },
     loading: {
         marginTop: '80%',
-    },
-    footer: {
-        height: Platform.OS === 'android' ? '40%' : 0
     },
     noMv: {
         textAlign: 'center',

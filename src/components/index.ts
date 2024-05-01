@@ -1,4 +1,5 @@
 export * from './BackwardButton';
+export * from './BlurBackground';
 export * from './BlurRadiusSlider';
 export * from './BottomBar';
 export * from './BottomSheetPaper';
