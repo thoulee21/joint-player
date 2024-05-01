@@ -48,7 +48,7 @@ export const DialogWithRadioBtns = ({
 
     return (
         <Dialog onDismiss={close} visible={visible}>
-            <Dialog.Icon icon="video-outline" size={60} />
+            <Dialog.Icon icon="video-switch-outline" size={60} />
             <Dialog.Title>Choose resolution</Dialog.Title>
 
             <Dialog.ScrollArea style={styles.btnsContainer}>
