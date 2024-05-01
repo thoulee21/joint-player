@@ -47,9 +47,16 @@ export const DialogWithRadioBtns = ({
     ), [checkedItem]);
 
     return (
-        <Dialog onDismiss={close} visible={visible}>
+        <Dialog
+            visible={visible}
+            onDismiss={close}
+            dismissable={false}
+            dismissableBackButton
+        >
             <Dialog.Icon icon="video-switch-outline" size={60} />
-            <Dialog.Title>Choose resolution</Dialog.Title>
+            <Dialog.Title style={styles.title}>
+                Choose resolution
+            </Dialog.Title>
 
             <Dialog.ScrollArea style={styles.btnsContainer}>
                 <FlatList
@@ -72,6 +79,9 @@ export const DialogWithRadioBtns = ({
 };
 
 const styles = StyleSheet.create({
+    title: {
+        textAlign: 'center',
+    },
     btnsContainer: {
         paddingHorizontal: 0,
     },

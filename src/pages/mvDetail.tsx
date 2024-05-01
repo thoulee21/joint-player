@@ -57,6 +57,7 @@ export function MvDetail() {
                 Object.keys(mvData).reverse()[0]
             ];
         } else {
+            setDialogVisible(false);
             return [
                 [{ key: '240', value: '' }],
                 '240'
