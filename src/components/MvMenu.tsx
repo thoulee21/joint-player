@@ -13,7 +13,7 @@ export function MvMenu({ onPostPressed, navigation }:
 
   return (
     <Menu.Item
-      title="Watch MV"
+      title="Music Video"
       leadingIcon="video-outline"
       disabled={disabled}
       onPress={async () => {
