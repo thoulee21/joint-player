@@ -17,7 +17,7 @@ export function MvMenu({ onPostPressed, navigation }:
       leadingIcon="video-outline"
       disabled={disabled}
       onPress={async () => {
-        navigation.navigate('MvPlayer');
+        navigation.navigate('MvDetail');
 
         await TrackPlayer.pause();
         onPostPressed();

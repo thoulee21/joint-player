@@ -5,6 +5,7 @@ export * from './BottomSheetPaper';
 export * from './CommentItem';
 export * from './CommentList';
 export * from './CommentsMenu';
+export * from './DialogWithRadioBtns';
 export * from './ExperimentalBlurSwitch';
 export * from './ForwardButton';
 export * from './InitKeywordItem';

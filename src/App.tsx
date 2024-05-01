@@ -26,6 +26,7 @@ import { useAppDispatch, useAppSelector } from './hook/reduxHooks';
 import {
   Comments,
   LyricsScreen,
+  MvDetail,
   MvPlayer,
   Player,
   Settings,
@@ -145,6 +146,7 @@ function App() {
                 <Stack.Screen name="Comments" component={Comments} />
                 <Stack.Screen name="Lyrics" component={LyricsScreen} />
                 <Stack.Screen name="MvPlayer" component={MvPlayer} />
+                <Stack.Screen name="MvDetail" component={MvDetail} />
               </Stack.Navigator>
             </NavigationContainer>
           </PreferencesContext.Provider>

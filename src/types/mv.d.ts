@@ -25,7 +25,7 @@ export interface Data {
     duration:        number;
     nType:           number;
     publishTime:     Date;
-    brs:             BRS;
+    brs:             { [key: string]: string };
     artists:         Artist[];
     isReward:        boolean;
     commentThreadId: string;
@@ -34,8 +34,4 @@ export interface Data {
 export interface Artist {
     id:   number;
     name: string;
-}
-
-export interface BRS {
-    '240': string;
 }
