@@ -59,7 +59,7 @@ export function MvDetail() {
         } else {
             return [{ key: '240', value: '' }];
         }
-    }, [data?.data.brs, isLoading, track?.mvid]);
+    }, [data, isLoading, track?.mvid]);
 
     if (isLoading) {
         return (
