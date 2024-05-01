@@ -44,8 +44,7 @@ export const MvPlayer = () => {
                 ? 'light-content'
                 : 'dark-content');
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [appTheme.dark]);
 
     return (
         <VideoPlayer

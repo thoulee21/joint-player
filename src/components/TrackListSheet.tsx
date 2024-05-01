@@ -1,7 +1,7 @@
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import Color from 'color';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TextStyle, View } from 'react-native';
 import { ActivityIndicator, List, useTheme } from 'react-native-paper';
 import TrackPlayer, { Track, useActiveTrack } from 'react-native-track-player';
 import { BottomSheetPaper } from '.';
@@ -28,17 +28,18 @@ function TrackList({ bottomSheetRef }:
 
   const renderTrack = ({ item, index }: { item: Track; index: number }) => {
     const active = currentTrack?.url === item.url;
+    const titleStyle: TextStyle = {
+      color: active
+        ? appTheme.colors.primary
+        : appTheme.colors.onBackground,
+      fontWeight: active ? 'bold' : 'normal',
+    };
+
     return (
       <List.Item
         title={item.title}
         description={item.artist}
-        // eslint-disable-next-line react-native/no-inline-styles
-        titleStyle={{
-          color: active
-            ? appTheme.colors.primary
-            : appTheme.colors.onBackground,
-          fontWeight: active ? 'bold' : 'normal',
-        }}
+        titleStyle={titleStyle}
         style={{
           backgroundColor:
             active
