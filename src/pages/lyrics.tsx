@@ -1,10 +1,5 @@
-import { BlurView } from 'expo-blur';
 import React from 'react';
-import {
-    ImageBackground,
-    StatusBar,
-    StyleSheet
-} from 'react-native';
+import { StatusBar, StyleSheet } from 'react-native';
 import HapticFeedback, {
     HapticFeedbackTypes
 } from 'react-native-haptic-feedback';
@@ -20,17 +15,15 @@ import TrackPlayer, {
 } from 'react-native-track-player';
 import useSWR from 'swr';
 import {
+    BlurBackground,
     Lyric,
     TrackInfoBar,
-    TrackMenu,
-    placeholderImg,
+    TrackMenu
 } from '../components';
 import { LyricLine } from '../components/Lyric/lyric';
-import { useAppSelector } from '../hook/reduxHooks';
-import { blurRadius } from '../redux/slices';
 import { Main as LyricMain } from '../types/lyrics';
 
-const timeOffset = 1003;
+export const lyricTimeOffset = 1003;
 
 const LyricView = ({ lrc, currentTime }:
     { lrc: string, currentTime: number }
@@ -60,7 +53,7 @@ const LyricView = ({ lrc, currentTime }:
                         HapticFeedbackTypes.effectHeavyClick
                     );
                     TrackPlayer.seekTo(
-                        lyricLine.millisecond / timeOffset
+                        lyricLine.millisecond / lyricTimeOffset
                     );
                 }}
             >
@@ -81,8 +74,6 @@ const LyricView = ({ lrc, currentTime }:
 
 export function LyricsScreen() {
     const appTheme = useTheme();
-    const blurRadiusValue = useAppSelector(blurRadius);
-
     const track = useActiveTrack();
     const { position } = useProgress();
 
@@ -91,48 +82,35 @@ export function LyricsScreen() {
     );
 
     return (
-        <ImageBackground
-            source={{ uri: track?.artwork || placeholderImg }}
-            style={styles.rootView}
-            blurRadius={blurRadiusValue}
-        >
-            <BlurView
-                tint={appTheme.dark ? 'dark' : 'light'}
-                style={[styles.rootView, styles.blurView]}
-            >
-                <TrackInfoBar style={styles.infoBar} right={TrackMenu} />
-                {isLoading ?
-                    <ActivityIndicator
-                        size="large"
-                        style={styles.loading}
+        <BlurBackground style={styles.blurView}>
+            <TrackInfoBar style={styles.infoBar} right={TrackMenu} />
+            {isLoading ?
+                <ActivityIndicator
+                    size="large"
+                    style={styles.loading}
+                />
+                : (lyric?.lrc.lyric && !error) ?
+                    <LyricView
+                        lrc={lyric.lrc.lyric}
+                        currentTime={position * lyricTimeOffset}
                     />
-                    : (lyric?.lrc.lyric && !error) ?
-                        <LyricView
-                            lrc={lyric.lrc.lyric}
-                            currentTime={position * timeOffset}
-                        />
-                        : <List.Item
-                            title={error
-                                ? 'Failed to load lyrics'
-                                : 'No lyrics found'}
-                            titleStyle={[
-                                styles.center, styles.notFoundTitle,
-                            ]}
-                            description={error?.message}
-                            descriptionStyle={[styles.center, {
-                                color: appTheme.colors.error,
-                            }]}
-                        />}
-            </BlurView>
-        </ImageBackground>
+                    : <List.Item
+                        title={error
+                            ? 'Failed to load lyrics'
+                            : 'No lyrics found'}
+                        titleStyle={[
+                            styles.center, styles.notFoundTitle,
+                        ]}
+                        description={error?.message}
+                        descriptionStyle={[styles.center, {
+                            color: appTheme.colors.error,
+                        }]}
+                    />}
+        </BlurBackground>
     );
 }
 
 const styles = StyleSheet.create({
-    rootView: {
-        flex: 1,
-        display: 'flex',
-    },
     blurView: {
         paddingHorizontal: '5%',
     },

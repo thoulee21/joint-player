@@ -22,10 +22,6 @@ export function Comments(): React.JSX.Element {
 }
 
 const styles = StyleSheet.create({
-    rootView: {
-        flex: 1,
-        display: 'flex',
-    },
     header: {
         backgroundColor: 'transparent',
     },
