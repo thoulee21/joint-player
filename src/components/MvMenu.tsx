@@ -1,6 +1,6 @@
 import React from 'react';
 import { Menu } from 'react-native-paper';
-import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
+import { useActiveTrack } from 'react-native-track-player';
 
 export function MvMenu({ onPostPressed, navigation }:
   { onPostPressed: () => void, navigation: any }
@@ -18,8 +18,6 @@ export function MvMenu({ onPostPressed, navigation }:
       disabled={disabled}
       onPress={async () => {
         navigation.navigate('MvDetail');
-
-        await TrackPlayer.pause();
         onPostPressed();
       }}
     />
