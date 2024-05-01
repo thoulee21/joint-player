@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useMemo, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import { StatusBar, StyleSheet } from 'react-native';
 import { ActivityIndicator, Portal, Text } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
 import useSWR from 'swr';
@@ -30,13 +30,16 @@ const CommentsView = () => {
 const NoMV = () => {
     const navigator = useNavigation();
     return (
-        <Text
-            variant="headlineSmall"
-            style={styles.noMv}
-            onPress={navigator.goBack}
-        >
-            {'No MV for the song, \npress to go back'}
-        </Text>
+        <>
+            <TrackInfoBar style={styles.noMvInfoBar} />
+            <Text
+                variant="headlineSmall"
+                style={styles.noMv}
+                onPress={navigator.goBack}
+            >
+                {'No MV for the song, \npress to go back'}
+            </Text>
+        </>
     );
 };
 
@@ -107,6 +110,10 @@ const styles = StyleSheet.create({
     },
     noMv: {
         textAlign: 'center',
-        paddingTop: '50%'
-    }
+        paddingTop: '15%'
+    },
+    noMvInfoBar: {
+        marginTop: StatusBar.currentHeight,
+        marginVertical: '5%',
+    },
 });
