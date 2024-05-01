@@ -1,6 +1,10 @@
 import { BlurView } from 'expo-blur';
 import React from 'react';
-import { ImageBackground, StyleSheet } from 'react-native';
+import {
+    ImageBackground,
+    StatusBar,
+    StyleSheet
+} from 'react-native';
 import HapticFeedback, {
     HapticFeedbackTypes
 } from 'react-native-haptic-feedback';
@@ -18,6 +22,7 @@ import useSWR from 'swr';
 import {
     Lyric,
     TrackInfoBar,
+    TrackMenu,
     placeholderImg,
 } from '../components';
 import { LyricLine } from '../components/Lyric/lyric';
@@ -95,31 +100,29 @@ export function LyricsScreen() {
                 tint={appTheme.dark ? 'dark' : 'light'}
                 style={[styles.rootView, styles.blurView]}
             >
-                <TrackInfoBar />
-                {
-                    isLoading ?
-                        <ActivityIndicator
-                            size="large"
-                            style={styles.loading}
+                <TrackInfoBar style={styles.infoBar} right={TrackMenu} />
+                {isLoading ?
+                    <ActivityIndicator
+                        size="large"
+                        style={styles.loading}
+                    />
+                    : (lyric?.lrc.lyric && !error) ?
+                        <LyricView
+                            lrc={lyric.lrc.lyric}
+                            currentTime={position * timeOffset}
                         />
-                        : (lyric?.lrc.lyric && !error) ?
-                            <LyricView
-                                lrc={lyric.lrc.lyric}
-                                currentTime={position * timeOffset}
-                            />
-                            : <List.Item
-                                title={error
-                                    ? 'Failed to load lyrics'
-                                    : 'No lyrics found'}
-                                titleStyle={[
-                                    styles.center, styles.notFoundTitle,
-                                ]}
-                                description={error?.message}
-                                descriptionStyle={[styles.center, {
-                                    color: appTheme.colors.error,
-                                }]}
-                            />
-                }
+                        : <List.Item
+                            title={error
+                                ? 'Failed to load lyrics'
+                                : 'No lyrics found'}
+                            titleStyle={[
+                                styles.center, styles.notFoundTitle,
+                            ]}
+                            description={error?.message}
+                            descriptionStyle={[styles.center, {
+                                color: appTheme.colors.error,
+                            }]}
+                        />}
             </BlurView>
         </ImageBackground>
     );
@@ -132,6 +135,10 @@ const styles = StyleSheet.create({
     },
     blurView: {
         paddingHorizontal: '5%',
+    },
+    infoBar: {
+        paddingTop: StatusBar.currentHeight,
+        marginVertical: '5%',
     },
     lyricText: {
         fontWeight: 'bold',

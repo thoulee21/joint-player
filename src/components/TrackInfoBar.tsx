@@ -1,16 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import {
-    StatusBar,
     StyleProp,
-    StyleSheet,
     TouchableWithoutFeedback,
-    ViewStyle,
+    ViewStyle
 } from 'react-native';
 import HapticFeedback from 'react-native-haptic-feedback';
 import { Avatar, Card, useTheme } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
-import { TrackMenu } from '.';
 
 const placeholderImg = 'https://picsum.photos/100';
 
@@ -19,23 +16,17 @@ export interface TrackInfoBarProps {
     right?: ({ size }: { size: number }) => React.ReactNode;
 }
 
-export const TrackInfoBar = ({ style, right }: TrackInfoBarProps) => {
+export const TrackInfoBar = (props: TrackInfoBarProps) => {
     const navigation = useNavigation();
+
     const appTheme = useTheme();
-
     const track = useActiveTrack();
-
-    const topBarStyle = [
-        styles.infoBar,
-        { paddingTop: StatusBar.currentHeight },
-    ];
 
     return (
         <Card.Title
             title={track?.title}
             subtitle={track?.artist}
             subtitleStyle={{ color: appTheme.colors.primary }}
-            style={style || topBarStyle}
             left={({ size }) =>
                 <TouchableWithoutFeedback
                     onPress={() => {
@@ -49,13 +40,7 @@ export const TrackInfoBar = ({ style, right }: TrackInfoBarProps) => {
                     />
                 </TouchableWithoutFeedback>
             }
-            right={right || TrackMenu}
+            {...props}
         />
     );
 };
-
-const styles = StyleSheet.create({
-    infoBar: {
-        marginVertical: '5%',
-    },
-});
