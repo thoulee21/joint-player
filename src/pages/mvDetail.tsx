@@ -15,18 +15,6 @@ import {
 } from '../components';
 import { Main as MvMain } from '../types/mv';
 
-const CommentsView = () => {
-    const track = useActiveTrack();
-    const { data } = useSWR<MvMain>(
-        `http://music.163.com/api/mv/detail?id=${track?.mvid}`
-    );
-    return (
-        <CommentList
-            commentThreadId={data?.data.commentThreadId as string}
-        />
-    );
-};
-
 const NoMV = () => {
     const navigator = useNavigation();
     return (
@@ -88,7 +76,7 @@ export function MvDetail() {
                         <MvInfoButtons res={res} />
                     </MvCover>
 
-                    <CommentsView />
+                    <CommentList commentThreadId={`R_MV_5_${track?.mvid}`} />
                 </>
                 : <NoMV />}
 
