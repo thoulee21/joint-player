@@ -12,7 +12,6 @@ export function ThemeColorIndicator() {
         <List.Item
             title="Theme Color"
             description={appTheme.colors.primary}
-            rippleColor="transparent"
             left={props => <List.Icon {...props} icon="palette-outline" />}
             right={() => (
                 <List.Icon
