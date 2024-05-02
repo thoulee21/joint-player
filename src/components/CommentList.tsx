@@ -1,7 +1,7 @@
 import { useNetInfoInstance } from '@react-native-community/netinfo';
 import React from 'react';
-import { ActivityIndicator, FlatList, StyleSheet } from 'react-native';
-import { List, useTheme } from 'react-native-paper';
+import { FlatList, StyleSheet } from 'react-native';
+import { ActivityIndicator, List, useTheme } from 'react-native-paper';
 import useSWR from 'swr';
 import { CommentItem } from '.';
 import { Comment, Main as CommentsMain } from '../types/comments';
