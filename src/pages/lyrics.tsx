@@ -92,7 +92,7 @@ export function LyricsScreen() {
                     disabled={!lyric?.tlyric.lyric}
                     onPress={() => {
                         HapticFeedback.trigger(
-                            HapticFeedbackTypes.effectClick
+                            HapticFeedbackTypes.effectHeavyClick
                         );
                         setUseTranslated(prev => !prev);
                     }}
