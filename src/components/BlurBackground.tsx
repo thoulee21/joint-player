@@ -1,5 +1,5 @@
 import { BlurView } from 'expo-blur';
-import React, { ReactNode } from 'react';
+import React, { ReactNode, memo } from 'react';
 import { ImageBackground, StyleSheet, ViewStyle } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
@@ -7,12 +7,12 @@ import { placeholderImg } from '.';
 import { useAppSelector } from '../hook/reduxHooks';
 import { blurRadius } from '../redux/slices';
 
-export function BlurBackground({ children, style, onLoadEnd }:
+export const BlurBackground = memo(({ children, style, onLoadEnd }:
     { children: ReactNode, style?: ViewStyle, onLoadEnd?: () => void }
-) {
-    const track = useActiveTrack();
+) => {
     const appTheme = useTheme();
     const blurRadiusValue = useAppSelector(blurRadius);
+    const track = useActiveTrack();
 
     return (
         <ImageBackground
@@ -29,7 +29,7 @@ export function BlurBackground({ children, style, onLoadEnd }:
             </BlurView>
         </ImageBackground>
     );
-}
+});
 
 const styles = StyleSheet.create({
     root: {
