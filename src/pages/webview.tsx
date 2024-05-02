@@ -1,4 +1,5 @@
 import Clipboard from '@react-native-clipboard/clipboard';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useRef, useState } from 'react';
 import {
   Linking,
@@ -21,21 +22,21 @@ import {
 } from 'react-native-paper';
 import { WebView } from 'react-native-webview';
 
-export const WebViewScreen = ({
-  route,
-  navigation,
-}: {
-  route: any;
-  navigation: any;
-}) => {
-  const [loadProgress, setLoadProgress] = useState(0);
-  const [menuVisible, setMenuVisible] = useState(false);
+export interface WebViewParams {
+  url: string;
+  title: string;
+}
 
-  const webViewRef = useRef<WebView>(null);
-
+export const WebViewScreen = () => {
+  const route = useRoute();
+  const navigation = useNavigation();
   const appTheme = useTheme();
 
-  const { url, title } = route.params;
+  const [loadProgress, setLoadProgress] = useState(0);
+  const [menuVisible, setMenuVisible] = useState(false);
+  const webViewRef = useRef<WebView>(null);
+
+  const { url, title } = route.params as WebViewParams;
 
   const showMenu = () => {
     HapticFeedback.trigger(
@@ -72,7 +73,7 @@ export const WebViewScreen = ({
               />
             }>
             <Menu.Item
-              title="Copy link"
+              title="Copy Link"
               leadingIcon="link"
               onPress={() => {
                 Clipboard.setString(url);
@@ -82,7 +83,7 @@ export const WebViewScreen = ({
             />
 
             <Menu.Item
-              title="Share link"
+              title="Share Link"
               leadingIcon="share"
               disabled={!url || !title}
               onPress={() => {
@@ -94,7 +95,7 @@ export const WebViewScreen = ({
             />
 
             <Menu.Item
-              title="Open in browser"
+              title="Open in Browser"
               leadingIcon="open-in-app"
               onPress={() => {
                 setMenuVisible(false);
@@ -103,7 +104,7 @@ export const WebViewScreen = ({
             />
 
             <Menu.Item
-              title="Clear cache"
+              title="Clear Cache"
               leadingIcon="delete-outline"
               onPress={() => {
                 if (webViewRef.current?.clearCache) {
@@ -125,17 +126,16 @@ export const WebViewScreen = ({
         ref={webViewRef}
         style={{ backgroundColor: appTheme.colors.background }}
         source={{ uri: url }}
-        onLoadProgress={({ nativeEvent }: { nativeEvent: any }) => {
+        onLoadProgress={({ nativeEvent }) => {
           setLoadProgress(nativeEvent.progress);
         }}
-        onHttpError={(event: any) => {
+        onHttpError={(event) => {
           ToastAndroid.show(
-            `${event.nativeEvent.statusCode.toString()}: ${event.nativeEvent.description
-            }`,
+            `${event.nativeEvent.statusCode.toString()}: ${event.nativeEvent.description}`,
             ToastAndroid.LONG,
           );
         }}
-        onError={(event: any) => {
+        onError={(event) => {
           ToastAndroid.show(
             `${event.nativeEvent.code}: ${event.nativeEvent.description}`,
             ToastAndroid.LONG,
