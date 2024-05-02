@@ -8,7 +8,6 @@ import {
   BlurBackground,
   BlurRadiusSlider,
   ExperimentalBlurSwitch,
-  InitKeywordItem,
   ThemeColorIndicator
 } from '../components';
 import { useAppDispatch, useAppSelector } from '../hook/reduxHooks';
@@ -77,10 +76,6 @@ export function Settings() {
       </Appbar.Header>
 
       <ScrollView>
-        <List.Section title="Startup">
-          <InitKeywordItem />
-        </List.Section>
-
         <List.Section title="Appearance">
           <ThemeColorIndicator />
           <BlurRadiusSlider />

@@ -10,7 +10,6 @@ export * from './CommentsMenu';
 export * from './DialogWithRadioBtns';
 export * from './ExperimentalBlurSwitch';
 export * from './ForwardButton';
-export * from './InitKeywordItem';
 export * from './Lyric';
 export * from './MoreButton';
 export * from './MvCover';

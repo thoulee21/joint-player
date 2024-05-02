@@ -71,14 +71,16 @@ export function Player() {
     setSearching(true);
 
     if (keyword) {
+      AsyncStorage.setItem(StorageKeys.Keyword, keyword);
       await addTracks(keyword);
+      TrackPlayer.play();
     } else if (placeholderKeyword) {
       setKeyword(placeholderKeyword);
       await addTracks(placeholderKeyword);
+      TrackPlayer.play();
     }
 
     setSearching(false);
-    await TrackPlayer.play();
   });
 
   const onLoadEnd = () => {
