@@ -9,7 +9,6 @@ import {
     Button,
     Portal,
     Text,
-    useTheme
 } from 'react-native-paper';
 import TrackPlayer, {
     useActiveTrack
@@ -42,8 +41,6 @@ const NoMV = () => {
 
 export function MvDetail() {
     const navigator = useNavigation();
-    const appTheme = useTheme();
-
     const [dialogVisible, setDialogVisible] = useState(false);
     const [res, setRes] = useState<string | null>(null);
 
@@ -83,8 +80,6 @@ export function MvDetail() {
             </Button>
             <Button
                 icon="play-circle-outline"
-                mode="contained-tonal"
-                style={{ borderRadius: appTheme.roundness * 3 }}
                 onPress={goMvPlayer}
             >
                 {data?.data.playCount.toLocaleString()} plays
