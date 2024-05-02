@@ -1,20 +1,24 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useMemo, useState } from 'react';
-import { StatusBar, StyleSheet } from 'react-native';
+import { StatusBar, StyleSheet, View } from 'react-native';
+import HapticFeedBack, {
+    HapticFeedbackTypes
+} from 'react-native-haptic-feedback';
 import {
     ActivityIndicator,
     Button,
     Portal,
     Text
 } from 'react-native-paper';
-import { useActiveTrack } from 'react-native-track-player';
+import TrackPlayer, {
+    useActiveTrack
+} from 'react-native-track-player';
 import useSWR from 'swr';
 import {
     BlurBackground,
     CommentList,
     DialogWithRadioBtns,
     MvCover,
-    MvInfoButtons,
     TrackInfoBar
 } from '../components';
 import { Main as MvMain } from '../types/mv';
@@ -36,6 +40,7 @@ const NoMV = () => {
 };
 
 export function MvDetail() {
+    const navigator = useNavigation();
     const [dialogVisible, setDialogVisible] = useState(false);
     const [res, setRes] = useState<string | null>(null);
 
@@ -54,38 +59,50 @@ export function MvDetail() {
         }
     }, [data, isLoading, track?.mvid]);
 
-    if (isLoading) {
-        return (
-            <ActivityIndicator
-                size="large"
-                style={styles.loading}
-            />
-        );
-    }
+    const ActionBtns = () => (
+        <View style={styles.row}>
+            <Button
+                icon="video-switch-outline"
+                onPress={() => {
+                    HapticFeedBack.trigger(
+                        HapticFeedbackTypes.effectHeavyClick
+                    );
+                    setDialogVisible(true);
+                }}
+            >
+                {res || btns[btns.length - 1]}P
+            </Button>
+            <Button
+                icon="play-circle"
+                onPress={() => {
+                    TrackPlayer.pause();
+                    // @ts-ignore
+                    navigator.navigate('MvPlayer', { res: res });
+                }}
+            >
+                {data?.data.playCount.toLocaleString()} plays
+            </Button>
+        </View>
+    );
 
     return (
         <BlurBackground>
-            {track?.mvid !== 0
-                ? <>
-                    <MvCover>
-                        <TrackInfoBar right={(props) =>
-                            <Button {...props}
-                                icon="video-switch-outline"
-                                onPress={() => {
-                                    setDialogVisible(true);
-                                }}
-                            >
-                                {res || btns[btns.length - 1]}p
-                            </Button>}
-                        />
-                        <MvInfoButtons res={res} />
-                    </MvCover>
+            {isLoading
+                ? <ActivityIndicator
+                    size="large"
+                    style={styles.loading}
+                />
+                : track?.mvid
+                    ? <>
+                        <MvCover>
+                            <ActionBtns />
+                        </MvCover>
 
-                    <CommentList
-                        commentThreadId={`R_MV_5_${track?.mvid}`}
-                    />
-                </>
-                : <NoMV />}
+                        <CommentList
+                            commentThreadId={`R_MV_5_${track?.mvid}`}
+                        />
+                    </>
+                    : <NoMV />}
 
             <Portal>
                 <DialogWithRadioBtns
@@ -110,5 +127,11 @@ const styles = StyleSheet.create({
     noMvInfoBar: {
         marginTop: StatusBar.currentHeight,
         marginVertical: '5%',
+    },
+    row: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        width: '100%'
     },
 });

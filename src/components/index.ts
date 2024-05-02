@@ -14,7 +14,6 @@ export * from './InitKeywordItem';
 export * from './Lyric';
 export * from './MoreButton';
 export * from './MvCover';
-export * from './MvInfoButtons';
 export * from './MvMenu';
 export * from './PlayControls';
 export * from './PlayPauseButton';
