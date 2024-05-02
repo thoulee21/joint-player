@@ -1,5 +1,5 @@
-import React from 'react';
-import { StatusBar, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { StatusBar, StyleSheet, View } from 'react-native';
 import HapticFeedback, {
     HapticFeedbackTypes
 } from 'react-native-haptic-feedback';
@@ -7,7 +7,8 @@ import {
     ActivityIndicator,
     List,
     Text,
-    useTheme,
+    ToggleButton,
+    useTheme
 } from 'react-native-paper';
 import TrackPlayer, {
     useActiveTrack,
@@ -77,13 +78,36 @@ export function LyricsScreen() {
     const track = useActiveTrack();
     const { position } = useProgress();
 
+    const [useTranslated, setUseTranslated] = useState(false);
     const { data: lyric, error, isLoading } = useSWR<LyricMain>(
         `https://music.163.com/api/song/lyric?id=${track?.id}&lv=1&kv=1&tv=-1`
     );
 
+    const RightButtons = () => {
+        return (
+            <View style={styles.row}>
+                <ToggleButton
+                    icon="translate"
+                    status={useTranslated ? 'checked' : 'unchecked'}
+                    disabled={!lyric?.tlyric.lyric}
+                    onPress={() => {
+                        HapticFeedback.trigger(
+                            HapticFeedbackTypes.effectClick
+                        );
+                        setUseTranslated(prev => !prev);
+                    }}
+                />
+                <TrackMenu />
+            </View>
+        );
+    };
+
     return (
         <BlurBackground style={styles.blurView}>
-            <TrackInfoBar style={styles.infoBar} right={TrackMenu} />
+            <TrackInfoBar
+                style={styles.infoBar}
+                right={RightButtons}
+            />
             {isLoading ?
                 <ActivityIndicator
                     size="large"
@@ -91,7 +115,9 @@ export function LyricsScreen() {
                 />
                 : (lyric?.lrc.lyric && !error) ?
                     <LyricView
-                        lrc={lyric.lrc.lyric}
+                        lrc={useTranslated
+                            ? lyric.tlyric.lyric
+                            : lyric.lrc.lyric}
                         currentTime={position * lyricTimeOffset}
                     />
                     : <List.Item
@@ -135,5 +161,10 @@ const styles = StyleSheet.create({
         marginTop: '10%',
         fontSize: 25,
         fontWeight: 'bold',
+    },
+    row: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
     },
 });
