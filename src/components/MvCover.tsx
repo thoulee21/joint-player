@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
-import React, { PropsWithChildren } from 'react';
+import React, { ReactNode } from 'react';
 import {
     ImageBackground,
     StatusBar,
@@ -16,7 +16,9 @@ import useSWR from 'swr';
 import { Main as MvMain } from '../types/mv';
 import { placeholderImg } from './TrackInfo';
 
-export const MvCover = ({ children }: PropsWithChildren) => {
+export const MvCover = ({ children, onPress }:
+    { children: ReactNode, onPress?: () => void }
+) => {
     const navigation = useNavigation();
     const appTheme = useTheme();
     const track = useActiveTrack();
@@ -29,13 +31,14 @@ export const MvCover = ({ children }: PropsWithChildren) => {
         backgroundColor:
             Color(appTheme.colors.surface)
                 .fade(0.3).toString(),
-        borderRadius: appTheme.roundness * 3
+        borderRadius: appTheme.roundness * 3,
     };
 
     return (
         <Card
             elevation={5}
             style={styles.card}
+            onPress={onPress}
             onLongPress={() => {
                 HapticFeedback.trigger(
                     HapticFeedbackTypes.effectTick

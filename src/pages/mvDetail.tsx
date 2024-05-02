@@ -8,7 +8,8 @@ import {
     ActivityIndicator,
     Button,
     Portal,
-    Text
+    Text,
+    useTheme
 } from 'react-native-paper';
 import TrackPlayer, {
     useActiveTrack
@@ -41,6 +42,8 @@ const NoMV = () => {
 
 export function MvDetail() {
     const navigator = useNavigation();
+    const appTheme = useTheme();
+
     const [dialogVisible, setDialogVisible] = useState(false);
     const [res, setRes] = useState<string | null>(null);
 
@@ -59,6 +62,12 @@ export function MvDetail() {
         }
     }, [data, isLoading, track?.mvid]);
 
+    const goMvPlayer = () => {
+        TrackPlayer.pause();
+        // @ts-ignore
+        navigator.navigate('MvPlayer', { res: res });
+    };
+
     const ActionBtns = () => (
         <View style={styles.row}>
             <Button
@@ -73,12 +82,10 @@ export function MvDetail() {
                 {res || btns[btns.length - 1]}P
             </Button>
             <Button
-                icon="play-circle"
-                onPress={() => {
-                    TrackPlayer.pause();
-                    // @ts-ignore
-                    navigator.navigate('MvPlayer', { res: res });
-                }}
+                icon="play-circle-outline"
+                mode="contained-tonal"
+                style={{ borderRadius: appTheme.roundness * 3 }}
+                onPress={goMvPlayer}
             >
                 {data?.data.playCount.toLocaleString()} plays
             </Button>
@@ -94,7 +101,7 @@ export function MvDetail() {
                 />
                 : track?.mvid
                     ? <>
-                        <MvCover>
+                        <MvCover onPress={goMvPlayer}>
                             <ActionBtns />
                         </MvCover>
 
