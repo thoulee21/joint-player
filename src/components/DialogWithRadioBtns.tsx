@@ -1,5 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
+import HapticFeedBack, {
+    HapticFeedbackTypes
+} from 'react-native-haptic-feedback';
 import {
     Button,
     Dialog,
@@ -21,9 +24,16 @@ export const DialogWithRadioBtns = ({
     const highestRes = btns[btns.length - 1];
     const [checkedItem, setCheckedItem] = useState(highestRes);
 
-    const renderItem = useCallback(({ item }: { item: string }) => (
+    const renderItem = useCallback(({ item }:
+        { item: string }
+    ) => (
         <TouchableRipple
-            onPress={() => { setCheckedItem(item); }}
+            onPress={() => {
+                HapticFeedBack.trigger(
+                    HapticFeedbackTypes.effectHeavyClick
+                );
+                setCheckedItem(item);
+            }}
         >
             <View style={styles.row}>
                 <View pointerEvents="none">
@@ -64,6 +74,9 @@ export const DialogWithRadioBtns = ({
                 <Button onPress={close}>Cancel</Button>
                 <Button
                     onPress={() => {
+                        HapticFeedBack.trigger(
+                            HapticFeedbackTypes.effectTick
+                        );
                         setValue(checkedItem);
                         close();
                     }}

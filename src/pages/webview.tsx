@@ -38,7 +38,9 @@ export const WebViewScreen = ({
   const { url, title } = route.params;
 
   const showMenu = () => {
-    HapticFeedback.trigger(HapticFeedbackTypes.effectTick);
+    HapticFeedback.trigger(
+      HapticFeedbackTypes.effectHeavyClick
+    );
     setMenuVisible(true);
   };
 
