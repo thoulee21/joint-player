@@ -1,18 +1,14 @@
 import React from 'react';
-import HapticFeedback, {
-    HapticFeedbackTypes,
-} from 'react-native-haptic-feedback';
-import { List } from 'react-native-paper';
-import { RightSwitch } from '.';
+import { List, Switch, useTheme } from 'react-native-paper';
 import { useAppDispatch, useAppSelector } from '../hook/reduxHooks';
 import { selectBlurEnabled, toggleBlur } from '../redux/slices';
 
 export function ExperimentalBlurSwitch() {
-    const experimentalBlurEnabled = useAppSelector(selectBlurEnabled);
     const dispatch = useAppDispatch();
+    const appTheme = useTheme();
+    const experimentalBlurEnabled = useAppSelector(selectBlurEnabled);
 
     const toggleExperimentalBlur = () => {
-        HapticFeedback.trigger(HapticFeedbackTypes.effectTick);
         dispatch(toggleBlur());
     };
 
@@ -20,15 +16,14 @@ export function ExperimentalBlurSwitch() {
         <List.Item
             title="Experimental Blur"
             description="Enable experimental blur effect"
-            left={(props) =>
-                <List.Icon {...props} icon="blur" />
-            }
+            left={(props) => <List.Icon {...props} icon="blur" />}
             right={(props) =>
-                <RightSwitch {...props}
+                <Switch {...props}
+                    color={appTheme.colors.primary}
+                    onValueChange={toggleExperimentalBlur}
                     value={experimentalBlurEnabled}
                 />
             }
-            onPress={toggleExperimentalBlur}
         />
     );
 }

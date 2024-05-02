@@ -19,7 +19,6 @@ export * from './PlayControls';
 export * from './PlayPauseButton';
 export * from './Progress';
 export * from './RepeatModeSwitch';
-export * from './RightSwitch';
 export * from './RootStack';
 export * from './ScreenWrapper';
 export * from './Spacer';
