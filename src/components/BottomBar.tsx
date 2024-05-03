@@ -21,13 +21,16 @@ export const BottomBar = ({ bottomSheetRef }:
     const showDetails = () => {
         if (track && devModeEnabled) {
             HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
-            console.info(JSON.stringify(track, null, 2));
-            Alert.alert(
-                track.title || 'Details',
-                JSON.stringify(track, null, 2),
-                [{ text: 'OK' }],
-                { cancelable: true }
-            );
+            if (__DEV__) {
+                console.info(JSON.stringify(track, null, 2));
+            } else {
+                Alert.alert(
+                    track.title || 'Details',
+                    JSON.stringify(track, null, 2),
+                    [{ text: 'OK' }],
+                    { cancelable: true }
+                );
+            }
         }
     };
 
