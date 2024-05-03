@@ -1,11 +1,13 @@
 import Color from 'color';
-import React from 'react';
+import React, { memo } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { Avatar, List, useTheme } from 'react-native-paper';
 import { BeReplied, Comment } from '../types/comments';
 import { MoreBtn } from './MoreButton';
 
-export const BeRepliedComment = ({ reply }: { reply: BeReplied }) => {
+export const BeRepliedComment = memo(({ reply }:
+    { reply: BeReplied }
+) => {
     const appTheme = useTheme();
 
     const beRepliedStyle = [
@@ -36,9 +38,11 @@ export const BeRepliedComment = ({ reply }: { reply: BeReplied }) => {
             right={() => <MoreBtn data={reply.content} />}
         />
     );
-};
+});
 
-export const CommentItem = ({ item }: { item: Comment }) => {
+export const CommentItem = memo(({ item }:
+    { item: Comment }
+) => {
     const appTheme = useTheme();
 
     const commentContent = item.content.concat(
@@ -73,7 +77,7 @@ export const CommentItem = ({ item }: { item: Comment }) => {
             />
         </List.Section>
     );
-};
+});
 
 const styles = StyleSheet.create({
     beReplied: {
