@@ -1,9 +1,10 @@
 import { useNetInfoInstance } from '@react-native-community/netinfo';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import { RefreshControl, SectionList, StyleSheet } from 'react-native';
 import { ActivityIndicator, List, Text, useTheme } from 'react-native-paper';
-import useSWR from 'swr';
+import useSWRInfinite from 'swr/infinite';
 import { CommentItem } from '.';
+import { useDebounce } from '../hook';
 import { Main as CommentsMain } from '../types/comments';
 
 export function CommentList({ commentThreadId }: { commentThreadId: string }) {
@@ -11,25 +12,38 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
     const { netInfo } = useNetInfoInstance();
     const [refreshing, setRefreshing] = useState(false);
 
-    const { data: commentsData, error, isLoading, mutate } = useSWR<CommentsMain>(
-        `http://music.163.com/api/v1/resource/comments/${commentThreadId}`,
+    const commentsPerPage = 5;
+    const { data, error, isLoading, mutate, setSize } = useSWRInfinite<CommentsMain>((index) =>
+        `http://music.163.com/api/v1/resource/comments/${commentThreadId}?offset=${index * commentsPerPage}&limit=${commentsPerPage}`
     );
+
     const showData = useMemo(() => {
         let sections = [];
-        if (commentsData?.hotComments && commentsData?.hotComments.length !== 0) {
-            sections.push({
-                title: 'Hot Comments',
-                data: commentsData.hotComments.slice(0, 14),
-            });
-        }
-        if (commentsData?.comments && commentsData?.comments.length !== 0) {
-            sections.push({
-                title: 'Latest Comments',
-                data: commentsData.comments.slice(0, 5),
-            });
+        if (data) {
+            for (let index = 0; index < data.length; index++) {
+                const commentsData = data[index];
+                if (index === 0) {
+                    if (commentsData?.hotComments && commentsData?.hotComments.length !== 0) {
+                        sections.push({
+                            title: 'Hot Comments',
+                            data: commentsData.hotComments,
+                        });
+                    }
+                    if (commentsData?.comments && commentsData?.comments.length !== 0) {
+                        sections.push({
+                            title: 'Latest Comments',
+                            data: commentsData.comments,
+                        });
+                    }
+                } else {
+                    if (commentsData?.comments && commentsData?.comments.length !== 0) {
+                        sections[1].data.push(...commentsData.comments);
+                    }
+                }
+            }
         }
         return sections;
-    }, [commentsData]);
+    }, [data]);
 
     const onRefresh = useCallback(async () => {
         setRefreshing(true);
@@ -38,6 +52,26 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
         //no mutate
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const loadMore = useDebounce(() => {
+        if (!isLoading) {
+            // if there are more comments to load
+            if (showData[0].data.length !== (data || [])[0].comments.length) {
+                setSize(prev => prev + 1);
+            }
+        }
+    }, 1500);
+
+    const FooterLoading = memo(({ section }:
+        { section: { title: string } }
+    ) => {
+        if (section.title === 'Latest Comments') {
+            if (showData[0].data.length !== (data || [])[0].comments.length) {
+                // loading isn't finished
+                return <ActivityIndicator style={styles.footer} />;
+            }
+        }
+    });
 
     if (isLoading) {
         return <ActivityIndicator
@@ -77,7 +111,7 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
             description={error.message}
             onPress={() => mutate()}
         />;
-    } else if (commentsData?.total === 0) {
+    } else if ((data ?? [])[0]?.total === 0) {
         return <List.Item
             title="No comments"
             titleStyle={styles.emptyContent}
@@ -105,6 +139,9 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
                     </Text>
                 )}
                 renderItem={({ item }) => <CommentItem item={item} />}
+                onEndReached={loadMore}
+                onEndReachedThreshold={0.05}
+                renderSectionFooter={(props) => <FooterLoading {...props} />}
             />
         );
     }
@@ -118,9 +155,13 @@ const styles = StyleSheet.create({
         marginTop: '20%',
     },
     header: {
-        marginVertical: 5,
         fontSize: 16,
         marginLeft: '4%',
         fontWeight: 'bold',
-    }
+    },
+    footer: {
+        paddingBottom: '4%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });
