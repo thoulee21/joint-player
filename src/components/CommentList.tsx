@@ -82,19 +82,21 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
         // network error
         if (!netInfo.isConnected) {
             return <List.Item
-                left={props => <List.Icon {...props}
-                    color={appTheme.colors.error}
-                    icon="alert-circle-outline"
-                />}
+                left={props =>
+                    <List.Icon {...props}
+                        color={appTheme.colors.error}
+                        icon="alert-circle-outline"
+                    />}
                 title="No internet connection."
                 description={error.message}
             />;
         } else if (netInfo.isConnected) {
             return <List.Item
-                left={props => <List.Icon {...props}
-                    color={appTheme.colors.tertiary}
-                    icon="reload"
-                />}
+                left={props =>
+                    <List.Icon {...props}
+                        color={appTheme.colors.tertiary}
+                        icon="reload"
+                    />}
                 title="Connected! Tap to retry."
                 description={error.message}
                 onPress={() => mutate()}
@@ -103,18 +105,23 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
 
         // other errors
         return <List.Item
-            left={props => <List.Icon {...props}
-                icon="alert-circle"
-                color={appTheme.colors.error} />}
+            left={props =>
+                <List.Icon {...props}
+                    icon="alert-circle"
+                    color={appTheme.colors.error}
+                />}
             title="Failed to load comments. Tap to retry."
-            titleStyle={styles.emptyContent}
             description={error.message}
             onPress={() => mutate()}
         />;
     } else if ((data ?? [])[0]?.total === 0) {
         return <List.Item
+            left={props =>
+                <List.Icon {...props}
+                    icon="comment-outline"
+                />}
             title="No comments"
-            titleStyle={styles.emptyContent}
+            description="Be the first to comment!"
         />;
     } else {
         return (
@@ -148,14 +155,12 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
 }
 
 const styles = StyleSheet.create({
-    emptyContent: {
-        alignSelf: 'center',
-    },
     loading: {
         marginTop: '20%',
     },
     header: {
         fontSize: 16,
+        marginTop: '4%',
         marginLeft: '4%',
         fontWeight: 'bold',
     },
