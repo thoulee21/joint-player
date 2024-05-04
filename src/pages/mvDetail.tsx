@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useMemo, useState } from 'react';
-import { StatusBar, StyleSheet, View } from 'react-native';
+import React, { useCallback, useMemo, useState } from 'react';
+import { Alert, StatusBar, StyleSheet, View } from 'react-native';
 import HapticFeedBack, {
     HapticFeedbackTypes
 } from 'react-native-haptic-feedback';
@@ -21,6 +21,8 @@ import {
     MvCover,
     TrackInfoBar
 } from '../components';
+import { useAppSelector } from '../hook';
+import { selectDevModeEnabled } from '../redux/slices';
 import { Main as MvMain } from '../types/mv';
 
 const NoMV = () => {
@@ -39,6 +41,8 @@ const NoMV = () => {
 
 export function MvDetail() {
     const navigator = useNavigation();
+    const devModeEnabled = useAppSelector(selectDevModeEnabled);
+
     const [dialogVisible, setDialogVisible] = useState(false);
     const [res, setRes] = useState<string | null>(null);
 
@@ -77,10 +81,28 @@ export function MvDetail() {
         </Button>
     );
 
+    const printMvData = useCallback(() => {
+        if (devModeEnabled && data) {
+            if (__DEV__) {
+                console.info(JSON.stringify(data.data, null, 2));
+            } else {
+                Alert.alert(
+                    'MV Info',
+                    JSON.stringify(data.data, null, 2),
+                    [{ text: 'OK' }],
+                    { cancelable: true }
+                );
+            }
+        }
+    }, [data, devModeEnabled]);
+
     const BottomBtns = () => {
         return (
             <View style={styles.row}>
-                <Button icon="heart-outline">
+                <Button
+                    icon={devModeEnabled ? 'heart' : 'heart-outline'}
+                    onPress={printMvData}
+                >
                     {data?.data.likeCount.toLocaleString()}
                 </Button>
                 <Button
