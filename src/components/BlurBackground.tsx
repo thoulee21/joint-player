@@ -4,7 +4,7 @@ import { ImageBackground, StyleSheet, ViewStyle } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
 import { placeholderImg } from '.';
-import { useAppSelector } from '../hook/reduxHooks';
+import { useAppSelector } from '../hook';
 import { blurRadius } from '../redux/slices';
 
 export const BlurBackground = memo(({ children, style, onLoadEnd }:

@@ -15,7 +15,7 @@ import {
 } from 'react-native-paper';
 import { SWRConfig, SWRConfiguration } from 'swr';
 import { PreferencesContext } from '../App';
-import { useAppSelector } from '../hook/reduxHooks';
+import { useAppSelector } from '../hook';
 import { selectDarkModeEnabled } from '../redux/slices';
 import { requestInit } from '../services';
 

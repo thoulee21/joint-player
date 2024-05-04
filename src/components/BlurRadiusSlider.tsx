@@ -5,7 +5,7 @@ import { StyleSheet } from 'react-native';
 import HapticFeedback from 'react-native-haptic-feedback';
 import { List, Text, useTheme } from 'react-native-paper';
 import { StorageKeys } from '../App';
-import { useAppDispatch, useAppSelector } from '../hook/reduxHooks';
+import { useAppDispatch, useAppSelector } from '../hook';
 import { blurRadius, setBlurRadius } from '../redux/slices';
 
 export function BlurRadiusSlider() {

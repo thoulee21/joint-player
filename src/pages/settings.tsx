@@ -10,7 +10,7 @@ import {
   ExperimentalBlurSwitch,
   ThemeColorIndicator
 } from '../components';
-import { useAppDispatch, useAppSelector } from '../hook/reduxHooks';
+import { useAppDispatch, useAppSelector } from '../hook';
 import { selectDevModeEnabled, setDevModeValue } from '../redux/slices';
 
 export const upperFirst = (str: string) =>

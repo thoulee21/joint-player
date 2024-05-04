@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { createContext, useEffect } from 'react';
 import { AppContainer, RootStack } from './components';
-import { useAppDispatch } from './hook/reduxHooks';
+import { useAppDispatch } from './hook';
 import { setBlurRadius } from './redux/slices';
 
 SplashScreen.preventAutoHideAsync();

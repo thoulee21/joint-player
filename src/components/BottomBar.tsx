@@ -7,7 +7,7 @@ import HapticFeedback, {
 } from 'react-native-haptic-feedback';
 import { Appbar } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
-import { useAppSelector } from '../hook/reduxHooks';
+import { useAppSelector } from '../hook';
 import { selectDevModeEnabled } from '../redux/slices';
 
 export const BottomBar = ({ bottomSheetRef }:

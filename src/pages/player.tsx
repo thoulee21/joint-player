@@ -20,15 +20,14 @@ import {
   TrackListSheet,
   placeholderImg,
 } from '../components';
-import { useDebounce, useSetupPlayer } from '../hook';
-import { useAppDispatch } from '../hook/reduxHooks';
+import { useAppDispatch, useDebounce, useSetupPlayer } from '../hook';
 import { toggleDarkMode } from '../redux/slices';
 import { addTracks } from '../services';
 
 export function Player() {
-  const appTheme = useTheme();
-  const preferences = useContext(PreferencesContext);
   const dispatch = useAppDispatch();
+  const preferences = useContext(PreferencesContext);
+  const appTheme = useTheme();
 
   const isPlayerReady = useSetupPlayer();
   const track = useActiveTrack();

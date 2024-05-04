@@ -4,7 +4,7 @@ import { BlurView } from 'expo-blur';
 import React, { PropsWithChildren } from 'react';
 import { StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import { useAppSelector } from '../hook/reduxHooks';
+import { useAppSelector } from '../hook';
 import { selectBlurEnabled } from '../redux/slices';
 
 export const BottomSheetPaper = ({

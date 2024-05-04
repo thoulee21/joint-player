@@ -1,3 +1,4 @@
+export * from './reduxHooks';
 export * from './useDebounce';
 export * from './usePlaylist';
 export * from './useSetupPlayer';

@@ -77,19 +77,21 @@ export function MvDetail() {
         </Button>
     );
 
-    const BottomBtns = () => (
-        <View style={styles.row}>
-            <Button icon="heart-outline">
-                {data?.data.likeCount.toLocaleString()}
-            </Button>
-            <Button
-                icon="play-circle"
-                onPress={goMvPlayer}
-            >
-                {data?.data.playCount.toLocaleString()}
-            </Button>
-        </View>
-    );
+    const BottomBtns = () => {
+        return (
+            <View style={styles.row}>
+                <Button icon="heart-outline">
+                    {data?.data.likeCount.toLocaleString()}
+                </Button>
+                <Button
+                    icon="play-circle"
+                    onPress={goMvPlayer}
+                >
+                    {data?.data.playCount.toLocaleString()}
+                </Button>
+            </View>
+        );
+    };
 
     return (
         <BlurBackground>

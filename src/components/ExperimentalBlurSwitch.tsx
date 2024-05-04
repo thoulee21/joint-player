@@ -1,6 +1,6 @@
 import React from 'react';
 import { List, Switch, useTheme } from 'react-native-paper';
-import { useAppDispatch, useAppSelector } from '../hook/reduxHooks';
+import { useAppDispatch, useAppSelector } from '../hook';
 import { selectBlurEnabled, toggleBlur } from '../redux/slices';
 
 export function ExperimentalBlurSwitch() {
