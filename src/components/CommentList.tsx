@@ -50,13 +50,13 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
                 const commentsData = data[index];
 
                 if (commentsData?.comments && commentsData.comments.length !== 0) {
-                    const latestCommentsSectionIndex = sections.findIndex(
+                    const latestSectionIndex = sections.findIndex(
                         section => section.title === 'Latest Comments'
                     );
 
-                    if (latestCommentsSectionIndex !== -1) {
-                        sections[latestCommentsSectionIndex].data = sections[latestCommentsSectionIndex]
-                            .data.concat(commentsData.comments);
+                    if (latestSectionIndex !== -1) {
+                        sections[latestSectionIndex].data =
+                            sections[latestSectionIndex].data.concat(commentsData.comments);
                     }
                 }
             }
