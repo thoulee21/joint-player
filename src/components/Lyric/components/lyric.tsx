@@ -139,6 +139,7 @@ const Lyric = React.forwardRef<
       scrollEventThrottle={30}
       onScroll={onScroll}
       style={style}
+      fadingEdgeLength={100}
       data={lrcLineList}
       renderItem={({ item, index }) => (
         <>
