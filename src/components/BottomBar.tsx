@@ -1,38 +1,18 @@
 import BottomSheet from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import React, { RefObject } from 'react';
-import { Alert, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import HapticFeedback, {
     HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
 import { Appbar } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
-import { useAppSelector } from '../hook';
-import { selectDevModeEnabled } from '../redux/slices';
 
 export const BottomBar = ({ bottomSheetRef }:
     { bottomSheetRef: RefObject<BottomSheet> }
 ) => {
     const navigation = useNavigation();
-
     const track = useActiveTrack();
-    const devModeEnabled = useAppSelector(selectDevModeEnabled);
-
-    const showDetails = () => {
-        if (track && devModeEnabled) {
-            HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
-            if (__DEV__) {
-                console.info(JSON.stringify(track, null, 2));
-            } else {
-                Alert.alert(
-                    track.title || 'Details',
-                    JSON.stringify(track, null, 2),
-                    [{ text: 'OK' }],
-                    { cancelable: true }
-                );
-            }
-        }
-    };
 
     return (
         <Appbar.Header
@@ -54,7 +34,6 @@ export const BottomBar = ({ bottomSheetRef }:
             <Appbar.Content
                 title={track?.album || 'No Album'}
                 titleStyle={styles.bottomTitle}
-                onPress={showDetails}
             />
             <Appbar.Action
                 icon="menu-open"

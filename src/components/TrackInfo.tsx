@@ -1,10 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
-import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import React, { useCallback } from 'react';
+import { Alert, Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Surface, Text, useTheme } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
 import useSWR from 'swr';
+import { useAppSelector } from '../hook';
+import { selectDevModeEnabled } from '../redux/slices';
 import { Main as LyricMain } from '../types/lyrics';
 
 export const placeholderImg = 'https://picsum.photos/800';
@@ -13,12 +15,31 @@ export const TrackInfo = () => {
   const navigation = useNavigation();
   const appTheme = useTheme();
 
+  const devModeEnabled = useAppSelector(selectDevModeEnabled);
   const track = useActiveTrack();
   const { data } = useSWR<LyricMain>(
     `https://music.163.com/api/song/lyric?id=${track?.id}&lv=1&kv=1&tv=-1`
   );
 
   const imageUri = track?.artwork || placeholderImg;
+
+  const printTrackData = useCallback(() => {
+    if (track && devModeEnabled) {
+      HapticFeedback.trigger(
+        HapticFeedbackTypes.effectHeavyClick
+      );
+      if (__DEV__) {
+        console.info(JSON.stringify(track, null, 2));
+      } else {
+        Alert.alert(
+          track.title || 'Details',
+          JSON.stringify(track, null, 2),
+          [{ text: 'OK' }],
+          { cancelable: true }
+        );
+      }
+    }
+  }, [devModeEnabled, track]);
 
   return (
     <View style={styles.container}>
@@ -65,11 +86,13 @@ export const TrackInfo = () => {
         </TouchableWithoutFeedback>
       </Surface>
 
-      <Text selectable style={styles.titleText}>
+      <Text
+        style={styles.titleText}
+        onPress={printTrackData}
+      >
         {track?.title}
       </Text>
       <Text
-        selectable
         style={[styles.artistText, { color: appTheme.colors.primary }]}>
         {track?.artist}
       </Text>
