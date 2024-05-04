@@ -27,6 +27,7 @@ export const ScrollToBtns = memo(({ showData, commentsRef, data }:
                 animated: true,
             });
         },
+        // no commentsRef
         // eslint-disable-next-line react-hooks/exhaustive-deps
     })), [showData]);
 
@@ -46,6 +47,7 @@ export const ScrollToBtns = memo(({ showData, commentsRef, data }:
             viewOffset: 0,
             animated: true,
         });
+        // no commentsRef
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -55,6 +57,7 @@ export const ScrollToBtns = memo(({ showData, commentsRef, data }:
                 icon={expended
                     ? 'chevron-down' :
                     'comment-arrow-right-outline'}
+                label="Scroll To"
                 variant="surface"
                 visible={(data ?? [])[0]?.total > 10}
                 open={expended}
