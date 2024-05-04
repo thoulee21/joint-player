@@ -13,8 +13,8 @@ export const BeRepliedComment = memo(({ reply }:
     const beRepliedStyle = [
         styles.beReplied,
         {
-            borderTopStartRadius: appTheme.roundness,
-            borderBottomLeftRadius: appTheme.roundness,
+            borderTopStartRadius: appTheme.roundness * 3,
+            borderBottomLeftRadius: appTheme.roundness * 3,
             backgroundColor:
                 Color(appTheme.colors.surface)
                     .fade(0.8).string(),
