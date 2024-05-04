@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
 import { BlurView } from 'expo-blur';
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode, useCallback, useEffect } from 'react';
 import {
+    Alert,
     Dimensions,
     ImageBackground,
     StatusBar,
@@ -17,20 +18,36 @@ import { AndroidImageColors } from 'react-native-image-colors/build/types';
 import { Card, useTheme } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
 import useSWR from 'swr';
-import { useDebounce } from '../hook';
+import { useAppSelector, useDebounce } from '../hook';
+import { selectDevModeEnabled } from '../redux/slices';
 import { Main as MvMain } from '../types/mv';
 import { placeholderImg } from './TrackInfo';
 
-export const MvCover = ({ children, onPress }:
-    { children: ReactNode, onPress?: () => void }
-) => {
+export const MvCover = ({ children }: { children: ReactNode }) => {
     const navigation = useNavigation();
     const appTheme = useTheme();
 
+    const devModeEnabled = useAppSelector(selectDevModeEnabled);
     const track = useActiveTrack();
+
     const { data } = useSWR<MvMain>(
         `http://music.163.com/api/mv/detail?id=${track?.mvid}`
     );
+
+    const printMvData = useCallback(() => {
+        if (devModeEnabled && data) {
+            if (__DEV__) {
+                console.info(JSON.stringify(data.data, null, 2));
+            } else {
+                Alert.alert(
+                    'MV Info',
+                    JSON.stringify(data.data, null, 2),
+                    [{ text: 'OK' }],
+                    { cancelable: true }
+                );
+            }
+        }
+    }, [data, devModeEnabled]);
 
     const StatusBarStyleHandler = useDebounce(async () => {
         const colors = await getColors(data?.data.cover || placeholderImg);
@@ -54,7 +71,7 @@ export const MvCover = ({ children, onPress }:
     return (
         <Card
             style={styles.square}
-            onPress={onPress}
+            onPress={printMvData}
             onLongPress={() => {
                 HapticFeedback.trigger(
                     HapticFeedbackTypes.effectTick
