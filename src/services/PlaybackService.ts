@@ -74,7 +74,7 @@ export async function PlaybackService() {
 
   TrackPlayer.addEventListener(Event.MetadataCommonReceived, async ({ metadata }) => {
     const activeTrack = await TrackPlayer.getActiveTrack();
-
+    console.log('Event.MetadataCommonReceived', metadata, activeTrack);
     TrackPlayer.updateNowPlayingMetadata({
       artist: [metadata.title, metadata.artist].filter(Boolean).join(' - '),
       title: activeTrack?.title,
