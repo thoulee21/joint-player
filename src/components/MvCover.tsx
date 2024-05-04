@@ -1,7 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
-import React, { ReactNode } from 'react';
+import { BlurView } from 'expo-blur';
+import React, { ReactNode, useEffect } from 'react';
 import {
+    Dimensions,
     ImageBackground,
     StatusBar,
     StyleSheet,
@@ -10,9 +12,12 @@ import {
 import HapticFeedback, {
     HapticFeedbackTypes
 } from 'react-native-haptic-feedback';
+import { getColors } from 'react-native-image-colors';
+import { AndroidImageColors } from 'react-native-image-colors/build/types';
 import { Card, useTheme } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
 import useSWR from 'swr';
+import { useDebounce } from '../hook';
 import { Main as MvMain } from '../types/mv';
 import { placeholderImg } from './TrackInfo';
 
@@ -21,23 +26,34 @@ export const MvCover = ({ children, onPress }:
 ) => {
     const navigation = useNavigation();
     const appTheme = useTheme();
-    const track = useActiveTrack();
 
+    const track = useActiveTrack();
     const { data } = useSWR<MvMain>(
         `http://music.163.com/api/mv/detail?id=${track?.mvid}`
     );
 
-    const actionsBarStyle = {
-        backgroundColor:
-            Color(appTheme.colors.surface)
-                .fade(0.3).toString(),
-        borderRadius: appTheme.roundness * 3,
-    };
+    const StatusBarStyleHandler = useDebounce(async () => {
+        const colors = await getColors(data?.data.cover || placeholderImg);
+        const imgColor = Color((colors as AndroidImageColors).average);
+
+        StatusBar.setBarStyle(
+            imgColor.isDark() ? 'light-content' : 'dark-content'
+        );
+    });
+
+    useEffect(() => {
+        StatusBarStyleHandler();
+
+        return () => {
+            StatusBar.setBarStyle(
+                appTheme.dark ? 'light-content' : 'dark-content'
+            );
+        };
+    }, [StatusBarStyleHandler, appTheme, data, track]);
 
     return (
         <Card
-            elevation={5}
-            style={styles.card}
+            style={styles.square}
             onPress={onPress}
             onLongPress={() => {
                 HapticFeedback.trigger(
@@ -51,13 +67,15 @@ export const MvCover = ({ children, onPress }:
             }}
         >
             <ImageBackground
-                imageStyle={{ borderRadius: appTheme.roundness * 3 }}
                 source={{ uri: data?.data.cover || placeholderImg }}
             >
                 <View style={styles.cover}>
-                    <View style={actionsBarStyle}>
+                    <BlurView
+                        tint={appTheme.dark ? 'dark' : 'light'}
+                        intensity={100}
+                    >
                         {children}
-                    </View>
+                    </BlurView>
                 </View>
             </ImageBackground>
         </Card>
@@ -66,11 +84,10 @@ export const MvCover = ({ children, onPress }:
 
 const styles = StyleSheet.create({
     cover: {
-        height: 200,
+        height: Dimensions.get('window').height / 3.5,
         justifyContent: 'flex-end',
     },
-    card: {
-        marginHorizontal: '2%',
-        marginTop: StatusBar.currentHeight,
-    },
+    square: {
+        borderRadius: 0,
+    }
 });

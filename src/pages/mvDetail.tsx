@@ -24,16 +24,14 @@ import {
 import { Main as MvMain } from '../types/mv';
 
 const NoMV = () => {
-    const navigator = useNavigation();
     return (
         <>
             <TrackInfoBar style={styles.noMvInfoBar} />
             <Text
                 variant="headlineSmall"
                 style={styles.noMv}
-                onPress={navigator.goBack}
             >
-                {'No MV for the song, \npress to go back'}
+                No MV for the song
             </Text>
         </>
     );
@@ -65,24 +63,30 @@ export function MvDetail() {
         navigator.navigate('MvPlayer', { res: res });
     };
 
-    const ActionBtns = () => (
+    const ResSwitch = (props: any) => (
+        <Button {...props}
+            icon="video-switch-outline"
+            onPress={() => {
+                HapticFeedBack.trigger(
+                    HapticFeedbackTypes.effectHeavyClick
+                );
+                setDialogVisible(true);
+            }}
+        >
+            {res || btns[btns.length - 1]}P
+        </Button>
+    );
+
+    const BottomBtns = () => (
         <View style={styles.row}>
-            <Button
-                icon="video-switch-outline"
-                onPress={() => {
-                    HapticFeedBack.trigger(
-                        HapticFeedbackTypes.effectHeavyClick
-                    );
-                    setDialogVisible(true);
-                }}
-            >
-                {res || btns[btns.length - 1]}P
+            <Button icon="heart-outline">
+                {data?.data.likeCount.toLocaleString()}
             </Button>
             <Button
-                icon="play-circle-outline"
+                icon="play-circle"
                 onPress={goMvPlayer}
             >
-                {data?.data.playCount.toLocaleString()} plays
+                {data?.data.playCount.toLocaleString()}
             </Button>
         </View>
     );
@@ -96,8 +100,9 @@ export function MvDetail() {
                 />
                 : track?.mvid
                     ? <>
-                        <MvCover onPress={goMvPlayer}>
-                            <ActionBtns />
+                        <MvCover>
+                            <TrackInfoBar right={ResSwitch} />
+                            <BottomBtns />
                         </MvCover>
 
                         <CommentList
@@ -124,7 +129,7 @@ const styles = StyleSheet.create({
     },
     noMv: {
         textAlign: 'center',
-        paddingTop: '15%'
+        marginTop: '15%'
     },
     noMvInfoBar: {
         marginTop: StatusBar.currentHeight,
