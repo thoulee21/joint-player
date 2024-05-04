@@ -94,62 +94,77 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
     });
 
     if (isLoading) {
-        return <ActivityIndicator
-            style={styles.loading}
-            size="large"
-        />;
+        return (
+            <ActivityIndicator
+                style={styles.loading}
+                size="large"
+            />
+        );
     } else if (error) {
-        // network error
         if (!netInfo.isConnected) {
-            return <List.Item
-                left={props =>
-                    <List.Icon {...props}
-                        color={appTheme.colors.error}
-                        icon="alert-circle-outline"
-                    />}
-                title="No internet connection."
-                description={error.message}
-            />;
+            return (
+                <List.Item
+                    left={props => (
+                        <List.Icon
+                            {...props}
+                            color={appTheme.colors.error}
+                            icon="alert-circle-outline"
+                        />
+                    )}
+                    title="No internet connection."
+                    description={error.message}
+                />
+            );
         } else if (netInfo.isConnected) {
-            return <List.Item
-                left={props =>
-                    <List.Icon {...props}
-                        color={appTheme.colors.tertiary}
-                        icon="reload"
-                    />}
-                title="Connected! Tap to retry."
+            return (
+                <List.Item
+                    left={props => (
+                        <List.Icon
+                            {...props}
+                            color={appTheme.colors.tertiary}
+                            icon="reload"
+                        />
+                    )}
+                    title="Connected! Tap to retry."
+                    description={error.message}
+                    onPress={() => mutate()}
+                />
+            );
+        }
+        return (
+            <List.Item
+                left={props => (
+                    <List.Icon
+                        {...props}
+                        icon="alert-circle"
+                        color={appTheme.colors.error}
+                    />
+                )}
+                title="Failed to load comments. Tap to retry."
                 description={error.message}
                 onPress={() => mutate()}
-            />;
-        }
-
-        // other errors
-        return <List.Item
-            left={props =>
-                <List.Icon {...props}
-                    icon="alert-circle"
-                    color={appTheme.colors.error}
-                />}
-            title="Failed to load comments. Tap to retry."
-            description={error.message}
-            onPress={() => mutate()}
-        />;
+            />
+        );
     } else if ((data ?? [])[0]?.total === 0) {
-        return <List.Item
-            left={props =>
-                <List.Icon {...props}
-                    icon="comment-outline"
-                />}
-            title="No comments"
-            description="Be the first to comment!"
-        />;
+        return (
+            <List.Item
+                left={props => (
+                    <List.Icon
+                        {...props}
+                        icon="comment-outline"
+                    />
+                )}
+                title="No comments"
+                description="Be the first to comment!"
+            />
+        );
     } else {
         return (
             <Portal.Host>
                 <SectionList
                     ref={commentsRef}
                     sections={showData}
-                    keyExtractor={(item) => item.commentId.toString()}
+                    keyExtractor={item => item.commentId.toString()}
                     initialNumToRender={7}
                     scrollEventThrottle={scrollEventThrottle}
                     fadingEdgeLength={100}
@@ -171,8 +186,9 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
                     renderItem={({ item }) => <CommentItem item={item} />}
                     onEndReached={loadMore}
                     onEndReachedThreshold={0.05}
-                    renderSectionFooter={({ section }) =>
-                        <FooterLoading title={section.title} />}
+                    renderSectionFooter={({ section }) => (
+                        <FooterLoading title={section.title} />
+                    )}
                 />
 
                 <ScrollToBtns
