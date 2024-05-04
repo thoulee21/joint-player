@@ -14,14 +14,12 @@ export interface Section {
 }
 
 export function CommentList({ commentThreadId }: { commentThreadId: string }) {
-    const scrollEventThrottle = 300;
-    const commentsPerPage = 5;
-
     const appTheme = useTheme();
     const { netInfo } = useNetInfoInstance();
-    const commentsRef = useRef<SectionList>(null);
     const [refreshing, setRefreshing] = useState(false);
+    const commentsRef = useRef<SectionList>(null);
 
+    const commentsPerPage = 5;
     const { data, error, isLoading, mutate, setSize } = useSWRInfinite<CommentsMain>((index) =>
         `http://music.163.com/api/v1/resource/comments/${commentThreadId}?offset=${index * commentsPerPage}&limit=${commentsPerPage}`
     );
@@ -82,7 +80,7 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
                 setSize(prev => prev + 1);
             }
         }
-    }, 1500);
+    });
 
     const FooterLoading = memo(({ title }: { title: string }) => {
         if (title === 'Latest Comments') {
@@ -166,7 +164,6 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
                     sections={showData}
                     keyExtractor={item => item.commentId.toString()}
                     initialNumToRender={7}
-                    scrollEventThrottle={scrollEventThrottle}
                     fadingEdgeLength={100}
                     refreshing={refreshing}
                     onRefresh={onRefresh}
