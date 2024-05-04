@@ -84,7 +84,7 @@ export const MvCover = ({ children, onPress }:
 
 const styles = StyleSheet.create({
     cover: {
-        height: Dimensions.get('window').height / 3.5,
+        height: Dimensions.get('window').height / 3,
         justifyContent: 'flex-end',
     },
     square: {
