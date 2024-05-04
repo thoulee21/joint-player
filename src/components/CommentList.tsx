@@ -29,32 +29,34 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
     const showData = useMemo(() => {
         let sections: Section[] = [];
         if (data) {
-            for (let index = 0; index < data.length; index++) {
+            const hotComments = data[0]?.hotComments || [];
+            const latestComments = data[0]?.comments || [];
+
+            if (hotComments.length !== 0) {
+                sections.push({
+                    title: 'Hot Comments',
+                    data: hotComments,
+                });
+            }
+
+            if (latestComments.length !== 0) {
+                sections.push({
+                    title: 'Latest Comments',
+                    data: latestComments,
+                });
+            }
+
+            for (let index = 1; index < data.length; index++) {
                 const commentsData = data[index];
-                if (index === 0) {
-                    if (commentsData?.hotComments && commentsData?.hotComments.length !== 0) {
-                        sections.push({
-                            title: 'Hot Comments',
-                            data: commentsData.hotComments,
-                        });
-                    }
-                    if (commentsData?.comments && commentsData?.comments.length !== 0) {
-                        sections.push({
-                            title: 'Latest Comments',
-                            data: commentsData.comments,
-                        });
-                    }
-                } else {
-                    if (commentsData?.comments && commentsData?.comments.length !== 0) {
-                        for (let i = 0; i < sections.length; i++) {
-                            const section = sections[i];
-                            if (section.title === 'Latest Comments') {
-                                sections[i] = {
-                                    ...section,
-                                    data: sections[i].data.concat(commentsData.comments),
-                                };
-                            }
-                        }
+
+                if (commentsData?.comments && commentsData.comments.length !== 0) {
+                    const latestCommentsSectionIndex = sections.findIndex(
+                        section => section.title === 'Latest Comments'
+                    );
+
+                    if (latestCommentsSectionIndex !== -1) {
+                        sections[latestCommentsSectionIndex].data = sections[latestCommentsSectionIndex]
+                            .data.concat(commentsData.comments);
                     }
                 }
             }
