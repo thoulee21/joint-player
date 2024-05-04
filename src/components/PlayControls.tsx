@@ -1,3 +1,4 @@
+import { useNetInfoInstance } from '@react-native-community/netinfo';
 import React, { useCallback, useEffect } from 'react';
 import { StyleSheet, ToastAndroid, View } from 'react-native';
 import TrackPlayer, {
@@ -12,18 +13,24 @@ import {
 } from '.';
 
 export function PlayControls() {
+  const { netInfo } = useNetInfoInstance();
   const playbackState = usePlaybackState();
+
   const isError = 'error' in playbackState;
 
   const handleError = useCallback(() => {
     if (isError) {
-      const errMsg = `${playbackState.error.message}: ${playbackState.error.code}`;
-      ToastAndroid.show(errMsg, ToastAndroid.SHORT);
+      if (netInfo.isConnected === true) {
+        const errMsg = `${playbackState.error.message}: ${playbackState.error.code}`;
+        ToastAndroid.show(errMsg, ToastAndroid.SHORT);
 
-      TrackPlayer.skipToNext();
-      TrackPlayer.play();
+        TrackPlayer.skipToNext();
+        TrackPlayer.play();
+      } else {
+        ToastAndroid.show('No internet connection', ToastAndroid.SHORT);
+      }
     }
-  }, [isError, playbackState]);
+  }, [isError, netInfo.isConnected, playbackState]);
 
   useEffect(() => {
     handleError();
