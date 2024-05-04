@@ -1,4 +1,5 @@
 import { Action, ThunkAction, configureStore } from '@reduxjs/toolkit';
+import * as Sentry from '@sentry/react-native';
 import {
     blurRadiusSlice,
     darkModeSlice,
@@ -6,6 +7,7 @@ import {
     experimentalBlurSlice,
 } from './slices';
 
+const sentryReduxEnhancer = Sentry.createReduxEnhancer();
 
 export const store = configureStore({
     reducer: {
@@ -13,6 +15,9 @@ export const store = configureStore({
         darkMode: darkModeSlice.reducer,
         blurRadius: blurRadiusSlice.reducer,
         devMode: devModeSlice.reducer,
+    },
+    enhancers: (getDefaultEnhancers) => {
+        return getDefaultEnhancers().concat(sentryReduxEnhancer);
     },
 });
 

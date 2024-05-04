@@ -1,14 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Sentry from '@sentry/react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { createContext, useEffect } from 'react';
 import { AppContainer, RootStack } from './components';
 import { useAppDispatch } from './hook';
 import { setBlurRadius } from './redux/slices';
-
-Sentry.init({
-  dsn: 'https://8f255799dc215a920003a9291d1d1e14@o4507198225383424.ingest.de.sentry.io/4507198229184592',
-});
 
 SplashScreen.preventAutoHideAsync();
 
