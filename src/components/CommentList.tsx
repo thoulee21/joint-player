@@ -1,11 +1,19 @@
 import { useNetInfoInstance } from '@react-native-community/netinfo';
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { RefreshControl, SectionList, StyleSheet } from 'react-native';
+import HapticFeedback, {
+    HapticFeedbackTypes
+} from 'react-native-haptic-feedback';
 import { ActivityIndicator, List, Text, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
 import { CommentItem } from '.';
 import { useDebounce } from '../hook';
-import { Main as CommentsMain } from '../types/comments';
+import { Comment, Main as CommentsMain } from '../types/comments';
+
+interface Section {
+    title: string;
+    data: Comment[];
+}
 
 export function CommentList({ commentThreadId }: { commentThreadId: string }) {
     const appTheme = useTheme();
@@ -18,7 +26,7 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
     );
 
     const showData = useMemo(() => {
-        let sections = [];
+        let sections: Section[] = [];
         if (data) {
             for (let index = 0; index < data.length; index++) {
                 const commentsData = data[index];
@@ -37,7 +45,15 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
                     }
                 } else {
                     if (commentsData?.comments && commentsData?.comments.length !== 0) {
-                        sections[1].data.push(...commentsData.comments);
+                        for (let i = 0; i < sections.length; i++) {
+                            const section = sections[i];
+                            if (section.title === 'Latest Comments') {
+                                sections[i] = {
+                                    ...section,
+                                    data: sections[i].data.concat(commentsData.comments),
+                                };
+                            }
+                        }
                     }
                 }
             }
@@ -47,6 +63,9 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
 
     const onRefresh = useCallback(async () => {
         setRefreshing(true);
+        HapticFeedback.trigger(
+            HapticFeedbackTypes.effectClick
+        );
         await mutate();
         setRefreshing(false);
         //no mutate
@@ -56,7 +75,7 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
     const loadMore = useDebounce(() => {
         if (!isLoading) {
             // if there are more comments to load
-            if (showData[0].data.length !== (data || [])[0].comments.length) {
+            if (showData[0].data.length !== (data || [])[0].total) {
                 setSize(prev => prev + 1);
             }
         }
@@ -66,7 +85,7 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
         { section: { title: string } }
     ) => {
         if (section.title === 'Latest Comments') {
-            if (showData[0].data.length !== (data || [])[0].comments.length) {
+            if (showData[0].data.length !== (data || [])[0].total) {
                 // loading isn't finished
                 return <ActivityIndicator style={styles.footer} />;
             }
@@ -129,7 +148,8 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
                 sections={showData}
                 keyExtractor={(item) => item.commentId.toString()}
                 initialNumToRender={10}
-                scrollEventThrottle={16}
+                scrollEventThrottle={30}
+                fadingEdgeLength={100}
                 refreshing={refreshing}
                 onRefresh={onRefresh}
                 refreshControl={
@@ -165,7 +185,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     footer: {
-        paddingBottom: '4%',
+        paddingBottom: '2%',
         justifyContent: 'center',
         alignItems: 'center',
     },
