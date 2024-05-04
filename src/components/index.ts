@@ -20,6 +20,7 @@ export * from './Progress';
 export * from './RepeatModeSwitch';
 export * from './RootStack';
 export * from './ScreenWrapper';
+export * from './ScrollToBtns';
 export * from './Spacer';
 export * from './ThemeColorIndicator';
 export * from './TrackInfo';

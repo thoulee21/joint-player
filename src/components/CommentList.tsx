@@ -1,26 +1,27 @@
 import { useNetInfoInstance } from '@react-native-community/netinfo';
-import React, { memo, useCallback, useMemo, useState } from 'react';
+import React, { memo, useCallback, useMemo, useRef, useState } from 'react';
 import { RefreshControl, SectionList, StyleSheet } from 'react-native';
-import HapticFeedback, {
-    HapticFeedbackTypes
-} from 'react-native-haptic-feedback';
-import { ActivityIndicator, List, Text, useTheme } from 'react-native-paper';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
+import { ActivityIndicator, List, Portal, Text, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
-import { CommentItem } from '.';
+import { CommentItem, ScrollToBtns } from '.';
 import { useDebounce } from '../hook';
 import { Comment, Main as CommentsMain } from '../types/comments';
 
-interface Section {
+export interface Section {
     title: string;
     data: Comment[];
 }
 
 export function CommentList({ commentThreadId }: { commentThreadId: string }) {
+    const scrollEventThrottle = 300;
+    const commentsPerPage = 5;
+
     const appTheme = useTheme();
     const { netInfo } = useNetInfoInstance();
+    const commentsRef = useRef<SectionList>(null);
     const [refreshing, setRefreshing] = useState(false);
 
-    const commentsPerPage = 5;
     const { data, error, isLoading, mutate, setSize } = useSWRInfinite<CommentsMain>((index) =>
         `http://music.163.com/api/v1/resource/comments/${commentThreadId}?offset=${index * commentsPerPage}&limit=${commentsPerPage}`
     );
@@ -81,10 +82,8 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
         }
     }, 1500);
 
-    const FooterLoading = memo(({ section }:
-        { section: { title: string } }
-    ) => {
-        if (section.title === 'Latest Comments') {
+    const FooterLoading = memo(({ title }: { title: string }) => {
+        if (title === 'Latest Comments') {
             if (showData[0].data.length !== (data || [])[0].total) {
                 // loading isn't finished
                 return <ActivityIndicator style={styles.footer} />;
@@ -144,32 +143,42 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
         />;
     } else {
         return (
-            <SectionList
-                sections={showData}
-                keyExtractor={(item) => item.commentId.toString()}
-                initialNumToRender={10}
-                scrollEventThrottle={30}
-                fadingEdgeLength={100}
-                refreshing={refreshing}
-                onRefresh={onRefresh}
-                refreshControl={
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                        colors={[appTheme.colors.primary]}
-                        progressBackgroundColor={appTheme.colors.surface}
-                    />
-                }
-                renderSectionHeader={({ section }) => (
-                    <Text style={styles.header}>
-                        {section.title}
-                    </Text>
-                )}
-                renderItem={({ item }) => <CommentItem item={item} />}
-                onEndReached={loadMore}
-                onEndReachedThreshold={0.05}
-                renderSectionFooter={(props) => <FooterLoading {...props} />}
-            />
+            <Portal.Host>
+                <SectionList
+                    ref={commentsRef}
+                    sections={showData}
+                    keyExtractor={(item) => item.commentId.toString()}
+                    initialNumToRender={7}
+                    scrollEventThrottle={scrollEventThrottle}
+                    fadingEdgeLength={100}
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                    refreshControl={
+                        <RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                            colors={[appTheme.colors.primary]}
+                            progressBackgroundColor={appTheme.colors.surface}
+                        />
+                    }
+                    renderSectionHeader={({ section }) => (
+                        <Text style={styles.header}>
+                            {section.title}
+                        </Text>
+                    )}
+                    renderItem={({ item }) => <CommentItem item={item} />}
+                    onEndReached={loadMore}
+                    onEndReachedThreshold={0.05}
+                    renderSectionFooter={({ section }) =>
+                        <FooterLoading title={section.title} />}
+                />
+
+                <ScrollToBtns
+                    showData={showData}
+                    commentsRef={commentsRef}
+                    data={data}
+                />
+            </Portal.Host>
         );
     }
 }
