@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Platform, ToastAndroid } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { List, useTheme } from 'react-native-paper';
@@ -15,7 +15,7 @@ export interface ListLeftProps {
 export const upperFirst = (str: string) =>
     str.slice(0, 1).toUpperCase() + str.slice(1);
 
-const VersionIcon = memo(({ color, style }: ListLeftProps) => {
+const VersionIcon = ({ color, style }: ListLeftProps) => {
     const appTheme = useTheme();
     const devModeEnabled = useAppSelector(selectDevModeEnabled);
 
@@ -36,7 +36,7 @@ const VersionIcon = memo(({ color, style }: ListLeftProps) => {
             })}
         />
     );
-});
+};
 
 export const VersionItem = () => {
     const dispatch = useAppDispatch();
@@ -63,7 +63,7 @@ export const VersionItem = () => {
         <List.Item
             title="Version"
             description={versionDetail}
-            left={VersionIcon}
+            left={(props) => <VersionIcon {...props} />}
             onPress={handleDevMode}
         />
     );
