@@ -7,7 +7,7 @@ import { ScrollView, StatusBar, StyleSheet } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { getColors } from 'react-native-image-colors';
 import type { AndroidImageColors } from 'react-native-image-colors/build/types';
-import { Portal, Searchbar, useTheme } from 'react-native-paper';
+import { Searchbar, useTheme } from 'react-native-paper';
 import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
 import { PreferencesContext, StorageKeys } from '../App';
 import {
@@ -127,11 +127,10 @@ export function Player() {
       </ScrollView>
 
       <BottomBar bottomSheetRef={bottomSheetRef} />
-      <Portal>
-        <TrackListSheet
-          bottomSheetRef={bottomSheetRef}
-        />
-      </Portal>
+
+      <TrackListSheet
+        bottomSheetRef={bottomSheetRef}
+      />
     </BlurBackground>
   );
 }

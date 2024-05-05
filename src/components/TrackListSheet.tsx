@@ -2,7 +2,7 @@ import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import Color from 'color';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TextStyle, View } from 'react-native';
-import { ActivityIndicator, List, useTheme } from 'react-native-paper';
+import { ActivityIndicator, List, Portal, useTheme } from 'react-native-paper';
 import TrackPlayer, { Track, useActiveTrack } from 'react-native-track-player';
 import { BottomSheetPaper } from '.';
 import playlistData from '../assets/data/playlist.json';
@@ -85,11 +85,13 @@ export function TrackListSheet({
   bottomSheetRef: React.RefObject<BottomSheet>;
 }) {
   return (
-    <BottomSheetPaper
-      bottomSheetRef={bottomSheetRef}
-    >
-      <TrackList bottomSheetRef={bottomSheetRef} />
-    </BottomSheetPaper>
+    <Portal>
+      <BottomSheetPaper
+        bottomSheetRef={bottomSheetRef}
+      >
+        <TrackList bottomSheetRef={bottomSheetRef} />
+      </BottomSheetPaper>
+    </Portal>
   );
 }
 
