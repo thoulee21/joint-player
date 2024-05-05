@@ -27,4 +27,5 @@ export * from './TrackInfo';
 export * from './TrackInfoBar';
 export * from './TrackListSheet';
 export * from './TrackMenu';
+export * from './VersionItem';
 
