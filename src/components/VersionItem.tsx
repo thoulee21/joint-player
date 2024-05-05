@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import { Platform, ToastAndroid } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { List, useTheme } from 'react-native-paper';
@@ -15,7 +15,7 @@ export interface ListLeftProps {
 export const upperFirst = (str: string) =>
     str.slice(0, 1).toUpperCase() + str.slice(1);
 
-const VersionIcon = ({ color, style }: ListLeftProps) => {
+const VersionIcon = memo(({ color, style }: ListLeftProps) => {
     const appTheme = useTheme();
     const devModeEnabled = useAppSelector(selectDevModeEnabled);
 
@@ -36,15 +36,17 @@ const VersionIcon = ({ color, style }: ListLeftProps) => {
             })}
         />
     );
-};
+});
 
 export const VersionItem = () => {
     const dispatch = useAppDispatch();
     const devModeEnabled = useAppSelector(selectDevModeEnabled);
     const [hitCount, setHitCount] = useState(0);
 
+    const versionDetail = `${upperFirst(Platform.OS)} ${version}`;
+
     // 点击5次后开启开发者模式
-    const handleDevMode = () => {
+    const handleDevMode = useCallback(() => {
         if (!devModeEnabled) {
             setHitCount(hitCount + 1);
             if (hitCount >= 5) {
@@ -53,12 +55,14 @@ export const VersionItem = () => {
                 ToastAndroid.show('Developer mode enabled', ToastAndroid.SHORT);
             }
         }
-    };
+        // no dispatch
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [devModeEnabled, hitCount]);
 
     return (
         <List.Item
             title="Version"
-            description={version}
+            description={versionDetail}
             left={VersionIcon}
             onPress={handleDevMode}
         />
