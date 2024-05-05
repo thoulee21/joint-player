@@ -64,5 +64,5 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           title: 'Automated Release'
-          automatic_release_tag: ${{ github.ref }}
+          automatic_release_tag: ${{ steps.version.outputs.newTag }}
           files: 'android/app/build/outputs/apk/release/app-release.apk'
