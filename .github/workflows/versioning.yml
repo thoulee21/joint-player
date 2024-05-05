@@ -22,7 +22,7 @@ jobs:
           yarn install
 
       - name: Automated Version Bump
-        uses: paramsinghvc/gh-action-bump-version@master
+        uses: phips28/gh-action-bump-version@v11.0.4
         id: version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
