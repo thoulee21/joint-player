@@ -1,6 +1,6 @@
 {
   "name": "jointplayer",
-  "version": "2.2.1",
+  "version": "v2.3.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
