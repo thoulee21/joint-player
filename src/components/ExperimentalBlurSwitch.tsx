@@ -15,7 +15,7 @@ export function ExperimentalBlurSwitch() {
     return (
         <List.Item
             title="Experimental Blur"
-            description="Enable experimental blur effect"
+            description="dimezisBlurView for blur effect"
             left={(props) => <List.Icon {...props} icon="blur" />}
             right={(props) =>
                 <Switch {...props}
