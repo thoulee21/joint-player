@@ -24,7 +24,7 @@ import {
 import { LyricLine } from '../components/Lyric/lyric';
 import { Main as LyricMain } from '../types/lyrics';
 
-export const lyricTimeOffset = 1003;
+export const timeOffset = 1005;
 
 const LyricView = ({ lrc, currentTime }:
     { lrc: string, currentTime: number }
@@ -54,7 +54,7 @@ const LyricView = ({ lrc, currentTime }:
                         HapticFeedbackTypes.effectHeavyClick
                     );
                     TrackPlayer.seekTo(
-                        lyricLine.millisecond / lyricTimeOffset
+                        lyricLine.millisecond / 1000
                     );
                 }}
             >
@@ -78,7 +78,7 @@ export function LyricsScreen() {
     const track = useActiveTrack();
     const { position } = useProgress();
 
-    const [useTranslated, setUseTranslated] = useState(false);
+    const [translated, setTranslated] = useState(false);
     const { data: lyric, error, isLoading } = useSWR<LyricMain>(
         `https://music.163.com/api/song/lyric?id=${track?.id}&lv=1&kv=1&tv=-1`
     );
@@ -88,13 +88,13 @@ export function LyricsScreen() {
             <View style={styles.row}>
                 <ToggleButton
                     icon="translate"
-                    status={useTranslated ? 'checked' : 'unchecked'}
+                    status={translated ? 'checked' : 'unchecked'}
                     disabled={!lyric?.tlyric.lyric}
                     onPress={() => {
                         HapticFeedback.trigger(
                             HapticFeedbackTypes.effectHeavyClick
                         );
-                        setUseTranslated(prev => !prev);
+                        setTranslated(prev => !prev);
                     }}
                 />
                 <TrackMenu />
@@ -115,10 +115,10 @@ export function LyricsScreen() {
                 />
                 : (lyric?.lrc.lyric && !error) ?
                     <LyricView
-                        lrc={useTranslated
+                        lrc={translated
                             ? lyric.tlyric.lyric
                             : lyric.lrc.lyric}
-                        currentTime={position * lyricTimeOffset}
+                        currentTime={position * timeOffset}
                     />
                     : <List.Item
                         title={error
