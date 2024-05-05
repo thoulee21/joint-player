@@ -23,6 +23,7 @@ jobs:
 
       - name: Automated Version Bump
         uses: paramsinghvc/gh-action-bump-version@master
+        id: version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -34,7 +35,7 @@ jobs:
           tag-prefix: 'v'
       
       - name: Sync React Native version with package.json Version
-        run: npx react-native-version
+        run: yarn version --new-version ${{ steps.version.outputs.newTag }}
         shell: bash
       
       - name: Commit Version Sync Changes
