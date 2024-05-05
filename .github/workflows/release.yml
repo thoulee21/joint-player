@@ -35,10 +35,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag-prefix:     'v'
-          minor-wording:  'add,Adds,new'
-          major-wording:  'MAJOR,cut-major'
-          patch-wording:  'patch,fixes,fix'
-          rc-wording:     'RELEASE,alpha'
+          minor-wording:  'add,new,feature,improve,improvement,update,upgrade,change,remove,Update,Upgrade,Change,Remove,Add,New,Feature,Improve,Improvement,Update,Upgrade,Change,Remove'
+          major-wording:  'cut-major,breaking-change,breaking-changes,breaking,major'
+          patch-wording:  'patch,fix,bug,bugfix,hotfix,security-fix'
+          rc-wording:     'RELEASE,alpha,beta,rc'
       
       - name: Sync React Native version
         run: yarn version --new-version ${{ steps.version.outputs.newTag }}
