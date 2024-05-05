@@ -39,7 +39,7 @@ jobs:
           patch-wording:  'patch,fix,bug,bugfix,hotfix,security-fix'
           rc-wording:     'RELEASE,alpha,beta,rc'
       
-      - name: Sync React Native version
+      - name: Sync React Native Version
         run: yarn version --new-version ${{ steps.version.outputs.newTag }}
 
       - name: Sentry Release
@@ -64,5 +64,5 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           title: 'Automatic Release v${{ steps.version.outputs.newTag }}'
-          automatic_release_tag: ${{ steps.version.outputs.newTag }}
+          automatic_release_tag: v${{ steps.version.outputs.newTag }}
           files: 'android/app/build/outputs/apk/release/app-release.apk'
