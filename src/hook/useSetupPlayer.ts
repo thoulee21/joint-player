@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import TrackPlayer from 'react-native-track-player';
 import { SetupService, addTracks } from '../services';
 
@@ -7,27 +7,30 @@ import { SetupService, addTracks } from '../services';
  * @returns 一个布尔值，指示播放器是否准备就绪。
  */
 export function useSetupPlayer() {
-  const [playerReady, setPlayerReady] = useState<boolean>(false);
+  const [playerReady, setPlayerReady] = useState(false);
+  const unmountedRef = useRef(false);
 
   useEffect(() => {
-    let unmounted = false;
-    (async () => {
+    const init = async () => {
       await SetupService();
-      if (unmounted) {
-        return;
-      }
+      if (unmountedRef.current) {return;}
+
       setPlayerReady(true);
+
       const queue = await TrackPlayer.getQueue();
-      if (unmounted) {
-        return;
-      }
+      if (unmountedRef.current) {return;}
+
       if (queue.length <= 0) {
         await addTracks();
       }
-    })();
+    };
+
+    init();
+
     return () => {
-      unmounted = true;
+      unmountedRef.current = true;
     };
   }, []);
+
   return playerReady;
 }

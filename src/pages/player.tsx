@@ -130,6 +130,7 @@ export function Player() {
 
       <TrackListSheet
         bottomSheetRef={bottomSheetRef}
+        isPlayerReady={isPlayerReady}
       />
     </BlurBackground>
   );

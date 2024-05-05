@@ -7,24 +7,25 @@ import TrackPlayer, { Track, useActiveTrack } from 'react-native-track-player';
 import { BottomSheetPaper } from '.';
 import playlistData from '../assets/data/playlist.json';
 
-function TrackList({ bottomSheetRef }:
-  { bottomSheetRef: React.RefObject<BottomSheet> }
+function TrackList({ bottomSheetRef, isPlayerReady }:
+  { bottomSheetRef: React.RefObject<BottomSheet>, isPlayerReady: boolean }
 ) {
   const appTheme = useTheme();
   const currentTrack = useActiveTrack();
-
   const [tracks, setTracks] = useState<Track[]>([]);
 
   useEffect(() => {
     async function getQueue() {
-      const queue = await TrackPlayer.getQueue();
-      if (queue) {
-        setTracks(queue);
+      if (isPlayerReady) {
+        const queue = await TrackPlayer.getQueue();
+        if (queue) {
+          setTracks(queue);
+        }
       }
     }
 
     getQueue();
-  }, [currentTrack]);
+  }, [currentTrack, isPlayerReady]);
 
   const renderTrack = ({ item, index }: { item: Track; index: number }) => {
     const active = currentTrack?.url === item.url;
@@ -79,17 +80,16 @@ function TrackList({ bottomSheetRef }:
   );
 }
 
-export function TrackListSheet({
-  bottomSheetRef,
-}: {
+export function TrackListSheet(props: {
   bottomSheetRef: React.RefObject<BottomSheet>;
+  isPlayerReady: boolean;
 }) {
   return (
     <Portal>
       <BottomSheetPaper
-        bottomSheetRef={bottomSheetRef}
+        bottomSheetRef={props.bottomSheetRef}
       >
-        <TrackList bottomSheetRef={bottomSheetRef} />
+        <TrackList {...props} />
       </BottomSheetPaper>
     </Portal>
   );
