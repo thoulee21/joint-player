@@ -17,6 +17,7 @@ Sentry.init({
     attachViewHierarchy: true,
     integrations: [
         new Sentry.ReactNativeTracing(),
+        new Sentry.Integrations.Release(),
     ],
     _experiments: {
         // The sampling rate for profiling is relative to TracesSampleRate.
