@@ -1,17 +1,20 @@
-name: Create Release
+name: Release
 
 on:
   push:
-    tags:
-      - v* 
+    branches:
+      - main
 
 permissions: write-all
 
 jobs:
-  android-release:
+  release-android:
+    name: Release Android
     runs-on: ubuntu-latest
-    steps: 
-      - uses: actions/checkout@v4
+
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v4
 
       - name: Setup Java JDK
         uses: actions/setup-java@v4.2.1
@@ -20,37 +23,25 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
-      - name: Install npm Dependencies Using yarn
+      - name: Install Dependencies Using yarn
         run: |
           npm install -g yarn
           yarn install
 
-      - name: Build Android Release
-        run: |
-          cd android
-          chmod +x ./gradlew
-          ./gradlew assembleRelease
-
-      # - name: Upload Artifact
-      #   uses: actions/upload-artifact@v4.3.2
-      #   with:
-      #     name: joint-player-android # Name of the artifact (zip file), i.e. joint-player-android.zip
-      #     path: android/app/build/outputs/apk/release/app-release.apk
-
-      - name: Automatic Releases
-        uses: marvinpinto/action-automatic-releases@v1.2.1
+      - name: Automated Version Bump
+        uses: phips28/gh-action-bump-version@v11.0.4
+        id: version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          title: 'Automated Release'
-          automatic_release_tag: ${{ github.ref }}
-          files: 'android/app/build/outputs/apk/release/app-release.apk'
-  
-  sentry-release:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+          tag-prefix:     'v'
+          minor-wording:  'add,Adds,new'
+          major-wording:  'MAJOR,cut-major'
+          patch-wording:  'patch,fixes,fix'
+          rc-wording:     'RELEASE,alpha'
+      
+      - name: Sync React Native version
+        run: yarn version --new-version ${{ steps.version.outputs.newTag }}
 
       - name: Sentry Release
         uses: getsentry/action-release@v1.7.0
@@ -60,4 +51,18 @@ jobs:
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         with:
           environment: production
-          version: ${{ github.ref }}
+          version: ${{ steps.version.outputs.newTag }}
+      
+      - name: Build Android Release
+        run: |
+          cd android
+          chmod +x ./gradlew
+          ./gradlew assembleRelease
+
+      - name: Automatic Releases
+        uses: marvinpinto/action-automatic-releases@v1.2.1
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          title: 'Automated Release'
+          automatic_release_tag: ${{ github.ref }}
+          files: 'android/app/build/outputs/apk/release/app-release.apk'
