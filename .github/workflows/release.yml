@@ -50,7 +50,6 @@ jobs:
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         with:
           environment: production
-          version_prefix: v
           version: ${{ steps.version.outputs.newTag }}
       
       - name: Build Android Release
@@ -63,6 +62,6 @@ jobs:
         uses: marvinpinto/action-automatic-releases@v1.2.1
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          title: 'Automatic Release v${{ steps.version.outputs.newTag }}'
-          automatic_release_tag: v${{ steps.version.outputs.newTag }}
+          title: 'Automatic Release ${{ steps.version.outputs.newTag }}'
+          automatic_release_tag: ${{ steps.version.outputs.newTag }}
           files: 'android/app/build/outputs/apk/release/app-release.apk'
