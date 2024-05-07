@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
 import { BlurView } from 'expo-blur';
-import React, { ReactNode, useCallback, useEffect, useState } from 'react';
+import React, { PropsWithChildren, memo, useCallback, useEffect, useState } from 'react';
 import { Alert, Dimensions, ImageBackground, StatusBar, StyleSheet } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { getColors } from 'react-native-image-colors';
@@ -14,7 +14,7 @@ import { blurRadius, selectDevModeEnabled } from '../redux/slices';
 import { Main as MvMain } from '../types/mv';
 import { placeholderImg } from './TrackInfo';
 
-export const MvCover = ({ children }: { children: ReactNode }) => {
+export const MvCover = memo(({ children }: PropsWithChildren) => {
     const navigation = useNavigation();
     const appTheme = useTheme();
 
@@ -95,7 +95,7 @@ export const MvCover = ({ children }: { children: ReactNode }) => {
             </ImageBackground>
         </Card>
     );
-};
+});
 
 const styles = StyleSheet.create({
     cover: {
