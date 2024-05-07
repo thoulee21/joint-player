@@ -39,7 +39,8 @@ function TrackList({ bottomSheetRef, isPlayerReady }:
     return (
       <List.Item
         title={item.title}
-        description={item.artist}
+        description={`${item.artist} - ${item.album}`}
+        descriptionNumberOfLines={1}
         titleStyle={titleStyle}
         style={{
           backgroundColor:
