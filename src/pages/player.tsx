@@ -19,7 +19,7 @@ import {
   TrackInfo,
   TrackListSheet,
 } from '../components';
-import { useDebounce, useSetupPlayer } from '../hook';
+import { useDebounce } from '../hook';
 import { addTracks } from '../services';
 
 export function Player() {
@@ -27,7 +27,6 @@ export function Player() {
   const appTheme = useTheme();
   const bottomSheetRef = useRef<BottomSheet>(null);
 
-  const isPlayerReady = useSetupPlayer();
   const [searching, setSearching] = useState(false);
   const [keyword, setKeyword] = useState('');
   const [placeholderKeyword, setPlaceholderKeyword] = useState('');
@@ -99,7 +98,6 @@ export function Player() {
       <TrackListSheet
         bottomSheetRef={bottomSheetRef}
         navigation={navigation}
-        isPlayerReady={isPlayerReady}
       />
     </BlurBackground>
   );

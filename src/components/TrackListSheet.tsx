@@ -18,13 +18,11 @@ import playlistData from '../assets/data/playlist.json';
 
 interface TrackListProps {
   bottomSheetRef: React.RefObject<BottomSheet>;
-  isPlayerReady: boolean;
   navigation: any;
 }
 
 function TrackList({
   bottomSheetRef,
-  isPlayerReady,
   navigation
 }: TrackListProps) {
   const appTheme = useTheme();
@@ -33,16 +31,17 @@ function TrackList({
 
   useEffect(() => {
     async function getQueue() {
-      if (isPlayerReady) {
+      try {
         const queue = await TrackPlayer.getQueue();
         if (queue) {
           setTracks(queue);
         }
+      } catch (e) {
+        console.log(e);
       }
     }
-
     getQueue();
-  }, [currentTrack, isPlayerReady]);
+  }, [currentTrack]);
 
   const renderTrack = ({ item, index }: { item: Track; index: number }) => {
     const active = currentTrack?.url === item.url;
