@@ -28,8 +28,12 @@ export const BottomSheetPaper = ({
                 .fade(0.1).string(),
           }
       }
-      handleIndicatorStyle={{ backgroundColor: appTheme.colors.onSurface }}
-      snapPoints={['97%']}
+      handleIndicatorStyle={{
+        backgroundColor: appTheme.dark
+          ? appTheme.colors.onSurfaceDisabled
+          : appTheme.colors.backdrop
+      }}
+      snapPoints={['96%']}
       enablePanDownToClose
       android_keyboardInputMode="adjustResize"
       enableOverDrag={false} //防止与FlatList（ScrollView）冲突
