@@ -1,15 +1,15 @@
 import BottomSheet from '@gorhom/bottom-sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
-import * as SplashScreen from 'expo-splash-screen';
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { ScrollView, StatusBar, StyleSheet } from 'react-native';
-import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { getColors } from 'react-native-image-colors';
-import type { AndroidImageColors } from 'react-native-image-colors/build/types';
+import HapticFeedback, {
+  HapticFeedbackTypes
+} from 'react-native-haptic-feedback';
 import { Searchbar, useTheme } from 'react-native-paper';
-import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
-import { PreferencesContext, StorageKeys } from '../App';
+import TrackPlayer from 'react-native-track-player';
+import { StorageKeys } from '../App';
 import {
   BlurBackground,
   BottomBar,
@@ -18,36 +18,23 @@ import {
   Spacer,
   TrackInfo,
   TrackListSheet,
-  placeholderImg,
 } from '../components';
-import { useAppDispatch, useDebounce, useSetupPlayer } from '../hook';
-import { toggleDarkMode } from '../redux/slices';
+import { useDebounce, useSetupPlayer } from '../hook';
 import { addTracks } from '../services';
 
-export function Player() {
-  const dispatch = useAppDispatch();
-  const preferences = useContext(PreferencesContext);
-  const appTheme = useTheme();
+const PlayerContext = createContext({} as any);
 
-  const isPlayerReady = useSetupPlayer();
-  const track = useActiveTrack();
+export const usePlayerContext = () => useContext(PlayerContext);
+
+export function Player() {
+  const navigation = useNavigation();
+  const appTheme = useTheme();
   const bottomSheetRef = useRef<BottomSheet>(null);
 
-  const [themeSet, setThemeSet] = useState(false);
+  const isPlayerReady = useSetupPlayer();
   const [searching, setSearching] = useState(false);
   const [keyword, setKeyword] = useState('');
   const [placeholderKeyword, setPlaceholderKeyword] = useState('');
-
-  const setTheme = async () => {
-    const colors = await getColors(track?.artwork || placeholderImg);
-    const androidColors = (colors as AndroidImageColors);
-    const sourceColor = Color(androidColors.vibrant);
-
-    preferences?.updateTheme(sourceColor.hex().toString());
-    if (appTheme.dark !== Color(androidColors.average).isDark()) {
-      dispatch(toggleDarkMode());
-    }
-  };
 
   useEffect(() => {
     const restoreInitKeyword = async () => {
@@ -59,12 +46,6 @@ export function Player() {
 
     restoreInitKeyword();
   }, []);
-
-  useEffect(() => {
-    if (isPlayerReady && themeSet) {
-      SplashScreen.hideAsync();
-    }
-  }, [isPlayerReady, themeSet, track?.artwork]);
 
   const searchSongs = useDebounce(async () => {
     setSearching(true);
@@ -82,18 +63,14 @@ export function Player() {
     setSearching(false);
   });
 
-  const onLoadEnd = () => {
-    if (track?.artwork) {
-      setTheme();
-      setThemeSet(true);
-    }
+  const trackListContext = {
+    bottomSheetRef,
+    isPlayerReady,
+    navigation,
   };
 
   return (
-    <BlurBackground
-      style={styles.searchbarContainer}
-      onLoadEnd={onLoadEnd}
-    >
+    <BlurBackground style={styles.searchbarContainer}>
       <Searchbar
         placeholder={placeholderKeyword || 'Search for songs'}
         placeholderTextColor={appTheme.dark
@@ -128,12 +105,10 @@ export function Player() {
         <Spacer mode="expand" />
       </ScrollView>
 
-      <BottomBar bottomSheetRef={bottomSheetRef} />
-
-      <TrackListSheet
-        bottomSheetRef={bottomSheetRef}
-        isPlayerReady={isPlayerReady}
-      />
+      <PlayerContext.Provider value={trackListContext}>
+        <BottomBar />
+        <TrackListSheet />
+      </PlayerContext.Provider>
     </BlurBackground>
   );
 }

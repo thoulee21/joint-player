@@ -4,19 +4,24 @@ import {
     DarkTheme as NavigationDarkTheme,
     DefaultTheme as NavigationDefaultTheme,
 } from '@react-navigation/native';
-import React, { PropsWithChildren, useMemo } from 'react';
+import Color from 'color';
+import * as SplashScreen from 'expo-splash-screen';
+import React, { PropsWithChildren, useEffect, useMemo } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { getColors } from 'react-native-image-colors';
+import { AndroidImageColors } from 'react-native-image-colors/build/types';
 import {
     MD3DarkTheme,
     MD3LightTheme,
     PaperProvider,
-    adaptNavigationTheme
+    adaptNavigationTheme,
+    useTheme
 } from 'react-native-paper';
+import { useActiveTrack } from 'react-native-track-player';
 import { SWRConfig, SWRConfiguration } from 'swr';
-import { PreferencesContext } from '../App';
-import { useAppSelector } from '../hook';
-import { selectDarkModeEnabled } from '../redux/slices';
+import { useAppDispatch, useAppSelector, useSetupPlayer } from '../hook';
+import { selectDarkModeEnabled, setDarkMode } from '../redux/slices';
 import { requestInit } from '../services';
 
 const swrConfig: SWRConfiguration = {
@@ -26,30 +31,24 @@ const swrConfig: SWRConfiguration = {
 };
 
 export function AppContainer({ children }: PropsWithChildren) {
+    const dispatch = useAppDispatch();
+    const appTheme = useTheme();
+    const track = useActiveTrack();
+
+    const isPlayerReady = useSetupPlayer();
     const isDarkMode = useAppSelector(selectDarkModeEnabled);
     const { theme: colorTheme, updateTheme } = useMaterial3Theme();
 
-    const preferences = useMemo(() => ({
-        updateTheme,
-        //no updateTheme
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }), []);
 
-    const MyLightTheme = useMemo(
-        () => ({
-            ...MD3LightTheme,
-            colors: colorTheme.light,
-        }),
-        [colorTheme.light],
-    );
+    const MyLightTheme = useMemo(() => ({
+        ...MD3LightTheme,
+        colors: colorTheme.light,
+    }), [colorTheme.light]);
 
-    const MyDarkTheme = useMemo(
-        () => ({
-            ...MD3DarkTheme,
-            colors: colorTheme.dark,
-        }),
-        [colorTheme.dark],
-    );
+    const MyDarkTheme = useMemo(() => ({
+        ...MD3DarkTheme,
+        colors: colorTheme.dark,
+    }), [colorTheme.dark]);
 
     const { LightTheme: NaviLightTheme, DarkTheme: NaviDarkTheme } = useMemo(
         () => adaptNavigationTheme({
@@ -59,20 +58,41 @@ export function AppContainer({ children }: PropsWithChildren) {
             materialDark: MyDarkTheme,
         }), [MyDarkTheme, MyLightTheme]);
 
+    useEffect(() => {
+        const setTheme = async () => {
+            const colors = await getColors(track?.artwork ||
+                require('../assets/resources/placeholder.png')
+            );
+            const androidColors = (colors as AndroidImageColors);
+            const vibrant = Color(androidColors.vibrant);
+            const average = Color(androidColors.average);
+
+            dispatch(setDarkMode(average.isDark()));
+            updateTheme(vibrant.hex().toString());
+        };
+
+        setTheme().finally(() => {
+            if (isPlayerReady) {
+                SplashScreen.hideAsync();
+            }
+        });
+        //no dispatch
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [appTheme.dark, track?.artwork]);
+
+    useEffect(() => {
+        StatusBar.setBackgroundColor('transparent');
+        StatusBar.setTranslucent(true);
+        StatusBar.setBarStyle(isDarkMode ? 'light-content' : 'dark-content');
+    }, [isDarkMode]);
+
     return (
         <GestureHandlerRootView style={styles.rootView}>
             <SWRConfig value={swrConfig}>
                 <PaperProvider theme={isDarkMode ? MyDarkTheme : MyLightTheme}>
-                    <PreferencesContext.Provider value={preferences}>
-                        <NavigationContainer theme={isDarkMode ? NaviDarkTheme : NaviLightTheme}>
-                            <StatusBar
-                                translucent
-                                backgroundColor="transparent"
-                                barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-                            />
-                            {children}
-                        </NavigationContainer>
-                    </PreferencesContext.Provider>
+                    <NavigationContainer theme={isDarkMode ? NaviDarkTheme : NaviLightTheme}>
+                        {children}
+                    </NavigationContainer>
                 </PaperProvider>
             </SWRConfig>
         </GestureHandlerRootView>

@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SplashScreen from 'expo-splash-screen';
-import React, { createContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { AppContainer, RootStack } from './components';
 import { useAppDispatch } from './hook';
 import { setBlurRadius } from './redux/slices';
@@ -13,10 +13,6 @@ export enum StorageKeys {
   // eslint-disable-next-line no-unused-vars
   BlurRadius = 'blurRadius',
 }
-
-export const PreferencesContext = createContext<{
-  updateTheme: (sourceColor: string) => void;
-} | null>(null);
 
 export default function App() {
   const dispatch = useAppDispatch();

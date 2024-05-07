@@ -11,13 +11,13 @@ export const darkModeSlice = createSlice({
     // `createSlice` will infer the state type from the `initialState` argument
     initialState,
     reducers: {
-        toggleDarkMode: (state) => {
-            state.enabled = !state.enabled;
+        setDarkMode: (state, action) => {
+            state.enabled = action.payload;
         },
     },
 });
 
-export const { toggleDarkMode } = darkModeSlice.actions;
+export const { setDarkMode } = darkModeSlice.actions;
 
 
 // Other code such as selectors can use the imported `RootState` type
