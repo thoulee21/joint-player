@@ -57,7 +57,6 @@ export const ScrollToBtns = memo(({ showData, commentsRef, data }:
                 icon={expended
                     ? 'chevron-down' :
                     'comment-arrow-right-outline'}
-                label="Scroll To"
                 variant="surface"
                 visible={(data ?? [])[0]?.total > 10}
                 open={expended}
