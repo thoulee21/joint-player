@@ -1,18 +1,10 @@
+import { NetInfoStateType, useNetInfoInstance } from '@react-native-community/netinfo';
 import { useNavigation } from '@react-navigation/native';
 import React, { useMemo, useState } from 'react';
-import { StatusBar, StyleSheet, View } from 'react-native';
-import HapticFeedBack, {
-    HapticFeedbackTypes
-} from 'react-native-haptic-feedback';
-import {
-    ActivityIndicator,
-    Button,
-    Portal,
-    Text,
-} from 'react-native-paper';
-import TrackPlayer, {
-    useActiveTrack
-} from 'react-native-track-player';
+import { StatusBar, StyleSheet, ToastAndroid, View } from 'react-native';
+import HapticFeedBack, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
+import { ActivityIndicator, Button, Portal, Text } from 'react-native-paper';
+import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
 import useSWR from 'swr';
 import {
     BlurBackground,
@@ -39,6 +31,7 @@ const NoMV = () => {
 
 export function MvDetail() {
     const navigator = useNavigation();
+    const { netInfo } = useNetInfoInstance();
     const track = useActiveTrack();
 
     const [dialogVisible, setDialogVisible] = useState(false);
@@ -62,6 +55,13 @@ export function MvDetail() {
         TrackPlayer.pause();
         // @ts-ignore
         navigator.navigate('MvPlayer', { res: res });
+
+        if (netInfo.type === NetInfoStateType.cellular) {
+            ToastAndroid.show(
+                'Playing MV on cellular data may consume a lot of data',
+                ToastAndroid.LONG
+            );
+        }
     };
 
     const ResSwitch = (props: any) => (
