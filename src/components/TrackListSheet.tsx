@@ -1,4 +1,4 @@
-import { BottomSheetFlatList } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import Color from 'color';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TextStyle, View } from 'react-native';
@@ -15,16 +15,19 @@ import TrackPlayer, {
 } from 'react-native-track-player';
 import { BottomSheetPaper } from '.';
 import playlistData from '../assets/data/playlist.json';
-import { usePlayerContext } from '../pages';
 
-function TrackList() {
+interface TrackListProps {
+  bottomSheetRef: React.RefObject<BottomSheet>;
+  isPlayerReady: boolean;
+  navigation: any;
+}
+
+function TrackList({
+  bottomSheetRef,
+  isPlayerReady,
+  navigation
+}: TrackListProps) {
   const appTheme = useTheme();
-  const {
-    bottomSheetRef,
-    isPlayerReady,
-    navigation
-  } = usePlayerContext();
-
   const currentTrack = useActiveTrack();
   const [tracks, setTracks] = useState<Track[]>([]);
 
@@ -81,6 +84,7 @@ function TrackList() {
               selected={active}
               onPress={() => {
                 chooseTrack();
+                //@ts-ignore
                 navigation.navigate('MvDetail');
               }}
             /> : null
@@ -106,14 +110,13 @@ function TrackList() {
   );
 }
 
-export function TrackListSheet() {
-  const { bottomSheetRef } = usePlayerContext();
+export function TrackListSheet(props: TrackListProps) {
   return (
     <Portal>
       <BottomSheetPaper
-        bottomSheetRef={bottomSheetRef}
+        bottomSheetRef={props.bottomSheetRef}
       >
-        <TrackList />
+        <TrackList {...props} />
       </BottomSheetPaper>
     </Portal>
   );

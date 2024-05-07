@@ -2,7 +2,7 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
-import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, StatusBar, StyleSheet } from 'react-native';
 import HapticFeedback, {
   HapticFeedbackTypes
@@ -21,10 +21,6 @@ import {
 } from '../components';
 import { useDebounce, useSetupPlayer } from '../hook';
 import { addTracks } from '../services';
-
-const PlayerContext = createContext({} as any);
-
-export const usePlayerContext = () => useContext(PlayerContext);
 
 export function Player() {
   const navigation = useNavigation();
@@ -63,12 +59,6 @@ export function Player() {
     setSearching(false);
   });
 
-  const trackListContext = {
-    bottomSheetRef,
-    isPlayerReady,
-    navigation,
-  };
-
   return (
     <BlurBackground style={styles.searchbarContainer}>
       <Searchbar
@@ -105,10 +95,12 @@ export function Player() {
         <Spacer mode="expand" />
       </ScrollView>
 
-      <PlayerContext.Provider value={trackListContext}>
-        <BottomBar />
-        <TrackListSheet />
-      </PlayerContext.Provider>
+      <BottomBar bottomSheetRef={bottomSheetRef} />
+      <TrackListSheet
+        bottomSheetRef={bottomSheetRef}
+        navigation={navigation}
+        isPlayerReady={isPlayerReady}
+      />
     </BlurBackground>
   );
 }

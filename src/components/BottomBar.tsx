@@ -1,16 +1,17 @@
+import BottomSheet from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { RefObject } from 'react';
 import { StyleSheet } from 'react-native';
 import HapticFeedback, {
     HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
 import { Appbar } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
-import { usePlayerContext } from '../pages';
 
-export const BottomBar = () => {
+export const BottomBar = ({ bottomSheetRef }:
+    { bottomSheetRef: RefObject<BottomSheet> }
+) => {
     const navigation = useNavigation();
-    const { bottomSheetRef } = usePlayerContext();
     const track = useActiveTrack();
 
     return (
