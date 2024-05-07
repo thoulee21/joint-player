@@ -1,14 +1,29 @@
-import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
+import BottomSheet, {
+  BottomSheetFlatList
+} from '@gorhom/bottom-sheet';
 import Color from 'color';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TextStyle, View } from 'react-native';
-import { ActivityIndicator, List, Portal, useTheme } from 'react-native-paper';
-import TrackPlayer, { Track, useActiveTrack } from 'react-native-track-player';
+import {
+  ActivityIndicator,
+  IconButton,
+  List,
+  Portal,
+  useTheme
+} from 'react-native-paper';
+import TrackPlayer, {
+  Track,
+  useActiveTrack
+} from 'react-native-track-player';
 import { BottomSheetPaper } from '.';
 import playlistData from '../assets/data/playlist.json';
 
-function TrackList({ bottomSheetRef, isPlayerReady }:
-  { bottomSheetRef: React.RefObject<BottomSheet>, isPlayerReady: boolean }
+function TrackList({ bottomSheetRef, isPlayerReady, navigation }:
+  {
+    bottomSheetRef: React.RefObject<BottomSheet>,
+    isPlayerReady: boolean,
+    navigation: any
+  }
 ) {
   const appTheme = useTheme();
   const currentTrack = useActiveTrack();
@@ -36,6 +51,12 @@ function TrackList({ bottomSheetRef, isPlayerReady }:
       fontWeight: active ? 'bold' : 'normal',
     };
 
+    const chooseTrack = async () => {
+      await TrackPlayer.skip(index);
+      await TrackPlayer.play();
+      bottomSheetRef.current?.close();
+    };
+
     return (
       <List.Item
         title={item.title}
@@ -43,24 +64,29 @@ function TrackList({ bottomSheetRef, isPlayerReady }:
         descriptionNumberOfLines={1}
         titleStyle={titleStyle}
         style={{
-          backgroundColor:
-            active
-              ? Color(appTheme.colors.secondaryContainer)
-                .fade(appTheme.dark ? 0.4 : 0.6).string()
-              : undefined,
+          backgroundColor: active
+            ? Color(appTheme.colors.secondaryContainer)
+              .fade(appTheme.dark ? 0.4 : 0.6).string()
+            : undefined,
         }}
         left={props => (
-          <List.Icon
-            {...props}
+          <List.Icon {...props}
             color={active ? appTheme.colors.primary : undefined}
             icon={active ? 'music-circle' : 'music-circle-outline'}
           />
         )}
-        onPress={async () => {
-          await TrackPlayer.skip(index);
-          await TrackPlayer.play();
-          bottomSheetRef.current?.close();
-        }}
+        right={props => (
+          item.mvid ?
+            <IconButton {...props}
+              icon="video-outline"
+              selected={active}
+              onPress={() => {
+                chooseTrack();
+                navigation.navigate('MvDetail');
+              }}
+            /> : null
+        )}
+        onPress={chooseTrack}
       />
     );
   };
@@ -84,6 +110,7 @@ function TrackList({ bottomSheetRef, isPlayerReady }:
 export function TrackListSheet(props: {
   bottomSheetRef: React.RefObject<BottomSheet>;
   isPlayerReady: boolean;
+  navigation: any;
 }) {
   return (
     <Portal>
