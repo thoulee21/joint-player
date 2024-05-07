@@ -20,7 +20,7 @@ export const MvCover = ({ children }: { children: ReactNode }) => {
 
     const devModeEnabled = useAppSelector(selectDevModeEnabled);
     const blurRadiusValue = useAppSelector(blurRadius);
-    const [isMvCoverDark, setIsMvCoverDark] = useState(false);
+    const [isMvCoverDark, setIsMvCoverDark] = useState(appTheme.dark);
 
     const track = useActiveTrack();
     const { data } = useSWR<MvMain>(
