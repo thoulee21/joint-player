@@ -61,7 +61,7 @@ export function AppContainer({ children }: PropsWithChildren) {
     useEffect(() => {
         const setTheme = async () => {
             const colors = await getColors(track?.artwork ||
-                require('../assets/resources/placeholder.png')
+                require('../assets/resources/placeholder.jpg')
             );
             const androidColors = (colors as AndroidImageColors);
             const vibrant = Color(androidColors.vibrant);
