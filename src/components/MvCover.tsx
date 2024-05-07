@@ -1,25 +1,16 @@
 import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
 import { BlurView } from 'expo-blur';
-import React, { ReactNode, useCallback, useEffect } from 'react';
-import {
-    Alert,
-    Dimensions,
-    ImageBackground,
-    StatusBar,
-    StyleSheet,
-    View
-} from 'react-native';
-import HapticFeedback, {
-    HapticFeedbackTypes
-} from 'react-native-haptic-feedback';
+import React, { ReactNode, useCallback, useEffect, useState } from 'react';
+import { Alert, Dimensions, ImageBackground, StatusBar, StyleSheet } from 'react-native';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { getColors } from 'react-native-image-colors';
 import { AndroidImageColors } from 'react-native-image-colors/build/types';
 import { Card, useTheme } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
 import useSWR from 'swr';
 import { useAppSelector, useDebounce } from '../hook';
-import { selectDevModeEnabled } from '../redux/slices';
+import { blurRadius, selectDevModeEnabled } from '../redux/slices';
 import { Main as MvMain } from '../types/mv';
 import { placeholderImg } from './TrackInfo';
 
@@ -28,8 +19,10 @@ export const MvCover = ({ children }: { children: ReactNode }) => {
     const appTheme = useTheme();
 
     const devModeEnabled = useAppSelector(selectDevModeEnabled);
-    const track = useActiveTrack();
+    const blurRadiusValue = useAppSelector(blurRadius);
+    const [isMvCoverDark, setIsMvCoverDark] = useState(false);
 
+    const track = useActiveTrack();
     const { data } = useSWR<MvMain>(
         `http://music.163.com/api/mv/detail?id=${track?.mvid}`
     );
@@ -53,6 +46,7 @@ export const MvCover = ({ children }: { children: ReactNode }) => {
         const colors = await getColors(data?.data.cover || placeholderImg);
         const imgColor = Color((colors as AndroidImageColors).average);
 
+        setIsMvCoverDark(imgColor.isDark());
         StatusBar.setBarStyle(
             imgColor.isDark() ? 'light-content' : 'dark-content'
         );
@@ -86,14 +80,18 @@ export const MvCover = ({ children }: { children: ReactNode }) => {
             <ImageBackground
                 source={{ uri: data?.data.cover || placeholderImg }}
             >
-                <View style={styles.cover}>
+                <BlurView
+                    style={styles.cover}
+                    tint={isMvCoverDark ? 'dark' : 'light'}
+                    intensity={blurRadiusValue / 2}
+                >
                     <BlurView
                         tint={appTheme.dark ? 'dark' : 'light'}
-                        intensity={100}
+                        intensity={blurRadiusValue}
                     >
                         {children}
                     </BlurView>
-                </View>
+                </BlurView>
             </ImageBackground>
         </Card>
     );
