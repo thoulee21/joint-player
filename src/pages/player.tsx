@@ -96,7 +96,9 @@ export function Player() {
     >
       <Searchbar
         placeholder={placeholderKeyword || 'Search for songs'}
-        placeholderTextColor={appTheme.colors.onSurfaceVariant}
+        placeholderTextColor={appTheme.dark
+          ? appTheme.colors.onSurfaceDisabled
+          : appTheme.colors.backdrop}
         style={styles.searchbar}
         inputStyle={{ color: appTheme.colors.onSurface }}
         onChangeText={setKeyword}
