@@ -1,9 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { Alert, Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Surface, Text, useTheme } from 'react-native-paper';
-import { useActiveTrack } from 'react-native-track-player';
+import { useActiveTrack, useProgress } from 'react-native-track-player';
 import useSWR from 'swr';
 import { useAppSelector } from '../hook';
 import { selectDevModeEnabled } from '../redux/slices';
@@ -15,13 +15,20 @@ export const TrackInfo = () => {
   const navigation = useNavigation();
   const appTheme = useTheme();
 
-  const devModeEnabled = useAppSelector(selectDevModeEnabled);
   const track = useActiveTrack();
+  const progress = useProgress();
+
+  const imageUri = track?.artwork || placeholderImg;
   const { data } = useSWR<LyricMain>(
     `https://music.163.com/api/song/lyric?id=${track?.id}&lv=1&kv=1&tv=-1`
   );
 
-  const imageUri = track?.artwork || placeholderImg;
+  const devModeEnabled = useAppSelector(selectDevModeEnabled);
+  const isTrial = useMemo(() => {
+    const trackDuration = Math.trunc(track?.duration || 0);
+    const progressDuration = Math.trunc(progress.duration || trackDuration);
+    return progressDuration !== trackDuration;
+  }, [progress.duration, track?.duration]);
 
   const printTrackData = useCallback(() => {
     if (track && devModeEnabled) {
@@ -90,10 +97,13 @@ export const TrackInfo = () => {
         style={styles.titleText}
         onPress={printTrackData}
       >
-        {track?.title}
+        {track?.title}{isTrial ? ' (trial)' : ''}
       </Text>
       <Text
-        style={[styles.artistText, { color: appTheme.colors.primary }]}>
+        style={[styles.artistText, {
+          color: appTheme.colors.primary
+        }]}
+      >
         {track?.artist}
       </Text>
     </View>
