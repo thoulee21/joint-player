@@ -11,6 +11,7 @@ export * from './DialogWithRadioBtns';
 export * from './ExperimentalBlurSwitch';
 export * from './ForwardButton';
 export * from './Lyric';
+export * from './LyricView';
 export * from './MoreButton';
 export * from './MvCover';
 export * from './MvMenu';

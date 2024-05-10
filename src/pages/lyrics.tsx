@@ -1,77 +1,13 @@
 import React, { useState } from 'react';
 import { StatusBar, StyleSheet, View } from 'react-native';
-import HapticFeedback, {
-    HapticFeedbackTypes
-} from 'react-native-haptic-feedback';
-import {
-    ActivityIndicator,
-    List,
-    Text,
-    ToggleButton,
-    useTheme
-} from 'react-native-paper';
-import TrackPlayer, {
-    useActiveTrack,
-    useProgress,
-} from 'react-native-track-player';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
+import { ActivityIndicator, List, ToggleButton, useTheme } from 'react-native-paper';
+import { useActiveTrack, useProgress, } from 'react-native-track-player';
 import useSWR from 'swr';
-import {
-    BlurBackground,
-    Lyric,
-    TrackInfoBar,
-    TrackMenu
-} from '../components';
-import { LyricLine } from '../components/Lyric/lyric';
+import { BlurBackground, LyricView, TrackInfoBar, TrackMenu } from '../components';
 import { Main as LyricMain } from '../types/lyrics';
 
 export const timeOffset = 1005;
-
-const LyricView = ({ lrc, currentTime }:
-    { lrc: string, currentTime: number }
-) => {
-    const appTheme = useTheme();
-
-    const lineRenderer = ({ lrcLine: lyricLine, active }:
-        { lrcLine: LyricLine, active: boolean }
-    ) => {
-        const lineColor =
-            active
-                ? appTheme.colors.onSurface
-                : appTheme.dark
-                    ? appTheme.colors.onSurfaceDisabled
-                    : appTheme.colors.backdrop;
-
-        return (
-            <Text
-                variant="displaySmall"
-                numberOfLines={10}
-                style={[
-                    styles.lyricText,
-                    { color: lineColor },
-                ]}
-                onPress={() => {
-                    HapticFeedback.trigger(
-                        HapticFeedbackTypes.effectHeavyClick
-                    );
-                    TrackPlayer.seekTo(
-                        lyricLine.millisecond / 1000
-                    );
-                }}
-            >
-                {lyricLine.content}
-            </Text>
-        );
-    };
-
-    return (
-        <Lyric
-            style={styles.lyricView}
-            lrc={lrc}
-            currentTime={currentTime}
-            lineRenderer={lineRenderer}
-        />
-    );
-};
 
 export function LyricsScreen() {
     const appTheme = useTheme();
@@ -143,13 +79,6 @@ const styles = StyleSheet.create({
     infoBar: {
         paddingTop: StatusBar.currentHeight,
         marginVertical: '5%',
-    },
-    lyricText: {
-        fontWeight: 'bold',
-        paddingBottom: '5%',
-    },
-    lyricView: {
-        paddingHorizontal: '3.5%',
     },
     loading: {
         marginTop: '20%',
