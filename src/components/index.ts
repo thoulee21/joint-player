@@ -26,6 +26,7 @@ export * from './Spacer';
 export * from './ThemeColorIndicator';
 export * from './TrackInfo';
 export * from './TrackInfoBar';
+export * from './TrackItem';
 export * from './TrackListSheet';
 export * from './TrackMenu';
 export * from './VersionItem';
