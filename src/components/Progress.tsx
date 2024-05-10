@@ -2,45 +2,35 @@ import Slider from '@react-native-community/slider';
 import React from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
-import TrackPlayer, {
-  useActiveTrack,
-  useProgress,
-} from 'react-native-track-player';
-import { Spacer } from './Spacer';
+import TrackPlayer, { useProgress } from 'react-native-track-player';
 
 export const Progress = () => {
   const appTheme = useTheme();
-
   const { position, duration } = useProgress();
-  const track = useActiveTrack();
   // This is a workaround since the slider component only takes absolute widths
   const progressBarWidth = Dimensions.get('window').width * 0.92;
 
   return (
     <View style={styles.container}>
-      {track?.isLiveStream || duration === Infinity ? (
-        <Text style={styles.liveText}>Live Streaming...</Text>
-      ) : (
-        <View>
-          <Slider
-            style={{ ...styles.slider, width: progressBarWidth }}
-            value={position}
-            minimumValue={0}
-            maximumValue={duration}
-            thumbTintColor={appTheme.colors.primary}
-            minimumTrackTintColor={appTheme.colors.primary}
-            maximumTrackTintColor={appTheme.colors.tertiary}
-            onSlidingComplete={TrackPlayer.seekTo}
-          />
-          <View style={styles.labelContainer}>
-            <Text style={styles.labelText}>{formatSeconds(position)}</Text>
-            <Spacer mode={'expand'} />
-            <Text style={styles.labelText}>
-              {formatSeconds(Math.max(0, duration - position))}
-            </Text>
-          </View>
-        </View>
-      )}
+      <Slider
+        style={{ ...styles.slider, width: progressBarWidth }}
+        value={position}
+        minimumValue={0}
+        maximumValue={duration}
+        thumbTintColor={appTheme.colors.primary}
+        minimumTrackTintColor={appTheme.colors.primary}
+        maximumTrackTintColor={appTheme.colors.tertiary}
+        onSlidingComplete={TrackPlayer.seekTo}
+      />
+
+      <View style={styles.captionContainer}>
+        <Text style={styles.caption}>
+          {formatSeconds(position)}
+        </Text>
+        <Text style={styles.caption}>
+          {formatSeconds(Math.max(0, duration - position))}
+        </Text>
+      </View>
     </View>
   );
 };
@@ -65,10 +55,12 @@ const styles = StyleSheet.create({
     marginTop: 25,
     flexDirection: 'row',
   },
-  labelContainer: {
+  captionContainer: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
   },
-  labelText: {
+  caption: {
     fontVariant: ['tabular-nums'],
   },
 });
