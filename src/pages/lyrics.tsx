@@ -19,24 +19,24 @@ export function LyricsScreen() {
         `https://music.163.com/api/song/lyric?id=${track?.id}&lv=1&kv=1&tv=-1`
     );
 
-    const RightButtons = () => {
-        return (
-            <View style={styles.row}>
-                <ToggleButton
-                    icon="translate"
-                    status={translated ? 'checked' : 'unchecked'}
-                    disabled={!lyric?.tlyric.lyric}
-                    onPress={() => {
-                        HapticFeedback.trigger(
-                            HapticFeedbackTypes.effectHeavyClick
-                        );
-                        setTranslated(prev => !prev);
-                    }}
-                />
-                <TrackMenu />
-            </View>
-        );
-    };
+    const TranslateToggle = () =>
+        <ToggleButton
+            icon="translate"
+            status={translated ? 'checked' : 'unchecked'}
+            disabled={!lyric?.tlyric.lyric}
+            onPress={() => {
+                HapticFeedback.trigger(
+                    HapticFeedbackTypes.effectHeavyClick
+                );
+                setTranslated(prev => !prev);
+            }}
+        />;
+
+    const RightButtons = () =>
+        <View style={styles.row}>
+            <TranslateToggle />
+            <TrackMenu />
+        </View>;
 
     return (
         <BlurBackground style={styles.blurView}>
@@ -44,12 +44,13 @@ export function LyricsScreen() {
                 style={styles.infoBar}
                 right={RightButtons}
             />
+
             {isLoading ?
                 <ActivityIndicator
                     size="large"
                     style={styles.loading}
                 />
-                : (lyric?.lrc.lyric && !error) ?
+                : (lyric?.lrc.lyric) ?
                     <LyricView
                         lrc={translated
                             ? lyric.tlyric.lyric
@@ -61,7 +62,8 @@ export function LyricsScreen() {
                             ? 'Failed to load lyrics'
                             : 'No lyrics found'}
                         titleStyle={[
-                            styles.center, styles.notFoundTitle,
+                            styles.reason,
+                            styles.center,
                         ]}
                         description={error?.message}
                         descriptionStyle={[styles.center, {
@@ -86,8 +88,8 @@ const styles = StyleSheet.create({
     center: {
         textAlign: 'center',
     },
-    notFoundTitle: {
-        marginTop: '10%',
+    reason: {
+        marginTop: '20%',
         fontSize: 25,
         fontWeight: 'bold',
     },
