@@ -1,4 +1,7 @@
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
+import BottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetView
+} from '@gorhom/bottom-sheet';
 import Color from 'color';
 import { BlurView } from 'expo-blur';
 import React, { PropsWithChildren } from 'react';
@@ -15,6 +18,10 @@ export const BottomSheetPaper = ({
 }>) => {
   const appTheme = useTheme();
   const experimentalBlurEnabled = useAppSelector(selectBlurEnabled);
+
+  const backgroundColor = Color(appTheme.colors.surface)
+    .fade(0.1).string();
+
   return (
     <BottomSheet
       ref={bottomSheetRef}
@@ -22,18 +29,14 @@ export const BottomSheetPaper = ({
       backgroundStyle={
         experimentalBlurEnabled
           ? styles.transparent
-          : {
-            backgroundColor:
-              Color(appTheme.colors.surface)
-                .fade(0.1).string(),
-          }
+          : { backgroundColor }
       }
       handleIndicatorStyle={{
         backgroundColor: appTheme.dark
           ? appTheme.colors.onSurfaceDisabled
           : appTheme.colors.backdrop
       }}
-      snapPoints={['96%']}
+      snapPoints={['30%', '60%', '96%']}
       enablePanDownToClose
       android_keyboardInputMode="adjustResize"
       enableOverDrag={false} //防止与FlatList（ScrollView）冲突
@@ -45,8 +48,15 @@ export const BottomSheetPaper = ({
           }
         />
       }
+      backdropComponent={(props) =>
+        <BottomSheetBackdrop {...props}
+          enableTouchThrough
+        />
+      }
     >
-      <BottomSheetView style={styles.bottomView}>{children}</BottomSheetView>
+      <BottomSheetView style={styles.bottomView}>
+        {children}
+      </BottomSheetView>
     </BottomSheet>
   );
 };
