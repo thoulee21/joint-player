@@ -4,8 +4,13 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 permissions: write-all
+
+concurrency:
+  group: "releases"
+  cancel-in-progress: false
 
 jobs:
   release-android:
@@ -62,6 +67,6 @@ jobs:
         uses: marvinpinto/action-automatic-releases@v1.2.1
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          title: 'Automatic Release ${{ steps.version.outputs.newTag }}'
+          title: 'Release ${{ steps.version.outputs.newTag }}'
           automatic_release_tag: ${{ steps.version.outputs.newTag }}
           files: 'android/app/build/outputs/apk/release/app-release.apk'
