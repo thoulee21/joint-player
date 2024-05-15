@@ -5489,10 +5489,10 @@ expo-modules-core@1.11.13:
   dependencies:
     invariant "^2.2.4"
 
-expo-screen-orientation@~6.4.1:
-  version "6.4.1"
-  resolved "https://registry.npmmirror.com/expo-screen-orientation/-/expo-screen-orientation-6.4.1.tgz#1c4428a058921e48b5caa45367e626b8bec10e24"
-  integrity sha512-VM0C9ORNL1aT6Dr2OUeryzV519n0FjtXI2m+HlijOMi1QT2bPg4tBkCd7HLgywU4dZ1Esa46ewUudmk+fOqmMQ==
+expo-screen-orientation@~7.0.4:
+  version "7.0.4"
+  resolved "https://registry.yarnpkg.com/expo-screen-orientation/-/expo-screen-orientation-7.0.4.tgz#772bc32f5261b8f4826741cb329706dc0bf07ea5"
+  integrity sha512-wvPR1hAXOxJdRXaMP1g9nQ4oBush1SSKr+x5gEtsWkGkG/wdqALdCY0iibeb7yWjsH3+D+ooObZlzZIo80TTcw==
 
 expo-splash-screen@~0.26.4:
   version "0.26.4"
