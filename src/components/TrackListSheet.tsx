@@ -24,9 +24,7 @@ function TrackList({
         if (queue) {
           setTracks(queue);
         }
-      } catch (e) {
-        console.log(e);
-      }
+      } catch { } // ignore player errors
     }
     getQueue();
   }, [currentTrack]);
