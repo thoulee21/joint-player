@@ -6234,10 +6234,10 @@ ini@^1.3.4, ini@~1.3.0:
   resolved "https://registry.npmmirror.com/ini/-/ini-1.3.8.tgz#a29da425b48806f34767a4efce397269af28432c"
   integrity sha512-JV/yugV2uzW5iMRSiZAyDtQd+nxtUnjeLt0acNdw98kKLrvuRVyB80tsREOE7yvGVgalhZ6RNXCmEHkUKBKxew==
 
-install-expo-modules@^0.8.1:
-  version "0.8.1"
-  resolved "https://registry.npmmirror.com/install-expo-modules/-/install-expo-modules-0.8.1.tgz#164c61cf6ae4463ff41cccfce2b2e4ea552f1c6d"
-  integrity sha512-1sRX4no2NSPBdBBN/0vSllo/vXWfinwxeycidzlqKq5v5SXBCK4zw6T9EF4aOHaepDqadVD+nw5g2WBbgh8uRw==
+install-expo-modules@^0.10.0:
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/install-expo-modules/-/install-expo-modules-0.10.0.tgz#5d57c1ee5be6f6945f4bf081d58f707dd771ba20"
+  integrity sha512-lzmOMzowSwuJvG9f4DK3swS7giGUWSL7mTqGfbquQEE8S95LuYDXgxjrex4FWA9UxWrb1zdHR5zRMW3np9oB9g==
 
 internal-ip@4.3.0:
   version "4.3.0"

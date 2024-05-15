@@ -27,7 +27,7 @@
     "expo-modules-autolinking": "~1.11.1",
     "expo-screen-orientation": "~7.0.4",
     "expo-splash-screen": "~0.26.4",
-    "install-expo-modules": "^0.8.1",
+    "install-expo-modules": "^0.10.0",
     "react": "18.2.0",
     "react-native": "0.73.6",
     "react-native-gesture-handler": "^2.16.0",
