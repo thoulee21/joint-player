@@ -34,7 +34,7 @@ jobs:
           yarn install
 
       - name: Automated Version Bump
-        uses: phips28/gh-action-bump-version@v11.0.4
+        uses: phips28/gh-action-bump-version@v11.0.5
         id: version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
