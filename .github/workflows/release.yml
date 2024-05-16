@@ -21,13 +21,6 @@ jobs:
       - name: Code Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Java JDK
-        uses: actions/setup-java@v4.2.1
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: gradle
-
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
@@ -42,9 +35,7 @@ jobs:
             ${{ runner.os }}-yarn-
       
       - name: Install Dependencies Using yarn
-        run: |
-          npm install -g yarn
-          yarn install
+        run: yarn
 
       - name: Automated Version Bump
         uses: phips28/gh-action-bump-version@v11.0.5
