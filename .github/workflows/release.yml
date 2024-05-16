@@ -57,6 +57,14 @@ jobs:
           environment: production
           version: ${{ steps.version.outputs.newTag }}
       
+      - name: Cache Gradle dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      
       - name: Build Android Release
         run: |
           cd android
