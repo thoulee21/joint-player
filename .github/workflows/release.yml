@@ -54,10 +54,9 @@ jobs:
           minor-wording:  'add,new,feature,change,remove' # 0.x.0
           patch-wording:  'patch,fix,bug,bugfix,hotfix' # 0.0.x
           rc-wording:     'release,alpha,beta,rc' # 0.0.x-rc.0
-      
-      - name: Sync React Native Version
-        run: yarn version --new-version ${{ steps.version.outputs.newTag }}
-
+          skip-commit:   true
+          skip-tag:      true
+          
       - name: Sentry Release
         uses: getsentry/action-release@v1.7.0
         env:
