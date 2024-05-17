@@ -14,6 +14,8 @@ import { BlurBackground } from '../components';
 import { useDebounce } from '../hook';
 import { Artist as ArtistType, HotAlbum, Main } from '../types/albumArtist';
 
+const CHIPS = ['Albums'];
+
 export function toReadableDate(timestamp: number) {
     return new Date(timestamp).toLocaleDateString();
 }
@@ -21,9 +23,15 @@ export function toReadableDate(timestamp: number) {
 const Chips = () => {
     return (
         <View style={styles.chips}>
-            <Chip icon="music" style={styles.chip}>
-                Albums
-            </Chip>
+            {CHIPS.map((chip, index) => (
+                <Chip
+                    key={chip}
+                    style={styles.chip}
+                    selected={!index}
+                >
+                    {chip}
+                </Chip>
+            ))}
         </View>
     );
 };
@@ -116,7 +124,7 @@ function Albums({ artistID }: { artistID: number }) {
             <FlatList
                 data={data?.flatMap((page) => page.hotAlbums)}
                 numColumns={2}
-                fadingEdgeLength={100}
+                fadingEdgeLength={50}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={(props) => <Album {...props} />}
                 onEndReached={loadMore}
@@ -179,10 +187,12 @@ const styles = StyleSheet.create({
         marginLeft: '1%',
     },
     chips: {
+        flexDirection: 'row',
         width: '100%'
     },
     chip: {
-        margin: '1%',
+        marginLeft: '3%',
+        marginVertical: '1%',
         width: 'auto'
     },
     albumPic: {
