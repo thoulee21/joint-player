@@ -93,6 +93,9 @@ export const addTracks = async (keyword?: string): Promise<void> => {
 
     if (!keyword) {
       const storedKeyword = await AsyncStorage.getItem(StorageKeys.Keyword);
+      if (storedKeyword) {
+        ToastAndroid.show('Restored keyword', ToastAndroid.SHORT);
+      }
       keyword = storedKeyword ? storedKeyword : 'One Republic';
     }
     const data = await fetchSearchResults(keyword);
