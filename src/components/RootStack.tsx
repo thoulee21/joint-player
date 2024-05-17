@@ -6,6 +6,8 @@ import {
 } from '@react-navigation/stack';
 import React from 'react';
 import {
+    AlbumDetail,
+    Artist,
     Comments,
     LyricsScreen,
     MvDetail,
@@ -49,6 +51,8 @@ export function RootStack() {
             <Stack.Screen name="Lyrics" component={LyricsScreen} />
             <Stack.Screen name="MvPlayer" component={MvPlayer} />
             <Stack.Screen name="MvDetail" component={MvDetail} />
+            <Stack.Screen name="Artist" component={Artist} />
+            <Stack.Screen name="AlbumDetail" component={AlbumDetail} />
         </Stack.Navigator>
     );
 }
