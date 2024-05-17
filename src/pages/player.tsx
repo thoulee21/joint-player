@@ -19,10 +19,12 @@ import {
   TrackInfo,
   TrackListSheet,
 } from '../components';
-import { useDebounce } from '../hook';
-import { addTracks } from '../services';
+import { useAppDispatch, useDebounce } from '../hook';
+import { setQueue } from '../redux/slices';
+import { TrackType, addTracks } from '../services';
 
 export function Player() {
+  const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const appTheme = useTheme();
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -47,11 +49,11 @@ export function Player() {
 
     if (keyword) {
       AsyncStorage.setItem(StorageKeys.Keyword, keyword);
-      await addTracks(keyword);
+      dispatch(setQueue(await addTracks(keyword) as TrackType[]));
       TrackPlayer.play();
     } else if (placeholderKeyword) {
       setKeyword(placeholderKeyword);
-      await addTracks(placeholderKeyword);
+      dispatch(setQueue(await addTracks(placeholderKeyword) as TrackType[]));
       TrackPlayer.play();
     }
 

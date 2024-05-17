@@ -26,7 +26,8 @@ import {
 import TrackPlayer from 'react-native-track-player';
 import useSWRInfinite from 'swr/infinite';
 import { BlurBackground } from '../components';
-import { useDebounce } from '../hook';
+import { useAppDispatch, useDebounce } from '../hook';
+import { clearQueue, addToQueue as reduxAddQueue, setQueue } from '../redux/slices';
 import { TrackType } from '../services';
 import { HotAlbum } from '../types/albumArtist';
 import { Main, Song } from '../types/albumDetail';
@@ -47,15 +48,19 @@ export function songToTrack(song: Song): TrackType {
 }
 
 function SongItem({ item }: { item: Song }) {
+    const dispatch = useAppDispatch();
     const trackData = useMemo(() => songToTrack(item), [item]);
 
     const play = async () => {
+        dispatch(clearQueue());
+        dispatch(reduxAddQueue(trackData));
         await TrackPlayer.reset();
         await TrackPlayer.add(trackData);
         await TrackPlayer.play();
     };
 
     const addToQueue = async () => {
+        dispatch(reduxAddQueue(trackData));
         await TrackPlayer.add(trackData);
         ToastAndroid.show('Added to queue', ToastAndroid.SHORT);
     };
@@ -143,6 +148,7 @@ const AlbumDescription = ({ description }: { description?: string }) => {
 };
 
 function AlbumContent({ album }: { album: HotAlbum }) {
+    const dispatch = useAppDispatch();
     const appTheme = useTheme();
     const { data, error, isLoading, setSize, size, mutate } = useSWRInfinite<Main>(
         (index) => `http://music.163.com/api/album/${album.id}?ext=true&offset=${index * 10}&total=true&limit=10`,
@@ -180,11 +186,11 @@ function AlbumContent({ album }: { album: HotAlbum }) {
     }
 
     const playAll = async () => {
+        const tracksData = data?.flatMap(d => d.album.songs)
+            .map(songToTrack) as TrackType[];
+        dispatch(setQueue(tracksData));
         await TrackPlayer.reset();
-        await TrackPlayer.add(
-            data?.flatMap(d => d.album.songs)
-                .map(songToTrack) as TrackType[]
-        );
+        await TrackPlayer.add(tracksData);
         await TrackPlayer.play();
     };
 

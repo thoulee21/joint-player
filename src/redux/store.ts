@@ -5,6 +5,7 @@ import {
     darkModeSlice,
     devModeSlice,
     experimentalBlurSlice,
+    queueSlice,
 } from './slices';
 
 const sentryReduxEnhancer = Sentry.createReduxEnhancer();
@@ -15,6 +16,7 @@ export const store = configureStore({
         darkMode: darkModeSlice.reducer,
         blurRadius: blurRadiusSlice.reducer,
         devMode: devModeSlice.reducer,
+        queue: queueSlice.reducer,
     },
     enhancers: (getDefaultEnhancers) => {
         return getDefaultEnhancers().concat(sentryReduxEnhancer);

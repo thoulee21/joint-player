@@ -87,7 +87,7 @@ const fetchTrackDetails = async (trackId: string): Promise<Track> => {
   };
 };
 
-export const addTracks = async (keyword?: string): Promise<void> => {
+export const addTracks = async (keyword?: string): Promise<Track[] | void> => {
   try {
     let songs: TrackData[] = [];
 
@@ -109,6 +109,7 @@ export const addTracks = async (keyword?: string): Promise<void> => {
 
     await TrackPlayer.reset();
     await TrackPlayer.add(fetchedData);
+    return fetchedData;
   }
   catch (e) {
     Sentry.captureException(e);

@@ -1,9 +1,12 @@
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Portal } from 'react-native-paper';
 import TrackPlayer, { Track, useActiveTrack } from 'react-native-track-player';
 import { BottomSheetPaper, TrackItem } from '.';
+import { useAppDispatch, useAppSelector } from '../hook';
+import { queue, setQueue } from '../redux/slices';
+import { TrackType } from '../services';
 
 interface TrackListProps {
   bottomSheetRef: React.RefObject<BottomSheet>;
@@ -13,19 +16,23 @@ interface TrackListProps {
 function TrackList({
   bottomSheetRef, navigation
 }: TrackListProps) {
+  const dispatch = useAppDispatch();
   const currentTrack = useActiveTrack();
-  const [tracks, setTracks] = useState<Track[]>([]);
+  const tracks = useAppSelector(queue);
 
   useEffect(() => {
     async function getQueue() {
       try {
-        const queue = await TrackPlayer.getQueue();
-        if (queue) {
-          setTracks(queue);
+        const playerQueue = await TrackPlayer.getQueue();
+        if (playerQueue) {
+          dispatch(setQueue(playerQueue as TrackType[]));
         }
       } catch { } // ignore player errors
     }
+
     getQueue();
+    // no dispatch
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTrack]);
 
   const renderTrack = ({ item, index }:
