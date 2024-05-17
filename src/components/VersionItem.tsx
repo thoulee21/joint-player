@@ -43,7 +43,7 @@ export const VersionItem = () => {
     const devModeEnabled = useAppSelector(selectDevModeEnabled);
     const [hitCount, setHitCount] = useState(0);
 
-    const versionDetail = `${upperFirst(Platform.OS)} ${version}`;
+    const versionText = `${upperFirst(Platform.OS)} v${version}`;
 
     // 点击5次后开启开发者模式
     const handleDevMode = useCallback(() => {
@@ -62,7 +62,7 @@ export const VersionItem = () => {
     return (
         <List.Item
             title="Version"
-            description={versionDetail}
+            description={versionText}
             left={(props) => <VersionIcon {...props} />}
             onPress={handleDevMode}
         />
