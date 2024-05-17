@@ -21,7 +21,9 @@ export function CommentsMenu({ onPostPressed, navigation }:
             disabled={disabled}
             onPress={() => {
                 // @ts-ignore
-                navigation.push('Comments');
+                navigation.push('Comments', {
+                    commentThreadId: `R_SO_4_${track?.id}`
+                });
                 onPostPressed();
             }}
         />
