@@ -34,6 +34,15 @@ export const BottomBar = ({ bottomSheetRef }:
             <Appbar.Content
                 title={track?.album || 'No Album'}
                 titleStyle={styles.bottomTitle}
+                onPress={() => {
+                    HapticFeedback.trigger(
+                        HapticFeedbackTypes.effectHeavyClick
+                    );
+                    //@ts-ignore
+                    navigation.push('AlbumDetail', {
+                        album: track?.albumRaw,
+                    });
+                }}
             />
             <Appbar.Action
                 icon="menu-open"
