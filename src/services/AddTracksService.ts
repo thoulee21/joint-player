@@ -1,8 +1,11 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Sentry from '@sentry/react-native';
 import fetchRetry from 'fetch-retry';
 import { ToastAndroid } from 'react-native';
 import TrackPlayer, { Track } from 'react-native-track-player';
 import UserAgent from 'user-agents';
-import playlistData from '../assets/data/playlist.json';
+import { StorageKeys } from '../App';
+import { SongAlbum } from '../types/albumDetail';
 import type { Track as TrackData } from '../types/playlist';
 import { Artist, Main as SongDetail } from '../types/songDetail';
 
@@ -15,6 +18,7 @@ export interface TrackType {
   artwork: string;
   duration: number;
   album: string;
+  albumRaw: SongAlbum;
   mvid: number;
 }
 
@@ -78,6 +82,7 @@ const fetchTrackDetails = async (trackId: string): Promise<Track> => {
     artwork: track.album.picUrl,
     duration: track.duration / 1000,
     album: track.album.name,
+    albumRaw: track.album,
     mvid: track.mvid,
   };
 };
@@ -86,13 +91,12 @@ export const addTracks = async (keyword?: string): Promise<void> => {
   try {
     let songs: TrackData[] = [];
 
-    if (keyword) {
-      const data = await fetchSearchResults(keyword);
-      songs = data.songs;
-
-    } else {
-      throw new Error('No keyword provided');
+    if (!keyword) {
+      const storedKeyword = await AsyncStorage.getItem(StorageKeys.Keyword);
+      keyword = storedKeyword ? storedKeyword : 'One Republic';
     }
+    const data = await fetchSearchResults(keyword);
+    songs = data.songs;
 
     const fetchedData = await Promise.all(
       songs.map(async (track: TrackData) => {
@@ -103,9 +107,7 @@ export const addTracks = async (keyword?: string): Promise<void> => {
     await TrackPlayer.reset();
     await TrackPlayer.add(fetchedData);
   }
-  catch {
-    // Fallback to local playlist if network request fails
-    await TrackPlayer.reset();
-    await TrackPlayer.add(playlistData as Track[]);
+  catch (e) {
+    Sentry.captureException(e);
   }
 };

@@ -4,7 +4,6 @@ import { StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Portal } from 'react-native-paper';
 import TrackPlayer, { Track, useActiveTrack } from 'react-native-track-player';
 import { BottomSheetPaper, TrackItem } from '.';
-import playlistData from '../assets/data/playlist.json';
 
 interface TrackListProps {
   bottomSheetRef: React.RefObject<BottomSheet>;
@@ -46,8 +45,7 @@ function TrackList({
     <BottomSheetFlatList
       style={styles.trackList}
       showsVerticalScrollIndicator={false}
-      // Use playlistData as a fallback
-      data={tracks.length > 0 ? tracks : (playlistData as Track[])}
+      data={tracks}
       ListEmptyComponent={() => (
         <View>
           <ActivityIndicator size="large" style={styles.loading} />
