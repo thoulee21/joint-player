@@ -64,6 +64,13 @@ jobs:
           files: 'android/app/build/outputs/**/*.apk'
           prerelease: false
   
+  sentry-release:
+    name: Sentry Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v4
+      
       - name: Sentry Release
         if: github.event_name == 'push'
         uses: getsentry/action-release@v1.7.0
