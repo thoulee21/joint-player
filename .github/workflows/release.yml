@@ -81,3 +81,4 @@ jobs:
           title: 'Release ${{ steps.version.outputs.newTag }}'
           automatic_release_tag: ${{ steps.version.outputs.newTag }}
           files: 'android/app/build/outputs/apk/release/app-release.apk'
+          prerelease: false
