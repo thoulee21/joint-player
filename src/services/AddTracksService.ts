@@ -4,7 +4,19 @@ import TrackPlayer, { Track } from 'react-native-track-player';
 import UserAgent from 'user-agents';
 import playlistData from '../assets/data/playlist.json';
 import type { Track as TrackData } from '../types/playlist';
-import { Main as SongDetail } from '../types/songDetail';
+import { Artist, Main as SongDetail } from '../types/songDetail';
+
+export interface TrackType {
+  id: string;
+  url: string;
+  title: string;
+  artist: string;
+  artists: Artist[];
+  artwork: string;
+  duration: number;
+  album: string;
+  mvid: number;
+}
 
 export const randomUserAgent = new UserAgent({ deviceCategory: 'mobile' });
 export const fetchPlus = fetchRetry(fetch, { retries: 3, retryDelay: 1000 });
