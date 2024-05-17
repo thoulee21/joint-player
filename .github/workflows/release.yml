@@ -56,6 +56,7 @@ jobs:
           rc-wording:     'release,alpha,beta,rc' # 0.0.x-rc.0
           skip-commit:   true
           skip-tag:      true
+          skip-push:     true
           
       - name: Sentry Release
         uses: getsentry/action-release@v1.7.0
