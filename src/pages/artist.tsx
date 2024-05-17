@@ -8,7 +8,7 @@ import {
     StyleSheet,
     View
 } from 'react-native';
-import { ActivityIndicator, Card, Text, useTheme } from 'react-native-paper';
+import { ActivityIndicator, Card, Chip, Text, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
 import { BlurBackground } from '../components';
 import { useDebounce } from '../hook';
@@ -17,6 +17,16 @@ import { Artist as ArtistType, HotAlbum, Main } from '../types/albumArtist';
 export function toReadableDate(timestamp: number) {
     return new Date(timestamp).toLocaleDateString();
 }
+
+const Chips = () => {
+    return (
+        <View style={styles.chips}>
+            <Chip icon="music" style={styles.chip}>
+                Albums
+            </Chip>
+        </View>
+    );
+};
 
 const Album = ({ item }: { item: HotAlbum }) => {
     const navigation = useNavigation();
@@ -75,51 +85,59 @@ function Albums({ artistID }: { artistID: number }) {
         );
     }
 
-    return (
-        <FlatList
-            data={data?.flatMap((page) => page.hotAlbums)}
-            numColumns={2}
-            keyExtractor={(item) => item.id.toString()}
-            ListHeaderComponent={
-                <View style={styles.albumHeader}>
-                    <View style={styles.albumHeaderTitle}>
-                        <Text variant="headlineSmall">
-                            {data && data[0]?.artist.name}
-                        </Text>
-                        <Text style={[styles.artistAlias, {
-                            color: appTheme.dark
-                                ? appTheme.colors.onSurfaceDisabled
-                                : appTheme.colors.backdrop
-                        }]}>
-                            {data && data[0]?.artist.alias.join(', ')}
-                        </Text>
-                    </View>
-                    <Card>
-                        <Card.Cover
-                            source={{ uri: data && data[0]?.artist.picUrl }}
-                        />
-                    </Card>
+    const AlbumHeader = () => {
+        return (
+            <View style={styles.albumHeader}>
+                <View style={styles.albumHeaderTitle}>
+                    <Text variant="headlineSmall">
+                        {data && data[0]?.artist.name}
+                    </Text>
+                    <Text style={[styles.artistAlias, {
+                        color: appTheme.dark
+                            ? appTheme.colors.onSurfaceDisabled
+                            : appTheme.colors.backdrop
+                    }]}>
+                        {data && data[0]?.artist.alias.join(', ')}
+                    </Text>
                 </View>
-            }
-            renderItem={(props) => <Album {...props} />}
-            onEndReached={loadMore}
-            ListFooterComponent={() => {
-                if (!isLoading && !error && data && data[data.length - 1].more) {
-                    return <ActivityIndicator style={styles.moreLoading} />;
+                <Card>
+                    <Card.Cover
+                        source={{ uri: data && data[0]?.artist.picUrl }}
+                    />
+                </Card>
+            </View>
+        );
+    };
+
+    return (
+        <>
+            <AlbumHeader />
+            <Chips />
+            <FlatList
+                data={data?.flatMap((page) => page.hotAlbums)}
+                numColumns={2}
+                fadingEdgeLength={100}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={(props) => <Album {...props} />}
+                onEndReached={loadMore}
+                ListFooterComponent={() => {
+                    if (!isLoading && !error && data && data[data.length - 1].more) {
+                        return <ActivityIndicator style={styles.moreLoading} />;
+                    }
+                }}
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                        progressViewOffset={StatusBar.currentHeight}
+                        colors={[appTheme.colors.primary]}
+                        progressBackgroundColor={appTheme.colors.surface}
+                    />
                 }
-            }}
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            refreshControl={
-                <RefreshControl
-                    refreshing={refreshing}
-                    onRefresh={onRefresh}
-                    progressViewOffset={StatusBar.currentHeight}
-                    colors={[appTheme.colors.primary]}
-                    progressBackgroundColor={appTheme.colors.surface}
-                />
-            }
-        />
+            />
+        </>
     );
 }
 
@@ -159,6 +177,13 @@ const styles = StyleSheet.create({
     },
     artistAlias: {
         marginLeft: '1%',
+    },
+    chips: {
+        width: '100%'
+    },
+    chip: {
+        margin: '1%',
+        width: 'auto'
     },
     albumPic: {
         width: Dimensions.get('window').width / 2 - 20,
