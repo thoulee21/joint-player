@@ -12,7 +12,7 @@ concurrency:
   group: "releases"
 
 jobs:
-  release-android:
+  build-release:
     name: Release Android
     runs-on: ubuntu-latest
 
@@ -64,10 +64,6 @@ jobs:
           files: 'android/app/build/outputs/**/*.apk'
           prerelease: false
   
-  sentry-release:
-    name: Sentry Release
-    runs-on: ubuntu-latest
-    steps:
       - name: Sentry Release
         if: github.event_name == 'push'
         uses: getsentry/action-release@v1.7.0
