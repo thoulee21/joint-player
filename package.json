@@ -9,8 +9,7 @@
     "start": "react-native start",
     "postversion": "react-native-version --target android",
     "build:android": "cd android && ./gradlew assembleRelease",
-    "deploy:android": "adb install .\\android\\app\\build\\outputs\\apk\\release\\app-release.apk",
-    "test": "jest"
+    "deploy:android": "adb install .\\android\\app\\build\\outputs\\apk\\release\\app-release.apk"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.6.1",
@@ -60,14 +59,10 @@
     "@types/color": "^3.0.6",
     "@types/react": "^18.2.6",
     "@types/react-native-video": "^5.0.20",
-    "@types/react-test-renderer": "^18.0.0",
     "@types/user-agents": "^1.0.4",
-    "babel-jest": "^29.6.3",
     "eslint": "^8.19.0",
-    "jest": "^29.6.3",
-    "prettier": "3.2.5",
+    "prettier": "^3.2.5",
     "react-native-version": "^4.0.0",
-    "react-test-renderer": "18.2.0",
     "typescript": "5.4.5"
   },
   "engines": {
