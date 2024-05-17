@@ -4,6 +4,7 @@ import TrackPlayer, { Track } from 'react-native-track-player';
 import UserAgent from 'user-agents';
 import playlistData from '../assets/data/playlist.json';
 import type { Track as TrackData } from '../types/playlist';
+import { Main as SongDetail } from '../types/songDetail';
 
 export const randomUserAgent = new UserAgent({ deviceCategory: 'mobile' });
 export const fetchPlus = fetchRetry(fetch, { retries: 3, retryDelay: 1000 });
@@ -45,7 +46,7 @@ const fetchTrackDetails = async (trackId: string): Promise<Track> => {
     `https://music.163.com/api/song/detail/?id=${trackId}&ids=%5B${trackId}%5D`,
     requestInit,
   );
-  const detailJson = await detail.json();
+  const detailJson: SongDetail = await detail.json();
 
   if (detailJson.code !== 200 && __DEV__) {
     ToastAndroid.show(
@@ -60,7 +61,8 @@ const fetchTrackDetails = async (trackId: string): Promise<Track> => {
     id: track.id.toString(),
     url: `https://music.163.com/song/media/outer/url?id=${track.id}.mp3`,
     title: track.name,
-    artist: track.artists.map((ar: any) => ar.name).join(', '),
+    artist: track.artists.map(ar => ar.name).join(', '),
+    artists: track.artists,
     artwork: track.album.picUrl,
     duration: track.duration / 1000,
     album: track.album.name,

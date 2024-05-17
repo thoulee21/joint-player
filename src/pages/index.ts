@@ -1,3 +1,5 @@
+export * from './album';
+export * from './artist';
 export * from './comments';
 export * from './lyrics';
 export * from './mv';
