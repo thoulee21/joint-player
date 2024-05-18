@@ -1,9 +1,7 @@
 import React, { useMemo } from 'react';
-import HapticFeedback, {
-    HapticFeedbackTypes
-} from 'react-native-haptic-feedback';
-import { IconButton, List } from 'react-native-paper';
-import TrackPlayer from 'react-native-track-player';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
+import { IconButton, List, useTheme } from 'react-native-paper';
+import TrackPlayer, { useActiveTrack, useIsPlaying } from 'react-native-track-player';
 import { useAppDispatch } from '../hook';
 import { clearQueue, addToQueue as reduxAddQueue } from '../redux/slices';
 import { Song } from '../types/albumDetail';
@@ -11,11 +9,17 @@ import { songToTrack } from '../utils';
 
 export function SongItem({ item }: { item: Song }) {
     const dispatch = useAppDispatch();
+    const appTheme = useTheme();
+    const currentTrack = useActiveTrack();
+    const { playing } = useIsPlaying();
+
     const trackData = useMemo(() => songToTrack(item), [item]);
+    const active = (currentTrack?.id === trackData.id) && playing;
 
     const play = async () => {
         dispatch(clearQueue());
         dispatch(reduxAddQueue(trackData));
+
         await TrackPlayer.reset();
         await TrackPlayer.add(trackData);
         await TrackPlayer.play();
@@ -42,9 +46,13 @@ export function SongItem({ item }: { item: Song }) {
     return (
         <List.Item
             left={(props) => (
-                <IconButton {...props}
-                    icon="play-circle-outline"
-                    onPress={play}
+                <List.Icon {...props}
+                    icon={active
+                        ? 'pause-circle-outline'
+                        : 'play-circle-outline'}
+                    color={active
+                        ? appTheme.colors.primary
+                        : undefined}
                 />
             )}
             title={item.name}
