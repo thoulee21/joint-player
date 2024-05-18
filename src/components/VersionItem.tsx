@@ -6,14 +6,12 @@ import { Style } from 'react-native-paper/lib/typescript/components/List/utils';
 import { version } from '../../package.json';
 import { useAppDispatch, useAppSelector } from '../hook';
 import { selectDevModeEnabled, setDevModeValue } from '../redux/slices';
+import { upperFirst } from '../utils';
 
 export interface ListLeftProps {
     color: string;
     style: Style;
 }
-
-export const upperFirst = (str: string) =>
-    str.slice(0, 1).toUpperCase() + str.slice(1);
 
 const VersionIcon = ({ color, style }: ListLeftProps) => {
     const appTheme = useTheme();

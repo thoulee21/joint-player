@@ -14,12 +14,9 @@ import useSWRInfinite from 'swr/infinite';
 import { BlurBackground } from '../components';
 import { useDebounce } from '../hook';
 import { Artist as ArtistType, HotAlbum, Main } from '../types/albumArtist';
+import { toReadableDate } from '../utils';
 
 const CHIPS = ['Albums'];
-
-export function toReadableDate(timestamp: number) {
-    return new Date(timestamp).toLocaleDateString();
-}
 
 const Chips = () => {
     return (

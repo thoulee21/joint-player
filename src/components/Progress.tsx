@@ -3,6 +3,7 @@ import React from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import TrackPlayer, { useProgress } from 'react-native-track-player';
+import { formatSeconds } from '../utils';
 
 export const Progress = () => {
   const appTheme = useTheme();
@@ -34,9 +35,6 @@ export const Progress = () => {
     </View>
   );
 };
-
-const formatSeconds = (time: number) =>
-  new Date(time * 1000).toISOString().slice(14, 19);
 
 const styles = StyleSheet.create({
   container: {
