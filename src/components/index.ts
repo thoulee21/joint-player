@@ -1,4 +1,5 @@
 export * from './AppContainer';
+export * from './ArtistNames';
 export * from './BackwardButton';
 export * from './BlurBackground';
 export * from './BlurRadiusSlider';
