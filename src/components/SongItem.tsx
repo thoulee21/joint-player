@@ -1,5 +1,7 @@
 import React, { useMemo } from 'react';
-import { ToastAndroid } from 'react-native';
+import HapticFeedback, {
+    HapticFeedbackTypes
+} from 'react-native-haptic-feedback';
 import { IconButton, List } from 'react-native-paper';
 import TrackPlayer from 'react-native-track-player';
 import { useAppDispatch } from '../hook';
@@ -20,9 +22,11 @@ export function SongItem({ item }: { item: Song }) {
     };
 
     const addToQueue = async () => {
+        HapticFeedback.trigger(
+            HapticFeedbackTypes.effectHeavyClick
+        );
         dispatch(reduxAddQueue(trackData));
         await TrackPlayer.add(trackData);
-        ToastAndroid.show('Added to queue', ToastAndroid.SHORT);
     };
 
     return (
