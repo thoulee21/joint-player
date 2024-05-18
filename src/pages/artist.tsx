@@ -8,6 +8,7 @@ import {
     StyleSheet,
     View
 } from 'react-native';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { ActivityIndicator, Card, Chip, Text, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
 import { BlurBackground } from '../components';
@@ -28,6 +29,12 @@ const Chips = () => {
                     key={chip}
                     style={styles.chip}
                     selected={!index}
+                    onPress={() => {
+                        HapticFeedback.trigger(
+                            HapticFeedbackTypes.effectHeavyClick
+                        );
+                        //TODO
+                    }}
                 >
                     {chip}
                 </Chip>
@@ -65,6 +72,44 @@ const Album = ({ item }: { item: HotAlbum }) => {
     );
 };
 
+const AlbumHeader = ({ artist }: { artist: ArtistType }) => {
+    const navigation = useNavigation();
+    const appTheme = useTheme();
+
+    return (
+        <View style={styles.albumHeader}>
+            <View style={styles.albumHeaderTitle}>
+                <Text variant="headlineSmall">
+                    {artist.name}
+                </Text>
+                <Text style={[styles.artistAlias, {
+                    color: appTheme.dark
+                        ? appTheme.colors.onSurfaceDisabled
+                        : appTheme.colors.backdrop
+                }]}>
+                    {artist.alias.join(', ')}
+                </Text>
+            </View>
+            <Card
+                onLongPress={() => {
+                    HapticFeedback.trigger(
+                        HapticFeedbackTypes.effectDoubleClick
+                    );
+                    //@ts-ignore
+                    navigation.push('WebView', {
+                        url: artist.picUrl,
+                        title: artist.name,
+                    });
+                }}
+            >
+                <Card.Cover
+                    source={{ uri: artist.picUrl }}
+                />
+            </Card>
+        </View>
+    );
+};
+
 function Albums({ artistID }: { artistID: number }) {
     const appTheme = useTheme();
     const [refreshing, setRefreshing] = useState(false);
@@ -93,33 +138,10 @@ function Albums({ artistID }: { artistID: number }) {
         );
     }
 
-    const AlbumHeader = () => {
-        return (
-            <View style={styles.albumHeader}>
-                <View style={styles.albumHeaderTitle}>
-                    <Text variant="headlineSmall">
-                        {data && data[0]?.artist.name}
-                    </Text>
-                    <Text style={[styles.artistAlias, {
-                        color: appTheme.dark
-                            ? appTheme.colors.onSurfaceDisabled
-                            : appTheme.colors.backdrop
-                    }]}>
-                        {data && data[0]?.artist.alias.join(', ')}
-                    </Text>
-                </View>
-                <Card>
-                    <Card.Cover
-                        source={{ uri: data && data[0]?.artist.picUrl }}
-                    />
-                </Card>
-            </View>
-        );
-    };
-
     return (
         <>
-            <AlbumHeader />
+            <AlbumHeader artist={data?.[0].artist as ArtistType} />
+
             <Chips />
             <FlatList
                 data={data?.flatMap((page) => page.hotAlbums)}
