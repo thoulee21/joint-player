@@ -52,6 +52,7 @@ function TrackList({
     <BottomSheetFlatList
       style={styles.trackList}
       showsVerticalScrollIndicator={false}
+      keyExtractor={(item) => item.id.toString()}
       data={tracks}
       ListEmptyComponent={() => (
         <View>

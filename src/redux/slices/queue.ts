@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../store';
 import { TrackType } from '../../services';
+import { RootState } from '../store';
 
 interface QueueState {
     value: TrackType[];
@@ -19,8 +19,11 @@ export const queueSlice = createSlice({
             state.value = action.payload;
         },
         addToQueue: (state, action: PayloadAction<TrackType>) => {
-            // Check if the track is already in the queue
-            if (!state.value.find(track => track.id === action.payload.id)) {
+            //去除重复后添加
+            const existIndex = state.value.findIndex(
+                (track) => track.id === action.payload.id
+            );
+            if (existIndex === -1) {
                 state.value.push(action.payload);
             }
         },

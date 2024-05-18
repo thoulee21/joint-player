@@ -25,8 +25,18 @@ export function SongItem({ item }: { item: Song }) {
         HapticFeedback.trigger(
             HapticFeedbackTypes.effectHeavyClick
         );
+
         dispatch(reduxAddQueue(trackData));
-        await TrackPlayer.add(trackData);
+        //去重后添加
+        const existTracks = await TrackPlayer.getQueue();
+        if (existTracks) {
+            const exist = existTracks.findIndex(
+                (track) => track.id === trackData.id
+            );
+            if (exist === -1) {
+                await TrackPlayer.add(trackData);
+            }
+        }
     };
 
     return (
