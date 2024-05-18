@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
         alignContent: 'center',
     },
     loading: {
-        marginTop: '50%'
+        marginTop: '40%'
     },
     content: {
         marginTop: StatusBar.currentHeight
@@ -286,6 +286,6 @@ const styles = StyleSheet.create({
         marginVertical: '2%'
     },
     androidView: {
-        height: Platform.OS === 'android' ? 100 : 0
+        height: Platform.OS === 'android' ? 220 : 0
     }
 });
