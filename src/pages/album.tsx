@@ -8,6 +8,7 @@ import {
     StatusBar,
     StyleSheet,
     ToastAndroid,
+    TouchableWithoutFeedback,
     View
 } from 'react-native';
 import HapticFeedback, {
@@ -101,9 +102,16 @@ const HeaderCard = ({ album }: { album: HotAlbum }) => {
         <View style={styles.card}>
             <Card.Title
                 left={(props) => (
-                    <Avatar.Image {...props}
-                        source={{ uri: album.picUrl }}
-                    />
+                    <TouchableWithoutFeedback
+                        onPress={() => {
+                            HapticFeedback.trigger('effectHeavyClick');
+                            navigation.goBack();
+                        }}
+                    >
+                        <Avatar.Image {...props}
+                            source={{ uri: album.picUrl }}
+                        />
+                    </TouchableWithoutFeedback>
                 )}
                 title={album.name}
                 subtitle={album.artists.map((ar) => ar.name).join(', ')}
