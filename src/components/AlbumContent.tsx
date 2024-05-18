@@ -123,6 +123,6 @@ const styles = StyleSheet.create({
         marginVertical: '2%'
     },
     androidView: {
-        height: Platform.OS === 'android' ? 220 : 0
+        height: Platform.OS === 'android' ? 200 : 0
     }
 });
