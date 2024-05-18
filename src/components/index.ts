@@ -1,4 +1,7 @@
+export * from './AlbumItem';
+export * from './Albums';
 export * from './AppContainer';
+export * from './ArtistHeader';
 export * from './ArtistNames';
 export * from './BackwardButton';
 export * from './BlurBackground';
