@@ -33,6 +33,28 @@ export const TrackItem = (
         bottomSheetRef.current?.close();
     };
 
+    const MvButton = (props: any) => {
+        const goMV = () => {
+            if (!active) {
+                chooseTrack();
+            } else {
+                bottomSheetRef.current?.close();
+            }
+            //@ts-ignore
+            navigation.navigate('MvDetail');
+        };
+
+        if (item.mvid) {
+            return (
+                <IconButton {...props}
+                    icon="video-outline"
+                    selected={active}
+                    onPress={goMV}
+                />
+            );
+        }
+    };
+
     return (
         <List.Item
             title={item.title}
@@ -46,28 +68,14 @@ export const TrackItem = (
                         .fade(appTheme.dark ? 0.4 : 0.6).string()
                     : undefined,
             }}
-            left={props => (
-                <List.Icon {...props}
-                    color={active ? appTheme.colors.primary : undefined}
+            left={({ color, style }) => (
+                <List.Icon
+                    style={style}
+                    color={active ? appTheme.colors.primary : color}
                     icon={active ? 'music-circle' : 'music-circle-outline'}
                 />
             )}
-            right={props => (
-                item.mvid ?
-                    <IconButton {...props}
-                        icon="video-outline"
-                        selected={active}
-                        onPress={() => {
-                            if (!active) {
-                                chooseTrack();
-                            } else {
-                                bottomSheetRef.current?.close();
-                            }
-                            //@ts-ignore
-                            navigation.navigate('MvDetail');
-                        }}
-                    /> : null
-            )}
+            right={(props) => <MvButton {...props} />}
         />
     );
 };
