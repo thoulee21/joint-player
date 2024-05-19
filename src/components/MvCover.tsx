@@ -42,6 +42,12 @@ export const MvCover = memo(({ children }: PropsWithChildren) => {
         }
     }, [data, devModeEnabled]);
 
+    const restoreStatusBarStyle = useDebounce(() => {
+        StatusBar.setBarStyle(
+            appTheme.dark ? 'light-content' : 'dark-content'
+        );
+    });
+
     const StatusBarStyleHandler = useDebounce(async () => {
         const colors = await getColors(data?.data.cover || placeholderImg);
         const imgColor = Color((colors as AndroidImageColors).average);
@@ -55,12 +61,8 @@ export const MvCover = memo(({ children }: PropsWithChildren) => {
     useEffect(() => {
         StatusBarStyleHandler();
 
-        return () => {
-            StatusBar.setBarStyle(
-                appTheme.dark ? 'light-content' : 'dark-content'
-            );
-        };
-    }, [StatusBarStyleHandler, appTheme, data, track]);
+        return restoreStatusBarStyle;
+    }, [StatusBarStyleHandler, appTheme, data, restoreStatusBarStyle, track]);
 
     return (
         <Card
