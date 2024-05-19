@@ -5,6 +5,7 @@ import {
     createStackNavigator
 } from '@react-navigation/stack';
 import React from 'react';
+import { DrawerNavi } from '.';
 import {
     AlbumDetail,
     Artist,
@@ -12,8 +13,6 @@ import {
     LyricsScreen,
     MvDetail,
     MvPlayer,
-    Player,
-    Settings,
     WebViewScreen,
 } from '../pages';
 
@@ -44,8 +43,7 @@ const screenOptions: StackNavigationOptions = {
 export function RootStack() {
     return (
         <Stack.Navigator screenOptions={screenOptions}>
-            <Stack.Screen name="Player" component={Player} />
-            <Stack.Screen name="Settings" component={Settings} />
+            <Stack.Screen name="DrawerNavi" component={DrawerNavi} />
             <Stack.Screen name="WebView" component={WebViewScreen} />
             <Stack.Screen name="Comments" component={Comments} />
             <Stack.Screen name="Lyrics" component={LyricsScreen} />

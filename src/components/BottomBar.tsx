@@ -22,13 +22,15 @@ export const BottomBar = ({ bottomSheetRef }:
             statusBarHeight={0}
         >
             <Appbar.Action
-                icon="cog-outline"
+                icon="video-outline"
+                disabled={track?.mvid === 0
+                    || typeof track?.mvid === 'undefined'}
                 onPress={() => {
                     HapticFeedback.trigger(
                         HapticFeedbackTypes.effectHeavyClick
                     );
                     // @ts-ignore
-                    navigation.push('Settings');
+                    navigation.push('MvDetail');
                 }}
             />
             <Appbar.Content

@@ -7,7 +7,7 @@ import { ScrollView, StatusBar, StyleSheet } from 'react-native';
 import HapticFeedback, {
   HapticFeedbackTypes
 } from 'react-native-haptic-feedback';
-import { Searchbar, useTheme } from 'react-native-paper';
+import { IconButton, Searchbar, useTheme } from 'react-native-paper';
 import TrackPlayer from 'react-native-track-player';
 import { StorageKeys } from '../App';
 import {
@@ -71,14 +71,33 @@ export function Player() {
         inputStyle={{ color: appTheme.colors.onSurface }}
         onChangeText={setKeyword}
         value={keyword}
-        loading={searching}
         onSubmitEditing={searchSongs}
+        icon="menu"
         onIconPress={() => {
-          searchSongs();
+          //@ts-ignore
+          navigation.openDrawer();
           HapticFeedback.trigger(
             HapticFeedbackTypes.effectHeavyClick
           );
         }}
+        right={(props) => (
+          <IconButton {...props}
+            icon={keyword ? 'close' : 'magnify'}
+            animated
+            loading={searching}
+            onPress={() => {
+              if (keyword) {
+                setKeyword('');
+              } else {
+                searchSongs();
+              }
+
+              HapticFeedback.trigger(
+                HapticFeedbackTypes.effectHeavyClick
+              );
+            }}
+          />
+        )}
         blurOnSubmit
         selectTextOnFocus
         selectionColor={

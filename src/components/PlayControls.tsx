@@ -1,15 +1,13 @@
 import { useNetInfoInstance } from '@react-native-community/netinfo';
 import React, { useCallback, useEffect } from 'react';
 import { StyleSheet, ToastAndroid, View } from 'react-native';
-import TrackPlayer, {
-  usePlaybackState,
-} from 'react-native-track-player';
+import TrackPlayer, { usePlaybackState } from 'react-native-track-player';
 import {
   BackwardButton,
+  CommentsButton,
   ForwardButton,
   PlayButton,
   RepeatModeSwitch,
-  TrackMenu,
 } from '.';
 
 export function PlayControls() {
@@ -43,7 +41,7 @@ export function PlayControls() {
         <BackwardButton />
         <PlayButton />
         <ForwardButton />
-        <TrackMenu />
+        <CommentsButton />
       </View>
     </View>
   );

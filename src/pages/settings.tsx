@@ -1,6 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
+import HapticFeedback, {
+  HapticFeedbackTypes
+} from 'react-native-haptic-feedback';
 import { Appbar, List } from 'react-native-paper';
 import {
   BlurBackground,
@@ -16,7 +19,15 @@ export function Settings() {
   return (
     <BlurBackground>
       <Appbar.Header style={styles.header}>
-        <Appbar.BackAction onPress={navigation.goBack} />
+        <Appbar.Action icon="menu"
+          onPress={() => {
+            //@ts-ignore
+            navigation.openDrawer();
+            HapticFeedback.trigger(
+              HapticFeedbackTypes.effectHeavyClick
+            );
+          }}
+        />
         <Appbar.Content title="Settings" />
       </Appbar.Header>
 
