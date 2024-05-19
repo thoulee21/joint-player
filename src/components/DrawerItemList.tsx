@@ -1,0 +1,102 @@
+import {
+    DrawerDescriptorMap,
+    DrawerNavigationHelpers
+} from '@react-navigation/drawer/lib/typescript/src/types';
+import {
+    CommonActions,
+    DrawerActions,
+    DrawerNavigationState,
+    ParamListBase
+} from '@react-navigation/native';
+import * as React from 'react';
+import { FlatList, StatusBar } from 'react-native';
+import { Drawer, useTheme } from 'react-native-paper';
+
+type Props = {
+    state: DrawerNavigationState<ParamListBase>;
+    navigation: DrawerNavigationHelpers;
+    descriptors: DrawerDescriptorMap;
+};
+
+/**
+ * Component that renders the navigation list in the drawer.
+ */
+function DrawerItems({
+    state,
+    navigation,
+    descriptors,
+}: Props) {
+    const appTheme = useTheme();
+
+    function renderDrawerItem() {
+        return ({ item, index }: { item: any, index: number }) => {
+            const focused = index === state.index;
+            const onPress = () => {
+                const event = navigation.emit({
+                    type: 'drawerItemPress',
+                    target: item.key,
+                    canPreventDefault: true,
+                });
+
+                if (!event.defaultPrevented) {
+                    navigation.dispatch({
+                        ...(focused
+                            ? DrawerActions.closeDrawer()
+                            : CommonActions.navigate({
+                                name: item.name,
+                                merge: true
+                            })),
+                        target: state.key,
+                    });
+                }
+            };
+
+            const {
+                title, drawerIcon,
+            } = descriptors[item.key].options;
+
+            return (
+                <Drawer.Item
+                    key={item.key}
+                    label={title !== undefined
+                        ? title
+                        : item.name}
+                    icon={() => {
+                        if (typeof drawerIcon === 'function') {
+                            return drawerIcon({
+                                focused,
+                                color: focused
+                                    ? appTheme.colors.primary
+                                    : appTheme.colors.onSurface,
+                                size: 24,
+                            });
+                        }
+                        return drawerIcon;
+                    }}
+                    onPress={onPress}
+                    active={focused}
+                />
+            );
+        };
+    }
+
+    return (
+        <FlatList
+            data={state.routes}
+            renderItem={renderDrawerItem()}
+            keyExtractor={item => item.key}
+        />
+    );
+}
+
+export function DrawerItemList(props: Props) {
+    return (
+        <Drawer.Section {...props}
+            title="Pages"
+            showDivider={false}
+            style={{ marginTop: StatusBar.currentHeight }}
+        >
+            <DrawerItems {...props} />
+        </Drawer.Section>
+    );
+}

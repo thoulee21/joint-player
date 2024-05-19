@@ -14,6 +14,8 @@ export * from './CommentItem';
 export * from './CommentList';
 export * from './CommentsMenu';
 export * from './DialogWithRadioBtns';
+export * from './DrawNavi';
+export * from './DrawerItemList';
 export * from './ExperimentalBlurSwitch';
 export * from './ForwardButton';
 export * from './HeaderCard';
