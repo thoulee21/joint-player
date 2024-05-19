@@ -24,8 +24,8 @@ export interface Artist {
 }
 
 export enum Name {
-    MattMaeson = "Matt Maeson",
-    Steinza = "Steinza",
+    MattMaeson = 'Matt Maeson',
+    Steinza = 'Steinza',
 }
 
 export interface HotAlbum {
@@ -59,17 +59,17 @@ export interface HotAlbum {
 }
 
 export enum Company {
-    BoomRecords = "Boom.Records",
-    华纳音乐 = "华纳音乐",
+    BoomRecords = 'Boom.Records',
+    华纳音乐 = '华纳音乐',
 }
 
 export enum SubType {
-    Remix = "Remix",
-    录音室版 = "录音室版",
-    现场版 = "现场版",
+    Remix = 'Remix',
+    录音室版 = '录音室版',
+    现场版 = '现场版',
 }
 
 export enum Type {
-    Single = "Single",
-    专辑 = "专辑",
+    Single = 'Single',
+    专辑 = '专辑',
 }
