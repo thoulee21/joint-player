@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { FlatList, Platform, RefreshControl, StatusBar, StyleSheet, View } from 'react-native';
+import { Dimensions, FlatList, RefreshControl, StatusBar, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Button, List, Text, useTheme } from 'react-native-paper';
 import TrackPlayer from 'react-native-track-player';
 import useSWRInfinite from 'swr/infinite';
@@ -80,16 +80,13 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
                 data={data?.flatMap((d) => d.album.songs)}
                 fadingEdgeLength={100}
                 keyExtractor={(item) => item.id.toString()}
+                style={styles.tracks}
                 renderItem={props => <SongItem {...props} />}
                 onEndReached={loadMore}
-                ListFooterComponent={() =>
-                    <>
-                        {!isLoading && !error && hasMore ? (
-                            <ActivityIndicator style={styles.moreLoading} />
-                        ) : null}
-                        <View style={styles.androidView} />
-                    </>
-
+                ListFooterComponent={
+                    !isLoading && !error && hasMore ? (
+                        <ActivityIndicator style={styles.moreLoading} />
+                    ) : null
                 }
                 refreshing={refreshing}
                 onRefresh={onRefresh}
@@ -108,12 +105,12 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
 
 const styles = StyleSheet.create({
     content: {
-        marginTop: StatusBar.currentHeight
+        flex: 1,
+        marginTop: StatusBar.currentHeight,
     },
     header: {
         backgroundColor: 'transparent'
     },
-
     songsHeader: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -122,7 +119,7 @@ const styles = StyleSheet.create({
     moreLoading: {
         marginVertical: '2%'
     },
-    androidView: {
-        height: Platform.OS === 'android' ? 200 : 0
+    tracks: {
+        height: Dimensions.get('window').height * 0.7
     }
 });
