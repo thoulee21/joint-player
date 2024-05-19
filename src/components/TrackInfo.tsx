@@ -1,11 +1,20 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useMemo } from 'react';
-import { Alert, Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
-import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
+import {
+  Alert,
+  Dimensions,
+  ImageBackground,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View
+} from 'react-native';
+import HapticFeedback, {
+  HapticFeedbackTypes
+} from 'react-native-haptic-feedback';
 import { Surface, Text, useTheme } from 'react-native-paper';
 import { useActiveTrack, useProgress } from 'react-native-track-player';
 import useSWR from 'swr';
-import { ArtistNames } from '.';
+import { ArtistNames, FavToggle } from '.';
 import { useAppSelector } from '../hook';
 import { selectDevModeEnabled } from '../redux/slices';
 import { Main as LyricMain } from '../types/lyrics';
@@ -81,7 +90,7 @@ export const TrackInfo = () => {
             }
           }}
         >
-          <Image
+          <ImageBackground
             style={[
               styles.artwork,
               {
@@ -89,8 +98,12 @@ export const TrackInfo = () => {
                 backgroundColor: appTheme.colors.surface,
               },
             ]}
+            imageStyle={{ borderRadius: appTheme.roundness * 5 }}
             source={{ uri: imageUri }}
-          />
+            resizeMode="cover"
+          >
+            <FavToggle />
+          </ImageBackground>
         </TouchableWithoutFeedback>
       </Surface>
 
@@ -110,13 +123,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   artwork: {
-    width: '90%',
+    width: Dimensions.get('window').width * 0.9,
     aspectRatio: 1,
   },
   imgSurface: {
     marginTop: '2%',
-    elevation: 5,
-    overflow: 'hidden',
   },
   titleText: {
     fontSize: 18,
