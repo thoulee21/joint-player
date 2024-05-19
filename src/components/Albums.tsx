@@ -12,10 +12,9 @@ import HapticFeedback, {
 } from 'react-native-haptic-feedback';
 import { Chip, Text, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
+import { Album, AlbumHeader } from '.';
 import { useDebounce } from '../hook';
 import { Artist, Main } from '../types/albumArtist';
-import { Album } from './AlbumItem';
-import { AlbumHeader } from './ArtistHeader';
 
 const CHIPS = ['Albums'];
 
