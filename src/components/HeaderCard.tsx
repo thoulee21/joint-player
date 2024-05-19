@@ -1,15 +1,12 @@
-import { useNavigation, useTheme } from '@react-navigation/native';
-import { View, TouchableWithoutFeedback, StyleSheet } from 'react-native';
-import { Card, Avatar, IconButton } from 'react-native-paper';
-import { HotAlbum } from '../types/albumArtist';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import HapticFeedback, {
-    HapticFeedbackTypes
-} from 'react-native-haptic-feedback';
+import { StyleSheet, View } from 'react-native';
+import { Avatar, IconButton, List } from 'react-native-paper';
+import { ArtistNames } from '.';
+import { HotAlbum } from '../types/albumArtist';
 
 export const HeaderCard = ({ album }: { album: HotAlbum }) => {
     const navigation = useNavigation();
-    const appTheme = useTheme();
 
     const goComments = () => {
         //@ts-ignore
@@ -20,24 +17,15 @@ export const HeaderCard = ({ album }: { album: HotAlbum }) => {
 
     return (
         <View style={styles.card}>
-            <Card.Title
+            <List.Item
                 left={(props) => (
-                    <TouchableWithoutFeedback
-                        onPress={() => {
-                            HapticFeedback.trigger(
-                                HapticFeedbackTypes.effectHeavyClick
-                            );
-                            navigation.goBack();
-                        }}
-                    >
-                        <Avatar.Image {...props}
-                            source={{ uri: album.picUrl }}
-                        />
-                    </TouchableWithoutFeedback>
+                    <Avatar.Image {...props}
+                        source={{ uri: album.picUrl }}
+                        size={40}
+                    />
                 )}
                 title={album.name}
-                subtitle={album.artists.map((ar) => ar.name).join(', ')}
-                subtitleStyle={{ color: appTheme.colors.primary }}
+                description={<ArtistNames />}
                 right={(props) => (
                     <IconButton {...props}
                         icon="comment-text-outline"

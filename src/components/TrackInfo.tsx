@@ -100,7 +100,7 @@ export const TrackInfo = () => {
       >
         {track?.title}{isTrial ? ' (trial)' : ''}
       </Text>
-      <ArtistNames />
+      <ArtistNames textStyle={styles.artistsText} />
     </View>
   );
 };
@@ -124,5 +124,9 @@ const styles = StyleSheet.create({
     marginTop: 30,
     textAlign: 'center',
   },
-
+  artistsText: {
+    fontSize: 16,
+    fontWeight: '200',
+    textAlign: 'center',
+  },
 });
