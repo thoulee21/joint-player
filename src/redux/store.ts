@@ -4,6 +4,7 @@ import {
     blurRadiusSlice,
     darkModeSlice,
     devModeSlice,
+    favsSlice,
     queueSlice,
 } from './slices';
 
@@ -15,6 +16,7 @@ export const store = configureStore({
         blurRadius: blurRadiusSlice.reducer,
         devMode: devModeSlice.reducer,
         queue: queueSlice.reducer,
+        favs: favsSlice.reducer,
     },
     enhancers: (getDefaultEnhancers) => {
         return getDefaultEnhancers().concat(sentryReduxEnhancer);
