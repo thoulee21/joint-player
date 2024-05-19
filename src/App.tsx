@@ -3,7 +3,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect } from 'react';
 import { AppContainer, RootStack } from './components';
 import { useAppDispatch } from './hook';
-import { setBlurRadius } from './redux/slices';
+import { setBlurRadius, setFavs } from './redux/slices';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -12,6 +12,8 @@ export enum StorageKeys {
   Keyword = 'keyword',
   // eslint-disable-next-line no-unused-vars
   BlurRadius = 'blurRadius',
+  // eslint-disable-next-line no-unused-vars
+  Favs = 'favs',
 }
 
 export default function App() {
@@ -22,6 +24,11 @@ export default function App() {
       const storedBlurRadius = await AsyncStorage.getItem(StorageKeys.BlurRadius);
       if (storedBlurRadius) {
         dispatch(setBlurRadius(Number(storedBlurRadius)));
+      }
+
+      const storedFavs = await AsyncStorage.getItem(StorageKeys.Favs);
+      if (storedFavs) {
+        dispatch(setFavs(JSON.parse(storedFavs)));
       }
     }
 
