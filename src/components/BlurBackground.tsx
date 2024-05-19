@@ -8,7 +8,7 @@ import { useAppSelector } from '../hook';
 import { blurRadius } from '../redux/slices';
 
 export const BlurBackground = memo(({ children, style, onLoadEnd }:
-    { children: ReactNode, style?: ViewStyle, onLoadEnd?: () => void }
+    { children?: ReactNode, style?: ViewStyle, onLoadEnd?: () => void }
 ) => {
     const appTheme = useTheme();
     const blurRadiusValue = useAppSelector(blurRadius);

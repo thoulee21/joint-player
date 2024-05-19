@@ -17,7 +17,6 @@ export * from './CommentsMenu';
 export * from './DialogWithRadioBtns';
 export * from './DrawerNavi';
 export * from './DrawerItemList';
-export * from './ExperimentalBlurSwitch';
 export * from './ForwardButton';
 export * from './HeaderCard';
 export * from './Lyric';

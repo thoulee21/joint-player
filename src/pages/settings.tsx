@@ -8,7 +8,6 @@ import { Appbar, List } from 'react-native-paper';
 import {
   BlurBackground,
   BlurRadiusSlider,
-  ExperimentalBlurSwitch,
   ThemeColorIndicator,
   VersionItem,
 } from '../components';
@@ -35,7 +34,6 @@ export function Settings() {
         <List.Section title="Appearance">
           <ThemeColorIndicator />
           <BlurRadiusSlider />
-          <ExperimentalBlurSwitch />
         </List.Section>
 
         <List.Section title="General">
