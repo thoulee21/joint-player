@@ -21,7 +21,7 @@ const ROUTES = [
     },
 ];
 
-export function DrawNavi() {
+export function DrawerNavi() {
     const DrawerRoutes = useMemo(() =>
         ROUTES.map(({ name, component, focusedIcon, unfocusedIcon }) => (
             <Drawer.Screen

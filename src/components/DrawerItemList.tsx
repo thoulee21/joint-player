@@ -8,6 +8,7 @@ import {
     DrawerNavigationState,
     ParamListBase
 } from '@react-navigation/native';
+import Color from 'color';
 import * as React from 'react';
 import { FlatList, StatusBar } from 'react-native';
 import { Drawer, useTheme } from 'react-native-paper';
@@ -55,26 +56,34 @@ function DrawerItems({
                 title, drawerIcon,
             } = descriptors[item.key].options;
 
+            const backgroundColor = focused
+                ? Color(appTheme.colors.secondaryContainer)
+                    .fade(appTheme.dark ? 0.4 : 0.6).string()
+                : undefined;
+
+            const icon = () => {
+                if (typeof drawerIcon === 'function') {
+                    return drawerIcon({
+                        focused,
+                        color: focused
+                            ? appTheme.colors.primary
+                            : appTheme.colors.onSurface,
+                        size: 24,
+                    });
+                }
+                return drawerIcon;
+            };
+
             return (
                 <Drawer.Item
                     key={item.key}
                     label={title !== undefined
                         ? title
                         : item.name}
-                    icon={() => {
-                        if (typeof drawerIcon === 'function') {
-                            return drawerIcon({
-                                focused,
-                                color: focused
-                                    ? appTheme.colors.primary
-                                    : appTheme.colors.onSurface,
-                                size: 24,
-                            });
-                        }
-                        return drawerIcon;
-                    }}
+                    icon={icon}
                     onPress={onPress}
                     active={focused}
+                    style={{ backgroundColor }}
                 />
             );
         };
