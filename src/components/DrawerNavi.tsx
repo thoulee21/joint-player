@@ -2,7 +2,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import React, { useMemo } from 'react';
 import { Icon } from 'react-native-paper';
 import { BlurBackground, DrawerItemList } from '.';
-import { Player, Settings } from '../pages';
+import { Favs, Player, Settings } from '../pages';
 
 const Drawer = createDrawerNavigator();
 
@@ -12,6 +12,12 @@ const ROUTES = [
         component: Player,
         focusedIcon: 'music-circle',
         unfocusedIcon: 'music-circle-outline'
+    },
+    {
+        name: 'Favorites',
+        component: Favs,
+        focusedIcon: 'heart',
+        unfocusedIcon: 'heart-outline',
     },
     {
         name: 'Settings',
@@ -45,7 +51,7 @@ export function DrawerNavi() {
             initialRouteName="Player"
             screenOptions={{
                 headerShown: false,
-                drawerType: 'front',
+                unmountOnBlur: true,
             }}
             drawerContent={(props) =>
                 <BlurBackground>
