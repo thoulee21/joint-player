@@ -8,9 +8,6 @@ on:
 
 permissions: write-all
 
-concurrency:
-  group: "releases"
-
 jobs:
   build-release:
     name: Release Android
