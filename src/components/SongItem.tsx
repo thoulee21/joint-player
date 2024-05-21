@@ -17,7 +17,7 @@ export interface ListRightProps {
 export function SongItem({ item, track, right }: {
     item?: Song,
     track?: TrackType,
-    right: (props: ListRightProps) => ReactNode
+    right?: (props: ListRightProps) => ReactNode
 }) {
     const dispatch = useAppDispatch();
     const appTheme = useTheme();
@@ -30,7 +30,9 @@ export function SongItem({ item, track, right }: {
         if (item) {
             trackData = songToTrack(item);
         } else {
-            throw new Error('SongItem must have either a song or a track');
+            throw new Error(
+                'SongItem must have either a song or a track'
+            );
         }
     } else {
         trackData = track;
