@@ -28,7 +28,7 @@
     "expo": "^50.0.14",
     "expo-blur": "~12.9.2",
     "expo-modules-autolinking": "~1.11.1",
-    "expo-screen-orientation": "6.4.1",
+    "expo-screen-orientation": "7.0.5",
     "expo-splash-screen": "~0.26.4",
     "install-expo-modules": "^0.10.0",
     "react": "18.2.0",
