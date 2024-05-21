@@ -1,41 +1,83 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import TrackPlayer from 'react-native-track-player';
 import { TrackType } from '../../services';
 import { RootState } from '../store';
 
-interface QueueState {
-    value: TrackType[];
-}
-
-const initialState: QueueState = {
-    value: []
+const initialState = {
+    value: [] as TrackType[],
 };
+
+export const setQueueAsync = createAsyncThunk(
+    'queue/setQueueAsync',
+    async (tracks: TrackType[], { dispatch }) => {
+        await TrackPlayer.reset();
+        await TrackPlayer.add(tracks);
+        dispatch(setQueue(tracks));
+    }
+);
+
+export const addToQueueAsync = createAsyncThunk(
+    'queue/addToQueueAsync',
+    async (track: TrackType, { getState, dispatch }) => {
+        const state = getState() as RootState;
+        const existIndex = state.queue.value.findIndex(
+            (t) => t.id === track.id
+        );
+        if (existIndex === -1) {
+            await TrackPlayer.add(track);
+            dispatch(addToQueue(track));
+        }
+    }
+);
+
+export const removeFromQueueAsync = createAsyncThunk(
+    'queue/removeFromQueueAsync',
+    async (index: number, { dispatch }) => {
+        await TrackPlayer.remove(index);
+        dispatch(removeFromQueue(index));
+    }
+);
+
+export const clearQueueAsync = createAsyncThunk(
+    'queue/clearQueueAsync',
+    async (_, { dispatch }) => {
+        await TrackPlayer.reset();
+        dispatch(clearQueue());
+    }
+);
+
+export const clearAddOneAsync = createAsyncThunk(
+    'queue/clearAddOneAsync',
+    async (track: TrackType, { dispatch }) => {
+        await TrackPlayer.reset();
+        await TrackPlayer.add(track);
+        dispatch(clearAddOne(track));
+    }
+);
 
 export const queueSlice = createSlice({
     name: 'queue',
     initialState,
     reducers: {
-        // Use the PayloadAction type to declare the contents of `action.payload`
         setQueue: (state, action: PayloadAction<TrackType[]>) => {
             state.value = action.payload;
         },
         addToQueue: (state, action: PayloadAction<TrackType>) => {
-            //去除重复后添加
-            const existIndex = state.value.findIndex(
-                (track) => track.id === action.payload.id
-            );
-            if (existIndex === -1) {
-                state.value.push(action.payload);
-            }
+            state.value.push(action.payload);
         },
         removeFromQueue: (state, action: PayloadAction<number>) => {
             state.value.splice(action.payload, 1);
         },
         clearQueue: (state) => {
             state.value = [];
+        },
+        clearAddOne: (state, action: PayloadAction<TrackType>) => {
+            state.value = [];
+            state.value.push(action.payload);
         }
     },
 });
 
-export const { setQueue, addToQueue, removeFromQueue, clearQueue } = queueSlice.actions;
+export const { setQueue, addToQueue, removeFromQueue, clearQueue, clearAddOne } = queueSlice.actions;
 
 export const queue = (state: RootState) => state.queue.value;

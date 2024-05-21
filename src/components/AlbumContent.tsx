@@ -5,7 +5,7 @@ import TrackPlayer from 'react-native-track-player';
 import useSWRInfinite from 'swr/infinite';
 import { AlbumDescription, HeaderCard, SongItem } from '.';
 import { useAppDispatch, useDebounce } from '../hook';
-import { setQueue } from '../redux/slices';
+import { setQueueAsync } from '../redux/slices';
 import { TrackType } from '../services';
 import { HotAlbum } from '../types/albumArtist';
 import { Main } from '../types/albumDetail';
@@ -52,9 +52,7 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
     const playAll = async () => {
         const tracksData = data?.flatMap(d => d.album.songs)
             .map(songToTrack) as TrackType[];
-        dispatch(setQueue(tracksData));
-        await TrackPlayer.reset();
-        await TrackPlayer.add(tracksData);
+        await dispatch(setQueueAsync(tracksData));
         await TrackPlayer.play();
     };
 

@@ -3,7 +3,7 @@ import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedbac
 import { IconButton, List, useTheme } from 'react-native-paper';
 import TrackPlayer, { useActiveTrack, useIsPlaying } from 'react-native-track-player';
 import { useAppDispatch } from '../hook';
-import { clearQueue, addToQueue as reduxAddQueue } from '../redux/slices';
+import { addToQueueAsync, clearAddOneAsync } from '../redux/slices';
 import { TrackType } from '../services';
 import { Song } from '../types/albumDetail';
 import { songToTrack } from '../utils';
@@ -11,6 +11,7 @@ import { songToTrack } from '../utils';
 export function SongItem({ item, track }: { item?: Song, track?: TrackType }) {
     const dispatch = useAppDispatch();
     const appTheme = useTheme();
+
     const currentTrack = useActiveTrack();
     const { playing } = useIsPlaying();
 
@@ -28,11 +29,7 @@ export function SongItem({ item, track }: { item?: Song, track?: TrackType }) {
     const active = (currentTrack?.id === trackData.id) && playing;
 
     const play = async () => {
-        dispatch(clearQueue());
-        dispatch(reduxAddQueue(trackData));
-
-        await TrackPlayer.reset();
-        await TrackPlayer.add(trackData);
+        await dispatch(clearAddOneAsync(trackData));
         await TrackPlayer.play();
     };
 
@@ -40,18 +37,7 @@ export function SongItem({ item, track }: { item?: Song, track?: TrackType }) {
         HapticFeedback.trigger(
             HapticFeedbackTypes.effectHeavyClick
         );
-
-        dispatch(reduxAddQueue(trackData));
-        //去重后添加
-        const existTracks = await TrackPlayer.getQueue();
-        if (existTracks) {
-            const exist = existTracks.findIndex(
-                (trackItem) => trackItem.id === trackData.id
-            );
-            if (exist === -1) {
-                await TrackPlayer.add(trackData);
-            }
-        }
+        dispatch(addToQueueAsync(trackData));
     };
 
     return (

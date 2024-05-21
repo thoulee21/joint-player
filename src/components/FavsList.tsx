@@ -4,16 +4,14 @@ import { Text } from 'react-native-paper';
 import TrackPlayer from 'react-native-track-player';
 import { FavsHeader, SongItem } from '.';
 import { useAppDispatch, useAppSelector } from '../hook';
-import { favs, setQueue } from '../redux/slices';
+import { favs, setQueueAsync } from '../redux/slices';
 
 export const FavsList = () => {
     const dispatch = useAppDispatch();
     const favorites = useAppSelector(favs);
 
     const playAll = async () => {
-        dispatch(setQueue(favorites));
-        await TrackPlayer.reset();
-        await TrackPlayer.add(favorites);
+        await dispatch(setQueueAsync(favorites));
         await TrackPlayer.play();
     };
 
