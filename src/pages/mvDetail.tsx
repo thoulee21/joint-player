@@ -104,7 +104,7 @@ export function MvDetail() {
                 : track?.mvid
                     ? <>
                         <MvCover>
-                            <TrackInfoBar right={ResSwitch} />
+                            <TrackInfoBar right={() => <ResSwitch />} />
                             <BottomBtns />
                         </MvCover>
 
