@@ -1,13 +1,13 @@
 {
   "name": "jointplayer",
-  "version": "4.3.1",
+  "version": "4.3.1-0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "postversion": "react-native-version --target android",
+    "postversion": "react-native-version",
     "build:android": "cd android && ./gradlew assembleRelease",
     "deploy:android": "adb install .\\android\\app\\build\\outputs\\apk\\release\\app-release.apk"
   },
