@@ -3,4 +3,5 @@ export * from './darkMode';
 export * from './devMode';
 export * from './favs';
 export * from './queue';
+export * from './user';
 

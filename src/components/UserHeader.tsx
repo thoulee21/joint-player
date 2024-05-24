@@ -2,12 +2,16 @@ import React, { memo } from 'react';
 import { Dimensions, ImageBackground, StyleSheet, View } from 'react-native';
 import { Avatar, Text, useTheme } from 'react-native-paper';
 import useSWR from 'swr';
+import { useAppSelector } from '../hook';
+import { selectUser } from '../redux/slices';
 import { Main } from '../types/userDetail';
 
 export const UserHeader = memo(({ userId }: { userId?: number }) => {
     const appTheme = useTheme();
+    const currentUser = useAppSelector(selectUser);
+
     const { data, error, } = useSWR<Main>(
-        `https://music.163.com/api/v1/user/detail/${userId || 1492028517}`,
+        `https://music.163.com/api/v1/user/detail/${userId || currentUser.id}`,
         { suspense: true }
     );
 

@@ -6,6 +6,7 @@ import {
     devModeSlice,
     favsSlice,
     queueSlice,
+    userSlice,
 } from './slices';
 
 const sentryReduxEnhancer = Sentry.createReduxEnhancer();
@@ -17,6 +18,7 @@ export const store = configureStore({
         devMode: devModeSlice.reducer,
         queue: queueSlice.reducer,
         favs: favsSlice.reducer,
+        user: userSlice.reducer,
     },
     enhancers: (getDefaultEnhancers) => {
         return getDefaultEnhancers().concat(sentryReduxEnhancer);
