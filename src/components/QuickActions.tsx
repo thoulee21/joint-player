@@ -24,6 +24,9 @@ export const DeleteFavButton = () => {
             style={styles.button}
             iconColor={appTheme.colors.error}
             onPress={() => {
+                HapticFeedback.trigger(
+                    HapticFeedbackTypes.effectTick
+                );
                 dispatch(removeFav(index));
             }}
         />

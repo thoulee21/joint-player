@@ -1,6 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { Suspense } from 'react';
 import { StyleSheet } from 'react-native';
+import HapticFeedback, {
+    HapticFeedbackTypes
+} from 'react-native-haptic-feedback';
 import { ActivityIndicator, Appbar } from 'react-native-paper';
 import { BlurBackground } from '../components';
 import { FavsList } from '../components/FavsList';
@@ -24,8 +27,13 @@ export function Favs() {
                 <Appbar.Header style={styles.appbar}>
                     <Appbar.Action
                         icon="menu"
-                        // @ts-expect-error
-                        onPress={() => navigation.openDrawer()}
+                        onPress={() => {
+                            HapticFeedback.trigger(
+                                HapticFeedbackTypes.effectHeavyClick
+                            );
+                            // @ts-expect-error
+                            navigation.openDrawer();
+                        }}
                     />
                     <Appbar.Content title="Favorites" />
                     <Appbar.Action
