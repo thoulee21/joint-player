@@ -87,16 +87,24 @@ const fetchTrackDetails = async (trackId: string): Promise<Track> => {
   };
 };
 
-export const addTracks = async (keyword?: string): Promise<Track[] | void> => {
+export const addTracks = async (keyword?: string): Promise<Track[]> => {
   try {
     let songs: TrackData[] = [];
 
     if (!keyword) {
-      const storedKeyword = await AsyncStorage.getItem(StorageKeys.Keyword);
-      if (storedKeyword) {
-        ToastAndroid.show('Restored keyword', ToastAndroid.SHORT);
+      const storedFavs = await AsyncStorage.getItem(StorageKeys.Favs);
+      if (!storedFavs) {
+        const storedKeyword = await AsyncStorage.getItem(StorageKeys.Keyword);
+        if (storedKeyword) {
+          ToastAndroid.show('Restored keyword', ToastAndroid.SHORT);
+        }
+        keyword = storedKeyword ? storedKeyword : 'One Republic';
+      } else {
+        ToastAndroid.show('Restored favorites', ToastAndroid.SHORT);
+        const favs = JSON.parse(storedFavs) as TrackType[];
+        await TrackPlayer.add(favs);
+        return favs;
       }
-      keyword = storedKeyword ? storedKeyword : 'One Republic';
     }
     const data = await fetchSearchResults(keyword);
     songs = data.songs;
@@ -113,5 +121,6 @@ export const addTracks = async (keyword?: string): Promise<Track[] | void> => {
   }
   catch (e) {
     Sentry.captureException(e);
+    return [];
   }
 };
