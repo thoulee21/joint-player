@@ -4,7 +4,14 @@ import { Divider, Text, useTheme } from 'react-native-paper';
 //@ts-expect-error
 import SwipeableFlatList from 'react-native-swipeable-list';
 import TrackPlayer from 'react-native-track-player';
-import { QuickActions, SongItem, TracksHeader } from '.';
+import {
+    AddToQueueButton,
+    DeleteFavButton,
+    QuickActionsProps,
+    QuickActionsWrapper,
+    SongItem,
+    TracksHeader
+} from '.';
 import { useAppDispatch, useAppSelector } from '../hook';
 import { favs, setQueueAsync } from '../redux/slices';
 import { TrackType } from '../services';
@@ -52,10 +59,11 @@ export const FavsList = () => {
             }
             ListEmptyComponent={<NoFavs />}
             maxSwipeDistance={110}
-            renderQuickActions={({ index, item }: {
-                index: number, item: TrackType
-            }) => (
-                <QuickActions index={index} item={item} />
+            renderQuickActions={(props: QuickActionsProps) => (
+                <QuickActionsWrapper {...props}>
+                    <DeleteFavButton />
+                    <AddToQueueButton />
+                </QuickActionsWrapper>
             )}
             ItemSeparatorComponent={<Divider />}
         />

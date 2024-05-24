@@ -5,7 +5,14 @@ import { ActivityIndicator, Divider, Text, useTheme } from 'react-native-paper';
 import SwipeableFlatList from 'react-native-swipeable-list';
 import TrackPlayer from 'react-native-track-player';
 import useSWRInfinite from 'swr/infinite';
-import { AlbumDescription, TracksHeader, HeaderCard, QuickActions, SongItem } from '.';
+import {
+    AddToQueueButton,
+    AlbumDescription,
+    HeaderCard,
+    QuickActionsWrapper,
+    SongItem,
+    TracksHeader
+} from '.';
 import { useAppDispatch, useDebounce } from '../hook';
 import { setQueueAsync } from '../redux/slices';
 import { TrackType } from '../services';
@@ -98,7 +105,12 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
                 renderQuickActions={({ index, item }: {
                     index: number, item: Song
                 }) => (
-                    <QuickActions index={index} item={songToTrack(item)} isAlbum />
+                    <QuickActionsWrapper
+                        index={index}
+                        item={songToTrack(item)}
+                    >
+                        <AddToQueueButton />
+                    </QuickActionsWrapper>
                 )}
                 ItemSeparatorComponent={<Divider />}
             />
