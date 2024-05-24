@@ -1,12 +1,19 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Button, List } from 'react-native-paper';
+import { Button, List, useTheme } from 'react-native-paper';
 
-export const FavsHeader = ({ onPress, length }: {
+export const TracksHeader = ({ onPress, length }: {
     onPress: () => void; length: number;
 }) => {
+    const appTheme = useTheme();
     return (
-        <View style={styles.songsHeader}>
+        <View
+            style={[styles.songsHeader, {
+                backgroundColor: appTheme.colors.surface,
+                borderTopLeftRadius: appTheme.roundness * 5,
+                borderTopRightRadius: appTheme.roundness * 5,
+            }]}
+        >
             <Button
                 icon="play-circle-outline"
                 onPress={onPress}
@@ -24,6 +31,6 @@ const styles = StyleSheet.create({
     songsHeader: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginHorizontal: '2%'
+        paddingHorizontal: '2%'
     },
 });
