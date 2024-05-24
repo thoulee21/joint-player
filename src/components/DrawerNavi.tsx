@@ -1,6 +1,6 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import React, { useMemo } from 'react';
-import { Icon } from 'react-native-paper';
+import React, { Suspense, useMemo } from 'react';
+import { ActivityIndicator, Icon } from 'react-native-paper';
 import { BlurBackground, DrawerItemList, Spacer, UserHeader } from '.';
 import { Favs, Player, Settings } from '../pages';
 
@@ -52,8 +52,10 @@ export function DrawerNavi() {
             screenOptions={{ headerShown: false }}
             drawerContent={(props) =>
                 <BlurBackground>
-                    <UserHeader />
-                    <Spacer />
+                    <Suspense fallback={<ActivityIndicator />}>
+                        <UserHeader />
+                        <Spacer />
+                    </Suspense>
 
                     <DrawerItemList {...props} />
                 </BlurBackground>
