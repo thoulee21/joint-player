@@ -1,7 +1,7 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import React, { useMemo } from 'react';
 import { Icon } from 'react-native-paper';
-import { BlurBackground, DrawerItemList } from '.';
+import { BlurBackground, DrawerItemList, Spacer, UserHeader } from '.';
 import { Favs, Player, Settings } from '../pages';
 
 const Drawer = createDrawerNavigator();
@@ -52,6 +52,9 @@ export function DrawerNavi() {
             screenOptions={{ headerShown: false }}
             drawerContent={(props) =>
                 <BlurBackground>
+                    <UserHeader />
+                    <Spacer />
+
                     <DrawerItemList {...props} />
                 </BlurBackground>
             }

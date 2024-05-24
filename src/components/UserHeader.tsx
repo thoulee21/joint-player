@@ -4,10 +4,10 @@ import { Avatar, Text, useTheme } from 'react-native-paper';
 import useSWR from 'swr';
 import { Main } from '../types/userDetail';
 
-export const UserHeader = memo(({ userId }: { userId: number; }) => {
+export const UserHeader = memo(({ userId }: { userId?: number }) => {
     const appTheme = useTheme();
     const { data, error, } = useSWR<Main>(
-        `https://music.163.com/api/v1/user/detail/${userId}`,
+        `https://music.163.com/api/v1/user/detail/${userId || 1492028517}`,
         { suspense: true }
     );
 
@@ -48,12 +48,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     img: {
-        height: Dimensions.get('window').height / 8,
+        height: Dimensions.get('window').height / 6,
     },
     avatar: {
-        marginTop: '15%',
+        marginTop: '30%',
     },
-    caption:{
-        marginVertical: '1%'
+    caption: {
+        marginTop: '1%'
     }
 });

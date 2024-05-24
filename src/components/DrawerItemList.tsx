@@ -10,9 +10,8 @@ import {
 } from '@react-navigation/native';
 import Color from 'color';
 import * as React from 'react';
-import { FlatList, StatusBar } from 'react-native';
+import { FlatList } from 'react-native';
 import { Drawer, useTheme } from 'react-native-paper';
-import { version } from '../../package.json';
 
 type Props = {
     state: DrawerNavigationState<ParamListBase>;
@@ -102,9 +101,7 @@ function DrawerItems({
 export function DrawerItemList(props: Props) {
     return (
         <Drawer.Section {...props}
-            title={`Joint Player v${version}`}
             showDivider={false}
-            style={{ marginTop: StatusBar.currentHeight }}
         >
             <DrawerItems {...props} />
         </Drawer.Section>
