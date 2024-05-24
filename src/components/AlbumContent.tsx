@@ -1,14 +1,16 @@
 import React, { useMemo, useState } from 'react';
-import { Dimensions, FlatList, RefreshControl, StatusBar, StyleSheet, View } from 'react-native';
-import { ActivityIndicator, Button, List, Text, useTheme } from 'react-native-paper';
+import { Dimensions, RefreshControl, StatusBar, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Divider, Text, useTheme } from 'react-native-paper';
+//@ts-expect-error
+import SwipeableFlatList from 'react-native-swipeable-list';
 import TrackPlayer from 'react-native-track-player';
 import useSWRInfinite from 'swr/infinite';
-import { AlbumDescription, HeaderCard, SongItem } from '.';
+import { AlbumDescription, TracksHeader, HeaderCard, QuickActions, SongItem } from '.';
 import { useAppDispatch, useDebounce } from '../hook';
 import { setQueueAsync } from '../redux/slices';
 import { TrackType } from '../services';
 import { HotAlbum } from '../types/albumArtist';
-import { Main } from '../types/albumDetail';
+import { Main, Song } from '../types/albumDetail';
 import { songToTrack } from '../utils';
 
 export function AlbumContent({ album }: { album: HotAlbum }) {
@@ -63,23 +65,19 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
                 description={data && data[0].album.description}
             />
 
-            <View style={styles.songsHeader}>
-                <Button
-                    icon="play-circle-outline"
-                    onPress={playAll}
-                >
-                    Play All
-                </Button>
-                <List.Subheader>
-                    {data?.flatMap(d => d.album.songs).length} song(s)
-                </List.Subheader>
-            </View>
-            <FlatList
+            <TracksHeader
+                onPress={playAll}
+                length={data?.flatMap((d) => d.album.songs).length || 0}
+            />
+            <SwipeableFlatList
                 data={data?.flatMap((d) => d.album.songs)}
-                fadingEdgeLength={100}
-                keyExtractor={(item) => item.id.toString()}
-                style={styles.tracks}
-                renderItem={props => <SongItem {...props} />}
+                keyExtractor={(item: Song) => item.id.toString()}
+                style={[styles.tracks, {
+                    backgroundColor: appTheme.colors.surface,
+                }]}
+                renderItem={(props: {
+                    index: number, item: Song
+                }) => <SongItem {...props} />}
                 onEndReached={loadMore}
                 ListFooterComponent={
                     !isLoading && !error && hasMore ? (
@@ -96,6 +94,13 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
                         progressBackgroundColor={appTheme.colors.surface}
                     />
                 }
+                maxSwipeDistance={50}
+                renderQuickActions={({ index, item }: {
+                    index: number, item: Song
+                }) => (
+                    <QuickActions index={index} item={songToTrack(item)} isAlbum />
+                )}
+                ItemSeparatorComponent={<Divider />}
             />
         </View>
     );
@@ -105,14 +110,6 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
         marginTop: StatusBar.currentHeight,
-    },
-    header: {
-        backgroundColor: 'transparent'
-    },
-    songsHeader: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginHorizontal: '2%'
     },
     moreLoading: {
         marginVertical: '2%'

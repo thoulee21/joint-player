@@ -1,12 +1,16 @@
 import React from 'react';
-import { Dimensions, FlatList, StyleSheet } from 'react-native';
-import { Text } from 'react-native-paper';
+import { StyleSheet } from 'react-native';
+import { Divider, Text, useTheme } from 'react-native-paper';
+//@ts-expect-error
+import SwipeableFlatList from 'react-native-swipeable-list';
 import TrackPlayer from 'react-native-track-player';
-import { FavsHeader, SongItem } from '.';
+import { QuickActions, SongItem, TracksHeader } from '.';
 import { useAppDispatch, useAppSelector } from '../hook';
 import { favs, setQueueAsync } from '../redux/slices';
+import { TrackType } from '../services';
 
 export const FavsList = () => {
+    const appTheme = useTheme();
     const dispatch = useAppDispatch();
     const favorites = useAppSelector(favs);
 
@@ -27,26 +31,40 @@ export const FavsList = () => {
     };
 
     return (
-        <FlatList
+        <SwipeableFlatList
+            style={[styles.favs, {
+                backgroundColor: appTheme.colors.surface,
+                borderTopLeftRadius: appTheme.roundness * 5,
+                borderTopRightRadius: appTheme.roundness * 5,
+            }]}
             data={favorites}
-            style={styles.favs}
-            renderItem={({ item }) => (
-                <SongItem track={item} />
+            renderItem={({ item, index }: {
+                item: TrackType, index: number
+            }) => (
+                <SongItem track={item} index={index} />
             )}
-            keyExtractor={(item) => item.id.toString()}
+            keyExtractor={(item: TrackType) => item.id.toString()}
             ListHeaderComponent={
-                <FavsHeader
+                <TracksHeader
                     onPress={playAll}
                     length={favorites.length}
                 />
             }
-            ListEmptyComponent={<NoFavs />} />
+            ListEmptyComponent={<NoFavs />}
+            maxSwipeDistance={110}
+            renderQuickActions={({ index, item }: {
+                index: number, item: TrackType
+            }) => (
+                <QuickActions index={index} item={item} />
+            )}
+            ItemSeparatorComponent={<Divider />}
+        />
     );
 };
 
 const styles = StyleSheet.create({
     favs: {
-        marginTop: Dimensions.get('window').height * 0.07,
+        flex: 1,
     },
     noFavs: {
         textAlign: 'center',
