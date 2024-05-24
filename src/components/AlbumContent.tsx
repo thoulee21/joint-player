@@ -82,9 +82,11 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
                 style={[styles.tracks, {
                     backgroundColor: appTheme.colors.surface,
                 }]}
-                renderItem={(props: {
+                renderItem={({ index, item }: {
                     index: number, item: Song
-                }) => <SongItem {...props} />}
+                }) => (
+                    <SongItem index={index} item={songToTrack(item)} />
+                )}
                 onEndReached={loadMore}
                 ListFooterComponent={
                     !isLoading && !error && hasMore ? (

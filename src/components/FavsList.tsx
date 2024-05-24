@@ -45,11 +45,9 @@ export const FavsList = () => {
                 borderTopRightRadius: appTheme.roundness * 5,
             }]}
             data={favorites}
-            renderItem={({ item, index }: {
+            renderItem={(props: {
                 item: TrackType, index: number
-            }) => (
-                <SongItem track={item} index={index} />
-            )}
+            }) => <SongItem {...props} />}
             keyExtractor={(item: TrackType) => item.id.toString()}
             ListHeaderComponent={
                 <TracksHeader
