@@ -49,10 +49,7 @@ export function DrawerNavi() {
     return (
         <Drawer.Navigator
             initialRouteName="Player"
-            screenOptions={{
-                headerShown: false,
-                unmountOnBlur: true,
-            }}
+            screenOptions={{ headerShown: false }}
             drawerContent={(props) =>
                 <BlurBackground>
                     <DrawerItemList {...props} />
