@@ -2,7 +2,7 @@ import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Portal } from 'react-native-paper';
-import TrackPlayer, { Track, useActiveTrack } from 'react-native-track-player';
+import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
 import { BottomSheetPaper, TrackItem } from '.';
 import { useAppDispatch, useAppSelector } from '../hook';
 import { queue, setQueue } from '../redux/slices';
@@ -36,7 +36,7 @@ function TrackList({
   }, [currentTrack]);
 
   const renderTrack = ({ item, index }:
-    { item: Track; index: number }
+    { item: TrackType; index: number }
   ) => {
     return (
       <TrackItem
@@ -81,6 +81,6 @@ const styles = StyleSheet.create({
     marginTop: '20%',
   },
   trackList: {
-    height: '100%',
+    flex: 1,
   },
 });
