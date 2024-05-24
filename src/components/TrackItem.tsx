@@ -1,21 +1,29 @@
 import BottomSheet from '@gorhom/bottom-sheet';
 import Color from 'color';
-import React from 'react';
+import React, { memo, useCallback } from 'react';
 import { TextStyle } from 'react-native';
 import { IconButton, List, useTheme } from 'react-native-paper';
-import TrackPlayer, {
-    Track,
-    useActiveTrack
-} from 'react-native-track-player';
+import { Style } from 'react-native-paper/lib/typescript/components/List/utils';
+import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
+import { useAppDispatch } from '../hook';
+import { removeFromQueueAsync } from '../redux/slices';
+import { TrackType } from '../services';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
+
+export interface ListRightProps {
+    color: string;
+    style?: Style;
+}
 
 export const TrackItem = (
     { item, index, navigation, bottomSheetRef }: {
-        item: Track;
+        item: TrackType;
         index: number;
         navigation: any;
         bottomSheetRef: React.RefObject<BottomSheet>
     }
 ) => {
+    const dispatch = useAppDispatch();
     const appTheme = useTheme();
     const currentTrack = useActiveTrack();
 
@@ -27,13 +35,13 @@ export const TrackItem = (
         fontWeight: active ? 'bold' : 'normal',
     };
 
-    const chooseTrack = async () => {
+    const chooseTrack = useCallback(async () => {
         await TrackPlayer.skip(index);
         await TrackPlayer.play();
         bottomSheetRef.current?.close();
-    };
+    }, [bottomSheetRef, index]);
 
-    const MvButton = (props: any) => {
+    const MvButton = memo((props: ListRightProps) => {
         const goMV = () => {
             if (!active) {
                 chooseTrack();
@@ -53,13 +61,19 @@ export const TrackItem = (
                 />
             );
         }
-    };
+    });
 
     return (
         <List.Item
             title={item.title}
             description={`${item.artist} - ${item.album}`}
             onPress={chooseTrack}
+            onLongPress={() => {
+                HapticFeedback.trigger(
+                    HapticFeedbackTypes.effectDoubleClick
+                );
+                dispatch(removeFromQueueAsync(index));
+            }}
             descriptionNumberOfLines={1}
             titleStyle={titleStyle}
             style={{
