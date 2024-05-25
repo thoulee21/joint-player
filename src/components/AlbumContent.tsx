@@ -11,6 +11,7 @@ import {
     HeaderCard,
     QuickActionsWrapper,
     SongItem,
+    Spacer,
     TracksHeader
 } from '.';
 import { useAppDispatch, useDebounce } from '../hook';
@@ -23,7 +24,8 @@ import { songToTrack } from '../utils';
 export function AlbumContent({ album }: { album: HotAlbum }) {
     const dispatch = useAppDispatch();
     const appTheme = useTheme();
-    const { data, error, isLoading, setSize, size, mutate } = useSWRInfinite<Main>(
+
+    const { data, error, setSize, mutate } = useSWRInfinite<Main>(
         (index) => `http://music.163.com/api/album/${album.id}?ext=true&offset=${index * 10}&total=true&limit=10`,
         { suspense: true }
     );
@@ -42,13 +44,9 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
 
     const loadMore = useDebounce(() => {
         if (hasMore) {
-            setSize(size + 1);
+            setSize(prev => prev + 1);
         }
     });
-
-    if (isLoading) {
-        return null;
-    }
 
     if (error) {
         return (
@@ -71,6 +69,7 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
             <AlbumDescription
                 description={data && data[0].album.description}
             />
+            <Spacer />
 
             <TracksHeader
                 onPress={playAll}
@@ -89,7 +88,7 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
                 )}
                 onEndReached={loadMore}
                 ListFooterComponent={
-                    !isLoading && !error && hasMore ? (
+                    !error && hasMore ? (
                         <ActivityIndicator style={styles.moreLoading} />
                     ) : null
                 }
