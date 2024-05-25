@@ -8,10 +8,11 @@ import { Main } from '../types/searchUsers';
 
 export const UserList = ({ searchQuery }: { searchQuery: string; }) => {
     const appTheme = useTheme();
-
     const [refreshing, setRefreshing] = useState(false);
+
     const { data, setSize, error, mutate } = useSWRInfinite<Main>(
-        (index) => `https://music.163.com/api/search/get/web?s=${searchQuery}&type=1002&offset=${index * 15}&limit=15`,
+        (index) =>
+            `https://music.163.com/api/search/get/web?s=${searchQuery}&type=1002&offset=${index * 15}&limit=15`,
         { suspense: true }
     );
 
@@ -27,8 +28,10 @@ export const UserList = ({ searchQuery }: { searchQuery: string; }) => {
         }
     }, [data]);
 
-    const hasMore = useMemo(() => data && data[0].result && users.length !== data[0].result.userprofileCount,
-        [data, users]);
+    const hasMore = useMemo(() =>
+        data && data[0].result && users.length !== data[0].result.userprofileCount,
+        [data, users]
+    );
 
     const loadMore = useDebounce(() => {
         if (hasMore) {
@@ -41,7 +44,8 @@ export const UserList = ({ searchQuery }: { searchQuery: string; }) => {
             <List.Item
                 title={error.message}
                 titleStyle={{ color: appTheme.colors.error }}
-                description="Try to search later or with another query" />
+                description="Try to search later or with another query"
+            />
         );
     }
 
@@ -59,12 +63,20 @@ export const UserList = ({ searchQuery }: { searchQuery: string; }) => {
                 setRefreshing(false);
             }}
             refreshing={refreshing}
-            ListFooterComponent={hasMore && users.length
-                ? <ActivityIndicator
-                    style={styles.footerLoading} /> : null}
-            ListEmptyComponent={<List.Item
-                title="No users found"
-                description={data?.[0].message || 'Try another search query'} />} />
+            ListFooterComponent={
+                hasMore && users.length
+                    ? <ActivityIndicator
+                        style={styles.footerLoading}
+                    /> : null}
+            ListEmptyComponent={
+                <List.Item
+                    title="No users found"
+                    description={
+                        data?.[0].message || 'Try another search query'
+                    }
+                />
+            }
+        />
     );
 };
 
