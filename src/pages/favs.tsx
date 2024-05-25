@@ -48,7 +48,7 @@ export function Favs() {
     );
 }
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
     appbar: {
         backgroundColor: 'transparent'
     },

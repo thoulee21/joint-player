@@ -13,6 +13,7 @@
         "Prefs",
         "reduxjs",
         "temurin",
-        "tlyric"
+        "tlyric",
+        "userprofiles"
     ]
 }

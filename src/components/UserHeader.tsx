@@ -1,12 +1,14 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { memo } from 'react';
-import { Dimensions, ImageBackground, StyleSheet, View } from 'react-native';
-import { Avatar, Text, useTheme } from 'react-native-paper';
+import { Dimensions, ImageBackground, StyleSheet } from 'react-native';
+import { Avatar, Text, TouchableRipple, useTheme } from 'react-native-paper';
 import useSWR from 'swr';
 import { useAppSelector } from '../hook';
 import { selectUser } from '../redux/slices';
 import { Main } from '../types/userDetail';
 
 export const UserHeader = memo(({ userId }: { userId?: number }) => {
+    const navigation = useNavigation();
     const appTheme = useTheme();
     const currentUser = useAppSelector(selectUser);
 
@@ -29,20 +31,26 @@ export const UserHeader = memo(({ userId }: { userId?: number }) => {
             imageStyle={styles.img}
             source={{ uri: data?.profile.backgroundUrl }}
         >
-            <Avatar.Image
+            <TouchableRipple
                 style={styles.avatar}
-                size={70}
-                source={{ uri: data?.profile.avatarUrl }}
-            />
+                borderless
+                onPress={() => {
+                    //@ts-expect-error
+                    navigation.push('Login');
+                }}
+            >
+                <Avatar.Image
+                    size={70}
+                    source={{ uri: data?.profile.avatarUrl }}
+                />
+            </TouchableRipple>
 
-            <View style={styles.caption}>
-                <Text variant="labelLarge">
-                    {data?.profile.nickname}
-                </Text>
-                <Text variant="labelMedium">
-                    {data?.profile.signature}
-                </Text>
-            </View>
+            <Text variant="labelLarge">
+                {data?.profile.nickname}
+            </Text>
+            <Text variant="labelMedium">
+                {data?.profile.signature}
+            </Text>
         </ImageBackground>
     );
 });
@@ -56,8 +64,6 @@ const styles = StyleSheet.create({
     },
     avatar: {
         marginTop: '30%',
-    },
-    caption: {
-        marginTop: '1%'
+        borderRadius: 50,
     }
 });

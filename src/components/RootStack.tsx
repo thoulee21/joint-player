@@ -10,6 +10,7 @@ import {
     AlbumDetail,
     Artist,
     Comments,
+    Login,
     LyricsScreen,
     MvDetail,
     MvPlayer,
@@ -51,6 +52,7 @@ export function RootStack() {
             <Stack.Screen name="MvDetail" component={MvDetail} />
             <Stack.Screen name="Artist" component={Artist} />
             <Stack.Screen name="AlbumDetail" component={AlbumDetail} />
+            <Stack.Screen name="Login" component={Login} />
         </Stack.Navigator>
     );
 }

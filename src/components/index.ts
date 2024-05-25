@@ -18,7 +18,6 @@ export * from './DialogWithRadioBtns';
 export * from './DrawerItemList';
 export * from './DrawerNavi';
 export * from './FavToggle';
-export * from './TracksHeader';
 export * from './FavsList';
 export * from './ForwardButton';
 export * from './HeaderCard';
@@ -43,6 +42,9 @@ export * from './TrackInfoBar';
 export * from './TrackItem';
 export * from './TrackListSheet';
 export * from './TrackMenu';
+export * from './TracksHeader';
 export * from './UserHeader';
+export * from './UserItem';
+export * from './UserList';
 export * from './VersionItem';
 
