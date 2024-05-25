@@ -1,3 +1,4 @@
+import { useNetInfoInstance } from '@react-native-community/netinfo';
 import { useNavigation } from '@react-navigation/native';
 import React, { memo } from 'react';
 import { Dimensions, ImageBackground, StyleSheet } from 'react-native';
@@ -10,6 +11,8 @@ import { Main } from '../types/userDetail';
 export const UserHeader = memo(({ userId }: { userId?: number }) => {
     const navigation = useNavigation();
     const appTheme = useTheme();
+
+    const { netInfo } = useNetInfoInstance();
     const currentUser = useAppSelector(selectUser);
 
     const { data, error, } = useSWR<Main>(
@@ -35,8 +38,10 @@ export const UserHeader = memo(({ userId }: { userId?: number }) => {
                 style={styles.avatar}
                 borderless
                 onPress={() => {
-                    //@ts-expect-error
-                    navigation.push('Login');
+                    if (netInfo.isConnected) {
+                        //@ts-expect-error
+                        navigation.push('Login');
+                    }
                 }}
             >
                 <Avatar.Image
