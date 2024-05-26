@@ -1,4 +1,3 @@
-import * as Sentry from '@sentry/react-native';
 import React, { memo } from 'react';
 import { ViewStyle } from 'react-native';
 import HapticFeedback, {
@@ -46,24 +45,22 @@ export const SongItem = memo(({ item, index, style }: {
     };
 
     return (
-        <Sentry.ErrorBoundary showDialog>
-            <List.Item
-                left={(props) => (
-                    <IndexOfSong {...props} index={index} />
-                )}
-                title={item.title}
-                description={
-                    item.artists.map(ar => ar.name).join(', ')
-                        .concat(' - ', item.album)
-                }
-                descriptionNumberOfLines={1}
-                onPress={play}
-                rippleColor="transparent"
-                style={[style, {
-                    backgroundColor: appTheme.colors.surface,
-                }]}
-            />
-        </Sentry.ErrorBoundary>
+        <List.Item
+            left={(props) => (
+                <IndexOfSong {...props} index={index} />
+            )}
+            title={item.title}
+            description={
+                item.artists.map(ar => ar.name).join(', ')
+                    .concat(' - ', item.album)
+            }
+            descriptionNumberOfLines={1}
+            onPress={play}
+            rippleColor="transparent"
+            style={[style, {
+                backgroundColor: appTheme.colors.surface,
+            }]}
+        />
     );
 });
 
