@@ -1,16 +1,7 @@
 import React, { useState } from 'react';
-import {
-    ActivityIndicator,
-    FlatList,
-    RefreshControl,
-    StatusBar,
-    StyleSheet,
-    View
-} from 'react-native';
-import HapticFeedback, {
-    HapticFeedbackTypes
-} from 'react-native-haptic-feedback';
-import { Chip, Text, useTheme } from 'react-native-paper';
+import { FlatList, RefreshControl, StatusBar, StyleSheet, View } from 'react-native';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
+import { ActivityIndicator, Chip, Text, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
 import { Album, AlbumHeader } from '.';
 import { useDebounce } from '../hook';
