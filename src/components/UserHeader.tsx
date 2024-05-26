@@ -5,7 +5,8 @@ import {
     ImageBackground,
     StatusBar,
     StyleSheet,
-    TouchableWithoutFeedback
+    TouchableWithoutFeedback,
+    View
 } from 'react-native';
 import HapticFeedback, {
     HapticFeedbackTypes
@@ -31,7 +32,13 @@ export const UserHeader = memo(({ userId }: { userId?: number }) => {
         `https://music.163.com/api/v1/user/detail/${userId || currentUser.id}`,
     );
 
-    if (isLoading) { return <ActivityIndicator />; }
+    if (isLoading) {
+        return (
+            <View style={styles.img}>
+                <ActivityIndicator style={styles.loading} />
+            </View>
+        );
+    }
 
     if (error) {
         return (
@@ -122,6 +129,10 @@ const styles = StyleSheet.create({
     errMsg: {
         textAlign: 'center',
         marginTop: StatusBar.currentHeight,
+        alignSelf: 'center',
+    },
+    loading: {
+        flex: 1,
         alignSelf: 'center',
     }
 });
