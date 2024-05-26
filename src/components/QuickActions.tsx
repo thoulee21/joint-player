@@ -1,5 +1,5 @@
 import React, { PropsWithChildren, createContext, memo, useContext, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, ToastAndroid, View } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { IconButton, Portal, Snackbar, useTheme } from 'react-native-paper';
 import { useAppDispatch } from '../hook';
@@ -66,11 +66,18 @@ export const AddToQueueButton = () => {
         <IconButton
             icon="playlist-plus"
             style={styles.button}
-            onPress={() => {
+            onPress={async () => {
                 HapticFeedback.trigger(
                     HapticFeedbackTypes.effectHeavyClick
                 );
-                dispatch(addToQueueAsync(item));
+
+                if ((await dispatch(addToQueueAsync(item))).payload) {
+                    ToastAndroid.showWithGravity(
+                        'Added to queue',
+                        ToastAndroid.SHORT,
+                        ToastAndroid.TOP
+                    );
+                }
             }}
         />
     );

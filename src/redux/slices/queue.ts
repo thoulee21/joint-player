@@ -27,6 +27,7 @@ export const addToQueueAsync = createAsyncThunk(
             await TrackPlayer.add(track);
             dispatch(addToQueue(track));
         }
+        return existIndex === -1;
     }
 );
 
