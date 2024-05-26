@@ -18,13 +18,14 @@ export const UserList = ({ searchQuery }: { searchQuery: string; }) => {
     const users = useMemo(() => {
         if (data && data?.[0].code === 200) {
             return data?.map((item) => item.result.userprofiles).flat();
-        } else {
+        } else if (data) {
+            // if there is an api error
             ToastAndroid.show(
                 `Error: ${data?.[0].code} ${data?.[0].message}`,
                 ToastAndroid.SHORT
             );
-            return [];
         }
+        return [];
     }, [data]);
 
     const hasMore = useMemo(() =>
@@ -48,9 +49,21 @@ export const UserList = ({ searchQuery }: { searchQuery: string; }) => {
                 title={error.message}
                 titleStyle={{ color: appTheme.colors.error }}
                 description="Try to search later or with another query"
+                left={(props) => (
+                    <List.Icon {...props}
+                        icon="alert-circle-outline"
+                        color={appTheme.colors.error}
+                    />
+                )}
             />
         );
     }
+
+    const refresh = async () => {
+        setRefreshing(true);
+        await mutate();
+        setRefreshing(false);
+    };
 
     return (
         <FlatList
@@ -60,11 +73,7 @@ export const UserList = ({ searchQuery }: { searchQuery: string; }) => {
             initialNumToRender={7}
             onEndReachedThreshold={0.1}
             onEndReached={loadMore}
-            onRefresh={async () => {
-                setRefreshing(true);
-                await mutate();
-                setRefreshing(false);
-            }}
+            onRefresh={refresh}
             refreshing={refreshing}
             ListFooterComponent={
                 hasMore && users.length
