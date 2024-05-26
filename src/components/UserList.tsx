@@ -10,10 +10,9 @@ export const UserList = ({ searchQuery }: { searchQuery: string; }) => {
     const appTheme = useTheme();
     const [refreshing, setRefreshing] = useState(false);
 
-    const { data, setSize, error, mutate } = useSWRInfinite<Main>(
+    const { data, setSize, error, mutate, isLoading } = useSWRInfinite<Main>(
         (index) =>
             `https://music.163.com/api/search/get/web?s=${searchQuery}&type=1002&offset=${index * 15}&limit=15`,
-        { suspense: true }
     );
 
     const users = useMemo(() => {
@@ -38,6 +37,10 @@ export const UserList = ({ searchQuery }: { searchQuery: string; }) => {
             setSize(prev => prev + 1);
         }
     }, 1000);
+
+    if (isLoading) {
+        return <ActivityIndicator size="large" style={styles.loading} />;
+    }
 
     if (error) {
         return (
@@ -83,5 +86,8 @@ export const UserList = ({ searchQuery }: { searchQuery: string; }) => {
 const styles = StyleSheet.create({
     footerLoading: {
         marginVertical: '5%'
+    },
+    loading: {
+        marginTop: '20%'
     }
 });

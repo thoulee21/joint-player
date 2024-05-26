@@ -1,8 +1,8 @@
 import { useNetInfoInstance } from '@react-native-community/netinfo';
 import { useNavigation } from '@react-navigation/native';
 import React, { memo } from 'react';
-import { Dimensions, ImageBackground, StyleSheet } from 'react-native';
-import { Avatar, Text, TouchableRipple, useTheme } from 'react-native-paper';
+import { Dimensions, ImageBackground, StatusBar, StyleSheet } from 'react-native';
+import { ActivityIndicator, Avatar, Text, TouchableRipple, useTheme } from 'react-native-paper';
 import useSWR from 'swr';
 import { useAppSelector } from '../hook';
 import { selectUser } from '../redux/slices';
@@ -15,15 +15,19 @@ export const UserHeader = memo(({ userId }: { userId?: number }) => {
     const { netInfo } = useNetInfoInstance();
     const currentUser = useAppSelector(selectUser);
 
-    const { data, error, } = useSWR<Main>(
+    const { data, error, isLoading } = useSWR<Main>(
         `https://music.163.com/api/v1/user/detail/${userId || currentUser.id}`,
-        { suspense: true }
     );
+
+    if (isLoading) { return <ActivityIndicator />; }
 
     if (error) {
         return (
-            <Text style={{ color: appTheme.colors.error }}>
-                {error}
+            <Text style={[
+                styles.errMsg,
+                { color: appTheme.colors.error }
+            ]}>
+                Error: {error.message}
             </Text>
         );
     }
@@ -70,5 +74,10 @@ const styles = StyleSheet.create({
     avatar: {
         marginTop: '30%',
         borderRadius: 50,
+    },
+    errMsg: {
+        textAlign: 'center',
+        marginTop: StatusBar.currentHeight,
+        alignSelf: 'center',
     }
 });

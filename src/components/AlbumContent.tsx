@@ -25,9 +25,8 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
     const dispatch = useAppDispatch();
     const appTheme = useTheme();
 
-    const { data, error, setSize, mutate } = useSWRInfinite<Main>(
+    const { data, error, setSize, mutate, isLoading } = useSWRInfinite<Main>(
         (index) => `http://music.163.com/api/album/${album.id}?ext=true&offset=${index * 10}&total=true&limit=10`,
-        { suspense: true }
     );
 
     const [refreshing, setRefreshing] = useState(false);
@@ -48,9 +47,16 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
         }
     });
 
+    if (isLoading) {
+        return <ActivityIndicator size="large" style={styles.loading} />;
+    }
+
     if (error) {
         return (
-            <Text style={{ color: appTheme.colors.error }}>
+            <Text style={[
+                styles.errMsg,
+                { color: appTheme.colors.error }
+            ]}>
                 Error: {error.message}
             </Text>
         );
@@ -124,10 +130,18 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: StatusBar.currentHeight,
     },
+    loading: {
+        marginTop: '40%'
+    },
     moreLoading: {
         marginVertical: '2%'
     },
     tracks: {
         height: Dimensions.get('window').height * 0.7
+    },
+    errMsg: {
+        textAlign: 'center',
+        textAlignVertical: 'center',
+        flex: 1
     }
 });

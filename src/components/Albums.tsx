@@ -37,17 +37,18 @@ export function Albums({ artistID }: { artistID: number }) {
 
     const { data, error, isLoading, setSize, size, mutate } = useSWRInfinite<Main>(
         (index) => `http://music.163.com/api/artist/albums/${artistID}?offset=${index * 10}&limit=10&total=true`,
-        { suspense: true }
     );
 
     const loadMore = useDebounce(() => setSize(size + 1));
+
     const onRefresh = async () => {
         setRefreshing(true);
         await mutate();
         setRefreshing(false);
     };
 
-    if (isLoading) { return null; }
+    if (isLoading) { return <ActivityIndicator size="large" />; }
+
     if (error) {
         return (
             <Text style={{ color: appTheme.colors.error }}>
@@ -55,6 +56,7 @@ export function Albums({ artistID }: { artistID: number }) {
             </Text>
         );
     }
+
     return (
         <>
             <AlbumHeader artist={data?.[0].artist as Artist} />
