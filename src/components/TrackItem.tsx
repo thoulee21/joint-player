@@ -2,13 +2,13 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import Color from 'color';
 import React, { memo, useCallback } from 'react';
 import { TextStyle } from 'react-native';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { IconButton, List, useTheme } from 'react-native-paper';
 import { Style } from 'react-native-paper/lib/typescript/components/List/utils';
 import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
 import { useAppDispatch } from '../hook';
 import { removeFromQueueAsync } from '../redux/slices';
 import { TrackType } from '../services';
-import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 
 export interface ListRightProps {
     color: string;
@@ -63,17 +63,19 @@ export const TrackItem = (
         }
     });
 
+    const remove = () => {
+        HapticFeedback.trigger(
+            HapticFeedbackTypes.effectDoubleClick
+        );
+        dispatch(removeFromQueueAsync(index));
+    };
+
     return (
         <List.Item
             title={item.title}
             description={`${item.artist} - ${item.album}`}
             onPress={chooseTrack}
-            onLongPress={() => {
-                HapticFeedback.trigger(
-                    HapticFeedbackTypes.effectDoubleClick
-                );
-                dispatch(removeFromQueueAsync(index));
-            }}
+            onLongPress={remove}
             descriptionNumberOfLines={1}
             titleStyle={titleStyle}
             style={{
