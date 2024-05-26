@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Divider, Text, useTheme } from 'react-native-paper';
+import { Divider, Portal, Text, useTheme } from 'react-native-paper';
 //@ts-expect-error
 import SwipeableFlatList from 'react-native-swipeable-list';
 import TrackPlayer from 'react-native-track-player';
@@ -38,33 +38,35 @@ export const FavsList = () => {
     };
 
     return (
-        <SwipeableFlatList
-            style={[styles.favs, {
-                backgroundColor: appTheme.colors.surface,
-                borderTopLeftRadius: appTheme.roundness * 5,
-                borderTopRightRadius: appTheme.roundness * 5,
-            }]}
-            data={favorites}
-            renderItem={(props: {
-                item: TrackType, index: number
-            }) => <SongItem {...props} />}
-            keyExtractor={(item: TrackType) => item.id.toString()}
-            ListHeaderComponent={
-                <TracksHeader
-                    onPress={playAll}
-                    length={favorites.length}
-                />
-            }
-            ListEmptyComponent={<NoFavs />}
-            maxSwipeDistance={110}
-            renderQuickActions={(props: QuickActionsProps) => (
-                <QuickActionsWrapper {...props}>
-                    <DeleteFavButton />
-                    <AddToQueueButton />
-                </QuickActionsWrapper>
-            )}
-            ItemSeparatorComponent={<Divider />}
-        />
+        <Portal.Host>
+            <SwipeableFlatList
+                style={[styles.favs, {
+                    backgroundColor: appTheme.colors.surface,
+                    borderTopLeftRadius: appTheme.roundness * 5,
+                    borderTopRightRadius: appTheme.roundness * 5,
+                }]}
+                data={favorites}
+                renderItem={(props: {
+                    item: TrackType, index: number
+                }) => <SongItem {...props} />}
+                keyExtractor={(item: TrackType) => item.id.toString()}
+                ListHeaderComponent={
+                    <TracksHeader
+                        onPress={playAll}
+                        length={favorites.length}
+                    />
+                }
+                ListEmptyComponent={<NoFavs />}
+                maxSwipeDistance={110}
+                renderQuickActions={(props: QuickActionsProps) => (
+                    <QuickActionsWrapper {...props}>
+                        <DeleteFavButton />
+                        <AddToQueueButton />
+                    </QuickActionsWrapper>
+                )}
+                ItemSeparatorComponent={<Divider />}
+            />
+        </Portal.Host>
     );
 };
 
