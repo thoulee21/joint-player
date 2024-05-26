@@ -84,6 +84,7 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
             <SwipeableFlatList
                 data={data?.flatMap((d) => d.album.songs)}
                 keyExtractor={(item: Song) => item.id.toString()}
+                initialNumToRender={10}
                 style={[styles.tracks, {
                     backgroundColor: appTheme.colors.surface,
                 }]}
