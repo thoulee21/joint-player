@@ -48,7 +48,7 @@
     "react-native-webview": "^13.10.2",
     "react-redux": "^9.1.1",
     "swr": "^2.2.5",
-    "user-agents": "^1.1.199"
+    "user-agents": "^1.1.217"
   },
   "devDependencies": {
     "@babel/core": "^7.24.5",
