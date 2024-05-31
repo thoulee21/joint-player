@@ -1,4 +1,13 @@
 {
   "name": "jointplayer",
-  "displayName": "Joint Player"
+  "displayName": "Joint Player",
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "28c934f5-c48a-47d3-9db5-bc8948f0d639"
+      }
+    },
+    "owner": "thoulee",
+    "slug": "joint-player"
+  }
 }
