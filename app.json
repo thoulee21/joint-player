@@ -1,7 +1,7 @@
 {
-  "name": "jointplayer",
-  "displayName": "Joint Player",
   "expo": {
+    "name": "jointplayer",
+    "displayName": "Joint Player",
     "extra": {
       "eas": {
         "projectId": "28c934f5-c48a-47d3-9db5-bc8948f0d639"
@@ -12,9 +12,5 @@
     "android": {
       "package": "com.jointplayer"
     }
-  },
-  "web": {
-    "bundler": "metro",
-    "output": "static"
   }
 }
