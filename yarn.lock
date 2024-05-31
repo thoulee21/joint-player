@@ -1380,10 +1380,10 @@
     mv "~2"
     safe-json-stringify "~1"
 
-"@expo/cli@0.17.11":
-  version "0.17.11"
-  resolved "https://registry.npmmirror.com/@expo/cli/-/cli-0.17.11.tgz#85a73fe40523e536bf3ea90b9fb057eaef24d400"
-  integrity sha512-EyAL/x9yyN9nA0iiZC0XZLvSBbKtl1GT38HNgrPmTb0KEzVlpbSJoWfw2vn9g/NnWPS1wMKRU2I5U42d/tvqvg==
+"@expo/cli@0.17.12":
+  version "0.17.12"
+  resolved "https://registry.npmmirror.com/@expo/cli/-/cli-0.17.12.tgz#e0d7c2477d889d118a195c8c2789298c6a43a914"
+  integrity sha512-HIv55FSSRFk53hdwxt+JKGMSCCMABhpakm1BSxGm0ymWa7nIM6llV/0gUWbHNXGkvmRPNWJqMNqVlV/vcPa8oA==
   dependencies:
     "@babel/runtime" "^7.20.0"
     "@expo/code-signing-certificates" "0.0.5"
@@ -2376,9 +2376,9 @@
   integrity sha512-DbFyCyI7rwl0FkBkp0lzEVp+5mNfS5qU/nM2sK2aSguWhj0Odkt1aKHP2iW/ljruOhgS/O4dEixXlne4OdZJDQ==
 
 "@react-native-media-console/reanimated@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.npmmirror.com/@react-native-media-console/reanimated/-/reanimated-2.2.0.tgz#e20230a65d7b314b5362c9d29f16c70dba64f92b"
-  integrity sha512-mp45fI9LML7Zv/b4oHiED4xSX3+OR86AWaqJ8xJdiqZ8c2o5THMf3C8JSMm7q1SNd6b0heA62O8YxlnN4iWwdQ==
+  version "2.2.3"
+  resolved "https://registry.npmmirror.com/@react-native-media-console/reanimated/-/reanimated-2.2.3.tgz#73f6d04e1a37a8b3cb61048aca79453393e1bac3"
+  integrity sha512-eCel2kEFFkP1DOWBbvgfbAAqgiheJmDhb0SSgMIn/flmXbnwFWnvWsGDIxO9Q21qPshBXRRRx1mcqT4kRUBd3A==
 
 "@react-native/assets-registry@0.73.1", "@react-native/assets-registry@~0.73.1":
   version "0.73.1"
@@ -3156,9 +3156,9 @@
     "@types/node" "*"
 
 "@types/node@*":
-  version "20.12.12"
-  resolved "https://registry.npmmirror.com/@types/node/-/node-20.12.12.tgz#7cbecdf902085cec634fdb362172dfe12b8f2050"
-  integrity sha512-eWLDGF/FOSPtAvEqeRAQ4C8LSA7M1I7i0ky1I8U7kD1J5ITyW3AsRhQrKVoWf5pFKZ2kILsEGJhsI9r93PYnOw==
+  version "20.12.13"
+  resolved "https://registry.npmmirror.com/@types/node/-/node-20.12.13.tgz#90ed3b8a4e52dd3c5dc5a42dde5b85b74ad8ed88"
+  integrity sha512-gBGeanV41c1L171rR7wjbMiEpEI/l5XFQdLLfhr/REwpgDy/4U8y89+i8kRiLzDyZdOkXh+cRaTetUnCYutoXA==
   dependencies:
     undici-types "~5.26.4"
 
@@ -4022,9 +4022,9 @@ camelcase@^6.2.0:
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
 caniuse-lite@^1.0.30001587:
-  version "1.0.30001621"
-  resolved "https://registry.npmmirror.com/caniuse-lite/-/caniuse-lite-1.0.30001621.tgz#4adcb443c8b9c8303e04498318f987616b8fea2e"
-  integrity sha512-+NLXZiviFFKX0fk8Piwv3PfLPGtRqJeq2TiNoUff/qB5KJgwecJTvCXDpmlyP/eCI/GUEmp/h/y5j0yckiiZrA==
+  version "1.0.30001625"
+  resolved "https://registry.npmmirror.com/caniuse-lite/-/caniuse-lite-1.0.30001625.tgz#ead1b155ea691d6a87938754d3cb119c24465b03"
+  integrity sha512-4KE9N2gcRH+HQhpeiRZXd+1niLB/XNLAhSy4z7fI8EzcbcPoAqjNInxVHTiTwWfTIV4w096XG8OtCOCQQKPv3w==
 
 chalk@^2.0.1, chalk@^2.4.2:
   version "2.4.2"
@@ -4435,9 +4435,9 @@ debug@2.6.9, debug@^2.2.0, debug@^2.6.9:
     ms "2.0.0"
 
 debug@4, debug@^4.1.0, debug@^4.1.1, debug@^4.3.1, debug@^4.3.2, debug@^4.3.4:
-  version "4.3.4"
-  resolved "https://registry.npmmirror.com/debug/-/debug-4.3.4.tgz#1319f6579357f2338d3337d2cdd4914bb5dcc865"
-  integrity sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==
+  version "4.3.5"
+  resolved "https://registry.npmmirror.com/debug/-/debug-4.3.5.tgz#e83444eceb9fedd4a1da56d671ae2446a01a6e1e"
+  integrity sha512-pt0bNEmneDIvdL1Xsd9oDQ/wrQRkXDT4AUWlNZNPKvW5x/jyO9VFXkJUP07vQ2upmw5PlaITaPKc31jK13V+jg==
   dependencies:
     ms "2.1.2"
 
@@ -4633,9 +4633,9 @@ ee-first@1.1.1:
   integrity sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==
 
 electron-to-chromium@^1.4.668:
-  version "1.4.783"
-  resolved "https://registry.npmmirror.com/electron-to-chromium/-/electron-to-chromium-1.4.783.tgz#933887165b8b6025a81663d2d97cf4b85cde27b2"
-  integrity sha512-bT0jEz/Xz1fahQpbZ1D7LgmPYZ3iHVY39NcWWro1+hA2IvjiPeaXtfSqrQ+nXjApMvQRE2ASt1itSLRrebHMRQ==
+  version "1.4.787"
+  resolved "https://registry.npmmirror.com/electron-to-chromium/-/electron-to-chromium-1.4.787.tgz#3eedd0a3b8be2b9e96e21675d399786ad90b99ed"
+  integrity sha512-d0EFmtLPjctczO3LogReyM2pbBiiZbnsKnGF+cdZhsYzHm/A0GV7W94kqzLD8SN4O3f3iHlgLUChqghgyznvCQ==
 
 emoji-regex@^8.0.0:
   version "8.0.0"
@@ -5158,12 +5158,12 @@ expo-splash-screen@~0.26.4:
     "@expo/prebuild-config" "6.8.1"
 
 expo@^50.0.14:
-  version "50.0.18"
-  resolved "https://registry.npmmirror.com/expo/-/expo-50.0.18.tgz#a6af9b8ed07bd5ed1edb736de86c5197defc6c16"
-  integrity sha512-es0rw+OkQNoaNQcPzv8CUpi5Qd0zipvflr6PgiXLDnv5D58R0GeAQZ7KEgYOlH+HocYrQeVm/zlpOhPPb0CEww==
+  version "50.0.19"
+  resolved "https://registry.npmmirror.com/expo/-/expo-50.0.19.tgz#c44369919a078f46a92f64106a94b6c37957bfd1"
+  integrity sha512-9weIVMGylJhNVN41mId1c1Kog3VmGA28oY0RpJKdJNrKGt5NKQAXV26TIwxw/PyDG1J4q2T/wZZoK+F1C64aIw==
   dependencies:
     "@babel/runtime" "^7.20.0"
-    "@expo/cli" "0.17.11"
+    "@expo/cli" "0.17.12"
     "@expo/config" "8.5.6"
     "@expo/config-plugins" "7.9.2"
     "@expo/metro-config" "0.17.7"
@@ -5360,9 +5360,9 @@ flow-enums-runtime@^0.0.6:
   integrity sha512-3PYnM29RFXwvAN6Pc/scUfkI7RwhQ/xqyLUyPNlXUp9S40zI8nup9tUSrTLSVnWGBN38FNiGWbwZOB6uR4OGdw==
 
 flow-parser@0.*:
-  version "0.236.0"
-  resolved "https://registry.npmmirror.com/flow-parser/-/flow-parser-0.236.0.tgz#8e8e6c59ff7e8d196c0ed215b3919320a1c6e332"
-  integrity sha512-0OEk9Gr+Yj7wjDW2KgaNYUypKau71jAfFyeLQF5iVtxqc6uJHag/MT7pmaEApf4qM7u86DkBcd4ualddYMfbLw==
+  version "0.237.1"
+  resolved "https://registry.npmmirror.com/flow-parser/-/flow-parser-0.237.1.tgz#ca0192ccc2403227f7947251c41adaebbcb8efba"
+  integrity sha512-PUeG8GQLmrv49vEcFcag7mriJvVs7Yyegnv1DGskvcokhP8UyqWsLV0KoTQ1iAW3ePVUIGUc3MFfBaXwz9MmIg==
 
 flow-parser@^0.206.0:
   version "0.206.0"
@@ -5874,9 +5874,9 @@ ini@^1.3.4, ini@~1.3.0:
   integrity sha512-JV/yugV2uzW5iMRSiZAyDtQd+nxtUnjeLt0acNdw98kKLrvuRVyB80tsREOE7yvGVgalhZ6RNXCmEHkUKBKxew==
 
 install-expo-modules@^0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/install-expo-modules/-/install-expo-modules-0.10.0.tgz#5d57c1ee5be6f6945f4bf081d58f707dd771ba20"
-  integrity sha512-lzmOMzowSwuJvG9f4DK3swS7giGUWSL7mTqGfbquQEE8S95LuYDXgxjrex4FWA9UxWrb1zdHR5zRMW3np9oB9g==
+  version "0.10.1"
+  resolved "https://registry.npmmirror.com/install-expo-modules/-/install-expo-modules-0.10.1.tgz#8745b89da198004a4820e00d111ec1ec44ccc696"
+  integrity sha512-UZ3Ol93wpj4kbPXcP8BlJKL2vDfSpn7H2f7uVKMQbVMaVUfnKCduxnvBl1bMU5bMTEYcr34lDMEuqybixB3b/g==
 
 internal-ip@4.3.0:
   version "4.3.0"
@@ -7963,9 +7963,9 @@ react-native-image-colors@^2.4.0:
     node-vibrant "3.1.6"
 
 react-native-media-console@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.npmmirror.com/react-native-media-console/-/react-native-media-console-2.2.0.tgz#a6cf94ca6945d1fbeb1ae6f8cc3422d9fad13f22"
-  integrity sha512-TsClEFUz9OZ3d2wU4w0wYY9RA2ULCi3VFyKW4ho9by9WHGMokSwCViDMVE6+PuE6Fi4a+IgwgtcJ0euqI2aYAg==
+  version "2.2.3"
+  resolved "https://registry.npmmirror.com/react-native-media-console/-/react-native-media-console-2.2.3.tgz#b4588797fdb4c91aa71642f05b199c3e5cc5723c"
+  integrity sha512-uHR3+0y/j/M44PndrORDG9CNTo2a7uTcdF/Sxunt0FrNIrZxlZbpJKn4CZpNfJZkjNIKNuumG4eT+wmDgp8zcQ==
 
 react-native-paper@^5.12.3:
   version "5.12.3"
@@ -7991,9 +7991,9 @@ react-native-reanimated@^3.11.0:
     invariant "^2.2.4"
 
 react-native-safe-area-context@^4.9.0:
-  version "4.10.1"
-  resolved "https://registry.npmmirror.com/react-native-safe-area-context/-/react-native-safe-area-context-4.10.1.tgz#29fb27395ff7dfa2fa38788a27226330d73a81cc"
-  integrity sha512-w8tCuowDorUkPoWPXmhqosovBr33YsukkwYCDERZFHAxIkx6qBadYxfeoaJ91nCQKjkNzGrK5qhoNOeSIcYSpA==
+  version "4.10.3"
+  resolved "https://registry.npmmirror.com/react-native-safe-area-context/-/react-native-safe-area-context-4.10.3.tgz#ad132b64e1e7cdd043b4e82a7a2449d99f4f7630"
+  integrity sha512-nW9B0fydpJSN798awtdslamYzRqDM/FIEh80ZPDEXVYpqYNsDLpz52pMtuKyhF5aOgJlfiroQrgdOxQNFtSM8A==
 
 react-native-screens@^3.30.1:
   version "3.31.1"
@@ -8468,9 +8468,9 @@ safe-regex-test@^1.0.3:
     is-regex "^1.1.4"
 
 sax@>=0.6.0:
-  version "1.3.0"
-  resolved "https://registry.npmmirror.com/sax/-/sax-1.3.0.tgz#a5dbe77db3be05c9d1ee7785dbd3ea9de51593d0"
-  integrity sha512-0s+oAmw9zLl1V1cS9BtZN7JAd0cW5e0QH4W3LWEK6a4LaLEA2OTpGYWDY+6XasBLtz6wkm3u1xRw95mRuJ59WA==
+  version "1.4.1"
+  resolved "https://registry.npmmirror.com/sax/-/sax-1.4.1.tgz#44cc8988377f126304d3b3fc1010c733b929ef0f"
+  integrity sha512-+aWOz7yVScEGoKNd4PA10LZ8sk0A/z5+nXQG5giUO5rprX9jgYsTdov9qCchZiPIZezbZH+jRut8nPodFAX4Jg==
 
 scheduler@0.24.0-canary-efb381bbf-20230505:
   version "0.24.0-canary-efb381bbf-20230505"
@@ -9298,9 +9298,9 @@ typescript@5.4.5:
   integrity sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ==
 
 ua-parser-js@^1.0.35:
-  version "1.0.37"
-  resolved "https://registry.npmmirror.com/ua-parser-js/-/ua-parser-js-1.0.37.tgz#b5dc7b163a5c1f0c510b08446aed4da92c46373f"
-  integrity sha512-bhTyI94tZofjo+Dn8SN6Zv8nBDvyXTymAdM3LDI/0IboIUwTu1rEhW7v2TfiVsoYWgkQ4kOVqnI8APUFbIQIFQ==
+  version "1.0.38"
+  resolved "https://registry.npmmirror.com/ua-parser-js/-/ua-parser-js-1.0.38.tgz#66bb0c4c0e322fe48edfe6d446df6042e62f25e2"
+  integrity sha512-Aq5ppTOfvrCMgAPneW1HfWj66Xi7XL+/mIy996R1/CLS/rcyJQm6QZdsKrUeivDFQ+Oc9Wyuwor8Ze8peEoUoQ==
 
 unbox-primitive@^1.0.2:
   version "1.0.2"
@@ -9427,9 +9427,9 @@ use-sync-external-store@^1.0.0, use-sync-external-store@^1.2.0:
   integrity sha512-PElTlVMwpblvbNqQ82d2n6RjStvdSoNe9FG28kNfz3WiXilJm4DdNkEzRhCZuIDwY8U08WVihhGR5iRqAwfDiw==
 
 user-agents@^1.1.217:
-  version "1.1.217"
-  resolved "https://registry.yarnpkg.com/user-agents/-/user-agents-1.1.217.tgz#cf5f03e29e02b13108bddbeaa419049b5b605baa"
-  integrity sha512-8Wcp+PjAI7QsrFujjbBddmkmubElFB4rxMbvzEpUk/7Jha8v59q5if78wbKi0bYzfajAOAGMchVTkKkSXBPJ+g==
+  version "1.1.221"
+  resolved "https://registry.npmmirror.com/user-agents/-/user-agents-1.1.221.tgz#033245eee3e36d4ee1891fe2d1e5ef4f407febc0"
+  integrity sha512-+y+CTp/IJt3cJY4wXz3xMYaU3e8RfQ+ytLJ8y/YmgzFHMRq1ebyidN4zZaSQpx2yVJgHbOkZ+ucEYfOMAlNxGA==
   dependencies:
     lodash.clonedeep "^4.5.0"
 
