@@ -8,9 +8,13 @@
       }
     },
     "owner": "thoulee",
-    "slug": "joint-player"
+    "slug": "joint-player",
+    "android": {
+      "package": "com.jointplayer"
+    }
   },
-  "android": {
-    "package": "com.jointplayer"
+  "web": {
+    "bundler": "metro",
+    "output": "static"
   }
 }
