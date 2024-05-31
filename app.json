@@ -9,5 +9,8 @@
     },
     "owner": "thoulee",
     "slug": "joint-player"
+  },
+  "android": {
+    "package": "com.jointplayer"
   }
 }
