@@ -1,13 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Dimensions, StatusBar, StyleSheet, View } from 'react-native';
-import HapticFeedback, {
-    HapticFeedbackTypes
-} from 'react-native-haptic-feedback';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Card, Text, useTheme } from 'react-native-paper';
 import { Artist } from '../types/albumArtist';
 
-export const AlbumHeader = ({ artist }: { artist: Artist }) => {
+export const AlbumHeader = ({ artist }: { artist?: Artist }) => {
     const navigation = useNavigation();
     const appTheme = useTheme();
 
@@ -15,14 +13,14 @@ export const AlbumHeader = ({ artist }: { artist: Artist }) => {
         <View style={styles.albumHeader}>
             <View style={styles.albumHeaderTitle}>
                 <Text variant="headlineSmall">
-                    {artist.name}
+                    {artist?.name}
                 </Text>
                 <Text style={[styles.artistAlias, {
                     color: appTheme.dark
                         ? appTheme.colors.onSurfaceDisabled
                         : appTheme.colors.backdrop
                 }]}>
-                    {artist.alias.join(', ')}
+                    {artist?.alias.join(', ')}
                 </Text>
             </View>
             <Card
@@ -32,13 +30,13 @@ export const AlbumHeader = ({ artist }: { artist: Artist }) => {
                     );
                     //@ts-ignore
                     navigation.push('WebView', {
-                        url: artist.picUrl,
-                        title: artist.name,
+                        url: artist?.picUrl,
+                        title: artist?.name,
                     });
                 }}
             >
                 <Card.Cover
-                    source={{ uri: artist.picUrl }}
+                    source={{ uri: artist?.picUrl }}
                 />
             </Card>
         </View>
