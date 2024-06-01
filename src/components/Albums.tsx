@@ -1,35 +1,10 @@
 import React, { useState } from 'react';
-import { FlatList, RefreshControl, StatusBar, StyleSheet, View } from 'react-native';
-import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { ActivityIndicator, Chip, Text, useTheme } from 'react-native-paper';
+import { FlatList, RefreshControl, StatusBar, StyleSheet } from 'react-native';
+import { ActivityIndicator, Text, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
-import { Album, AlbumHeader } from '.';
+import { Album, AlbumHeader, Chips } from '.';
 import { useDebounce } from '../hook';
-import { Artist, Main } from '../types/albumArtist';
-
-const CHIPS = ['Albums'];
-
-const Chips = () => {
-    return (
-        <View style={styles.chips}>
-            {CHIPS.map((chip, index) => (
-                <Chip
-                    key={chip}
-                    style={styles.chip}
-                    selected={!index}
-                    onPress={() => {
-                        HapticFeedback.trigger(
-                            HapticFeedbackTypes.effectHeavyClick
-                        );
-                        //TODO
-                    }}
-                >
-                    {chip}
-                </Chip>
-            ))}
-        </View>
-    );
-};
+import { Main } from '../types/albumArtist';
 
 export function Albums({ artistID }: { artistID: number }) {
     const appTheme = useTheme();
@@ -59,7 +34,7 @@ export function Albums({ artistID }: { artistID: number }) {
 
     return (
         <>
-            <AlbumHeader artist={data?.[0].artist as Artist} />
+            <AlbumHeader artist={data?.[0].artist} />
             <Chips />
             <FlatList
                 data={data?.flatMap((page) => page.hotAlbums)}
@@ -92,15 +67,6 @@ export function Albums({ artistID }: { artistID: number }) {
 const styles = StyleSheet.create({
     header: {
         backgroundColor: 'transparent',
-    },
-    chips: {
-        flexDirection: 'row',
-        width: '100%'
-    },
-    chip: {
-        marginLeft: '3%',
-        marginVertical: '1%',
-        width: 'auto'
     },
     moreLoading: {
         marginVertical: '2%'

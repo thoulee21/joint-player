@@ -10,6 +10,7 @@ export * from './BlurBackground';
 export * from './BlurRadiusSlider';
 export * from './BottomBar';
 export * from './BottomSheetPaper';
+export * from './Chips';
 export * from './CommentItem';
 export * from './CommentList';
 export * from './CommentsButton';
