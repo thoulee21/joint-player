@@ -37,7 +37,7 @@ export function MvDetail() {
     const [dialogVisible, setDialogVisible] = useState(false);
     const [res, setRes] = useState<string | null>(null);
 
-    const { data, isLoading } = useSWR<MvMain>(
+    const { data, isLoading, error } = useSWR<MvMain>(
         `http://music.163.com/api/mv/detail?id=${track?.mvid}`
     );
 
@@ -94,25 +94,39 @@ export function MvDetail() {
         );
     };
 
+    if (isLoading) {
+        return (
+            <ActivityIndicator
+                size="large"
+                style={styles.loading}
+            />
+        );
+    }
+
+    if (error) {
+        return (
+            <Text
+                variant="headlineSmall"
+                style={styles.noMv}
+            >
+                Failed to load MV
+            </Text>
+        );
+    }
+
     return (
         <BlurBackground>
-            {isLoading
-                ? <ActivityIndicator
-                    size="large"
-                    style={styles.loading}
-                />
-                : track?.mvid
-                    ? <>
-                        <MvCover>
-                            <TrackInfoBar right={() => <ResSwitch />} />
-                            <BottomBtns />
-                        </MvCover>
+            {track?.mvid
+                ? <>
+                    <MvCover>
+                        <TrackInfoBar right={() => <ResSwitch />} />
+                        <BottomBtns />
+                    </MvCover>
 
-                        <CommentList
-                            commentThreadId={`R_MV_5_${track?.mvid}`}
-                        />
-                    </>
-                    : <NoMV />}
+                    <CommentList
+                        commentThreadId={`R_MV_5_${track?.mvid}`}
+                    />
+                </> : <NoMV />}
 
             <Portal>
                 <DialogWithRadioBtns
