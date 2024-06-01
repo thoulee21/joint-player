@@ -16,17 +16,18 @@ type DialogProps = {
     visible: boolean;
     close: () => void;
     setValue: (res: string | null) => void;
+    defaultValue?: string;
 };
 
 export const DialogWithRadioBtns = ({
-    btns, visible, close, setValue
+    btns, visible, close, setValue, defaultValue
 }: DialogProps) => {
-    const highestRes = btns[btns.length - 1];
-    const [checkedItem, setCheckedItem] = useState(highestRes);
+    if (!defaultValue) {
+        defaultValue = btns[btns.length - 1];
+    }
+    const [checkedItem, setCheckedItem] = useState(defaultValue);
 
-    const renderItem = useCallback(({ item }:
-        { item: string }
-    ) => (
+    const renderItem = useCallback(({ item }: { item: string }) => (
         <TouchableRipple
             onPress={() => {
                 HapticFeedBack.trigger(
@@ -67,6 +68,9 @@ export const DialogWithRadioBtns = ({
                 <FlatList
                     data={btns}
                     renderItem={renderItem}
+                    inverted
+                    keyExtractor={item => item}
+                    extraData={checkedItem}
                 />
             </Dialog.ScrollArea>
 
