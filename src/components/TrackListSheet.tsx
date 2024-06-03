@@ -1,7 +1,7 @@
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { ActivityIndicator, Portal } from 'react-native-paper';
+import { Portal, Text } from 'react-native-paper';
 import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
 import { BottomSheetPaper, TrackItem } from '.';
 import { useAppDispatch, useAppSelector } from '../hook';
@@ -50,13 +50,15 @@ function TrackList({
 
   return (
     <BottomSheetFlatList
-      style={styles.trackList}
+      style={styles.root}
       showsVerticalScrollIndicator={false}
       keyExtractor={(item) => item.id.toString()}
       data={tracks}
       ListEmptyComponent={() => (
-        <View>
-          <ActivityIndicator size="large" style={styles.loading} />
+        <View style={styles.noTracks}>
+          <Text variant="headlineSmall">
+            No tracks
+          </Text>
         </View>
       )}
       renderItem={renderTrack}
@@ -77,10 +79,12 @@ export function TrackListSheet(props: TrackListProps) {
 }
 
 const styles = StyleSheet.create({
-  loading: {
-    marginTop: '20%',
-  },
-  trackList: {
+  root: {
     flex: 1,
+  },
+  noTracks: {
+    flex: 1,
+    alignItems: 'center',
+    marginTop: '20%'
   },
 });
