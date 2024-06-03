@@ -111,7 +111,7 @@ export const TrackInfo = () => {
         style={styles.titleText}
         onPress={printTrackData}
       >
-        {track?.title}{isTrial ? ' (trial)' : ''}
+        {track?.title ?? 'No Track'}{isTrial ? ' (trial)' : ''}
       </Text>
       <ArtistNames textStyle={styles.artistsText} />
     </View>

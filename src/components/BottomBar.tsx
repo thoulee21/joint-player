@@ -45,9 +45,11 @@ export const BottomBar = ({ bottomSheetRef }:
                         album: track?.albumRaw,
                     });
                 }}
+                disabled={typeof track?.albumRaw === 'undefined'}
             />
             <Appbar.Action
                 icon="menu-open"
+                disabled={!track}
                 onPress={() => {
                     HapticFeedback.trigger(
                         HapticFeedbackTypes.effectHeavyClick
