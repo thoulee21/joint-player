@@ -8,6 +8,7 @@ import { BlurBackground, LyricView, TrackInfoBar, TrackMenu } from '../component
 import { Main as LyricMain } from '../types/lyrics';
 
 export const timeOffset = 1005;
+const fallbackId = 1470156770;
 
 export function LyricsScreen() {
     const appTheme = useTheme();
@@ -16,7 +17,7 @@ export function LyricsScreen() {
 
     const [translated, setTranslated] = useState(false);
     const { data: lyric, error, isLoading } = useSWR<LyricMain>(
-        `https://music.163.com/api/song/lyric?id=${track?.id}&lv=1&kv=1&tv=-1`
+        `https://music.163.com/api/song/lyric?id=${track?.id ?? fallbackId}&lv=1&kv=1&tv=-1`
     );
 
     const TranslateToggle = () =>
