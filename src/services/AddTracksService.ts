@@ -57,18 +57,22 @@ const fetchSearchResults = async (keyword: string): Promise<any> => {
   return result;
 };
 
-const fetchTrackDetails = async (trackId: string): Promise<Track> => {
+const fetchTrackDetails = async (trackId: string): Promise<Track | null> => {
   const detail = await fetchPlus(
     `https://music.163.com/api/song/detail/?id=${trackId}&ids=%5B${trackId}%5D`,
     requestInit,
   );
   const detailJson: SongDetail = await detail.json();
 
-  if (detailJson.code !== 200 && __DEV__) {
-    ToastAndroid.show(
-      `Failed to fetch track details: ${detailJson.code} ${detailJson.msg}`,
-      ToastAndroid.SHORT
-    );
+  if (detailJson.code !== 200) {
+    const errMsg = `Failed to fetch track(${trackId}) details: ${detailJson.code} ${detailJson.msg}`;
+    if (__DEV__) {
+      console.log(errMsg);
+    } else {
+      Sentry.captureMessage(errMsg, 'log');
+    }
+
+    return null;
   }
 
   const track = detailJson.songs[0];
@@ -109,11 +113,20 @@ export const addTracks = async (keyword?: string): Promise<Track[]> => {
     const data = await fetchSearchResults(keyword);
     songs = data.songs;
 
-    const fetchedData = await Promise.all(
+    const fetchedDataRaw = await Promise.all(
       songs.map(async (track: TrackData) => {
         return await fetchTrackDetails(track.id.toString());
       }),
     );
+    const fetchedData = fetchedDataRaw.filter(
+      (track): track is Track => track !== null
+    );
+    if (fetchedDataRaw.length !== fetchedData.length) {
+      ToastAndroid.show(
+        `Some tracks failed to fetch ${fetchedData.length}/${fetchedDataRaw.length}`,
+        ToastAndroid.SHORT
+      );
+    }
 
     await TrackPlayer.reset();
     await TrackPlayer.add(fetchedData);
