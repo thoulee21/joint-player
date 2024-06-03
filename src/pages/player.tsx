@@ -4,9 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
 import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, StatusBar, StyleSheet } from 'react-native';
-import HapticFeedback, {
-  HapticFeedbackTypes
-} from 'react-native-haptic-feedback';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { IconButton, Searchbar, useTheme } from 'react-native-paper';
 import TrackPlayer from 'react-native-track-player';
 import { StorageKeys } from '../App';
@@ -19,7 +17,7 @@ import {
   TrackInfo,
   TrackListSheet,
 } from '../components';
-import { useAppDispatch, useDebounce } from '../hook';
+import { useAppDispatch, useThrottle } from '../hook';
 import { setQueue } from '../redux/slices';
 import { TrackType, addTracks } from '../services';
 
@@ -44,7 +42,7 @@ export function Player() {
     restoreInitKeyword();
   }, []);
 
-  const searchSongs = useDebounce(async () => {
+  const searchSongs = useThrottle(async () => {
     setSearching(true);
 
     if (keyword) {
@@ -58,7 +56,7 @@ export function Player() {
     }
 
     setSearching(false);
-  });
+  }, 3000);
 
   return (
     <BlurBackground style={styles.searchbarContainer}>
