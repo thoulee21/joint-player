@@ -9377,10 +9377,10 @@ use-sync-external-store@^1.0.0, use-sync-external-store@^1.2.0:
   resolved "https://registry.npmmirror.com/use-sync-external-store/-/use-sync-external-store-1.2.2.tgz#c3b6390f3a30eba13200d2302dcdf1e7b57b2ef9"
   integrity sha512-PElTlVMwpblvbNqQ82d2n6RjStvdSoNe9FG28kNfz3WiXilJm4DdNkEzRhCZuIDwY8U08WVihhGR5iRqAwfDiw==
 
-user-agents@^1.1.217:
-  version "1.1.224"
-  resolved "https://registry.npmmirror.com/user-agents/-/user-agents-1.1.224.tgz#c409890d9e1223c6d4dbd0356a3f2f593d29593a"
-  integrity sha512-dpIci/ztzHp5ZjeCtHo8ipJI41BQ1mGqhSoUTby7G2PaMDB9ukxqz97stzdojYfsa2JtSvA/7Bry1zS5yZgxFQ==
+user-agents@^1.1.259:
+  version "1.1.259"
+  resolved "https://registry.yarnpkg.com/user-agents/-/user-agents-1.1.259.tgz#c4487e7cfc767d8e347448a23f06aeda98cff132"
+  integrity sha512-TnjCaWmI4DslitMfWM30BLunpyGIfEloVq/sDFctJInl/q5IDX8XSZ4tSvhxFKMyOq4b6vNnwO3E6yZs1ni7nQ==
   dependencies:
     lodash.clonedeep "^4.5.0"
 
