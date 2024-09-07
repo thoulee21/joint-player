@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { Alert, ScrollView, StyleSheet } from 'react-native';
 import HapticFeedback, {
   HapticFeedbackTypes
 } from 'react-native-haptic-feedback';
@@ -38,6 +38,15 @@ export function Settings() {
 
         <List.Section title="General">
           <VersionItem />
+          <List.Item
+            title="About this app"
+            onPress={() => {
+              Alert.alert(
+                'Image Viewer',
+                'thou_lee@outlook.com\nCopyright©2024 thouLee. All Rights Reserved.'
+              );
+            }}
+          />
         </List.Section>
       </ScrollView>
     </BlurBackground>
