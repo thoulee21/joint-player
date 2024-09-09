@@ -8072,10 +8072,10 @@ react-native-gesture-handler@^2.16.0:
     lodash "^4.17.21"
     prop-types "^15.7.2"
 
-react-native-haptic-feedback@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.npmmirror.com/react-native-haptic-feedback/-/react-native-haptic-feedback-2.2.0.tgz#bc46edd1f053265bfbe6c32487cbce074e099429"
-  integrity sha512-3tqJOjCguWhIrX0nkURn4yw6kXdsSDjjrvZCRjKXYGlL28hdQmoW2okAHduDTD9FWj9lA+lHgwFWgGs4aFNN7A==
+react-native-haptic-feedback@^2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/react-native-haptic-feedback/-/react-native-haptic-feedback-2.3.1.tgz#2ef4ac7d4f63ac06bd64b659f509362f127b16e5"
+  integrity sha512-dPfjV4iVHfhVyfG+nRd88ygjahbdup7KFZDM5L2aNIAzqbNtKxHZn5O1pHegwSj1t15VJliu0GyTX7XpBDeXUw==
 
 react-native-image-colors@^2.4.0:
   version "2.4.0"
