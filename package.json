@@ -33,7 +33,7 @@
     "install-expo-modules": "^0.10.0",
     "react": "18.2.0",
     "react-native": "0.73.6",
-    "react-native-gesture-handler": "^2.16.0",
+    "react-native-gesture-handler": "^2.19.0",
     "react-native-haptic-feedback": "^2.2.0",
     "react-native-image-colors": "^2.4.0",
     "react-native-media-console": "^2.2.0",
