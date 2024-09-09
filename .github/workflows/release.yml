@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Java JDK 17 # 需要 Java 17 才能编译 apk, 且默认情况下该环境（ubuntu-latest）只有 Java 11
-        uses: actions/setup-java@v4.2.2
+        uses: actions/setup-java@v4.3.0
         with:
           java-version: '17'
           distribution: 'temurin'
