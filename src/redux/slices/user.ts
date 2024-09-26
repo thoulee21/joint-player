@@ -1,6 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
+export interface UserType {
+    username: string;
+    id: number;
+}
+
 const initialState = {
     username: 'thouLee',
     id: 1492028517,
