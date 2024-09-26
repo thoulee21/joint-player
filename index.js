@@ -15,15 +15,15 @@ Sentry.init({
     tracesSampleRate: 1.0,
     attachScreenshot: true,
     attachViewHierarchy: true,
-    integrations: [
-        new Sentry.ReactNativeTracing(),
-        new Sentry.Integrations.Release(),
-    ],
     _experiments: {
-        // The sampling rate for profiling is relative to TracesSampleRate.
-        // In this case, we'll capture profiles for 100% of transactions.
         profilesSampleRate: 1.0,
+        replaysSessionSampleRate: 1.0,
+        replaysOnErrorSampleRate: 1.0,
     },
+    integrations: [
+        Sentry.mobileReplayIntegration(),
+        Sentry.reactNativeTracingIntegration(),
+    ],
 });
 
 AppRegistry.registerComponent(appName, () =>
