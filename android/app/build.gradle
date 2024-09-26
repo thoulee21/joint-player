@@ -80,8 +80,8 @@ android {
         applicationId "com.jointplayer"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 20
-        versionName "4.5.4-1"
+        versionCode 21
+        versionName "4.5.5"
     }
     signingConfigs {
         debug {
