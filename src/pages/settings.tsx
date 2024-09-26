@@ -39,11 +39,31 @@ export function Settings() {
         <List.Section title="General">
           <VersionItem />
           <List.Item
-            title="About this app"
+            title="Report Issue"
+            left={(props) => <List.Icon {...props} icon="message-text-outline" />}
             onPress={() => {
+              //@ts-expect-error
+              navigation.navigate('IssueReport');
+              HapticFeedback.trigger(
+                HapticFeedbackTypes.effectClick
+              );
+            }}
+            description="Report an issue or send feedback"
+          />
+          <List.Item
+            title="About this app"
+            left={(props) => <List.Icon {...props} icon="information-outline" />}
+            onPress={() => {
+              HapticFeedback.trigger(HapticFeedbackTypes.effectClick);
               Alert.alert(
                 'Image Viewer',
-                'thou_lee@outlook.com\nCopyright©2024 thouLee. All Rights Reserved.'
+                'thou_lee@outlook.com\nCopyright©2024 thouLee. All Rights Reserved.',
+                [{
+                  text: 'OK',
+                  onPress: () => HapticFeedback.trigger(
+                    HapticFeedbackTypes.effectClick
+                  ),
+                }]
               );
             }}
           />

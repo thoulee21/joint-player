@@ -2,6 +2,7 @@ export * from './album';
 export * from './artist';
 export * from './comments';
 export * from './favs';
+export * from './issueReport';
 export * from './login';
 export * from './lyrics';
 export * from './mv';
