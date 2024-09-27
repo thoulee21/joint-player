@@ -1,3 +1,4 @@
+export * from './AboutAppItem';
 export * from './AlbumContent';
 export * from './AlbumDescription';
 export * from './AlbumItem';
@@ -18,8 +19,8 @@ export * from './CommentsMenu';
 export * from './DialogWithRadioBtns';
 export * from './DrawerItemList';
 export * from './DrawerNavi';
-export * from './FavToggle';
 export * from './FavsList';
+export * from './FavToggle';
 export * from './ForwardButton';
 export * from './HeaderCard';
 export * from './Lyric';

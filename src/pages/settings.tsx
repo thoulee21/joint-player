@@ -1,11 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { Alert, ScrollView, StyleSheet } from 'react-native';
-import HapticFeedback, {
-  HapticFeedbackTypes
-} from 'react-native-haptic-feedback';
+import { ScrollView, StyleSheet } from 'react-native';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Appbar, List } from 'react-native-paper';
 import {
+  AboutAppItem,
   BlurBackground,
   BlurRadiusSlider,
   ThemeColorIndicator,
@@ -42,7 +41,7 @@ export function Settings() {
             left={(props) => <List.Icon {...props} icon="message-text-outline" />}
             onPress={() => {
               //@ts-expect-error
-              navigation.navigate('IssueReport');
+              navigation.push('IssueReport');
               HapticFeedback.trigger(
                 HapticFeedbackTypes.effectClick
               );
@@ -51,22 +50,7 @@ export function Settings() {
           />
 
           <VersionItem />
-          <List.Item
-            title="About This App"
-            onPress={() => {
-              HapticFeedback.trigger(HapticFeedbackTypes.effectClick);
-              Alert.alert(
-                'Image Viewer',
-                'thou_lee@outlook.com\nCopyright©2024 thouLee. All Rights Reserved.',
-                [{
-                  text: 'OK',
-                  onPress: () => HapticFeedback.trigger(
-                    HapticFeedbackTypes.effectClick
-                  ),
-                }]
-              );
-            }}
-          />
+          <AboutAppItem />
         </List.Section>
       </ScrollView>
     </BlurBackground>

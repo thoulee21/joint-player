@@ -2,6 +2,12 @@
   "name": "jointplayer",
   "version": "4.5.5",
   "private": true,
+  "homepage": "https://github.com/thoulee21/joint-player",
+  "displayName": "Joint Player",
+  "author": {
+    "name": "Thou Lee",
+    "email": "thou_lee@outlook.com"
+  },
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
