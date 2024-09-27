@@ -6,11 +6,13 @@ import React, { useState } from 'react';
 import { ScrollView, StyleSheet, ToastAndroid, View } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Appbar, HelperText, TextInput, useTheme } from 'react-native-paper';
-import { BlurBackground, VersionItem } from '../components';
+import { VersionItem } from '../components';
 import { useAppSelector } from '../hook';
 import { selectUser } from '../redux/slices';
 
 export const IssueReport = () => {
+    const ISSUE_MAX_LENGTH = 200;
+
     const navigation = useNavigation();
     const appTheme = useTheme();
     const currentUser = useAppSelector(selectUser);
@@ -36,19 +38,20 @@ export const IssueReport = () => {
     const emailHasErrors = () => {
         return (!email.includes('@') || !email.includes('.')) && email.length > 0;
     };
+    const sendable = issue && !emailHasErrors();
 
     return (
-        <BlurBackground>
-            <Appbar.Header style={styles.appbar}>
+        <View>
+            <Appbar.Header>
                 <Appbar.Action
                     icon="arrow-left"
                     onPress={navigation.goBack}
                 />
                 <Appbar.Content title="Report Issue" />
                 <Appbar.Action
-                    icon="send"
+                    icon={sendable ? 'send' : 'send-outline'}
                     onPress={report}
-                    disabled={!issue || emailHasErrors()}
+                    disabled={!sendable}
                     color={appTheme.colors.primary}
                 />
             </Appbar.Header>
@@ -58,35 +61,18 @@ export const IssueReport = () => {
 
                 <View style={styles.input}>
                     <TextInput
-                        mode="outlined"
-                        label="Email (Optional)"
-                        value={email}
-                        onChangeText={setEmail}
-                        placeholder="Please enter your email address"
-                        keyboardType="email-address"
-                        returnKeyType="next"
-                        textContentType="emailAddress"
-                        error={emailHasErrors()}
-                        right={<TextInput.Icon
-                            icon="close"
-                            disabled={!email}
-                            onPress={() => { setEmail(''); }}
-                        />}
-                    />
-                    <HelperText type="error" visible={emailHasErrors()}>
-                        Email address is invalid!
-                    </HelperText>
-                </View>
-                <View style={styles.input}>
-                    <TextInput
-                        mode="outlined"
                         label="Issue Description"
                         multiline
                         numberOfLines={10}
                         value={issue}
                         onChangeText={setIssue}
                         placeholder="Please describe the issue you encountered"
-                        autoFocus
+                        maxLength={ISSUE_MAX_LENGTH}
+                        right={
+                            <TextInput.Affix
+                                text={`${issue.length}/${ISSUE_MAX_LENGTH}`}
+                            />
+                        }
                     />
                     <HelperText
                         type="info"
@@ -99,15 +85,33 @@ export const IssueReport = () => {
                         Event ID: {sentryId}
                     </HelperText>
                 </View>
+
+                <View style={styles.input}>
+                    <TextInput
+                        label="Email (Optional)"
+                        value={email}
+                        onChangeText={setEmail}
+                        placeholder="Please enter your email address"
+                        keyboardType="email-address"
+                        textContentType="emailAddress"
+                        error={emailHasErrors()}
+                        right={
+                            email && <TextInput.Icon
+                                icon="close"
+                                onPress={() => { setEmail(''); }}
+                            />
+                        }
+                    />
+                    <HelperText type="error" visible={emailHasErrors()}>
+                        Email address is invalid!
+                    </HelperText>
+                </View>
             </ScrollView>
-        </BlurBackground>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
-    appbar: {
-        backgroundColor: 'transparent',
-    },
     input: {
         marginHorizontal: 16,
         marginVertical: 4,
