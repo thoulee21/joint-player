@@ -37,7 +37,6 @@ export function Settings() {
         </List.Section>
 
         <List.Section title="General">
-          <VersionItem />
           <List.Item
             title="Report Issue"
             left={(props) => <List.Icon {...props} icon="message-text-outline" />}
@@ -50,9 +49,10 @@ export function Settings() {
             }}
             description="Report an issue or send feedback"
           />
+
+          <VersionItem />
           <List.Item
-            title="About this app"
-            left={(props) => <List.Icon {...props} icon="information-outline" />}
+            title="About This App"
             onPress={() => {
               HapticFeedback.trigger(HapticFeedbackTypes.effectClick);
               Alert.alert(
