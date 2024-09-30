@@ -4,10 +4,11 @@ import { StyleSheet } from 'react-native';
 import HapticFeedback, {
     HapticFeedbackTypes
 } from 'react-native-haptic-feedback';
-import { Appbar, Button, Dialog, Text } from 'react-native-paper';
-import { BlurBackground, FavsList } from '../components';
+import { Appbar, Button, Dialog, Portal, Text } from 'react-native-paper';
+import TrackPlayer from 'react-native-track-player';
+import { BlurBackground, FavsList, TracksHeader } from '../components';
 import { useAppDispatch, useAppSelector } from '../hook';
-import { clearFavs, favs } from '../redux/slices';
+import { clearFavs, favs, setQueueAsync } from '../redux/slices';
 
 const ConfirmClearFavsDialog = ({ visible, hideDialog }: {
     visible: boolean;
@@ -48,9 +49,16 @@ const ConfirmClearFavsDialog = ({ visible, hideDialog }: {
 };
 
 export function Favs() {
+    const dispatch = useAppDispatch();
     const navigation = useNavigation();
+
     const favsValue = useAppSelector(favs);
     const [dialogVisible, setDialogVisible] = useState(false);
+
+    const playAll = async () => {
+        await dispatch(setQueueAsync(favsValue));
+        await TrackPlayer.play();
+    };
 
     return (
         <BlurBackground>
@@ -78,7 +86,11 @@ export function Favs() {
                 />
             </Appbar.Header>
 
-            <FavsList />
+            <Portal.Host>
+                <TracksHeader onPress={playAll} length={favsValue.length} />
+                <FavsList />
+            </Portal.Host>
+
             <ConfirmClearFavsDialog
                 visible={dialogVisible}
                 hideDialog={() => setDialogVisible(false)}
