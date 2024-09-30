@@ -16,10 +16,8 @@ export const BottomBar = ({ bottomSheetRef }:
 
     return (
         <Appbar.Header
-            style={styles.bottom}
+            style={styles.bottomBar}
             mode="center-aligned"
-            elevated
-            statusBarHeight={0}
         >
             <Appbar.Action
                 icon="video-outline"
@@ -57,11 +55,12 @@ export const BottomBar = ({ bottomSheetRef }:
                     bottomSheetRef.current?.expand();
                 }}
             />
-        </Appbar.Header>);
+        </Appbar.Header>
+    );
 };
 
 const styles = StyleSheet.create({
-    bottom: {
+    bottomBar: {
         backgroundColor: 'transparent',
     },
     bottomTitle: {
