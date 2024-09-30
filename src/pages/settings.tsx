@@ -4,7 +4,7 @@ import { ScrollView, StyleSheet } from 'react-native';
 import HapticFeedback, {
   HapticFeedbackTypes
 } from 'react-native-haptic-feedback';
-import { Appbar, List } from 'react-native-paper';
+import { Appbar, Divider, List } from 'react-native-paper';
 import {
   AboutDialog,
   BlurBackground,
@@ -42,12 +42,10 @@ export function Settings() {
           <BlurRadiusSlider />
         </List.Section>
 
-        <List.Section title="General">
-          <IssueReportItem />
-
-          <VersionItem />
-          <List.Item title="About This App" onPress={showDialog} />
-        </List.Section>
+        <Divider />
+        <IssueReportItem />
+        <VersionItem />
+        <List.Item title="About This App" onPress={showDialog} />
       </ScrollView>
 
       <AboutDialog visible={dialogVisible} hideDialog={hideDialog} />
