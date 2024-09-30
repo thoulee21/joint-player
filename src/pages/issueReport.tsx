@@ -69,7 +69,7 @@ export const IssueReport = () => {
             </Appbar.Header>
 
             <KeyboardAvoidingView behavior="padding">
-                <ScrollView>
+                <ScrollView fadingEdgeLength={50}>
                     <View style={styles.inputField}>
                         <TextInput
                             label="Issue Description"
