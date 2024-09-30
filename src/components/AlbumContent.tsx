@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { Dimensions, RefreshControl, StatusBar, StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Divider, Text, useTheme } from 'react-native-paper';
 //@ts-expect-error
@@ -35,17 +35,34 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
         [data]
     );
 
-    const onRefresh = async () => {
+    const onRefresh = useCallback(async () => {
         setRefreshing(true);
         await mutate();
         setRefreshing(false);
-    };
+    }, [mutate]);
 
     const loadMore = useDebounce(() => {
         if (hasMore) {
             setSize(prev => prev + 1);
         }
     });
+
+    const renderItem = useCallback(({ index, item }: {
+        index: number, item: Song
+    }) => (
+        <SongItem index={index} item={songToTrack(item)} />
+    ), []);
+
+    const renderQuickActions = useCallback(({ index, item }: {
+        index: number, item: Song
+    }) => (
+        <QuickActionsWrapper
+            index={index}
+            item={songToTrack(item)}
+        >
+            <AddToQueueButton />
+        </QuickActionsWrapper>
+    ), []);
 
     if (isLoading) {
         return <ActivityIndicator size="large" style={styles.loading} />;
@@ -88,11 +105,7 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
                 style={[styles.tracks, {
                     backgroundColor: appTheme.colors.surface,
                 }]}
-                renderItem={({ index, item }: {
-                    index: number, item: Song
-                }) => (
-                    <SongItem index={index} item={songToTrack(item)} />
-                )}
+                renderItem={renderItem}
                 onEndReached={loadMore}
                 ListFooterComponent={
                     !error && hasMore ? (
@@ -110,16 +123,7 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
                     />
                 }
                 maxSwipeDistance={50}
-                renderQuickActions={({ index, item }: {
-                    index: number, item: Song
-                }) => (
-                    <QuickActionsWrapper
-                        index={index}
-                        item={songToTrack(item)}
-                    >
-                        <AddToQueueButton />
-                    </QuickActionsWrapper>
-                )}
+                renderQuickActions={renderQuickActions}
                 ItemSeparatorComponent={<Divider />}
             />
         </View>

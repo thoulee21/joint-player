@@ -1,4 +1,5 @@
 import React, {
+  useCallback,
   useEffect,
   useImperativeHandle,
   useRef,
@@ -132,6 +133,19 @@ const Lyric = React.forwardRef<
     },
   }));
 
+  const renderItem = useCallback(({ item, index }: {
+    item: LyricLine;
+    index: number;
+  }) => (
+    <>
+      {lineRenderer({
+        lrcLine: item,
+        index,
+        active: currentIndex === index,
+      })}
+    </>
+  ), [currentIndex, lineRenderer]);
+
   return (
     <FlatList
       {...props}
@@ -141,15 +155,7 @@ const Lyric = React.forwardRef<
       style={style}
       fadingEdgeLength={100}
       data={lrcLineList}
-      renderItem={({ item, index }) => (
-        <>
-          {lineRenderer({
-            lrcLine: item,
-            index,
-            active: currentIndex === index,
-          })}
-        </>
-      )}
+      renderItem={renderItem}
       // ignore scrollToIndex failed
       onScrollToIndexFailed={() => { }}
       ListHeaderComponent={MarginTopView}

@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { FlatList, RefreshControl, StatusBar, StyleSheet } from 'react-native';
 import { ActivityIndicator, Text, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
 import { Album, AlbumHeader, Chips } from '.';
 import { useDebounce } from '../hook';
-import { Main } from '../types/albumArtist';
+import { HotAlbum, Main } from '../types/albumArtist';
 
 export function Albums({ artistID }: { artistID: number }) {
     const appTheme = useTheme();
@@ -22,6 +22,9 @@ export function Albums({ artistID }: { artistID: number }) {
         setRefreshing(false);
     };
 
+    const renderItem = useCallback(({ item }: { item: HotAlbum }) =>
+        <Album item={item} />, []);
+
     if (isLoading) { return <ActivityIndicator size="large" />; }
 
     if (error) {
@@ -31,7 +34,6 @@ export function Albums({ artistID }: { artistID: number }) {
             </Text>
         );
     }
-
     return (
         <>
             <AlbumHeader artist={data?.[0].artist} />
@@ -41,7 +43,7 @@ export function Albums({ artistID }: { artistID: number }) {
                 numColumns={2}
                 fadingEdgeLength={50}
                 keyExtractor={(item) => item.id.toString()}
-                renderItem={(props) => <Album {...props} />}
+                renderItem={renderItem}
                 onEndReached={loadMore}
                 ListFooterComponent={() => {
                     if (!isLoading && !error && data && data[data.length - 1].more) {

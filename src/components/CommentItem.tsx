@@ -1,5 +1,5 @@
 import Color from 'color';
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { FlatList, StyleSheet } from 'react-native';
 import { Avatar, List, useTheme } from 'react-native-paper';
 import { BeReplied, Comment } from '../types/comments';
@@ -20,6 +20,14 @@ export const BeRepliedComment = memo(({ reply }:
                     .fade(0.8).string(),
         }];
 
+    const renderLeft = useCallback((props: any) => (
+        <Avatar.Image
+            {...props}
+            size={30}
+            source={{ uri: reply.user.avatarUrl }}
+        />
+    ), [reply.user.avatarUrl]);
+
     return (
         <List.Item
             style={beRepliedStyle}
@@ -28,13 +36,7 @@ export const BeRepliedComment = memo(({ reply }:
             description={reply.content}
             descriptionStyle={{ color: appTheme.colors.onSurfaceVariant }}
             descriptionNumberOfLines={20}
-            left={props =>
-                <Avatar.Image
-                    {...props}
-                    size={30}
-                    source={{ uri: reply.user.avatarUrl }}
-                />
-            }
+            left={renderLeft}
             right={() => <MoreBtn data={reply.content} />}
         />
     );
@@ -52,6 +54,17 @@ export const CommentItem = memo(({ item }:
         item.timeStr,
     );
 
+    const renderItem = useCallback(({ item: reply }: { item: BeReplied }) =>
+        <BeRepliedComment reply={reply} />, []);
+
+    const renderLeft = useCallback((props: any) => (
+        <Avatar.Image
+            {...props}
+            size={40}
+            source={{ uri: item.user.avatarUrl }}
+        />
+    ), [item.user.avatarUrl]);
+
     return (
         <List.Section>
             <List.Item
@@ -60,20 +73,14 @@ export const CommentItem = memo(({ item }:
                 description={commentContent}
                 descriptionStyle={{ color: appTheme.colors.onBackground }}
                 descriptionNumberOfLines={20}
-                left={props =>
-                    <Avatar.Image
-                        {...props}
-                        size={40}
-                        source={{ uri: item.user.avatarUrl }}
-                    />
-                }
+                left={renderLeft}
                 right={() => <MoreBtn data={item.content} />}
             />
 
             <FlatList
                 data={item.beReplied}
                 keyExtractor={(reply) => reply.beRepliedCommentId.toString()}
-                renderItem={({ item: reply }) => <BeRepliedComment reply={reply} />}
+                renderItem={renderItem}
             />
         </List.Section>
     );

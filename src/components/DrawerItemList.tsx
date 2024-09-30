@@ -9,7 +9,7 @@ import {
     ParamListBase
 } from '@react-navigation/native';
 import Color from 'color';
-import * as React from 'react';
+import React, { useCallback } from 'react';
 import { FlatList } from 'react-native';
 import { Drawer, useTheme } from 'react-native-paper';
 
@@ -22,14 +22,10 @@ type Props = {
 /**
  * Component that renders the navigation list in the drawer.
  */
-function DrawerItems({
-    state,
-    navigation,
-    descriptors,
-}: Props) {
+function DrawerItems({ state, navigation, descriptors }: Props) {
     const appTheme = useTheme();
 
-    function renderDrawerItem() {
+    const renderDrawerItem = useCallback(() => {
         return ({ item, index }: { item: any, index: number }) => {
             const focused = index === state.index;
             const onPress = () => {
@@ -87,7 +83,7 @@ function DrawerItems({
                 />
             );
         };
-    }
+    }, [appTheme.colors.onSurface, appTheme.colors.primary, appTheme.colors.secondaryContainer, appTheme.dark, descriptors, navigation, state.index, state.key]);
 
     return (
         <FlatList
@@ -100,9 +96,7 @@ function DrawerItems({
 
 export function DrawerItemList(props: Props) {
     return (
-        <Drawer.Section {...props}
-            showDivider={false}
-        >
+        <Drawer.Section {...props} showDivider={false}>
             <DrawerItems {...props} />
         </Drawer.Section>
     );

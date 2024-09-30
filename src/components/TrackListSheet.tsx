@@ -1,5 +1,5 @@
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Portal, Text } from 'react-native-paper';
 import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
@@ -35,7 +35,7 @@ function TrackList({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTrack]);
 
-  const renderTrack = ({ item, index }:
+  const renderTrack = useCallback(({ item, index }:
     { item: TrackType; index: number }
   ) => {
     return (
@@ -46,7 +46,7 @@ function TrackList({
         bottomSheetRef={bottomSheetRef}
       />
     );
-  };
+  }, [bottomSheetRef, navigation]);
 
   return (
     <BottomSheetFlatList

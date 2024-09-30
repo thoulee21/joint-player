@@ -91,6 +91,20 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
         }
     });
 
+    const renderSectionHeader = useCallback(({ section }: { section: any }) => (
+        <Text style={styles.header}>
+            {section.title}
+        </Text>
+    ), []);
+
+    const renderSectionFooter = useCallback(({ section }: { section: any }) => (
+        <FooterLoading title={section.title} />
+    ), [FooterLoading]);
+
+    const renderItem = useCallback(({ item }: { item: Comment }) => (
+        <CommentItem item={item} />
+    ), []);
+
     if (isLoading) {
         return (
             <ActivityIndicator
@@ -175,17 +189,11 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
                             progressBackgroundColor={appTheme.colors.surface}
                         />
                     }
-                    renderSectionHeader={({ section }) => (
-                        <Text style={styles.header}>
-                            {section.title}
-                        </Text>
-                    )}
-                    renderItem={({ item }) => <CommentItem item={item} />}
+                    renderSectionHeader={renderSectionHeader}
+                    renderItem={renderItem}
                     onEndReached={loadMore}
                     onEndReachedThreshold={0.05}
-                    renderSectionFooter={({ section }) => (
-                        <FooterLoading title={section.title} />
-                    )}
+                    renderSectionFooter={renderSectionFooter}
                 />
 
                 <ScrollToBtns

@@ -1,10 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { FlatList, StyleSheet, ToastAndroid } from 'react-native';
 import { ActivityIndicator, List, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
 import { UserItem } from '.';
 import { useDebounce } from '../hook';
-import { Main } from '../types/searchUsers';
+import { Main, Userprofile } from '../types/searchUsers';
 
 export const UserList = ({ searchQuery }: { searchQuery: string; }) => {
     const appTheme = useTheme();
@@ -39,6 +39,9 @@ export const UserList = ({ searchQuery }: { searchQuery: string; }) => {
         }
     }, 1000);
 
+    const renderItem = useCallback(({ item }: { item: Userprofile }) =>
+        <UserItem item={item} />, []);
+
     if (isLoading) {
         return <ActivityIndicator size="large" style={styles.loading} />;
     }
@@ -68,7 +71,7 @@ export const UserList = ({ searchQuery }: { searchQuery: string; }) => {
     return (
         <FlatList
             data={users}
-            renderItem={({ item }) => <UserItem item={item} />}
+            renderItem={renderItem}
             initialNumToRender={7}
             onEndReachedThreshold={0.1}
             onEndReached={loadMore}
