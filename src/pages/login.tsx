@@ -2,7 +2,7 @@ import { useNetInfoInstance } from '@react-native-community/netinfo';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
-import { Divider, Searchbar } from 'react-native-paper';
+import { Searchbar } from 'react-native-paper';
 import { BlurBackground, UserList } from '../components';
 import { useAppSelector } from '../hook';
 import { selectUser } from '../redux/slices';
@@ -37,8 +37,6 @@ export const Login = () => {
                 onSubmitEditing={search}
                 selectTextOnFocus
             />
-
-            <Divider />
             <UserList searchQuery={searchQuery} />
         </BlurBackground>
     );
