@@ -69,7 +69,6 @@ export const UserList = ({ searchQuery }: { searchQuery: string; }) => {
         <FlatList
             data={users}
             renderItem={({ item }) => <UserItem item={item} />}
-            keyExtractor={(item) => item.userId.toString()}
             initialNumToRender={7}
             onEndReachedThreshold={0.1}
             onEndReached={loadMore}
