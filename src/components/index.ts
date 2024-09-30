@@ -1,4 +1,4 @@
-export * from './AboutAppItem';
+export * from './AboutDialog';
 export * from './AlbumContent';
 export * from './AlbumDescription';
 export * from './AlbumItem';
@@ -23,6 +23,7 @@ export * from './FavsList';
 export * from './FavToggle';
 export * from './ForwardButton';
 export * from './HeaderCard';
+export * from './IssueReportItem';
 export * from './Lyric';
 export * from './LyricView';
 export * from './MoreButton';

@@ -1,18 +1,25 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
+import HapticFeedback, {
+  HapticFeedbackTypes
+} from 'react-native-haptic-feedback';
 import { Appbar, List } from 'react-native-paper';
 import {
-  AboutAppItem,
+  AboutDialog,
   BlurBackground,
   BlurRadiusSlider,
+  IssueReportItem,
   ThemeColorIndicator,
-  VersionItem,
+  VersionItem
 } from '../components';
 
 export function Settings() {
   const navigation = useNavigation();
+
+  const [dialogVisible, setDialogVisible] = useState(false);
+  const showDialog = () => setDialogVisible(true);
+  const hideDialog = () => setDialogVisible(false);
 
   return (
     <BlurBackground>
@@ -36,23 +43,14 @@ export function Settings() {
         </List.Section>
 
         <List.Section title="General">
-          <List.Item
-            title="Report Issue"
-            left={(props) => <List.Icon {...props} icon="message-text-outline" />}
-            onPress={() => {
-              //@ts-expect-error
-              navigation.push('IssueReport');
-              HapticFeedback.trigger(
-                HapticFeedbackTypes.effectClick
-              );
-            }}
-            description="Report an issue or send feedback"
-          />
+          <IssueReportItem />
 
           <VersionItem />
-          <AboutAppItem />
+          <List.Item title="About This App" onPress={showDialog} />
         </List.Section>
       </ScrollView>
+
+      <AboutDialog visible={dialogVisible} hideDialog={hideDialog} />
     </BlurBackground>
   );
 }
