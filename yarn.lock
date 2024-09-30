@@ -8284,10 +8284,10 @@ react-native-media-console@^2.2.0:
   resolved "https://registry.npmmirror.com/react-native-media-console/-/react-native-media-console-2.2.3.tgz#b4588797fdb4c91aa71642f05b199c3e5cc5723c"
   integrity sha512-uHR3+0y/j/M44PndrORDG9CNTo2a7uTcdF/Sxunt0FrNIrZxlZbpJKn4CZpNfJZkjNIKNuumG4eT+wmDgp8zcQ==
 
-react-native-paper@^5.12.3:
-  version "5.12.3"
-  resolved "https://registry.npmmirror.com/react-native-paper/-/react-native-paper-5.12.3.tgz#d583119722ebbfbb7fe40400181d63748cca3683"
-  integrity sha512-nH1e1pGPE/aOE5YR2GRX7CfMHFA9cAfrAfgCtwL4amJPDZCoVjc5yt2VDiUE1rT+JUfk0qdICMP3UggxvjMgug==
+react-native-paper@^5.12.5:
+  version "5.12.5"
+  resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-5.12.5.tgz#e255c47f7bf2deb2dd90eaf3831473ef33e400b8"
+  integrity sha512-Qpqd1g9PClmjGj/Dkr1htAwt8cTZ3SCHVmhttxRuG/QML7KzHm5ArLNgR7vz5dW1EwJqTmyl/3gd6gnrtw90mw==
   dependencies:
     "@callstack/react-theme-provider" "^3.0.9"
     color "^3.1.2"
