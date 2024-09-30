@@ -89,13 +89,6 @@ export const UserHeader = memo(({ userId }: { userId?: number }) => {
                 <TouchableRipple
                     style={styles.avatar}
                     borderless
-                    onPress={() => {
-                        HapticFeedback.trigger(
-                            HapticFeedbackTypes.effectHeavyClick
-                        );
-                        //@ts-expect-error
-                        navigation.push('Login');
-                    }}
                     onLongPress={viewAvatar}
                 >
                     <Avatar.Image

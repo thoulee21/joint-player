@@ -2,7 +2,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import React, { useMemo } from 'react';
 import { Icon } from 'react-native-paper';
 import { BlurBackground, DrawerItemList, Spacer, UserHeader } from '.';
-import { Favs, Player, Settings } from '../pages';
+import { Favs, Login, Player, Settings } from '../pages';
 
 const Drawer = createDrawerNavigator();
 
@@ -18,6 +18,12 @@ const ROUTES = [
         component: Favs,
         focusedIcon: 'heart',
         unfocusedIcon: 'heart-outline',
+    },
+    {
+        name: 'Account',
+        component: Login,
+        focusedIcon: 'account',
+        unfocusedIcon: 'account-outline',
     },
     {
         name: 'Settings',
