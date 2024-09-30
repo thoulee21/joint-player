@@ -4,7 +4,14 @@ import * as Sentry from '@sentry/react-native';
 import { UserFeedback } from '@sentry/react-native';
 import Color from 'color';
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, ScrollView, StyleSheet, ToastAndroid, View } from 'react-native';
+import {
+    Keyboard,
+    KeyboardAvoidingView,
+    ScrollView,
+    StyleSheet,
+    ToastAndroid,
+    View
+} from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Appbar, HelperText, TextInput, useTheme } from 'react-native-paper';
 import { BlurBackground } from '../components';
@@ -24,6 +31,7 @@ export const IssueReport = () => {
     const sentryId = Sentry.lastEventId() || Sentry.captureMessage('Report Issue');
     const emailHasErrors = (!email.includes('@') || !email.includes('.')) && email.length > 0;
     const sendable = issue && !emailHasErrors;
+    const inputBackgroundColor = Color(appTheme.colors.secondaryContainer).fade(0.7).string();
 
     const report = () => {
         const feedback: UserFeedback = {
@@ -32,66 +40,19 @@ export const IssueReport = () => {
             email: email,
             comments: issue,
         };
+
+        Keyboard.dismiss();
+        HapticFeedback.trigger(HapticFeedbackTypes.effectTick);
         Sentry.captureUserFeedback(feedback);
 
-        HapticFeedback.trigger(HapticFeedbackTypes.effectTick);
-        ToastAndroid.show('Issue reported', ToastAndroid.SHORT);
+        ToastAndroid.show('Issue reported', ToastAndroid.LONG);
+        navigation.goBack();
     };
 
-    const inputBackgroundColor = Color(appTheme.colors.secondaryContainer).fade(0.7).string();
-
-    const IssueField = () => {
-        return (
-            <View style={styles.inputField}>
-                <TextInput
-                    label="Issue Description"
-                    multiline
-                    numberOfLines={10}
-                    value={issue}
-                    onChangeText={setIssue}
-                    placeholder="Please describe the issue you encountered"
-                    maxLength={ISSUE_MAX_LENGTH}
-                    right={<TextInput.Affix
-                        text={`${issue.length}/${ISSUE_MAX_LENGTH}`}
-                    />}
-                    style={{ backgroundColor: inputBackgroundColor }}
-                />
-                <HelperText
-                    type="info"
-                    onLongPress={() => {
-                        Clipboard.setString(sentryId);
-                        ToastAndroid.show('Event ID copied', ToastAndroid.SHORT);
-                        HapticFeedback.trigger(HapticFeedbackTypes.effectDoubleClick);
-                    }}
-                >
-                    Event ID: {sentryId}
-                </HelperText>
-            </View>
-        );
-    };
-
-    const EmailField = () => {
-        return (
-            <View style={styles.inputField}>
-                <TextInput
-                    label="Email (Optional)"
-                    value={email}
-                    onChangeText={setEmail}
-                    placeholder="Please enter your email address"
-                    keyboardType="email-address"
-                    textContentType="emailAddress"
-                    error={emailHasErrors}
-                    right={email && <TextInput.Icon
-                        icon="close"
-                        onPress={() => { setEmail(''); }}
-                    />}
-                    style={{ backgroundColor: inputBackgroundColor }}
-                />
-                <HelperText type="error" visible={emailHasErrors}>
-                    Email address is invalid!
-                </HelperText>
-            </View>
-        );
+    const copySentryId = () => {
+        Clipboard.setString(sentryId);
+        ToastAndroid.show('Event ID copied', ToastAndroid.SHORT);
+        HapticFeedback.trigger(HapticFeedbackTypes.effectDoubleClick);
     };
 
     return (
@@ -109,14 +70,48 @@ export const IssueReport = () => {
 
             <KeyboardAvoidingView behavior="padding">
                 <ScrollView>
-                    <IssueField />
-                    <EmailField />
+                    <View style={styles.inputField}>
+                        <TextInput
+                            label="Issue Description"
+                            multiline
+                            numberOfLines={10}
+                            value={issue}
+                            onChangeText={setIssue}
+                            placeholder="Please describe the issue you encountered"
+                            maxLength={ISSUE_MAX_LENGTH}
+                            right={<TextInput.Affix
+                                text={`${issue.length}/${ISSUE_MAX_LENGTH}`}
+                            />}
+                            style={{ backgroundColor: inputBackgroundColor }}
+                        />
+                        <HelperText type="info" onLongPress={copySentryId}>
+                            Event ID: {sentryId}
+                        </HelperText>
+                    </View>
+
+                    <View style={styles.inputField}>
+                        <TextInput
+                            label="Email (Optional)"
+                            value={email}
+                            onChangeText={setEmail}
+                            placeholder="Please enter your email address"
+                            keyboardType="email-address"
+                            textContentType="emailAddress"
+                            error={emailHasErrors}
+                            right={email && <TextInput.Icon
+                                icon="close"
+                                onPress={() => { setEmail(''); }}
+                            />}
+                            style={{ backgroundColor: inputBackgroundColor }}
+                        />
+                        <HelperText type="error" visible={emailHasErrors}>
+                            Email address is invalid!
+                        </HelperText>
+                    </View>
                 </ScrollView>
             </KeyboardAvoidingView>
         </BlurBackground>
     );
-
-
 };
 
 const styles = StyleSheet.create({
