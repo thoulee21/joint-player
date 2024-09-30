@@ -10,7 +10,7 @@ export function Comments(): React.JSX.Element {
 
     return (
         <BlurBackground>
-            <Appbar.Header style={styles.header}>
+            <Appbar.Header style={styles.header} mode="large">
                 <Appbar.BackAction onPress={navigation.goBack} />
                 <Appbar.Content title="Comments" />
             </Appbar.Header>
