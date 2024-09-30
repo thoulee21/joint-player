@@ -8,7 +8,7 @@ import { useAppDispatch } from '../hook';
 import { setUser } from '../redux/slices';
 import { Userprofile } from '../types/searchUsers';
 
-export const UserItem = ({ item }: { item: Userprofile; }) => {
+export const UserItem = ({ item }: { item: Userprofile }) => {
     const dispatch = useAppDispatch();
 
     const login = () => {
@@ -18,17 +18,10 @@ export const UserItem = ({ item }: { item: Userprofile; }) => {
         };
 
         dispatch(setUser(user));
-        AsyncStorage.setItem(
-            StorageKeys.User, JSON.stringify(user)
-        );
+        AsyncStorage.setItem(StorageKeys.User, JSON.stringify(user));
 
-        HapticFeedback.trigger(
-            HapticFeedbackTypes.effectHeavyClick
-        );
-        ToastAndroid.show(
-            `Logged in as ${item.nickname}`,
-            ToastAndroid.SHORT
-        );
+        HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
+        ToastAndroid.show(`Logged in as ${item.nickname}`, ToastAndroid.SHORT);
     };
 
     return (
@@ -36,10 +29,12 @@ export const UserItem = ({ item }: { item: Userprofile; }) => {
             title={item.nickname}
             description={item.signature}
             onPress={login}
-            left={(props) => (
+            left={(props) =>
                 <Avatar.Image {...props}
                     size={40}
-                    source={{ uri: item.avatarUrl }} />
-            )} />
+                    source={{ uri: item.avatarUrl }}
+                />
+            }
+        />
     );
 };
