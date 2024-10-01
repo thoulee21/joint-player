@@ -8,6 +8,7 @@ import { formatSeconds } from '../utils';
 export const Progress = () => {
   const appTheme = useTheme();
   const { position, duration } = useProgress();
+
   // This is a workaround since the slider component only takes absolute widths
   const progressBarWidth = Dimensions.get('window').width * 0.92;
 
@@ -25,11 +26,11 @@ export const Progress = () => {
       />
 
       <View style={styles.captionContainer}>
-        <Text style={styles.caption}>
+        <Text>
           {formatSeconds(position)}
         </Text>
-        <Text style={styles.caption}>
-          {formatSeconds(Math.max(0, duration - position))}
+        <Text>
+          {formatSeconds(duration)}
         </Text>
       </View>
     </View>
@@ -50,15 +51,12 @@ const styles = StyleSheet.create({
   },
   slider: {
     height: 40,
-    marginTop: 25,
+    marginTop: 30,
     flexDirection: 'row',
   },
   captionContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-  },
-  caption: {
-    fontVariant: ['tabular-nums'],
-  },
+  }
 });

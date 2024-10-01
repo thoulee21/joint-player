@@ -56,5 +56,6 @@ const styles = StyleSheet.create({
   },
   controlsContainer: {
     width: '100%',
+    marginTop: 20,
   },
 });

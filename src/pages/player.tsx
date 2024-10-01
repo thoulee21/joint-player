@@ -13,6 +13,7 @@ import {
   BottomBar,
   PlayControls,
   Progress,
+  Spacer,
   TrackInfo,
   TrackListSheet,
 } from '../components';
@@ -103,10 +104,8 @@ export function Player() {
         }
       />
 
-      <ScrollView
-        style={styles.screen}
-        contentContainerStyle={styles.screenContainer}
-      >
+      <ScrollView style={styles.screenContainer}>
+        <Spacer />
         <TrackInfo />
         <Progress />
         <PlayControls />
@@ -122,13 +121,9 @@ export function Player() {
 }
 
 const styles = StyleSheet.create({
-  screen: {
+  screenContainer: {
     display: 'flex',
     flex: 1,
-  },
-  screenContainer: {
-    flex: 1,
-    justifyContent: 'space-between',
   },
   searchbar: {
     margin: 10,
