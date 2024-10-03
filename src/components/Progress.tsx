@@ -45,10 +45,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
   },
-  liveText: {
-    fontSize: 18,
-    alignSelf: 'center',
-  },
   slider: {
     height: 40,
     marginTop: 30,
