@@ -72,11 +72,13 @@ export const MvCover = memo(({ children }: PropsWithChildren) => {
                 HapticFeedback.trigger(
                     HapticFeedbackTypes.effectTick
                 );
-                // @ts-ignore
-                navigation.navigate('WebView', {
-                    title: data?.data.name,
-                    url: data?.data.cover
-                });
+                if (data?.data.cover) {
+                    // @ts-ignore
+                    navigation.navigate('WebView', {
+                        title: data?.data.name,
+                        url: data?.data.cover
+                    });
+                }
             }}
         >
             <ImageBackground
