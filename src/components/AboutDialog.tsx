@@ -1,6 +1,6 @@
 import React from 'react';
 import { Linking } from 'react-native';
-import { Button, Dialog, Divider, IconButton, Text } from 'react-native-paper';
+import { Button, Dialog, Divider, Text } from 'react-native-paper';
 import packageData from '../../package.json';
 
 const copyright = `Copyright©${new Date().getFullYear()} ${packageData.author.name
@@ -25,7 +25,9 @@ export const AboutDialog = ({ visible, hideDialog }: {
             <Dialog.Actions>
                 <Button icon="email-outline" onPress={mailto}>E-Mail</Button>
                 <Button icon="github" onPress={gotoHomepage}>Homepage</Button>
-                <IconButton icon="close" onPress={hideDialog} />
+
+                <Divider />
+                <Button onPress={hideDialog}>Close</Button>
             </Dialog.Actions>
         </Dialog>
     );
