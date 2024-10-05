@@ -1,9 +1,8 @@
-import Clipboard from '@react-native-clipboard/clipboard';
 import { useNavigation } from '@react-navigation/native';
 import * as Sentry from '@sentry/react-native';
 import { UserFeedback } from '@sentry/react-native';
 import Color from 'color';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
     Keyboard,
     KeyboardAvoidingView,
@@ -28,14 +27,14 @@ export const IssueReport = () => {
     const [issue, setIssue] = useState('');
     const [email, setEmail] = useState('');
 
-    const sentryId = Sentry.lastEventId() || Sentry.captureMessage('Report Issue');
     const emailHasErrors = (!email.includes('@') || !email.includes('.')) && email.length > 0;
     const sendable = issue && !emailHasErrors;
     const inputBackgroundColor = Color(appTheme.colors.secondaryContainer).fade(0.7).string();
 
-    const report = () => {
+    const report = useCallback(() => {
+        const sentryId = Sentry.lastEventId();
         const feedback: UserFeedback = {
-            event_id: sentryId,
+            event_id: sentryId || Sentry.captureMessage('Report Issue'),
             name: currentUser.username,
             email: email,
             comments: issue,
@@ -47,13 +46,7 @@ export const IssueReport = () => {
 
         ToastAndroid.show('Issue reported', ToastAndroid.LONG);
         navigation.goBack();
-    };
-
-    const copySentryId = () => {
-        Clipboard.setString(sentryId);
-        ToastAndroid.show('Event ID copied', ToastAndroid.SHORT);
-        HapticFeedback.trigger(HapticFeedbackTypes.effectDoubleClick);
-    };
+    }, [currentUser.username, email, issue, navigation]);
 
     return (
         <BlurBackground>
@@ -70,24 +63,24 @@ export const IssueReport = () => {
 
             <KeyboardAvoidingView behavior="padding">
                 <ScrollView fadingEdgeLength={50}>
-                    <View style={styles.inputField}>
-                        <TextInput
-                            label="Issue Description"
-                            multiline
-                            numberOfLines={10}
-                            value={issue}
-                            onChangeText={setIssue}
-                            placeholder="Please describe the issue you encountered"
-                            maxLength={ISSUE_MAX_LENGTH}
-                            right={<TextInput.Affix
+                    <TextInput
+                        label="Issue Description"
+                        multiline
+                        numberOfLines={10}
+                        value={issue}
+                        onChangeText={setIssue}
+                        placeholder="Please describe the issue you encountered"
+                        maxLength={ISSUE_MAX_LENGTH}
+                        right={
+                            <TextInput.Affix
                                 text={`${issue.length}/${ISSUE_MAX_LENGTH}`}
-                            />}
-                            style={{ backgroundColor: inputBackgroundColor }}
-                        />
-                        <HelperText type="info" onLongPress={copySentryId}>
-                            Event ID: {sentryId}
-                        </HelperText>
-                    </View>
+                            />
+                        }
+                        style={[
+                            styles.inputField,
+                            { backgroundColor: inputBackgroundColor }
+                        ]}
+                    />
 
                     <View style={styles.inputField}>
                         <TextInput
