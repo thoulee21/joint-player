@@ -8,7 +8,7 @@ export function Comments(): React.JSX.Element {
     const navigation = useNavigation();
     const { commentThreadId } = useRoute().params as { commentThreadId: string };
 
-    const [large, setLarge] = useState(false);
+    const [large, setLarge] = useState(true);
 
     return (
         <BlurBackground>
