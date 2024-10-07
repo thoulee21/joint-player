@@ -2,6 +2,9 @@ import { useNetInfoInstance } from '@react-native-community/netinfo';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
+import HapticFeedback, {
+    HapticFeedbackTypes
+} from 'react-native-haptic-feedback';
 import { Searchbar } from 'react-native-paper';
 import { BlurBackground, UserList } from '../components';
 import { useAppSelector } from '../hook';
@@ -24,6 +27,12 @@ export const Login = () => {
         }
     }, [netInfo.isConnected, searchQuery, showQuery]);
 
+    const openDrawer = useCallback(() => {
+        HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
+        //@ts-expect-error
+        navigation.openDrawer();
+    }, [navigation]);
+
     return (
         <BlurBackground>
             <Searchbar
@@ -32,8 +41,7 @@ export const Login = () => {
                 onChangeText={setShowQuery}
                 value={showQuery}
                 icon="menu"
-                // @ts-expect-error
-                onIconPress={navigation.openDrawer}
+                onIconPress={openDrawer}
                 onSubmitEditing={search}
                 selectTextOnFocus
             />
