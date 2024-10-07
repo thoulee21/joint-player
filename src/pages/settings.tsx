@@ -1,25 +1,21 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import HapticFeedback, {
   HapticFeedbackTypes
 } from 'react-native-haptic-feedback';
 import { Appbar, Divider, List } from 'react-native-paper';
 import {
-  AboutDialog,
+  AboutItem,
   BlurBackground,
   BlurRadiusSlider,
+  DevItem,
   IssueReportItem,
-  ThemeColorIndicator,
-  VersionItem
+  ThemeColorIndicator
 } from '../components';
 
 export function Settings() {
   const navigation = useNavigation();
-
-  const [dialogVisible, setDialogVisible] = useState(false);
-  const showDialog = () => setDialogVisible(true);
-  const hideDialog = () => setDialogVisible(false);
 
   return (
     <BlurBackground>
@@ -44,11 +40,9 @@ export function Settings() {
 
         <Divider />
         <IssueReportItem />
-        <VersionItem />
-        <List.Item title="About This App" onPress={showDialog} />
+        <DevItem />
+        <AboutItem />
       </ScrollView>
-
-      <AboutDialog visible={dialogVisible} hideDialog={hideDialog} />
     </BlurBackground>
   );
 }

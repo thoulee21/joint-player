@@ -1,3 +1,4 @@
+
 export interface Main {
     result: Result;
     code:   number;
@@ -49,5 +50,5 @@ export interface Userprofile {
 }
 
 export enum Alg {
-    AlgUserBasic = "alg_user_basic",
+    AlgUserBasic = 'alg_user_basic',
 }

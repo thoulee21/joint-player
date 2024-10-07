@@ -1,5 +1,4 @@
 import BottomSheet from '@gorhom/bottom-sheet';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
 import React, { useEffect, useRef, useState } from 'react';
@@ -20,6 +19,7 @@ import {
 import { useAppDispatch, useThrottle } from '../hook';
 import { setQueue } from '../redux/slices';
 import { TrackType, getTracks } from '../services';
+import { Storage } from '../utils';
 
 export function Player() {
   const dispatch = useAppDispatch();
@@ -33,7 +33,7 @@ export function Player() {
 
   useEffect(() => {
     const restoreInitKeyword = async () => {
-      const storedKeyword = await AsyncStorage.getItem(StorageKeys.Keyword);
+      const storedKeyword = await Storage.get(StorageKeys.Keyword);
       if (storedKeyword) {
         setPlaceholderKeyword(storedKeyword);
       }
@@ -46,7 +46,7 @@ export function Player() {
     setSearching(true);
 
     if (keyword) {
-      AsyncStorage.setItem(StorageKeys.Keyword, keyword);
+      Storage.set(StorageKeys.Keyword, keyword);
       dispatch(setQueue(await getTracks(keyword) as TrackType[]));
       TrackPlayer.play();
     } else if (placeholderKeyword) {

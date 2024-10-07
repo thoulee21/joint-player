@@ -7,9 +7,12 @@ import {
 import React from 'react';
 import { DrawerNavi } from '.';
 import {
+    AboutScreen,
     AlbumDetail,
+    AppDataScreen,
     Artist,
     Comments,
+    DevScreen,
     IssueReport,
     Login,
     LyricsScreen,
@@ -55,6 +58,9 @@ export function RootStack() {
             <Stack.Screen name="AlbumDetail" component={AlbumDetail} />
             <Stack.Screen name="Login" component={Login} />
             <Stack.Screen name="IssueReport" component={IssueReport} />
+            <Stack.Screen name="Dev" component={DevScreen} />
+            <Stack.Screen name="About" component={AboutScreen} />
+            <Stack.Screen name="AppData" component={AppDataScreen} />
         </Stack.Navigator>
     );
 }

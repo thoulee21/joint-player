@@ -2,6 +2,7 @@ import * as Sentry from '@sentry/react-native';
 import React from 'react';
 import { AppRegistry } from 'react-native';
 import 'react-native-gesture-handler';
+import 'react-native-get-random-values';
 import TrackPlayer from 'react-native-track-player';
 import { Provider } from 'react-redux';
 import { name as appName } from './package.json';

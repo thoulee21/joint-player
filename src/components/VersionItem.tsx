@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Platform, ToastAndroid } from 'react-native';
+import { Platform } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { List, useTheme } from 'react-native-paper';
 import { Style } from 'react-native-paper/lib/typescript/components/List/utils';
@@ -36,7 +36,9 @@ const VersionIcon = ({ color, style }: ListLeftProps) => {
     );
 };
 
-export const VersionItem = () => {
+export const VersionItem = ({ showDevSnackbar }: {
+    showDevSnackbar: () => void
+}) => {
     const dispatch = useAppDispatch();
     const devModeEnabled = useAppSelector(selectDevModeEnabled);
     const [hitCount, setHitCount] = useState(0);
@@ -50,7 +52,7 @@ export const VersionItem = () => {
             if (hitCount >= 5) {
                 dispatch(setDevModeValue(true));
                 HapticFeedback.trigger(HapticFeedbackTypes.effectClick);
-                ToastAndroid.show('Developer mode enabled', ToastAndroid.SHORT);
+                showDevSnackbar();
             }
         }
         // no dispatch
