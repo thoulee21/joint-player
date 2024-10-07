@@ -8,12 +8,15 @@ const initialState = {
 };
 
 export const blurRadiusSlice = createSlice({
-    name: 'blurRadius',
+    name: StorageKeys.BlurRadius,
     initialState,
     reducers: {
         // Use the PayloadAction type to declare the contents of `action.payload`
         setBlurRadius: (state, action: PayloadAction<number>) => {
             state.value = action.payload;
+            AsyncStorage.setItem(
+                StorageKeys.BlurRadius, JSON.stringify(action.payload)
+            );
         },
     },
     extraReducers: (builder) => {

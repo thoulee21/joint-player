@@ -1,27 +1,30 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Slider from '@react-native-community/slider';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import HapticFeedback from 'react-native-haptic-feedback';
 import { List, Text, useTheme } from 'react-native-paper';
-import { StorageKeys } from '../App';
 import { useAppDispatch, useAppSelector } from '../hook';
 import { blurRadius, setBlurRadius } from '../redux/slices';
 
 export function BlurRadiusSlider() {
+    const SLIDER_STEP = 5;
+
     const appTheme = useTheme();
     const dispatch = useAppDispatch();
+
     const blurRadiusValue = useAppSelector(blurRadius);
     const [showValue, setShowValue] = useState(blurRadiusValue);
 
-    const step = 5;
-
-    const vibrate = (value: number) => {
-        if (value % step === 0) {
+    const vibrate = useCallback((value: number) => {
+        if (value % SLIDER_STEP === 0) {
             HapticFeedback.trigger('effectHeavyClick');
             setShowValue(value);
         }
-    };
+    }, []);
+
+    const updateBlurRadius = useCallback((value: number) => {
+        dispatch(setBlurRadius(value));
+    }, [dispatch]);
 
     return (
         <List.Item
@@ -39,16 +42,11 @@ export function BlurRadiusSlider() {
                     thumbTintColor={appTheme.colors.primary}
                     minimumTrackTintColor={appTheme.colors.primary}
                     maximumTrackTintColor={appTheme.colors.tertiary}
-                    onSlidingComplete={async (value) => {
-                        dispatch(setBlurRadius(value));
-                        await AsyncStorage.setItem(
-                            StorageKeys.BlurRadius, String(value)
-                        );
-                    }}
+                    onSlidingComplete={updateBlurRadius}
                     onValueChange={vibrate}
                     minimumValue={15}
                     maximumValue={100}
-                    step={step}
+                    step={SLIDER_STEP}
                     value={showValue}
                 />
             )}
