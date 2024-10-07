@@ -19,7 +19,7 @@ import {
 } from '../components';
 import { useAppDispatch, useThrottle } from '../hook';
 import { setQueue } from '../redux/slices';
-import { TrackType, addTracks } from '../services';
+import { TrackType, getTracks } from '../services';
 
 export function Player() {
   const dispatch = useAppDispatch();
@@ -47,11 +47,11 @@ export function Player() {
 
     if (keyword) {
       AsyncStorage.setItem(StorageKeys.Keyword, keyword);
-      dispatch(setQueue(await addTracks(keyword) as TrackType[]));
+      dispatch(setQueue(await getTracks(keyword) as TrackType[]));
       TrackPlayer.play();
     } else if (placeholderKeyword) {
       setKeyword(placeholderKeyword);
-      dispatch(setQueue(await addTracks(placeholderKeyword) as TrackType[]));
+      dispatch(setQueue(await getTracks(placeholderKeyword) as TrackType[]));
       TrackPlayer.play();
     }
 

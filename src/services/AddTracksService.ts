@@ -91,7 +91,7 @@ const fetchTrackDetails = async (trackId: string): Promise<Track | null> => {
   };
 };
 
-export const addTracks = async (keyword?: string): Promise<Track[]> => {
+export const getTracks = async (keyword?: string): Promise<Track[]> => {
   try {
     let songs: TrackData[] = [];
 
