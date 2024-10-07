@@ -30,7 +30,6 @@ export const ImportDataItem = ({ setRestartBarVisible }: {
             HapticFeedback.trigger('effectTick');
             setRestartBarVisible(true);
         } catch (error) {
-            console.error(error);
             ToastAndroid.show(
                 `Import failed: ${JSON.stringify(error, null, 2)}`,
                 ToastAndroid.LONG

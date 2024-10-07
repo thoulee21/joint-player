@@ -12,11 +12,7 @@ export const fetchTrackDetails = async (trackId: string): Promise<Track | null> 
 
     if (detailJson.code !== 200) {
         const errMsg = `Failed to fetch track(${trackId}) details: ${detailJson.code} ${detailJson.msg}`;
-        if (__DEV__) {
-            console.log(errMsg);
-        } else {
-            Sentry.captureMessage(errMsg, 'log');
-        }
+        Sentry.captureMessage(errMsg, 'log');
 
         return null;
     }
