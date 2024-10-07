@@ -121,6 +121,7 @@ export const TrackInfo = () => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
+    marginTop: '4%',
   },
   artwork: {
     width: Dimensions.get('window').width * 0.9,

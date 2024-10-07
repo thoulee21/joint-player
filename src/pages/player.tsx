@@ -12,9 +12,8 @@ import {
   BottomBar,
   PlayControls,
   Progress,
-  Spacer,
   TrackInfo,
-  TrackListSheet,
+  TrackListSheet
 } from '../components';
 import { useAppDispatch, useThrottle } from '../hook';
 import { setQueue } from '../redux/slices';
@@ -104,8 +103,10 @@ export function Player() {
         }
       />
 
-      <ScrollView style={styles.screenContainer}>
-        <Spacer />
+      <ScrollView
+        style={styles.screenContainer}
+        showsVerticalScrollIndicator={false}
+      >
         <TrackInfo />
         <Progress />
         <PlayControls />
