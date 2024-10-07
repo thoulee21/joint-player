@@ -37,7 +37,6 @@ export function AppContainer({ children }: PropsWithChildren) {
     const isDarkMode = useAppSelector(selectDarkModeEnabled);
     const { theme: colorTheme, updateTheme } = useMaterial3Theme();
 
-
     const MyLightTheme = useMemo(() => ({
         ...MD3LightTheme,
         colors: colorTheme.light,
@@ -58,20 +57,24 @@ export function AppContainer({ children }: PropsWithChildren) {
 
     useEffect(() => {
         const setTheme = async () => {
-            const colors = await getColors(track?.artwork ||
-                require('../assets/resources/placeholder.jpg')
-            );
-            const androidColors = (colors as AndroidImageColors);
-            const vibrant = Color(androidColors.vibrant);
-            const average = Color(androidColors.average);
+            if (track?.artwork) {
+                const colors = await getColors(track.artwork);
+                // TODO: multiple platform support
+                const androidColors = (colors as AndroidImageColors);
 
-            dispatch(setDarkMode(average.isDark()));
-            updateTheme(vibrant.hex().toString());
+                const vibrant = Color(androidColors.vibrant);
+                const average = Color(androidColors.average);
+
+                dispatch(setDarkMode(average.isDark()));
+                updateTheme(vibrant.hex().toString());
+            }
         };
 
         setTheme().finally(() => {
-            if (isPlayerReady) {
-                SplashScreen.hideAsync();
+            if (track?.artwork && isPlayerReady) {
+                setTimeout(() => {
+                    SplashScreen.hideAsync();
+                }, 50);
             }
         });
         //no `updateTheme` here
