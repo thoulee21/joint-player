@@ -3,6 +3,7 @@ import { Appearance } from 'react-native';
 import { RootState } from '../store';
 
 const initialState = {
+    // TODO: it doesn't seems to take effect...
     enabled: Appearance.getColorScheme() === 'dark',
 };
 
