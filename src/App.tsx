@@ -1,9 +1,8 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect } from 'react';
 import { AppContainer, RootStack } from './components';
 import { useAppDispatch } from './hook';
-import { initFavs, initUser, setBlurRadius } from './redux/slices';
+import { initBlurRadius, initFavs, initUser } from './redux/slices';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -22,17 +21,12 @@ export default function App() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    async function restorePrefs() {
-      const storedBlurRadius = await AsyncStorage.getItem(StorageKeys.BlurRadius);
-      if (storedBlurRadius) {
-        dispatch(setBlurRadius(Number(storedBlurRadius)));
-      }
+    Promise.all([
+      dispatch(initBlurRadius()),
+      dispatch(initFavs()),
+      dispatch(initUser())
+    ]);
 
-      dispatch(initFavs());
-      dispatch(initUser());
-    }
-
-    restorePrefs();
     // no dispatch
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

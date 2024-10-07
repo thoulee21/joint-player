@@ -1,11 +1,9 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { StorageKeys } from '../../App';
 import { RootState } from '../store';
 
-interface BlurRadiusState {
-    value: number;
-}
-
-const initialState: BlurRadiusState = {
+const initialState = {
     value: 50,
 };
 
@@ -18,7 +16,20 @@ export const blurRadiusSlice = createSlice({
             state.value = action.payload;
         },
     },
+    extraReducers: (builder) => {
+        builder.addCase(initBlurRadius.fulfilled, (state, action) => {
+            state.value = action.payload;
+        });
+    },
 });
+
+export const initBlurRadius = createAsyncThunk(
+    `${StorageKeys.BlurRadius}/initBlurRadius`,
+    async () => {
+        const blurRadius = await AsyncStorage.getItem(StorageKeys.BlurRadius);
+        return blurRadius ? Number(blurRadius) : initialState.value;
+    }
+);
 
 export const { setBlurRadius } = blurRadiusSlice.actions;
 
