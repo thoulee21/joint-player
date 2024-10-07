@@ -1,12 +1,13 @@
 import { useNetInfoInstance } from '@react-native-community/netinfo';
-import React, { memo, useCallback, useMemo, useRef, useState } from 'react';
-import { RefreshControl, SectionList, StyleSheet } from 'react-native';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { RefreshControl, SectionList, StyleSheet, View } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { ActivityIndicator, List, Portal, Text, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
 import { CommentItem, ScrollToBtns } from '.';
 import { useDebounce } from '../hook';
 import { Comment, Main as CommentsMain } from '../types/comments';
+import { NoCommentsItem, NoInternetItem, RetryItem } from './CommentSpecialItems';
 
 export interface Section {
     title: string;
@@ -54,7 +55,8 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
 
                     if (latestSectionIndex !== -1) {
                         sections[latestSectionIndex].data =
-                            sections[latestSectionIndex].data.concat(commentsData.comments);
+                            sections[latestSectionIndex].data
+                                .concat(commentsData.comments);
                     }
                 }
             }
@@ -82,24 +84,31 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
         }
     });
 
-    const FooterLoading = memo(({ title }: { title: string }) => {
-        if (title === 'Latest Comments') {
+    const renderSectionFooter = useCallback(({ section }: { section: any }) => {
+        if (section.title === 'Latest Comments') {
             if (showData[0].data.length !== (data || [])[0].total) {
-                // loading isn't finished
-                return <ActivityIndicator style={styles.footer} />;
+                return <List.Item
+                    title="Loading more comments..."
+                    left={props => <ActivityIndicator {...props} />}
+                />;
+            } else {
+                return <List.Item
+                    title="All comments loaded!"
+                    left={props => <List.Icon
+                        {...props}
+                        icon="check-all"
+                        color={appTheme.colors.primary}
+                    />}
+                />;
             }
-        }
-    });
+        } else { return <View />; }
+    }, [appTheme.colors.primary, data, showData]);
 
     const renderSectionHeader = useCallback(({ section }: { section: any }) => (
         <Text style={styles.header}>
             {section.title}
         </Text>
     ), []);
-
-    const renderSectionFooter = useCallback(({ section }: { section: any }) => (
-        <FooterLoading title={section.title} />
-    ), [FooterLoading]);
 
     const renderItem = useCallback(({ item }: { item: Comment }) => (
         <CommentItem item={item} />
@@ -114,62 +123,11 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
         );
     } else if (error) {
         if (!netInfo.isConnected) {
-            return (
-                <List.Item
-                    left={props => (
-                        <List.Icon
-                            {...props}
-                            color={appTheme.colors.error}
-                            icon="alert-circle-outline"
-                        />
-                    )}
-                    title="No internet connection."
-                    description={error.message}
-                />
-            );
-        } else if (netInfo.isConnected) {
-            return (
-                <List.Item
-                    left={props => (
-                        <List.Icon
-                            {...props}
-                            color={appTheme.colors.tertiary}
-                            icon="reload"
-                        />
-                    )}
-                    title="Connected! Tap to retry."
-                    description={error.message}
-                    onPress={() => mutate()}
-                />
-            );
+            return <NoInternetItem error={error} />;
         }
-        return (
-            <List.Item
-                left={props => (
-                    <List.Icon
-                        {...props}
-                        icon="alert-circle"
-                        color={appTheme.colors.error}
-                    />
-                )}
-                title="Failed to load comments. Tap to retry."
-                description={error.message}
-                onPress={() => mutate()}
-            />
-        );
+        return <RetryItem error={error} onRetry={onRefresh} />;
     } else if ((data ?? [])[0]?.total === 0) {
-        return (
-            <List.Item
-                left={props => (
-                    <List.Icon
-                        {...props}
-                        icon="comment-outline"
-                    />
-                )}
-                title="No comments"
-                description="Be the first to comment!"
-            />
-        );
+        return <NoCommentsItem />;
     } else {
         return (
             <Portal.Host>
@@ -215,10 +173,5 @@ const styles = StyleSheet.create({
         marginTop: '4%',
         marginLeft: '4%',
         fontWeight: 'bold',
-    },
-    footer: {
-        paddingBottom: '2%',
-        justifyContent: 'center',
-        alignItems: 'center',
     },
 });
