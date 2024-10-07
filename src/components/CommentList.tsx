@@ -84,16 +84,24 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
         }
     });
 
+    const sectionFooterStyle = useMemo(() => [styles.sectionFooter, {
+        color: appTheme.dark
+            ? appTheme.colors.onSurfaceDisabled
+            : appTheme.colors.backdrop,
+    }], [appTheme.colors.backdrop, appTheme.colors.onSurfaceDisabled, appTheme.dark]);
+
     const renderSectionFooter = useCallback(({ section }: { section: any }) => {
         if (section.title === 'Latest Comments') {
             if (showData[0].data.length !== (data || [])[0].total) {
                 return <List.Item
                     title="Loading more comments..."
-                    left={props => <ActivityIndicator {...props} />}
+                    left={props => <ActivityIndicator {...props} size={16}/>}
+                    titleStyle={sectionFooterStyle}
                 />;
             } else {
                 return <List.Item
                     title="All comments loaded!"
+                    titleStyle={sectionFooterStyle}
                     left={props => <List.Icon
                         {...props}
                         icon="check-all"
@@ -102,7 +110,7 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
                 />;
             }
         } else { return <View />; }
-    }, [appTheme.colors.primary, data, showData]);
+    }, [appTheme.colors.primary, data, sectionFooterStyle, showData]);
 
     const renderSectionHeader = useCallback(({ section }: { section: any }) => (
         <Text style={styles.header}>
@@ -174,4 +182,7 @@ const styles = StyleSheet.create({
         marginLeft: '4%',
         fontWeight: 'bold',
     },
+    sectionFooter: {
+        fontSize: 14,
+    }
 });
