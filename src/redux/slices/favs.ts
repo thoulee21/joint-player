@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { StorageKeys } from '../../App';
 import { TrackType } from '../../services';
 import { RootState } from '../store';
@@ -9,7 +9,7 @@ const initialState = {
 };
 
 export const favsSlice = createSlice({
-    name: 'favs',
+    name: StorageKeys.Favs,
     initialState,
     reducers: {
         setFavs: (state, action: PayloadAction<TrackType[]>) => {
@@ -34,7 +34,20 @@ export const favsSlice = createSlice({
             AsyncStorage.removeItem(StorageKeys.Favs);
         }
     },
+    extraReducers: (builder) => {
+        builder.addCase(initFavs.fulfilled, (state, action) => {
+            state.value = action.payload;
+        });
+    }
 });
+
+export const initFavs = createAsyncThunk(
+    `${StorageKeys.Favs}/initFavs`,
+    async () => {
+        const favs = await AsyncStorage.getItem(StorageKeys.Favs);
+        return favs ? JSON.parse(favs) : initialState.value;
+    }
+);
 
 export const { addFav, clearFavs, removeFav, setFavs } = favsSlice.actions;
 
