@@ -7,7 +7,8 @@ import UserAgent from 'user-agents';
 import { StorageKeys } from '../App';
 import { SongAlbum } from '../types/albumDetail';
 import type { Track as TrackData } from '../types/playlist';
-import { Artist, Main as SongDetail } from '../types/songDetail';
+import { Artist } from '../types/songDetail';
+import { fetchSearchResults, fetchTrackDetails } from '../utils';
 
 export interface TrackType {
   id: string;
@@ -22,7 +23,7 @@ export interface TrackType {
   mvid: number;
 }
 
-export const randomUserAgent = new UserAgent({ deviceCategory: 'mobile' });
+const randomUserAgent = new UserAgent({ deviceCategory: 'mobile' });
 export const fetchPlus = fetchRetry(fetch, { retries: 3, retryDelay: 1000 });
 
 export const requestInit = {
@@ -31,64 +32,6 @@ export const requestInit = {
     'Accept':
       'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
   },
-};
-
-const fetchSearchResults = async (keyword: string): Promise<any> => {
-  const { Type, Limit, Offset, Total } = {
-    Type: 1,
-    Limit: 20,
-    Offset: 0,
-    Total: true,
-  };
-
-  const fetchResult = await fetchPlus(
-    `https://music.163.com/api/search/get/web?csrf_token=hlpretag=&hlposttag=&s=${keyword}&type=${Type}&offset=${Offset}&total=${Total}&limit=${Limit}`,
-    requestInit,
-  );
-  const { result } = await fetchResult.json();
-
-  if (fetchResult.status !== 200) {
-    ToastAndroid.show(
-      `Failed to fetch search results: ${fetchResult.status} ${fetchResult.statusText}`,
-      ToastAndroid.SHORT
-    );
-  }
-
-  return result;
-};
-
-const fetchTrackDetails = async (trackId: string): Promise<Track | null> => {
-  const detail = await fetchPlus(
-    `https://music.163.com/api/song/detail/?id=${trackId}&ids=%5B${trackId}%5D`,
-    requestInit,
-  );
-  const detailJson: SongDetail = await detail.json();
-
-  if (detailJson.code !== 200) {
-    const errMsg = `Failed to fetch track(${trackId}) details: ${detailJson.code} ${detailJson.msg}`;
-    if (__DEV__) {
-      console.log(errMsg);
-    } else {
-      Sentry.captureMessage(errMsg, 'log');
-    }
-
-    return null;
-  }
-
-  const track = detailJson.songs[0];
-
-  return {
-    id: track.id.toString(),
-    url: `https://music.163.com/song/media/outer/url?id=${track.id}.mp3`,
-    title: track.name,
-    artist: track.artists.map(ar => ar.name).join(', '),
-    artists: track.artists,
-    artwork: track.album.picUrl,
-    duration: track.duration / 1000,
-    album: track.album.name,
-    albumRaw: track.album,
-    mvid: track.mvid,
-  };
 };
 
 export const getTracks = async (keyword?: string): Promise<Track[]> => {
