@@ -1,10 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { Appearance } from 'react-native';
 import { RootState } from '../store';
 
 const initialState = {
-    // TODO: it doesn't seems to take effect...
-    enabled: Appearance.getColorScheme() === 'dark',
+    value: false,
 };
 
 export const darkModeSlice = createSlice({
@@ -13,7 +11,7 @@ export const darkModeSlice = createSlice({
     initialState,
     reducers: {
         setDarkMode: (state, action) => {
-            state.enabled = action.payload;
+            state.value = action.payload;
         },
     },
 });
@@ -22,5 +20,5 @@ export const { setDarkMode } = darkModeSlice.actions;
 
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectDarkModeEnabled = (state: RootState) => state.darkMode.enabled;
+export const selectDarkModeEnabled = (state: RootState) => state.darkMode.value;
 

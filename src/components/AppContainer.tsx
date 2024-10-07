@@ -15,8 +15,7 @@ import {
     MD3DarkTheme,
     MD3LightTheme,
     PaperProvider,
-    adaptNavigationTheme,
-    useTheme
+    adaptNavigationTheme
 } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
 import { SWRConfig, SWRConfiguration } from 'swr';
@@ -32,7 +31,6 @@ const swrConfig: SWRConfiguration = {
 
 export function AppContainer({ children }: PropsWithChildren) {
     const dispatch = useAppDispatch();
-    const appTheme = useTheme();
     const track = useActiveTrack();
 
     const isPlayerReady = useSetupPlayer();
@@ -76,9 +74,9 @@ export function AppContainer({ children }: PropsWithChildren) {
                 SplashScreen.hideAsync();
             }
         });
-        //no dispatch
+        //no `updateTheme` here
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [appTheme.dark, track?.artwork]);
+    }, [isPlayerReady, track?.artwork]);
 
     useEffect(() => {
         StatusBar.setBackgroundColor('transparent');
