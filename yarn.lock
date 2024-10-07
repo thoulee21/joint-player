@@ -5701,16 +5701,18 @@ expo-modules-autolinking@1.10.3:
     find-up "^5.0.0"
     fs-extra "^9.1.0"
 
-expo-modules-autolinking@~1.11.1:
-  version "1.11.1"
-  resolved "https://registry.yarnpkg.com/expo-modules-autolinking/-/expo-modules-autolinking-1.11.1.tgz#4a867f727d9dfde07de8dde14b333a3cbf82ce3c"
-  integrity sha512-2dy3lTz76adOl7QUvbreMCrXyzUiF8lygI7iFJLjgIQIVH+43KnFWE5zBumpPbkiaq0f0uaFpN9U0RGQbnKiMw==
+expo-modules-autolinking@~1.11.3:
+  version "1.11.3"
+  resolved "https://registry.yarnpkg.com/expo-modules-autolinking/-/expo-modules-autolinking-1.11.3.tgz#bc64d278c04015014bb5802e3cfcd942d7c07168"
+  integrity sha512-oYh8EZEvYF5TYppxEKUTTJmbr8j7eRRnrIxzZtMvxLTXoujThVPMFS/cbnSnf2bFm1lq50TdDNABhmEi7z0ngQ==
   dependencies:
     chalk "^4.1.0"
     commander "^7.2.0"
     fast-glob "^3.2.5"
     find-up "^5.0.0"
     fs-extra "^9.1.0"
+    require-from-string "^2.0.2"
+    resolve-from "^5.0.0"
 
 expo-modules-core@1.11.13:
   version "1.11.13"

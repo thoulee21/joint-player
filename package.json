@@ -34,7 +34,7 @@
     "color": "^4.2.3",
     "expo": "^50.0.14",
     "expo-blur": "~12.9.2",
-    "expo-modules-autolinking": "~1.11.1",
+    "expo-modules-autolinking": "~1.11.3",
     "expo-screen-orientation": "6.4.1",
     "expo-splash-screen": "~0.26.4",
     "install-expo-modules": "^0.10.0",
