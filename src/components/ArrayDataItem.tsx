@@ -20,7 +20,7 @@ export const ArrayDataItem = ({ item, index, appTheme }: {
     ), [appTheme.colors.tertiary]);
 
     const renderMoreButton = useCallback((props: any) => (
-        <DataMoreBtn data={item.data} {...props} />
+        <DataMoreBtn data={item} {...props} />
     ), [item]);
 
     return (
