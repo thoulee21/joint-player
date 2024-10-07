@@ -1,13 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
-// Define a type for the slice state
-interface DevModeState {
-    enabled: boolean;
-}
-
-// Define the initial state using that type
-const initialState: DevModeState = {
+const initialState = {
     enabled: __DEV__,
 };
 
