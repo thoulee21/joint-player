@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 
 const initialState = {
-    enabled: __DEV__,
+    value: __DEV__,
 };
 
 export const devModeSlice = createSlice({
@@ -11,10 +11,10 @@ export const devModeSlice = createSlice({
     initialState,
     reducers: {
         toggleDevModeValue: (state) => {
-            state.enabled = !state.enabled;
+            state.value = !state.value;
         },
         setDevModeValue: (state, action) => {
-            state.enabled = action.payload;
+            state.value = action.payload;
         },
     },
 });
@@ -23,5 +23,5 @@ export const { toggleDevModeValue, setDevModeValue } = devModeSlice.actions;
 
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectDevModeEnabled = (state: RootState) => state.devMode.enabled;
+export const selectDevModeEnabled = (state: RootState) => state.devMode.value;
 
