@@ -3,7 +3,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect } from 'react';
 import { AppContainer, RootStack } from './components';
 import { useAppDispatch } from './hook';
-import { setBlurRadius, setFavs, setUser } from './redux/slices';
+import { initUser, setBlurRadius, setFavs } from './redux/slices';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -33,10 +33,7 @@ export default function App() {
         dispatch(setFavs(JSON.parse(storedFavs)));
       }
 
-      const storedUser = await AsyncStorage.getItem(StorageKeys.User);
-      if (storedUser) {
-        dispatch(setUser(JSON.parse(storedUser)));
-      }
+      dispatch(initUser());
     }
 
     restorePrefs();

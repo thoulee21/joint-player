@@ -1,10 +1,8 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { ToastAndroid } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Avatar, IconButton, List } from 'react-native-paper';
-import { StorageKeys } from '../App';
 import { useAppDispatch } from '../hook';
 import { setUser } from '../redux/slices';
 import { Userprofile } from '../types/searchUsers';
@@ -20,7 +18,6 @@ export const UserItem = ({ item }: { item: Userprofile }) => {
 
     const login = async () => {
         dispatch(setUser(user));
-        await AsyncStorage.setItem(StorageKeys.User, JSON.stringify(user));
 
         HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
         ToastAndroid.show(`Logged in as ${item.nickname}`, ToastAndroid.LONG);
