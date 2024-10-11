@@ -1,8 +1,9 @@
-import { createDrawerNavigator, DrawerItemList } from '@react-navigation/drawer';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import React, { useMemo } from 'react';
 import { Icon } from 'react-native-paper';
 import { Favs, Login, Player, Settings } from '../pages';
 import { BlurBackground } from './BlurBackground';
+import { DrawerItemList } from './DrawerItemList';
 import { Spacer } from './Spacer';
 import { UserHeader } from './UserHeader';
 
