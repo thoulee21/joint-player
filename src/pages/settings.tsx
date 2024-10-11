@@ -37,8 +37,8 @@ export function Settings() {
         </List.Section>
 
         <Divider />
-        <IssueReportItem />
         <DevItem />
+        <IssueReportItem />
         <AboutItem />
       </ScrollView>
     </BlurBackground>
