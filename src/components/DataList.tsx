@@ -19,6 +19,7 @@ export const DataList = ({ dataItems }: {
             data={dataItems}
             keyExtractor={keyExtractor}
             renderItem={renderItem}
+            fadingEdgeLength={50}
             ListFooterComponent={
                 <View style={styles.androidView} />
             }

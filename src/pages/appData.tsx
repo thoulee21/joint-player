@@ -1,8 +1,12 @@
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import {
+    createMaterialTopTabNavigator,
+    MaterialTopTabBarProps
+} from '@react-navigation/material-top-tabs';
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { Appbar, Divider } from 'react-native-paper';
+import { Appbar, Icon, SegmentedButtons } from 'react-native-paper';
+import packageJson from '../../package.json';
 import { BlurBackground } from '../components/BlurBackground';
 import { DataItemType } from '../components/DataItem';
 import { DataList } from '../components/DataList';
@@ -12,62 +16,26 @@ import { StorageKeys } from '../utils/storageKeys';
 
 const TopTab = createMaterialTopTabNavigator();
 
-export function AppDataScreen() {
-    const navigation = useNavigation();
+const PackageData = () => {
+    const packageData = Object.keys(packageJson).map((key) => ({
+        name: key,
+        data: (packageJson as Record<string, any>)[key],
+    }));
 
-    return (
-        <BlurBackground>
-            <Appbar.Header style={styles.transparent}>
-                <Appbar.BackAction onPress={navigation.goBack} />
-                <Appbar.Content title="App Data" />
-            </Appbar.Header>
+    return (<DataList dataItems={packageData} />);
+};
 
-            <TopTab.Navigator
-                backBehavior="none"
-                screenOptions={{
-                    lazy: true,
-                    tabBarStyle: [
-                        styles.tabBar,
-                        styles.transparent
-                    ],
-                    tabBarAndroidRipple: {
-                        color: 'transparent',
-                        borderless: true,
-                    }
-                }}
-                sceneContainerStyle={styles.transparent}
-            >
-                <TopTab.Screen
-                    name="ReduxState"
-                    component={ReduxState}
-                    options={{ title: 'Redux State' }}
-                />
-                <TopTab.Screen
-                    name="StorageList"
-                    component={StorageList}
-                    options={{ title: 'Local Storage' }}
-                />
-            </TopTab.Navigator>
-        </BlurBackground>
-    );
-}
-
-export function ReduxState() {
+const ReduxState = () => {
     const state: { [key: string]: any } = store.getState();
     const stateList = Object.keys(state).map((key) => ({
         name: key,
         data: state[key].value || state[key],
     }));
 
-    return (
-        <>
-            <Divider />
-            <DataList dataItems={stateList} />
-        </>
-    );
-}
+    return (<DataList dataItems={stateList} />);
+};
 
-export function StorageList() {
+const StorageList = () => {
     const [localData, setLocalData] = useState<DataItemType[]>([]);
 
     useEffect(() => {
@@ -87,17 +55,105 @@ export function StorageList() {
         fetchData();
     }, []);
 
+    return (<DataList dataItems={localData} />);
+};
+
+export function AppDataScreen() {
+    const navigation = useNavigation();
+
+    const renderTapBar = useCallback(({
+        state, navigation: topTabNavi, descriptors
+    }: MaterialTopTabBarProps) => {
+        const tabBarItems = state.routes.map((route, index) => {
+            const { title, tabBarIcon } = descriptors[route.key].options;
+            return ({
+                value: state.routeNames[index],
+                label: title,
+                icon: tabBarIcon ? ({ color }: { color: string }) => (
+                    tabBarIcon({ color, focused: state.index === index })
+                ) : undefined,
+            });
+        });
+
+        return (
+            <SegmentedButtons
+                style={styles.tabBar}
+                value={state.routeNames[state.index]}
+                buttons={tabBarItems}
+                onValueChange={(value) => {
+                    topTabNavi.navigate(value);
+                }}
+            />
+        );
+    }, []);
+
     return (
-        <>
-            <Divider />
-            <DataList dataItems={localData} />
-        </>
+        <BlurBackground>
+            <Appbar.Header style={styles.transparent}>
+                <Appbar.BackAction onPress={navigation.goBack} />
+                <Appbar.Content title="App Data" />
+            </Appbar.Header>
+
+            <TopTab.Navigator
+                backBehavior="none"
+                screenOptions={{
+                    lazy: true,
+                    swipeEnabled: false,
+                }}
+                tabBar={renderTapBar}
+                sceneContainerStyle={styles.transparent}
+            >
+                <TopTab.Screen
+                    name="ReduxState"
+                    component={ReduxState}
+                    options={{
+                        title: 'State',
+                        tabBarIcon: ({ color }) => (
+                            <Icon
+                                source="cellphone-information"
+                                color={color}
+                                size={20}
+                            />
+                        )
+                    }}
+                />
+                <TopTab.Screen
+                    name="LocalStorage"
+                    component={StorageList}
+                    options={{
+                        title: 'Storage',
+                        tabBarIcon: ({ color }) => (
+                            <Icon
+                                source="database-cog-outline"
+                                color={color}
+                                size={20}
+                            />
+                        )
+                    }}
+                />
+                <TopTab.Screen
+                    name="PackageData"
+                    component={PackageData}
+                    options={{
+                        title: 'Package',
+                        tabBarIcon: ({ color }) => (
+                            <Icon
+                                source="package-variant"
+                                color={color}
+                                size={20}
+                            />
+                        )
+                    }}
+                />
+            </TopTab.Navigator>
+        </BlurBackground>
     );
 }
 
 const styles = StyleSheet.create({
     tabBar: {
         shadowColor: 'transparent',
+        marginHorizontal: 16,
     },
     transparent: {
         backgroundColor: 'transparent',
