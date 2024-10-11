@@ -2,7 +2,8 @@ import React, { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
 import { Avatar, Card, Text } from 'react-native-paper';
 import { MD3Theme } from 'react-native-paper/src/types';
-import { DataMoreBtn, JSONViewer } from '.';
+import { DataMoreBtn } from './DataMoreButton';
+import { JSONViewer } from './JsonViewer';
 
 export const ArrayDataItem = ({ item, index, appTheme }: {
     item: any,

@@ -2,16 +2,14 @@ import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Appbar, Divider, List, Portal, Snackbar } from 'react-native-paper';
 import RNRestart from 'react-native-restart';
-import {
-    BlurBackground,
-    ClearAllDataItem,
-    DevSwitchItem,
-    ExportDataItem,
-    ImportDataItem,
-    ListWrapper,
-    RestartItem,
-    ViewAppDataItem
-} from '../components';
+import { BlurBackground } from '../components/BlurBackground';
+import { ClearAllDataItem } from '../components/ClearAllDataItem';
+import { DevSwitchItem } from '../components/DevSwitchItem';
+import { ExportDataItem } from '../components/ExportDataItem';
+import { ImportDataItem } from '../components/ImportDataItem';
+import { ListWrapper } from '../components/ListWrapper';
+import { RestartItem } from '../components/RestartItem';
+import { ViewAppDataItem } from '../components/ViewAppDataItem';
 
 export function DevScreen({ navigation }: { navigation: any }) {
     const [restartBarVisible, setRestartBarVisible] = useState(false);

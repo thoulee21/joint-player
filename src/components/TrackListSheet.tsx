@@ -3,10 +3,11 @@ import React, { useCallback, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Portal, Text } from 'react-native-paper';
 import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
-import { BottomSheetPaper, TrackItem } from '.';
 import { useAppDispatch, useAppSelector } from '../hook';
 import { queue, setQueue } from '../redux/slices';
-import { TrackType } from '../services';
+import { TrackType } from '../services/GetTracksService';
+import { TrackItem } from './TrackItem';
+import { BottomSheetPaper } from './BottomSheetPaper';
 
 interface TrackListProps {
   bottomSheetRef: React.RefObject<BottomSheet>;

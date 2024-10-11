@@ -1,7 +1,8 @@
 import React from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { MD3Theme, Text } from 'react-native-paper';
-import { ArrayDataItem, DataItemType } from '.';
+import { ArrayDataItem } from './ArrayDataItem';
+import { DataItemType } from './DataItem';
 
 export const ArrayDataList = ({ item, appTheme }: {
     item: DataItemType,

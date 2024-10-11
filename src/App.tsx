@@ -1,21 +1,11 @@
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect } from 'react';
-import { AppContainer, RootStack } from './components';
-import { useAppDispatch } from './hook';
+import { AppContainer } from './components/AppContainer';
+import { RootStack } from './components/RootStack';
+import { useAppDispatch } from './hook/reduxHooks';
 import { initBlurRadius, initFavs, initUser } from './redux/slices';
 
 SplashScreen.preventAutoHideAsync();
-
-export enum StorageKeys {
-  // eslint-disable-next-line no-unused-vars
-  Keyword = 'keyword',
-  // eslint-disable-next-line no-unused-vars
-  BlurRadius = 'blurRadius',
-  // eslint-disable-next-line no-unused-vars
-  Favs = 'favs',
-  // eslint-disable-next-line no-unused-vars
-  User = 'user',
-}
 
 export default function App() {
   const dispatch = useAppDispatch();

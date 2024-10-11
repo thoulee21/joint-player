@@ -4,7 +4,8 @@ import HapticFeedback, {
   HapticFeedbackTypes
 } from 'react-native-haptic-feedback';
 import { IconButton, Menu } from 'react-native-paper';
-import { CommentsMenu, MvMenu } from '.';
+import { CommentsMenu } from './CommentsMenu';
+import { MvMenu } from './MvMenu';
 
 export function TrackMenu(props: any) {
   const navigation = useNavigation();

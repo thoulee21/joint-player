@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import HapticFeedback, {
-  HapticFeedbackTypes
-} from 'react-native-haptic-feedback';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { IconButton } from 'react-native-paper';
 import TrackPlayer, { RepeatMode } from 'react-native-track-player';
-import { DefaultRepeatMode } from '../services';
+import { DefaultRepeatMode } from '../services/SetupService';
 
 /**
  * A component that displays a switch for changing the repeat mode.

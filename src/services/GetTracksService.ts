@@ -1,14 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Sentry from '@sentry/react-native';
-import fetchRetry from 'fetch-retry';
 import { ToastAndroid } from 'react-native';
 import TrackPlayer, { Track } from 'react-native-track-player';
-import UserAgent from 'user-agents';
-import { StorageKeys } from '../App';
 import { SongAlbum } from '../types/albumDetail';
 import type { Track as TrackData } from '../types/playlist';
 import { Artist } from '../types/songDetail';
-import { fetchSearchResults, fetchTrackDetails } from '../utils';
+import { fetchSearchResults } from '../utils/fetchSearchResults';
+import { fetchTrackDetails } from '../utils/fetchTrackDetails';
+import { StorageKeys } from '../utils/storageKeys';
 
 export interface TrackType {
   id: string;
@@ -22,17 +21,6 @@ export interface TrackType {
   albumRaw: SongAlbum;
   mvid: number;
 }
-
-const randomUserAgent = new UserAgent({ deviceCategory: 'mobile' });
-export const fetchPlus = fetchRetry(fetch, { retries: 3, retryDelay: 1000 });
-
-export const requestInit = {
-  headers: {
-    'User-Agent': randomUserAgent.toString(),
-    'Accept':
-      'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-  },
-};
 
 export const getTracks = async (keyword?: string): Promise<Track[]> => {
   try {

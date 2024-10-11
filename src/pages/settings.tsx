@@ -5,14 +5,12 @@ import HapticFeedback, {
   HapticFeedbackTypes
 } from 'react-native-haptic-feedback';
 import { Appbar, Divider, List } from 'react-native-paper';
-import {
-  AboutItem,
-  BlurBackground,
-  BlurRadiusSlider,
-  DevItem,
-  IssueReportItem,
-  ThemeColorIndicator
-} from '../components';
+import { AboutItem } from '../components/AboutItem';
+import { BlurBackground } from '../components/BlurBackground';
+import { BlurRadiusSlider } from '../components/BlurRadiusSlider';
+import { DevItem } from '../components/DevItem';
+import { IssueReportItem } from '../components/IssueReportItem';
+import { ThemeColorIndicator } from '../components/ThemeColorIndicator';
 
 export function Settings() {
   const navigation = useNavigation();

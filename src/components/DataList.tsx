@@ -7,7 +7,7 @@ import {
     View
 } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
-import { DataItem, DataItemType } from '.';
+import { DataItem, DataItemType } from './DataItem';
 
 export const DataList = ({ dataItems }: {
     dataItems: DataItemType[]

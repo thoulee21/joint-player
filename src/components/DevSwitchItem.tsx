@@ -1,9 +1,9 @@
 import React from 'react';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { List } from 'react-native-paper';
-import { RightSwitch } from '.';
 import { useAppDispatch, useAppSelector } from '../hook';
 import { selectDevModeEnabled, toggleDevModeValue } from '../redux/slices';
+import { RightSwitch } from './RightSwitch';
 
 export const DevSwitchItem = () => {
     const dispatch = useAppDispatch();

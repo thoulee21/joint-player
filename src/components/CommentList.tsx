@@ -4,10 +4,11 @@ import { RefreshControl, SectionList, StyleSheet, View } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { ActivityIndicator, List, Portal, Text, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
-import { CommentItem, ScrollToBtns } from '.';
 import { useDebounce } from '../hook';
 import { Comment, Main as CommentsMain } from '../types/comments';
 import { NoCommentsItem, NoInternetItem, RetryItem } from './CommentSpecialItems';
+import { CommentItem } from './CommentItem';
+import { ScrollToBtns } from './ScrollToBtns';
 
 export interface Section {
     title: string;

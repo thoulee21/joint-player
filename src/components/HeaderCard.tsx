@@ -2,8 +2,8 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Avatar, IconButton, List } from 'react-native-paper';
-import { ArtistNames } from '.';
 import { HotAlbum } from '../types/albumArtist';
+import { ArtistNames } from './ArtistNames';
 
 export const HeaderCard = ({ album }: { album: HotAlbum }) => {
     const navigation = useNavigation();

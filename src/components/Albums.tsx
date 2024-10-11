@@ -2,9 +2,11 @@ import React, { useCallback, useState } from 'react';
 import { FlatList, RefreshControl, StatusBar, StyleSheet } from 'react-native';
 import { ActivityIndicator, Text, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
-import { Album, AlbumHeader, Chips } from '.';
 import { useDebounce } from '../hook';
 import { HotAlbum, Main } from '../types/albumArtist';
+import { Album } from './AlbumItem';
+import { AlbumHeader } from './ArtistHeader';
+import { Chips } from './Chips';
 
 export function Albums({ artistID }: { artistID: number }) {
     const appTheme = useTheme();

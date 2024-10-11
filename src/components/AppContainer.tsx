@@ -19,9 +19,10 @@ import {
 } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
 import { SWRConfig, SWRConfiguration } from 'swr';
-import { useAppDispatch, useAppSelector, useSetupPlayer } from '../hook';
-import { selectDarkModeEnabled, setDarkMode } from '../redux/slices';
-import { requestInit } from '../services';
+import { useAppDispatch, useAppSelector } from '../hook/reduxHooks';
+import { useSetupPlayer } from '../hook/useSetupPlayer';
+import { selectDarkModeEnabled, setDarkMode } from '../redux/slices/darkMode';
+import { requestInit } from '../utils/requestInit';
 
 const swrConfig: SWRConfiguration = {
     fetcher: (resource, init) =>

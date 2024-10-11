@@ -7,8 +7,8 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import {useTheme} from 'react-native-paper';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { useTheme } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type Props = ScrollViewProps & {
   children: React.ReactNode;

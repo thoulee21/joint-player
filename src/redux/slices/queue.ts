@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import TrackPlayer from 'react-native-track-player';
-import { TrackType } from '../../services';
+import { TrackType } from '../../services/GetTracksService';
 import { RootState } from '../store';
 
 const initialState = {

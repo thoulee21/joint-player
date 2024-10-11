@@ -3,8 +3,9 @@ import { StyleSheet, ToastAndroid, View } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { IconButton, Portal, Snackbar, useTheme } from 'react-native-paper';
 import { useAppDispatch } from '../hook';
-import { addToQueueAsync, removeFav } from '../redux/slices';
-import { TrackType } from '../services';
+import { removeFav } from '../redux/slices/favs';
+import { addToQueueAsync } from '../redux/slices/queue';
+import { TrackType } from '../services/GetTracksService';
 
 export interface QuickActionsProps {
     index: number;

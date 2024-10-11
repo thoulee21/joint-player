@@ -13,9 +13,9 @@ import {
 } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Appbar, HelperText, TextInput, useTheme } from 'react-native-paper';
-import { BlurBackground } from '../components';
 import { useAppSelector } from '../hook';
 import { selectUser } from '../redux/slices';
+import { BlurBackground } from '../components/BlurBackground';
 
 export const IssueReport = () => {
     const ISSUE_MAX_LENGTH = 200;

@@ -6,9 +6,10 @@ import HapticFeedback, {
     HapticFeedbackTypes
 } from 'react-native-haptic-feedback';
 import { Searchbar } from 'react-native-paper';
-import { BlurBackground, UserList } from '../components';
 import { useAppSelector } from '../hook';
 import { selectUser } from '../redux/slices';
+import { BlurBackground } from '../components/BlurBackground';
+import { UserList } from '../components/UserList';
 
 export const Login = () => {
     const navigation = useNavigation();

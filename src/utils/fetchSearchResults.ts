@@ -1,5 +1,6 @@
 import { ToastAndroid } from 'react-native';
-import { fetchPlus, requestInit } from '../services';
+import { fetchPlus } from './fetchPlus';
+import { requestInit } from './requestInit';
 
 export const fetchSearchResults = async (keyword: string): Promise<any> => {
     const { Type, Limit, Offset, Total } = {

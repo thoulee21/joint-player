@@ -5,21 +5,18 @@ import { ActivityIndicator, Divider, Text, useTheme } from 'react-native-paper';
 import SwipeableFlatList from 'react-native-swipeable-list';
 import TrackPlayer from 'react-native-track-player';
 import useSWRInfinite from 'swr/infinite';
-import {
-    AddToQueueButton,
-    AlbumDescription,
-    HeaderCard,
-    QuickActionsWrapper,
-    SongItem,
-    Spacer,
-    TracksHeader
-} from '.';
 import { useAppDispatch, useDebounce } from '../hook';
-import { setQueueAsync } from '../redux/slices';
-import { TrackType } from '../services';
+import { setQueueAsync } from '../redux/slices/queue';
+import { TrackType } from '../services/GetTracksService';
 import { HotAlbum } from '../types/albumArtist';
 import { Main, Song } from '../types/albumDetail';
 import { songToTrack } from '../utils';
+import { AlbumDescription } from './AlbumDescription';
+import { HeaderCard } from './HeaderCard';
+import { AddToQueueButton, QuickActionsWrapper } from './QuickActions';
+import { SongItem } from './SongItem';
+import { Spacer } from './Spacer';
+import { TracksHeader } from './TracksHeader';
 
 export function AlbumContent({ album }: { album: HotAlbum }) {
     const dispatch = useAppDispatch();

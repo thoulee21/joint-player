@@ -2,13 +2,11 @@ import { useNetInfoInstance } from '@react-native-community/netinfo';
 import React, { useCallback, useEffect } from 'react';
 import { StyleSheet, ToastAndroid, View } from 'react-native';
 import TrackPlayer, { usePlaybackState } from 'react-native-track-player';
-import {
-  BackwardButton,
-  CommentsButton,
-  ForwardButton,
-  PlayButton,
-  RepeatModeSwitch,
-} from '.';
+import { BackwardButton } from './BackwardButton';
+import { CommentsButton } from './CommentsButton';
+import { ForwardButton } from './ForwardButton';
+import { PlayButton } from './PlayPauseButton';
+import { RepeatModeSwitch } from './RepeatModeSwitch';
 
 export function PlayControls() {
   const { netInfo } = useNetInfoInstance();

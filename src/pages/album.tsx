@@ -1,8 +1,9 @@
 import { useRoute } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { AlbumContent, BlurBackground } from '../components';
 import { HotAlbum } from '../types/albumArtist';
+import { AlbumContent } from '../components/AlbumContent';
+import { BlurBackground } from '../components/BlurBackground';
 
 export function AlbumDetail() {
     const { album } = (useRoute().params as { album: HotAlbum });

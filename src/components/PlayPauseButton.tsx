@@ -1,12 +1,7 @@
 import React from 'react';
-import HapticFeedback, {
-    HapticFeedbackTypes,
-} from 'react-native-haptic-feedback';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { IconButton } from 'react-native-paper';
-import TrackPlayer, {
-    useActiveTrack,
-    useIsPlaying
-} from 'react-native-track-player';
+import TrackPlayer, { useActiveTrack, useIsPlaying } from 'react-native-track-player';
 
 export function PlayButton() {
     const { playing, bufferingDuringPlay } = useIsPlaying();

@@ -2,7 +2,8 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Appbar } from 'react-native-paper';
-import { BlurBackground, CommentList } from '../components';
+import { BlurBackground } from '../components/BlurBackground';
+import { CommentList } from '../components/CommentList';
 
 export function Comments(): React.JSX.Element {
     const navigation = useNavigation();

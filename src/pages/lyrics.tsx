@@ -4,8 +4,11 @@ import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedbac
 import { ActivityIndicator, List, ToggleButton, useTheme } from 'react-native-paper';
 import { useActiveTrack, useProgress, } from 'react-native-track-player';
 import useSWR from 'swr';
-import { BlurBackground, LyricView, TrackInfoBar, TrackMenu } from '../components';
 import { Main as LyricMain } from '../types/lyrics';
+import { BlurBackground } from '../components/BlurBackground';
+import { LyricView } from '../components/LyricView';
+import { TrackInfoBar } from '../components/TrackInfoBar';
+import { TrackMenu } from '../components/TrackMenu';
 
 export const timeOffset = 1005;
 const fallbackId = 1470156770;

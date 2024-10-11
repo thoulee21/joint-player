@@ -1,17 +1,11 @@
 import React, { useCallback, useMemo } from 'react';
 import { StyleSheet } from 'react-native';
-import HapticFeedback, {
-  HapticFeedbackTypes
-} from 'react-native-haptic-feedback';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { IconButton, useTheme } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
 import { useAppDispatch, useAppSelector } from '../hook';
-import {
-  addFav,
-  favs,
-  removeFav
-} from '../redux/slices';
-import { TrackType } from '../services';
+import { addFav, favs, removeFav } from '../redux/slices';
+import { TrackType } from '../services/GetTracksService';
 
 export const FavToggle = () => {
   const dispatch = useAppDispatch();

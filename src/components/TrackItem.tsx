@@ -8,7 +8,7 @@ import { Style } from 'react-native-paper/lib/typescript/components/List/utils';
 import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
 import { useAppDispatch } from '../hook';
 import { removeFromQueueAsync } from '../redux/slices';
-import { TrackType } from '../services';
+import { TrackType } from '../services/GetTracksService';
 
 export interface ListRightProps {
     color: string;

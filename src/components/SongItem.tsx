@@ -1,14 +1,12 @@
 import React, { memo } from 'react';
 import { ViewStyle } from 'react-native';
-import HapticFeedback, {
-    HapticFeedbackTypes
-} from 'react-native-haptic-feedback';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { List, Text, useTheme } from 'react-native-paper';
 import { Style } from 'react-native-paper/lib/typescript/components/List/utils';
 import TrackPlayer from 'react-native-track-player';
 import { useAppDispatch } from '../hook';
 import { clearAddOneAsync } from '../redux/slices';
-import { TrackType } from '../services';
+import { TrackType } from '../services/GetTracksService';
 
 const IndexOfSong = memo(({ style: leftStyle, index }: {
     style: Style, index: number

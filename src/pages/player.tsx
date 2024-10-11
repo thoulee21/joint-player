@@ -6,19 +6,17 @@ import { ScrollView, StatusBar, StyleSheet } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { IconButton, Searchbar, useTheme } from 'react-native-paper';
 import TrackPlayer from 'react-native-track-player';
-import { StorageKeys } from '../App';
-import {
-  BlurBackground,
-  BottomBar,
-  PlayControls,
-  Progress,
-  TrackInfo,
-  TrackListSheet
-} from '../components';
+import { BlurBackground } from '../components/BlurBackground';
+import { BottomBar } from '../components/BottomBar';
+import { PlayControls } from '../components/PlayControls';
+import { Progress } from '../components/Progress';
+import { TrackInfo } from '../components/TrackInfo';
+import { TrackListSheet } from '../components/TrackListSheet';
 import { useAppDispatch, useThrottle } from '../hook';
 import { setQueue } from '../redux/slices';
-import { TrackType, getTracks } from '../services';
+import { getTracks, TrackType } from '../services/GetTracksService';
 import { Storage } from '../utils';
+import { StorageKeys } from '../utils/storageKeys';
 
 export function Player() {
   const dispatch = useAppDispatch();

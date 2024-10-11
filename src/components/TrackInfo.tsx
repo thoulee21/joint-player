@@ -14,10 +14,11 @@ import HapticFeedback, {
 import { Surface, Text, useTheme } from 'react-native-paper';
 import { useActiveTrack, useProgress } from 'react-native-track-player';
 import useSWR from 'swr';
-import { ArtistNames, FavToggle } from '.';
 import { useAppSelector } from '../hook';
 import { selectDevModeEnabled } from '../redux/slices';
 import { Main as LyricMain } from '../types/lyrics';
+import { ArtistNames } from './ArtistNames';
+import { FavToggle } from './FavToggle';
 
 export const placeholderImg = 'https://picsum.photos/800';
 

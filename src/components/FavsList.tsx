@@ -3,16 +3,11 @@ import { StyleSheet } from 'react-native';
 import { Divider, Text, useTheme } from 'react-native-paper';
 //@ts-expect-error
 import SwipeableFlatList from 'react-native-swipeable-list';
-import {
-    AddToQueueButton,
-    DeleteFavButton,
-    QuickActionsProps,
-    QuickActionsWrapper,
-    SongItem
-} from '.';
 import { useAppSelector } from '../hook';
 import { favs } from '../redux/slices';
-import { TrackType } from '../services';
+import { TrackType } from '../services/GetTracksService';
+import { SongItem } from './SongItem';
+import { AddToQueueButton, DeleteFavButton, QuickActionsProps, QuickActionsWrapper } from './QuickActions';
 
 interface ListItemProps {
     item: TrackType,

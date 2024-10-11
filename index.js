@@ -8,7 +8,7 @@ import { Provider } from 'react-redux';
 import { name as appName } from './package.json';
 import App from './src/App';
 import { store } from './src/redux/store';
-import { PlaybackService } from './src/services';
+import { PlaybackService } from './src/services/PlaybackService';
 
 Sentry.init({
     dsn: 'https://8f255799dc215a920003a9291d1d1e14@o4507198225383424.ingest.de.sentry.io/4507198229184592',

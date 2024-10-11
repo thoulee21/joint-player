@@ -1,7 +1,8 @@
 import { useRoute } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Albums, BlurBackground } from '../components';
+import { Albums } from '../components/Albums';
+import { BlurBackground } from '../components/BlurBackground';
 import { Artist as ArtistType } from '../types/albumArtist';
 
 export function Artist() {

@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { StorageKeys } from '../../App';
-import { TrackType } from '../../services';
+import { TrackType } from '../../services/GetTracksService';
 import { RootState } from '../store';
+import { StorageKeys } from '../../utils/storageKeys';
 
 const initialState = {
     value: [] as TrackType[]

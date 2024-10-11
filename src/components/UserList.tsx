@@ -2,9 +2,9 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { FlatList, StyleSheet, ToastAndroid } from 'react-native';
 import { ActivityIndicator, List, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
-import { UserItem } from '.';
 import { useDebounce } from '../hook';
 import { Main, Userprofile } from '../types/searchUsers';
+import { UserItem } from './UserItem';
 
 export const UserList = ({ searchQuery }: { searchQuery: string; }) => {
     const appTheme = useTheme();

@@ -1,4 +1,4 @@
-import { TrackType } from '../services';
+import { TrackType } from '../services/GetTracksService';
 import { Song } from '../types/albumDetail';
 
 export function songToTrack(song: Song): TrackType {

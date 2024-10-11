@@ -4,8 +4,8 @@ import RNFS from 'react-native-fs';
 import { List } from 'react-native-paper';
 import { v4 as uuid } from 'uuid';
 import { name as appName } from '../../package.json';
-import { StorageKeys } from '../App';
 import { Storage } from '../utils';
+import { StorageKeys } from '../utils/storageKeys';
 
 export const ExportDataItem = () => {
     const [exporting, setExporting] = useState(false);

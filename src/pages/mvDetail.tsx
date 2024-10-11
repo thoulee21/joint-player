@@ -6,14 +6,12 @@ import HapticFeedBack, { HapticFeedbackTypes } from 'react-native-haptic-feedbac
 import { ActivityIndicator, Button, Portal, Text } from 'react-native-paper';
 import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
 import useSWR from 'swr';
-import {
-    BlurBackground,
-    CommentList,
-    DialogWithRadioBtns,
-    MvCover,
-    TrackInfoBar
-} from '../components';
 import { Main as MvMain } from '../types/mv';
+import { BlurBackground } from '../components/BlurBackground';
+import { CommentList } from '../components/CommentList';
+import { DialogWithRadioBtns } from '../components/DialogWithRadioBtns';
+import { MvCover } from '../components/MvCover';
+import { TrackInfoBar } from '../components/TrackInfoBar';
 
 const NoMV = () => {
     return (

@@ -2,8 +2,8 @@ import React, { memo, useCallback, useMemo, useState } from 'react';
 import { SectionList } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { FAB, Portal } from 'react-native-paper';
-import type { Section } from '.';
 import { Main as CommentsMain } from '../types/comments';
+import { Section } from './CommentList';
 
 export const ScrollToBtns = memo(({ showData, commentsRef, data }:
     {

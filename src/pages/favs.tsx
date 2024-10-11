@@ -6,9 +6,11 @@ import HapticFeedback, {
 } from 'react-native-haptic-feedback';
 import { Appbar, Button, Dialog, Portal, Text } from 'react-native-paper';
 import TrackPlayer from 'react-native-track-player';
-import { BlurBackground, FavsList, TracksHeader } from '../components';
 import { useAppDispatch, useAppSelector } from '../hook';
 import { clearFavs, favs, setQueueAsync } from '../redux/slices';
+import { BlurBackground } from '../components/BlurBackground';
+import { FavsList } from '../components/FavsList';
+import { TracksHeader } from '../components/TracksHeader';
 
 const ConfirmClearFavsDialog = ({ visible, hideDialog }: {
     visible: boolean;

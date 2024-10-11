@@ -5,10 +5,12 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Appbar, Divider } from 'react-native-paper';
-import { StorageKeys } from '../App';
-import { BlurBackground, DataItemType, DataList } from '../components';
 import { store } from '../redux/store';
 import { Storage } from '../utils';
+import { StorageKeys } from '../utils/storageKeys';
+import { BlurBackground } from '../components/BlurBackground';
+import { DataList } from '../components/DataList';
+import { DataItemType } from '../components/DataItem';
 
 const TopTab = createMaterialTopTabNavigator();
 

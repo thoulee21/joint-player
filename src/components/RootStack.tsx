@@ -5,7 +5,6 @@ import {
     createStackNavigator
 } from '@react-navigation/stack';
 import React from 'react';
-import { DrawerNavi } from '.';
 import {
     AboutScreen,
     AlbumDetail,
@@ -20,6 +19,7 @@ import {
     MvPlayer,
     WebViewScreen,
 } from '../pages';
+import { DrawerNavi } from './DrawerNavi';
 
 const Stack = createStackNavigator();
 

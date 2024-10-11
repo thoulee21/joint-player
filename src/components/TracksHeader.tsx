@@ -1,8 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import HapticFeedback, {
-    HapticFeedbackTypes
-} from 'react-native-haptic-feedback';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Button, List, useTheme } from 'react-native-paper';
 
 export const TracksHeader = ({ onPress, length }: {

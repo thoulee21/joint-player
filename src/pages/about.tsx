@@ -2,7 +2,10 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Appbar, List, Portal, Snackbar } from 'react-native-paper';
-import { AboutDialog, BlurBackground, ListWrapper, VersionItem } from '../components';
+import { ListWrapper } from '../components/ListWrapper';
+import { AboutDialog } from '../components/AboutDialog';
+import { BlurBackground } from '../components/BlurBackground';
+import { VersionItem } from '../components/VersionItem';
 
 export function AboutScreen() {
     const navigation = useNavigation();

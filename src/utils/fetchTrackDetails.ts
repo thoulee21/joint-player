@@ -1,7 +1,8 @@
 import * as Sentry from '@sentry/react-native';
 import { Track } from 'react-native-track-player';
-import { fetchPlus, requestInit } from '../services';
 import { Main as SongDetail } from '../types/songDetail';
+import { fetchPlus } from './fetchPlus';
+import { requestInit } from './requestInit';
 
 export const fetchTrackDetails = async (trackId: string): Promise<Track | null> => {
     const detail = await fetchPlus(

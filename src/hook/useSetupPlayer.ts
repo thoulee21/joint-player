@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import TrackPlayer from 'react-native-track-player';
-import { SetupService, getTracks } from '../services';
+import { SetupService } from '../services/SetupService';
+import { getTracks } from '../services/GetTracksService';
 
 /**
  * 自定义 hook 用于设置播放器。

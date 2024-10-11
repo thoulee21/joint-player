@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { StorageKeys } from '../../App';
 import { RootState } from '../store';
+import { StorageKeys } from '../../utils/storageKeys';
 
 const initialState = {
     value: 50,
