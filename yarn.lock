@@ -1393,7 +1393,7 @@
     json5 "^2.2.2"
     write-file-atomic "^2.3.0"
 
-"@expo/metro-config@0.18.11":
+"@expo/metro-config@0.18.11", "@expo/metro-config@^0.18.11":
   version "0.18.11"
   resolved "https://mirrors.huaweicloud.com/repository/npm/@expo/metro-config/-/metro-config-0.18.11.tgz#22e82d92fb9d94ac760cc8b3bff48e6f32b4f032"
   integrity sha512-/uOq55VbSf9yMbUO1BudkUM2SsGW1c5hr9BnhIqYqcsFv0Jp5D3DtJ4rljDKaUeNLbwr6m7pqIrkSMq5NrYf4Q==
