@@ -1,17 +1,10 @@
-import { Base16Theme, google } from 'base16';
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import JSONTree from 'react-native-json-tree';
-import { useTheme } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 
 export const JSONViewer = ({ data }: { data: any }) => {
     const appTheme = useTheme();
     const showingData = data || { info: 'No data to show' };
-
-    const myBase16Theme: Base16Theme = {
-        ...google,
-        base00: 'transparent',
-    };
 
     return (
         <ScrollView
@@ -19,18 +12,19 @@ export const JSONViewer = ({ data }: { data: any }) => {
             style={[styles.jsonView, {
                 borderRadius: appTheme.roundness,
             }]}
+            showsHorizontalScrollIndicator={false}
         >
-            <JSONTree
-                data={showingData}
-                hideRoot
-                theme={myBase16Theme}
-                invertTheme={false}
-            />
+            <Text style={styles.json}>
+                {JSON.stringify(showingData, null, 2)}
+            </Text>
         </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
+    json: {
+        margin: 10,
+    },
     jsonView: {
         marginBottom: 10,
         height: 'auto',
