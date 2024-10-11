@@ -1,23 +1,24 @@
-import React from 'react';
-import {
-    Dimensions,
-    FlatList,
-    Platform,
-    StyleSheet,
-    View
-} from 'react-native';
+import React, { useCallback } from 'react';
+import { Dimensions, FlatList, Platform, StyleSheet, View } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import { DataItem, DataItemType } from './DataItem';
 
 export const DataList = ({ dataItems }: {
     dataItems: DataItemType[]
 }) => {
+    const renderItem = useCallback(({ item }: {
+        item: DataItemType
+    }) => (
+        <DataItem item={item} />
+    ), []);
+
+    const keyExtractor = useCallback((item: DataItemType) => item.name, []);
+
     return (
         <FlatList
             data={dataItems}
-            renderItem={(props) =>
-                <DataItem {...props} />
-            }
+            keyExtractor={keyExtractor}
+            renderItem={renderItem}
             ListFooterComponent={
                 <View style={styles.androidView} />
             }
@@ -27,7 +28,6 @@ export const DataList = ({ dataItems }: {
                     size="large"
                 />
             }
-            keyExtractor={(item) => item.name}
         />
     );
 };
