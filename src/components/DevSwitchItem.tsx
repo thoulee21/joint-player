@@ -11,7 +11,7 @@ export const DevSwitchItem = () => {
 
     return <List.Item
         title="Developer Mode"
-        description="切换开发者模式"
+        description="Enable to access hidden features."
         left={(props) => List.Icon({ ...props, icon: 'code-tags' })}
         right={(props) => RightSwitch({ value: isDev, ...props })}
         onPress={() => {

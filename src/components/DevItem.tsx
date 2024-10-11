@@ -17,11 +17,16 @@ export const DevItem = () => {
     }, []);
 
     if (isDev) {
-        return <List.Item
-            title="Developer Options"
-            left={CodeTags}
-            right={ChevronRight}
-            onPress={() => { navigation.navigate('Dev' as never); }}
-        />;
+        return (
+            <List.Item
+                title="Developer Options"
+                description="Access developer settings."
+                left={CodeTags}
+                right={ChevronRight}
+                onPress={() => {
+                    navigation.navigate('Dev' as never);
+                }}
+            />
+        );
     }
 };
