@@ -1,21 +1,20 @@
-import {
-    createMaterialTopTabNavigator,
-} from '@react-navigation/material-top-tabs';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Appbar, Divider } from 'react-native-paper';
+import { BlurBackground } from '../components/BlurBackground';
+import { DataItemType } from '../components/DataItem';
+import { DataList } from '../components/DataList';
 import { store } from '../redux/store';
 import { Storage } from '../utils';
 import { StorageKeys } from '../utils/storageKeys';
-import { BlurBackground } from '../components/BlurBackground';
-import { DataList } from '../components/DataList';
-import { DataItemType } from '../components/DataItem';
 
 const TopTab = createMaterialTopTabNavigator();
 
 export function AppDataScreen() {
     const navigation = useNavigation();
+
     return (
         <BlurBackground>
             <Appbar.Header style={styles.transparent}>
@@ -41,16 +40,12 @@ export function AppDataScreen() {
                 <TopTab.Screen
                     name="ReduxState"
                     component={ReduxState}
-                    options={{
-                        title: 'Redux State',
-                    }}
+                    options={{ title: 'Redux State' }}
                 />
                 <TopTab.Screen
                     name="StorageList"
                     component={StorageList}
-                    options={{
-                        title: 'Local Storage',
-                    }}
+                    options={{ title: 'Local Storage' }}
                 />
             </TopTab.Navigator>
         </BlurBackground>
