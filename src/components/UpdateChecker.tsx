@@ -90,7 +90,7 @@ export const UpdateChecker = () => {
             description={description}
             onPress={onPress}
             onLongPress={showRunType}
-            disabled={isChecking || isDownloading}
+            disabled={isChecking || isDownloading || isChecking}
             left={props => (
                 <List.Icon
                     {...props}
