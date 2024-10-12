@@ -30,10 +30,8 @@ export const LoadingAnimation = () => {
 
 const styles = StyleSheet.create({
     loadingView: {
-        display: 'flex',
+        flex: 1,
         justifyContent: 'center',
-        width: '100%',
-        height: '90%'
     },
     loadingAnimation: {
         width: '100%',
@@ -42,6 +40,6 @@ const styles = StyleSheet.create({
     loadingText: {
         textAlign: 'center',
         textAlignVertical: 'center',
-        marginTop: '-20%'
+        marginTop: '-10%'
     },
 });
