@@ -1,22 +1,23 @@
 import * as ExpoUpdates from 'expo-updates';
-import React, { useCallback, useEffect, useState } from 'react';
-import { ToastAndroid } from 'react-native';
-import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
+import React, { useCallback, useEffect } from 'react';
+import { Alert, ToastAndroid } from 'react-native';
+import HapticFeedback, {
+    HapticFeedbackTypes
+} from 'react-native-haptic-feedback';
 import { Button } from 'react-native-paper';
 import { ListLRProps } from '../types/paperListItem';
 
 export const UpdateChecker = (props: ListLRProps) => {
-    const [checking, setChecking] = useState(false);
     const {
         currentlyRunning,
         isUpdateAvailable,
-        isUpdatePending
+        isUpdatePending,
+        isChecking,
     } = ExpoUpdates.useUpdates();
 
     useEffect(() => {
         if (isUpdatePending) {
-            // Update has successfully downloaded; apply it now
-            ExpoUpdates.reloadAsync();
+            ToastAndroid.show('Update is pending...', ToastAndroid.SHORT);
         }
     }, [isUpdatePending]);
 
@@ -31,18 +32,36 @@ export const UpdateChecker = (props: ListLRProps) => {
     }, [currentlyRunning.isEmbeddedLaunch]);
 
     const checkForUpdate = useCallback(async () => {
-        setChecking(true);
         ToastAndroid.show('Checking for updates...', ToastAndroid.SHORT);
 
-        await ExpoUpdates.checkForUpdateAsync();
-        setChecking(false);
+        const updateCheckRes = await ExpoUpdates.checkForUpdateAsync();
+        if (updateCheckRes.isAvailable) {
+            Alert.alert(
+                updateCheckRes.isRollBackToEmbedded
+                    ? 'Rollback to embedded version'
+                    : 'Update available',
+                `Version ${updateCheckRes.manifest.id} is available. ${updateCheckRes.reason} Would you like to update now?`,
+                [
+                    {
+                        text: 'Cancel',
+                        style: 'cancel',
+                    },
+                    {
+                        text: 'OK',
+                        onPress: () => ExpoUpdates.reloadAsync(),
+                    },
+                ]
+            );
+        } else {
+            Alert.alert('No updates available');
+        }
     }, []);
 
     return (
         <Button
             {...props}
             compact
-            loading={checking}
+            loading={isChecking}
             onLongPress={showRunType}
             onPress={isUpdateAvailable
                 ? ExpoUpdates.reloadAsync
@@ -50,7 +69,7 @@ export const UpdateChecker = (props: ListLRProps) => {
         >
             {isUpdateAvailable
                 ? 'Perform Update'
-                : 'Check for Updates'}
+                : 'Check for Update'}
         </Button>
     );
 };
