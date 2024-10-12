@@ -77,10 +77,11 @@ export const UpdateChecker = (props: ListLRProps) => {
             onPress={isUpdateAvailable
                 ? ExpoUpdates.reloadAsync
                 : checkForUpdate}
+            icon="update"
         >
             {isUpdateAvailable
                 ? 'Perform Update'
-                : 'Check for Update'}
+                : 'Check Update'}
         </Button>
     );
 };
