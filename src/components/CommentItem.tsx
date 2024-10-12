@@ -66,7 +66,7 @@ export const CommentItem = memo(({ item }:
     ), [item.user.avatarUrl]);
 
     return (
-        <List.Section>
+        <>
             <List.Item
                 title={item.user.nickname}
                 titleStyle={{ color: appTheme.colors.primary }}
@@ -82,7 +82,7 @@ export const CommentItem = memo(({ item }:
                 keyExtractor={(reply) => reply.beRepliedCommentId.toString()}
                 renderItem={renderItem}
             />
-        </List.Section>
+        </>
     );
 });
 
