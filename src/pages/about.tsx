@@ -2,11 +2,12 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Appbar, List, Portal, Snackbar } from 'react-native-paper';
-import { ListWrapper } from '../components/ListWrapper';
 import { AboutDialog } from '../components/AboutDialog';
 import { BlurBackground } from '../components/BlurBackground';
-import { VersionItem } from '../components/VersionItem';
+import { IssueReportItem } from '../components/IssueReportItem';
+import { ListWrapper } from '../components/ListWrapper';
 import { UpdateChecker } from '../components/UpdateChecker';
+import { VersionItem } from '../components/VersionItem';
 
 export function AboutScreen() {
     const navigation = useNavigation();
@@ -40,18 +41,17 @@ export function AboutScreen() {
                 </Appbar.Header>
 
                 <ListWrapper>
-                    <List.Section>
-                        <VersionItem
-                            showDevSnackbar={() => {
-                                setDevSnackbarVisible(true);
-                            }}
-                        />
-                        <UpdateChecker />
-                        <List.Item
-                            title="About This App"
-                            onPress={showDialog}
-                        />
-                    </List.Section>
+                    <VersionItem
+                        showDevSnackbar={() => {
+                            setDevSnackbarVisible(true);
+                        }}
+                    />
+                    <UpdateChecker />
+                    <IssueReportItem />
+                    <List.Item
+                        title="About This App"
+                        onPress={showDialog}
+                    />
                 </ListWrapper>
 
                 <AboutDialog

@@ -1,24 +1,27 @@
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import HapticFeedback, {
   HapticFeedbackTypes
 } from 'react-native-haptic-feedback';
-import { Appbar, Divider, List } from 'react-native-paper';
+import { Appbar, Divider, List, useTheme } from 'react-native-paper';
 import { AboutItem } from '../components/AboutItem';
 import { BlurBackground } from '../components/BlurBackground';
 import { BlurRadiusSlider } from '../components/BlurRadiusSlider';
 import { DevItem } from '../components/DevItem';
-import { IssueReportItem } from '../components/IssueReportItem';
+import { ListWrapper } from '../components/ListWrapper';
 import { ThemeColorIndicator } from '../components/ThemeColorIndicator';
 
 export function Settings() {
+  const appTheme = useTheme();
   const navigation = useNavigation();
 
   return (
     <BlurBackground>
-      <Appbar.Header style={styles.header}>
-        <Appbar.Action icon="menu"
+      <Appbar.Header style={styles.header} mode="large">
+        <Appbar.Action
+          icon="menu"
+          isLeading
           onPress={() => {
             //@ts-ignore
             navigation.openDrawer();
@@ -30,17 +33,21 @@ export function Settings() {
         <Appbar.Content title="Settings" />
       </Appbar.Header>
 
-      <ScrollView>
-        <List.Section title="Appearance">
+      <ListWrapper>
+        <List.Section
+          title="Appearance"
+          titleStyle={{
+            color: appTheme.colors.secondary
+          }}
+        >
           <ThemeColorIndicator />
           <BlurRadiusSlider />
         </List.Section>
-
         <Divider />
+
         <DevItem />
-        <IssueReportItem />
         <AboutItem />
-      </ScrollView>
+      </ListWrapper>
     </BlurBackground>
   );
 }
