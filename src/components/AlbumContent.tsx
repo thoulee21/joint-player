@@ -13,7 +13,6 @@ import { Main, Song } from '../types/albumDetail';
 import { songToTrack } from '../utils';
 import { AlbumDescription } from './AlbumDescription';
 import { HeaderCard } from './HeaderCard';
-import { LoadingAnimation } from './LoadingAnimation';
 import { AddToQueueButton, QuickActionsWrapper } from './QuickActions';
 import { SongItem } from './SongItem';
 import { Spacer } from './Spacer';
@@ -62,7 +61,9 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
         </QuickActionsWrapper>
     ), []);
 
-    if (isLoading) { return <LoadingAnimation />; }
+    if (isLoading) {
+        return <ActivityIndicator size="large" style={styles.loading} />;
+    }
 
     if (error) {
         return (
@@ -130,6 +131,9 @@ const styles = StyleSheet.create({
     content: {
         flex: 1,
         marginTop: StatusBar.currentHeight,
+    },
+    loading: {
+        marginTop: '40%'
     },
     moreLoading: {
         marginVertical: '2%'
