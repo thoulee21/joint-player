@@ -1,4 +1,4 @@
-import * as ExpoUpdates from 'expo-updates';
+import * as Updates from 'expo-updates';
 import React, { useCallback, useEffect } from 'react';
 import { Alert, ToastAndroid } from 'react-native';
 import HapticFeedback, {
@@ -13,7 +13,7 @@ export const UpdateChecker = (props: ListLRProps) => {
         isUpdateAvailable,
         isUpdatePending,
         isChecking,
-    } = ExpoUpdates.useUpdates();
+    } = Updates.useUpdates();
 
     useEffect(() => {
         if (isUpdatePending) {
@@ -34,7 +34,7 @@ export const UpdateChecker = (props: ListLRProps) => {
     const checkForUpdate = useCallback(async () => {
         try {
             ToastAndroid.show('Checking for updates...', ToastAndroid.SHORT);
-            const updateCheckRes = await ExpoUpdates.checkForUpdateAsync();
+            const updateCheckRes = await Updates.checkForUpdateAsync();
 
             Alert.alert(
                 'Update check result',
@@ -54,7 +54,7 @@ export const UpdateChecker = (props: ListLRProps) => {
                         },
                         {
                             text: 'OK',
-                            onPress: () => ExpoUpdates.reloadAsync(),
+                            onPress: () => Updates.reloadAsync(),
                         },
                     ]
                 );
@@ -75,7 +75,7 @@ export const UpdateChecker = (props: ListLRProps) => {
             loading={isChecking}
             onLongPress={showRunType}
             onPress={isUpdateAvailable
-                ? ExpoUpdates.reloadAsync
+                ? Updates.reloadAsync
                 : checkForUpdate}
             icon="update"
         >
