@@ -45,6 +45,7 @@ export const UpdateChecker = () => {
     };
 
     const performUpdateAlert = useCallback((update: Updates.UpdateInfo) => {
+        Alert.alert('debug', JSON.stringify(update, null, 2));
         const { manifest, type, createdAt } = update;
         const msg =
             `A new update is available: ${type} v${manifest?.id} (${createdAt})`;
@@ -70,11 +71,11 @@ export const UpdateChecker = () => {
         }
     };
 
-    const onPress = isUpdatePending ? RNRestart.Restart : checkForUpdate;
+    const onPress = isUpdatePending ? () => RNRestart.restart() : checkForUpdate;
     const description = isDownloading
         ? 'Downloading update...'
         : isUpdatePending
-            ? 'Update is pending, restart to apply'
+            ? 'Update is pending...'
             : isChecking
                 ? 'Checking for updates...'
                 : `Last checked: ${lastCheck?.toLocaleString()}`;
