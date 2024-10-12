@@ -16,9 +16,6 @@ export const UpdateChecker = () => {
         isChecking,
         isDownloading,
         lastCheckForUpdateTimeSinceRestart: lastCheck,
-        isUpdateAvailable,
-        availableUpdate,
-        checkError,
     } = Updates.useUpdates();
 
     const showRunType = useCallback(() => {
@@ -44,30 +41,34 @@ export const UpdateChecker = () => {
         }
     };
 
-    const performUpdateAlert = useCallback((update: Updates.UpdateInfo) => {
-        Alert.alert('debug', JSON.stringify(update, null, 2));
-        const { manifest, type, createdAt } = update;
-        const msg =
-            `A new update is available: ${type} v${manifest?.id} (${createdAt})`;
-
-        const btns = [
+    const performUpdateAlert = useCallback(() => {
+        const alertButtons = [
             { text: 'Cancel' },
             { text: 'OK', onPress: updateRestart }
         ];
 
-        Alert.alert('Check for updates', msg, btns);
+        Alert.alert(
+            'Check for updates',
+            'Update available. Restart to apply?',
+            alertButtons
+        );
     }, []);
 
     const checkForUpdate = async () => {
-        if (checkError) {
-            Alert.alert('Error checking for updates', checkError.message);
-            return;
-        }
+        ToastAndroid.show('Checking for updates...', ToastAndroid.SHORT);
+        try {
+            const updateCheckRes = await Updates.checkForUpdateAsync();
 
-        if (isUpdateAvailable) {
-            performUpdateAlert(availableUpdate!);
-        } else {
-            ToastAndroid.show('No updates available', ToastAndroid.SHORT);
+            if (updateCheckRes.isAvailable) {
+                performUpdateAlert();
+            } else {
+                Alert.alert('Check for updates', 'No updates available');
+            }
+        } catch (err) {
+            Alert.alert(
+                'Error checking for updates',
+                JSON.stringify(err, null, 2)
+            );
         }
     };
 
