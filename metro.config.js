@@ -11,6 +11,10 @@ const expoDefaultConfig = getDefaultExpoConfig(__dirname);
  *
  * @type {import('metro-config').MetroConfig}
  */
-const config = mergeConfig(defaultConfig, expoDefaultConfig);
+const config = mergeConfig(defaultConfig, expoDefaultConfig, {
+    resolver: {
+        assetExts: [...defaultConfig.resolver.assetExts, 'lottie'],
+    },
+});
 
 module.exports = withSentryConfig(config);
