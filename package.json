@@ -9,13 +9,11 @@
     "email": "thou_lee@outlook.com"
   },
   "scripts": {
-    "android": "react-native run-android",
-    "ios": "react-native run-ios",
-    "lint": "eslint .",
     "start": "react-native start",
+    "lint": "eslint .",
     "postversion": "react-native-version --target android",
-    "build:android": "cd android && ./gradlew assembleRelease",
-    "deploy:android": "adb install .\\android\\app\\build\\outputs\\apk\\release\\app-release.apk"
+    "build:android": "cd android && ./gradlew clean && ./gradlew assembleRelease",
+    "deploy:android": "adb install ./android/app/build/outputs/apk/release/app-release.apk"
   },
   "dependencies": {
     "@expo/metro-config": "^0.18.11",
