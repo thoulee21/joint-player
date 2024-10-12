@@ -145,7 +145,7 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
                     sections={showData}
                     keyExtractor={item => item.commentId.toString()}
                     initialNumToRender={7}
-                    fadingEdgeLength={100}
+                    fadingEdgeLength={50}
                     refreshing={refreshing}
                     onRefresh={onRefresh}
                     refreshControl={
