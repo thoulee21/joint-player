@@ -2,23 +2,18 @@ import { useNetInfoInstance } from '@react-native-community/netinfo';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
-import HapticFeedback, {
-    HapticFeedbackTypes
-} from 'react-native-haptic-feedback';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Searchbar } from 'react-native-paper';
-import { useAppSelector } from '../hook';
-import { selectUser } from '../redux/slices';
 import { BlurBackground } from '../components/BlurBackground';
+import { LottieAnimation } from '../components/LottieAnimation';
 import { UserList } from '../components/UserList';
 
 export const Login = () => {
     const navigation = useNavigation();
-
     const { netInfo } = useNetInfoInstance();
-    const user = useAppSelector(selectUser);
 
-    const [showQuery, setShowQuery] = useState(user.username);
-    const [searchQuery, setSearchQuery] = useState(user.username);
+    const [showQuery, setShowQuery] = useState('');
+    const [searchQuery, setSearchQuery] = useState('');
 
     const search = useCallback(() => {
         if (netInfo.isConnected) {
@@ -46,7 +41,13 @@ export const Login = () => {
                 onSubmitEditing={search}
                 selectTextOnFocus
             />
-            <UserList searchQuery={searchQuery} />
+
+            {searchQuery
+                ? <UserList searchQuery={searchQuery} />
+                : <LottieAnimation
+                    caption="Login to use your custom settings"
+                    animation="sushi"
+                />}
         </BlurBackground>
     );
 };
