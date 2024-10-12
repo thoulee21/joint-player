@@ -35,6 +35,11 @@ export const UpdateChecker = (props: ListLRProps) => {
         ToastAndroid.show('Checking for updates...', ToastAndroid.SHORT);
 
         const updateCheckRes = await ExpoUpdates.checkForUpdateAsync();
+        Alert.alert(
+            'Update check result',
+            JSON.stringify(updateCheckRes, null, 2)
+        );
+
         if (updateCheckRes.isAvailable) {
             Alert.alert(
                 updateCheckRes.isRollBackToEmbedded
