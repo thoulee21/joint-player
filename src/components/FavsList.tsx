@@ -6,8 +6,13 @@ import SwipeableFlatList from 'react-native-swipeable-list';
 import { useAppSelector } from '../hook';
 import { favs } from '../redux/slices';
 import { TrackType } from '../services/GetTracksService';
+import {
+    AddToQueueButton,
+    DeleteFavButton,
+    QuickActionsProps,
+    QuickActionsWrapper
+} from './QuickActions';
 import { SongItem } from './SongItem';
-import { AddToQueueButton, DeleteFavButton, QuickActionsProps, QuickActionsWrapper } from './QuickActions';
 
 interface ListItemProps {
     item: TrackType,
