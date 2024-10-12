@@ -78,7 +78,7 @@ export const UpdateChecker = () => {
             ? 'Update is pending...'
             : isChecking
                 ? 'Checking for updates...'
-                : `Last checked: ${lastCheck?.toLocaleString()}`;
+                : `Last checked: ${lastCheck?.toLocaleString() || 'Never'}`;
 
     const title = isUpdatePending ? 'Restart to apply update' : 'Check for updates';
     const updateIcon = isUpdatePending ? 'progress-download' : 'cloud-download-outline';
