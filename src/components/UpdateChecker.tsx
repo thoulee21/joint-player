@@ -55,14 +55,13 @@ export const UpdateChecker = () => {
     }, []);
 
     const checkForUpdate = async () => {
-        ToastAndroid.show('Checking for updates...', ToastAndroid.SHORT);
         try {
             const updateCheckRes = await Updates.checkForUpdateAsync();
 
             if (updateCheckRes.isAvailable) {
                 performUpdateAlert();
             } else {
-                Alert.alert('Check for updates', 'No updates available');
+                ToastAndroid.show('No updates available', ToastAndroid.SHORT);
             }
         } catch (err) {
             Alert.alert(
