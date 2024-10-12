@@ -79,10 +79,9 @@ export const UpdateChecker = () => {
             : isChecking
                 ? 'Checking for updates...'
                 : `Last checked: ${lastCheck?.toLocaleString()}`;
-    const title = isUpdatePending ? 'Restart to apply update' : 'Check for updates';
 
+    const title = isUpdatePending ? 'Restart to apply update' : 'Check for updates';
     const updateIcon = isUpdatePending ? 'progress-download' : 'cloud-download-outline';
-    const iconColor = isUpdatePending ? appTheme.colors.primary : undefined;
 
     return (
         <List.Item
@@ -95,7 +94,9 @@ export const UpdateChecker = () => {
                 <List.Icon
                     {...props}
                     icon={updateIcon}
-                    color={iconColor}
+                    color={isUpdatePending
+                        ? appTheme.colors.primary
+                        : props.color}
                 />
             )}
         />
