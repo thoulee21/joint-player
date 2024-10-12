@@ -59,10 +59,7 @@ export const UpdateChecker = () => {
 
     const checkForUpdate = async () => {
         if (checkError) {
-            Alert.alert(
-                `Error checking for updates: ${checkError.name}`,
-                checkError.message
-            );
+            Alert.alert('Error checking for updates', checkError.message);
             return;
         }
 
