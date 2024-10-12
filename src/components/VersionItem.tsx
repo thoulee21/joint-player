@@ -8,7 +8,6 @@ import { selectDevModeEnabled, setDevModeValue } from '../redux/slices';
 import { ListLRProps } from '../types/paperListItem';
 import { upperFirst } from '../utils';
 import { PlatformIcon } from './PlatformIcon';
-import { UpdateChecker } from './UpdateChecker';
 
 export const VersionItem = ({ showDevSnackbar }: {
     showDevSnackbar: () => void
@@ -42,7 +41,6 @@ export const VersionItem = ({ showDevSnackbar }: {
             title="Version"
             description={versionText}
             left={renderPlatformIcon}
-            right={(props) => <UpdateChecker {...props} />}
             onPress={handleDevMode}
         />
     );

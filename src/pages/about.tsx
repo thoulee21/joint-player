@@ -6,6 +6,7 @@ import { ListWrapper } from '../components/ListWrapper';
 import { AboutDialog } from '../components/AboutDialog';
 import { BlurBackground } from '../components/BlurBackground';
 import { VersionItem } from '../components/VersionItem';
+import { UpdateChecker } from '../components/UpdateChecker';
 
 export function AboutScreen() {
     const navigation = useNavigation();
@@ -45,6 +46,7 @@ export function AboutScreen() {
                                 setDevSnackbarVisible(true);
                             }}
                         />
+                        <UpdateChecker />
                         <List.Item
                             title="About This App"
                             onPress={showDialog}
