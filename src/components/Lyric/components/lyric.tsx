@@ -44,7 +44,6 @@ interface Props {
     lrcLine: LyricLine | null;
   }) => void;
   style: StyleProp<ViewStyle>;
-  [key: string]: any;
 }
 
 const MarginTopView = () => {
