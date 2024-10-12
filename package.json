@@ -13,7 +13,8 @@
     "lint": "eslint .",
     "postversion": "react-native-version --target android",
     "build:android": "cd android && ./gradlew clean && ./gradlew assembleRelease",
-    "deploy:android": "adb install ./android/app/build/outputs/apk/release/app-release.apk"
+    "deploy:android": "adb install ./android/app/build/outputs/apk/release/app-release.apk",
+    "create:update": "eas update --channel production --platform android --auto"
   },
   "dependencies": {
     "@expo/metro-config": "^0.18.11",
