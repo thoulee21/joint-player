@@ -31,7 +31,9 @@ export default function App() {
         ToastAndroid.SHORT
       );
     }
-  });
+    // show toast at startup
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <AppContainer>
