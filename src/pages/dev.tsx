@@ -1,6 +1,7 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { KeyboardAvoidingView, StyleSheet } from 'react-native';
-import { Appbar, Divider, List, Portal, Snackbar } from 'react-native-paper';
+import { Appbar, Divider, List, Portal, Snackbar, useTheme } from 'react-native-paper';
 import RNRestart from 'react-native-restart';
 import { BlurBackground } from '../components/BlurBackground';
 import { ClearAllDataItem } from '../components/ClearAllDataItem';
@@ -11,8 +12,12 @@ import { ListWrapper } from '../components/ListWrapper';
 import { RestartItem } from '../components/RestartItem';
 import { ViewAppDataItem } from '../components/ViewAppDataItem';
 
-export function DevScreen({ navigation }: { navigation: any }) {
+export function DevScreen() {
+    const navigation = useNavigation();
+    const appTheme = useTheme();
+
     const [restartBarVisible, setRestartBarVisible] = useState(false);
+
     return (
         <BlurBackground>
             <Appbar.Header mode="large" style={styles.header}>
@@ -22,12 +27,13 @@ export function DevScreen({ navigation }: { navigation: any }) {
 
             <KeyboardAvoidingView behavior="height">
                 <ListWrapper bottomViewHeight={100}>
-                    <List.Section>
-                        <DevSwitchItem />
-                        <Divider />
-                    </List.Section>
+                    <DevSwitchItem />
+                    <Divider />
 
-                    <List.Section title="Data Management">
+                    <List.Section
+                        title="Data Management"
+                        titleStyle={{ color: appTheme.colors.secondary }}
+                    >
                         <ViewAppDataItem />
                         <ExportDataItem />
                         <ImportDataItem
