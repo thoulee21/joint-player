@@ -32,33 +32,39 @@ export const UpdateChecker = (props: ListLRProps) => {
     }, [currentlyRunning.isEmbeddedLaunch]);
 
     const checkForUpdate = useCallback(async () => {
-        ToastAndroid.show('Checking for updates...', ToastAndroid.SHORT);
+        try {
+            ToastAndroid.show('Checking for updates...', ToastAndroid.SHORT);
+            const updateCheckRes = await ExpoUpdates.checkForUpdateAsync();
 
-        const updateCheckRes = await ExpoUpdates.checkForUpdateAsync();
-        Alert.alert(
-            'Update check result',
-            JSON.stringify(updateCheckRes, null, 2)
-        );
-
-        if (updateCheckRes.isAvailable) {
             Alert.alert(
-                updateCheckRes.isRollBackToEmbedded
-                    ? 'Rollback to embedded version'
-                    : 'Update available',
-                `Version ${updateCheckRes.manifest.id} is available. ${updateCheckRes.reason} Would you like to update now?`,
-                [
-                    {
-                        text: 'Cancel',
-                        style: 'cancel',
-                    },
-                    {
-                        text: 'OK',
-                        onPress: () => ExpoUpdates.reloadAsync(),
-                    },
-                ]
+                'Update check result',
+                JSON.stringify(updateCheckRes, null, 2)
             );
-        } else {
-            Alert.alert('No updates available');
+
+            if (updateCheckRes.isAvailable) {
+                Alert.alert(
+                    updateCheckRes.isRollBackToEmbedded
+                        ? 'Rollback to embedded version'
+                        : 'Update available',
+                    `Version ${updateCheckRes.manifest.id} is available. ${updateCheckRes.reason} Would you like to update now?`,
+                    [
+                        {
+                            text: 'Cancel',
+                            style: 'cancel',
+                        },
+                        {
+                            text: 'OK',
+                            onPress: () => ExpoUpdates.reloadAsync(),
+                        },
+                    ]
+                );
+            } else {
+                Alert.alert('No updates available');
+            }
+        } catch (err: any) {
+            Alert.alert('Error checking for updates', JSON.stringify(err, null, 2));
+        } finally {
+            ToastAndroid.show('Update check complete', ToastAndroid.SHORT);
         }
     }, []);
 

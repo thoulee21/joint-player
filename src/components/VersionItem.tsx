@@ -37,16 +37,12 @@ export const VersionItem = ({ showDevSnackbar }: {
         <PlatformIcon {...props} />
     ), []);
 
-    const renderUpdateChecker = useCallback((props: ListLRProps) => (
-        <UpdateChecker {...props} />
-    ), []);
-
     return (
         <List.Item
             title="Version"
             description={versionText}
             left={renderPlatformIcon}
-            right={renderUpdateChecker}
+            right={(props) => <UpdateChecker {...props} />}
             onPress={handleDevMode}
         />
     );
