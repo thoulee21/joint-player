@@ -15,8 +15,7 @@ export const ViewAppDataItem = () => {
 
     return (
         <List.Item
-            title="App Data"
-            description="View stored app data & Redux state"
+            title="View App Data"
             left={renderDataBaseIcon}
             right={renderChevronRightIcon}
             onPress={() => {
