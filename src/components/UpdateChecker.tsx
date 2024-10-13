@@ -1,11 +1,11 @@
 import * as Updates from 'expo-updates';
 import React, { useCallback } from 'react';
 import { Alert, ToastAndroid } from 'react-native';
-import HapticFeedback, {
-    HapticFeedbackTypes
-} from 'react-native-haptic-feedback';
-import { List, useTheme } from 'react-native-paper';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
+import { ActivityIndicator, List, useTheme } from 'react-native-paper';
 import RNRestart from 'react-native-restart';
+
+const TITLE = 'Check for updates';
 
 export const UpdateChecker = () => {
     const appTheme = useTheme();
@@ -16,6 +16,7 @@ export const UpdateChecker = () => {
         isChecking,
         isDownloading,
         lastCheckForUpdateTimeSinceRestart: lastCheck,
+        availableUpdate,
     } = Updates.useUpdates();
 
     const showRunType = useCallback(() => {
@@ -29,7 +30,7 @@ export const UpdateChecker = () => {
         );
     }, [currentlyRunning.isEmbeddedLaunch]);
 
-    const updateRestart = async () => {
+    const fetchUpdateAndRestart = async () => {
         try {
             await Updates.fetchUpdateAsync();
             RNRestart.Restart();
@@ -42,17 +43,21 @@ export const UpdateChecker = () => {
     };
 
     const performUpdateAlert = useCallback(() => {
-        const alertButtons = [
-            { text: 'Cancel' },
-            { text: 'OK', onPress: updateRestart }
-        ];
-
         Alert.alert(
-            'Check for updates',
-            'Update available. Restart to apply?',
-            alertButtons
+            TITLE,
+            //debug print
+            JSON.stringify(availableUpdate, null, 2),
+            [
+                { text: 'Cancel' },
+                {
+                    text: 'OK',
+                    onPress: isUpdatePending
+                        ? () => RNRestart.Restart()
+                        : fetchUpdateAndRestart
+                }
+            ]
         );
-    }, []);
+    }, [availableUpdate, isUpdatePending]);
 
     const checkForUpdate = async () => {
         try {
@@ -71,7 +76,7 @@ export const UpdateChecker = () => {
         }
     };
 
-    const onPress = isUpdatePending ? () => RNRestart.restart() : checkForUpdate;
+    const handleUpdatePress = isUpdatePending ? performUpdateAlert : checkForUpdate;
     const description = isDownloading
         ? 'Downloading update...'
         : isUpdatePending
@@ -80,25 +85,36 @@ export const UpdateChecker = () => {
                 ? 'Checking for updates...'
                 : `Last checked: ${lastCheck?.toLocaleString() || 'Never'}`;
 
-    const title = isUpdatePending ? 'Restart to apply update' : 'Check for updates';
-    const updateIcon = isUpdatePending ? 'progress-download' : 'cloud-download-outline';
+    const renderUpdateIcon = useCallback((props: any) => {
+        const updateIcon = isUpdatePending
+            ? 'progress-download'
+            : 'cloud-download-outline';
+
+        return (
+            <List.Icon
+                {...props}
+                icon={updateIcon}
+                color={isUpdatePending
+                    ? appTheme.colors.primary
+                    : props.color}
+            />
+        );
+    }, [appTheme.colors.primary, isUpdatePending]);
+
+    const isProcessing = isChecking || isDownloading;
+    const renderActivityIndicator = useCallback((props: any) => (
+        isProcessing ? <ActivityIndicator {...props} /> : null
+    ), [isProcessing]);
 
     return (
         <List.Item
-            title={title}
+            title={TITLE}
             description={description}
-            onPress={onPress}
+            onPress={handleUpdatePress}
             onLongPress={showRunType}
-            disabled={isChecking || isDownloading || isChecking}
-            left={props => (
-                <List.Icon
-                    {...props}
-                    icon={updateIcon}
-                    color={isUpdatePending
-                        ? appTheme.colors.primary
-                        : props.color}
-                />
-            )}
+            disabled={isProcessing}
+            left={renderUpdateIcon}
+            right={renderActivityIndicator}
         />
     );
 };
