@@ -54,17 +54,26 @@ export const UserList = ({ searchQuery }: { searchQuery: string }) => {
 
     if (error) {
         return (
-            <List.Item
-                title="Error fetching data"
-                titleStyle={{ color: appTheme.colors.error }}
-                description={error.message}
-                left={(props) => (
-                    <List.Icon {...props}
-                        icon="alert-circle-outline"
-                        color={appTheme.colors.error}
-                    />
-                )}
-            />
+            <>
+                <List.Item
+                    title={error.message}
+                    titleStyle={{ color: appTheme.colors.error }}
+                    left={(props) => (
+                        <List.Icon {...props}
+                            icon="alert-circle-outline"
+                            color={appTheme.colors.error}
+                        />
+                    )}
+                />
+                <LottieAnimation
+                    style={{
+                        height: Dimensions.get('window').height / 1.5,
+                        width: Dimensions.get('window').width
+                    }}
+                    animation="breathe"
+                    caption="Try to search later or with another query"
+                />
+            </>
         );
     }
 

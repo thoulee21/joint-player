@@ -1,8 +1,9 @@
-import { useNetInfoInstance } from '@react-native-community/netinfo';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
-import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
+import HapticFeedback, {
+    HapticFeedbackTypes
+} from 'react-native-haptic-feedback';
 import { Searchbar } from 'react-native-paper';
 import { BlurBackground } from '../components/BlurBackground';
 import { LottieAnimation } from '../components/LottieAnimation';
@@ -10,18 +11,15 @@ import { UserList } from '../components/UserList';
 
 export const SwitchUser = () => {
     const navigation = useNavigation();
-    const { netInfo } = useNetInfoInstance();
 
     const [showQuery, setShowQuery] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
 
     const search = useCallback(() => {
-        if (netInfo.isConnected) {
-            if (showQuery && searchQuery !== showQuery) {
-                setSearchQuery(showQuery);
-            }
+        if (showQuery && searchQuery !== showQuery) {
+            setSearchQuery(showQuery);
         }
-    }, [netInfo.isConnected, searchQuery, showQuery]);
+    }, [searchQuery, showQuery]);
 
     const openDrawer = useCallback(() => {
         HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
