@@ -45,8 +45,8 @@ export const UpdateChecker = () => {
     const performUpdateAlert = useCallback(() => {
         Alert.alert(
             TITLE,
-            //debug print
-            JSON.stringify(availableUpdate, null, 2),
+            `An update(${availableUpdate?.createdAt
+            }) is available. Do you want to proceed?`,
             [
                 { text: 'Cancel' },
                 {
@@ -57,7 +57,7 @@ export const UpdateChecker = () => {
                 }
             ]
         );
-    }, [availableUpdate, isUpdatePending]);
+    }, [availableUpdate?.createdAt, isUpdatePending]);
 
     const checkForUpdate = async () => {
         try {
