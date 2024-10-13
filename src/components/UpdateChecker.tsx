@@ -19,17 +19,25 @@ export const UpdateChecker = () => {
         isChecking,
         isDownloading,
         lastCheckForUpdateTimeSinceRestart: lastCheck,
+        availableUpdate
     } = Updates.useUpdates();
 
     const showCurrent = useCallback(() => {
         if (isDev) {
             HapticFeedback.trigger(HapticFeedbackTypes.effectClick);
-            Alert.alert(
-                'Current update info',
-                JSON.stringify(currentlyRunning, null, 2)
-            );
+            if (availableUpdate) {
+                Alert.alert(
+                    'Available update info',
+                    JSON.stringify(availableUpdate, null, 2)
+                );
+            } else {
+                Alert.alert(
+                    'Current update info',
+                    JSON.stringify(currentlyRunning, null, 2)
+                );
+            }
         }
-    }, [currentlyRunning, isDev]);
+    }, [availableUpdate, currentlyRunning, isDev]);
 
     const fetchUpdateAndRestart = async () => {
         try {
