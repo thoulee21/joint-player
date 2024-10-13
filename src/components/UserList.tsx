@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { Dimensions, FlatList, StyleSheet, ToastAndroid } from 'react-native';
+import { Dimensions, FlatList, StyleSheet, ToastAndroid, View } from 'react-native';
 import { ActivityIndicator, List, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
 import { useDebounce } from '../hook';
@@ -54,26 +54,18 @@ export const UserList = ({ searchQuery }: { searchQuery: string }) => {
 
     if (error) {
         return (
-            <>
-                <List.Item
-                    title={error.message}
-                    titleStyle={{ color: appTheme.colors.error }}
-                    left={(props) => (
-                        <List.Icon {...props}
-                            icon="alert-circle-outline"
-                            color={appTheme.colors.error}
-                        />
-                    )}
-                />
+            <View style={styles.errorView}>
                 <LottieAnimation
-                    style={{
-                        height: Dimensions.get('window').height / 1.5,
-                        width: Dimensions.get('window').width
-                    }}
                     animation="breathe"
                     caption="Try to search later or with another query"
                 />
-            </>
+                <List.Item
+                    title={`Error: ${error.message}`}
+                    titleStyle={[styles.error, {
+                        color: appTheme.colors.error
+                    }]}
+                />
+            </View>
         );
     }
 
@@ -114,5 +106,11 @@ const styles = StyleSheet.create({
     },
     loading: {
         marginTop: '20%'
+    },
+    error: {
+        textAlign: 'center',
+    },
+    errorView: {
+        flex: 1,
     }
 });
