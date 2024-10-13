@@ -1,9 +1,9 @@
-name: Expo Updates
+name: Update
 
 on:
-    push:
-      branches:
-        - main
+  push:
+    branches:
+      - main
 
 jobs:
     update:
@@ -28,4 +28,4 @@ jobs:
           run: yarn install
   
         - name: 🚀 Create update
-          run: eas update --auto --non-interactive
+          run: yarn create:update

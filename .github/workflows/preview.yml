@@ -1,4 +1,5 @@
-name: preview
+name: Preview PR
+
 on: pull_request
 
 jobs:
@@ -37,4 +38,4 @@ jobs:
       - name: Create preview
         uses: expo/expo-github-action/preview@v8
         with:
-          command: eas update --auto
+          command: eas update --auto --platform android
