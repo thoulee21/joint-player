@@ -4,12 +4,14 @@ import { StyleSheet, View, ViewStyle } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const ANIMATIONS = {
+export const ANIMATIONS = {
     sushi: require('../assets/animations/sushi.json'),
     watermelon: require('../assets/animations/watermelon.json'),
     breathe: require('../assets/animations/breathe.lottie'),
     coral: require('../assets/animations/coral.lottie'),
 };
+
+export const ANIMATIONS_KEYS = Object.keys(ANIMATIONS) as (keyof typeof ANIMATIONS)[];
 
 export const LottieAnimation = ({
     caption,
