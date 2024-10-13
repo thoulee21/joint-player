@@ -20,7 +20,7 @@ export const LottieAnimation = ({
     loop = true,
     style
 }: PropsWithChildren<{
-    caption: string;
+    caption?: string;
     animation: keyof typeof ANIMATIONS;
     loop?: boolean;
     style?: ViewStyle;

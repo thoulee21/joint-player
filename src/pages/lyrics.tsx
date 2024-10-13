@@ -1,91 +1,85 @@
-import React, { useState } from 'react';
-import { StatusBar, StyleSheet, View } from 'react-native';
-import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { ActivityIndicator, List, ToggleButton, useTheme } from 'react-native-paper';
+import React, { useContext } from 'react';
+import { StyleSheet } from 'react-native';
+import { ActivityIndicator, List, Text, useTheme } from 'react-native-paper';
 import { useActiveTrack, useProgress, } from 'react-native-track-player';
 import useSWR from 'swr';
-import { Main as LyricMain } from '../types/lyrics';
-import { BlurBackground } from '../components/BlurBackground';
+import { LottieAnimation } from '../components/LottieAnimation';
+import { FALLBACK_ID, LyricsContainer, TranslateContext } from '../components/LyricsContainer';
 import { LyricView } from '../components/LyricView';
-import { TrackInfoBar } from '../components/TrackInfoBar';
-import { TrackMenu } from '../components/TrackMenu';
+import { Main as LyricMain } from '../types/lyrics';
 
-export const timeOffset = 1005;
-const fallbackId = 1470156770;
+export const TIME_OFFSET = 1005;
 
 export function LyricsScreen() {
     const appTheme = useTheme();
+    const { translated } = useContext(TranslateContext);
+
     const track = useActiveTrack();
     const { position } = useProgress();
 
-    const [translated, setTranslated] = useState(false);
     const { data: lyric, error, isLoading } = useSWR<LyricMain>(
-        `https://music.163.com/api/song/lyric?id=${track?.id ?? fallbackId}&lv=1&kv=1&tv=-1`
+        `https://music.163.com/api/song/lyric?id=${track?.id ?? FALLBACK_ID}&lv=1&kv=1&tv=-1`
     );
 
-    const TranslateToggle = () =>
-        <ToggleButton
-            icon="translate"
-            status={translated ? 'checked' : 'unchecked'}
-            disabled={!lyric?.tlyric.lyric}
-            onPress={() => {
-                HapticFeedback.trigger(
-                    HapticFeedbackTypes.effectHeavyClick
-                );
-                setTranslated(prev => !prev);
-            }}
-        />;
+    if (error) {
+        return (
+            <LyricsContainer>
+                <LottieAnimation
+                    animation="breathe"
+                    caption="Try again later"
+                >
+                    <List.Item
+                        title="Failed to load lyrics"
+                        titleStyle={[
+                            styles.center,
+                            { color: appTheme.colors.error }
+                        ]}
+                        description={error.message}
+                        descriptionStyle={styles.center}
+                    />
+                </LottieAnimation>
+            </LyricsContainer>
+        );
+    }
 
-    const RightButtons = () =>
-        <View style={styles.row}>
-            <TranslateToggle />
-            <TrackMenu />
-        </View>;
+    if (isLoading) {
+        return (
+            <LyricsContainer>
+                <ActivityIndicator size="large" style={styles.loading} />
+            </LyricsContainer>
+        );
+    }
+
+    // if there are no lyrics
+    if (!lyric?.lrc.lyric) {
+        return (
+            <LyricsContainer>
+                <LottieAnimation
+                    animation="watermelon"
+                    loop={false}
+                >
+                    <Text
+                        variant="displaySmall"
+                        style={[styles.center, styles.reason]}
+                    >
+                        No lyrics found
+                    </Text>
+                </LottieAnimation>
+            </LyricsContainer>
+        );
+    }
 
     return (
-        <BlurBackground style={styles.blurView}>
-            <TrackInfoBar
-                style={styles.infoBar}
-                right={RightButtons}
+        <LyricsContainer>
+            <LyricView
+                lrc={translated ? lyric.tlyric.lyric : lyric.lrc.lyric}
+                currentTime={position * TIME_OFFSET}
             />
-
-            {isLoading ?
-                <ActivityIndicator
-                    size="large"
-                    style={styles.loading}
-                />
-                : (lyric?.lrc.lyric) ?
-                    <LyricView
-                        lrc={translated
-                            ? lyric.tlyric.lyric
-                            : lyric.lrc.lyric}
-                        currentTime={position * timeOffset}
-                    />
-                    : <List.Item
-                        title={error
-                            ? 'Failed to load lyrics'
-                            : 'No lyrics found'}
-                        titleStyle={[
-                            styles.reason,
-                            styles.center,
-                        ]}
-                        description={error?.message}
-                        descriptionStyle={[styles.center, {
-                            color: appTheme.colors.error,
-                        }]}
-                    />}
-        </BlurBackground>
+        </LyricsContainer>
     );
 }
 
 const styles = StyleSheet.create({
-    blurView: {
-        paddingHorizontal: '5%',
-    },
-    infoBar: {
-        paddingTop: StatusBar.currentHeight,
-        marginVertical: '5%',
-    },
     loading: {
         marginTop: '20%',
     },
@@ -93,13 +87,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     reason: {
-        marginTop: '20%',
-        fontSize: 25,
         fontWeight: 'bold',
-    },
-    row: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
     },
 });
