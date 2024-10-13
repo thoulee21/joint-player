@@ -1,5 +1,5 @@
 import LottieView from 'lottie-react-native';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -14,18 +14,18 @@ export const ANIMATIONS = {
 export const ANIMATIONS_KEYS = Object.keys(ANIMATIONS) as (keyof typeof ANIMATIONS)[];
 
 export const LottieAnimation = ({
+    children,
     caption,
     animation,
     loop = true,
     style
-}: {
-    caption?: string,
-    animation: keyof typeof ANIMATIONS,
-    loop?: boolean,
-    style?: ViewStyle
-}) => {
+}: PropsWithChildren<{
+    caption: string;
+    animation: keyof typeof ANIMATIONS;
+    loop?: boolean;
+    style?: ViewStyle;
+}>) => {
     const insets = useSafeAreaInsets();
-
     return (
         <View style={[styles.view, style]}>
             <LottieView
@@ -38,6 +38,7 @@ export const LottieAnimation = ({
                 enableMergePathsAndroidForKitKatAndAbove
                 enableSafeModeAndroid
             />
+            {children}
             <Text
                 variant="titleMedium"
                 style={[styles.caption, {

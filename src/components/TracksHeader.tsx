@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
     songsHeader: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: '2%'
+        paddingHorizontal: '2%',
+        marginTop: '2%',
     },
 });
