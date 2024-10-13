@@ -53,8 +53,10 @@ export const UpdateChecker = () => {
 
     const performUpdateAlert = useCallback(() => {
         Alert.alert(
-            TITLE,
-            'An update is available. Do you want to proceed?',
+            availableUpdate?.createdAt
+                ? `New update available: ${availableUpdate?.createdAt.toLocaleString()}`
+                : 'New update available',
+            'Do you want to update now?',
             [
                 { text: 'Cancel' },
                 {
@@ -65,7 +67,7 @@ export const UpdateChecker = () => {
                 }
             ]
         );
-    }, [isUpdatePending]);
+    }, [availableUpdate?.createdAt, isUpdatePending]);
 
     const checkForUpdate = async () => {
         try {
