@@ -32,7 +32,7 @@ export const Chips = () => {
 const styles = StyleSheet.create({
     chips: {
         flexDirection: 'row',
-        width: '100%'
+        width: '100%',
     },
     chip: {
         marginLeft: '3%',

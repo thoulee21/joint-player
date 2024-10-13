@@ -5,15 +5,13 @@ import useSWRInfinite from 'swr/infinite';
 import { useDebounce } from '../hook';
 import { HotAlbum, Main } from '../types/albumArtist';
 import { Album } from './AlbumItem';
-import { AlbumHeader } from './ArtistHeader';
-import { Chips } from './Chips';
 
 export function Albums({ artistID }: { artistID: number }) {
     const appTheme = useTheme();
     const [refreshing, setRefreshing] = useState(false);
 
-    const { data, error, isLoading, setSize, size, mutate } = useSWRInfinite<Main>(
-        (index) => `http://music.163.com/api/artist/albums/${artistID}?offset=${index * 10}&limit=10&total=true`,
+    const { data, error, isLoading, setSize, size, mutate } = useSWRInfinite<Main>((index) =>
+        `http://music.163.com/api/artist/albums/${artistID}?offset=${index * 10}&limit=10&total=true`,
     );
 
     const loadMore = useDebounce(() => setSize(size + 1));
@@ -24,10 +22,9 @@ export function Albums({ artistID }: { artistID: number }) {
         setRefreshing(false);
     };
 
-    const renderItem = useCallback(({ item }: { item: HotAlbum }) =>
-        <Album item={item} />, []);
-
-    if (isLoading) { return <ActivityIndicator size="large" />; }
+    const renderItem = useCallback(({ item }: { item: HotAlbum }) => (
+        <Album item={item} />
+    ), []);
 
     if (error) {
         return (
@@ -36,42 +33,36 @@ export function Albums({ artistID }: { artistID: number }) {
             </Text>
         );
     }
+
     return (
-        <>
-            <AlbumHeader artist={data?.[0].artist} />
-            <Chips />
-            <FlatList
-                data={data?.flatMap((page) => page.hotAlbums)}
-                numColumns={2}
-                fadingEdgeLength={50}
-                keyExtractor={(item) => item.id.toString()}
-                renderItem={renderItem}
-                onEndReached={loadMore}
-                ListFooterComponent={() => {
-                    if (!isLoading && !error && data && data[data.length - 1].more) {
-                        return <ActivityIndicator style={styles.moreLoading} />;
-                    }
-                }}
-                refreshing={refreshing}
-                onRefresh={onRefresh}
-                refreshControl={
-                    <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                        progressViewOffset={StatusBar.currentHeight}
-                        colors={[appTheme.colors.primary]}
-                        progressBackgroundColor={appTheme.colors.surface}
-                    />
+        <FlatList
+            data={data?.flatMap((page) => page.hotAlbums)}
+            numColumns={2}
+            fadingEdgeLength={10}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={renderItem}
+            onEndReached={loadMore}
+            ListFooterComponent={() => {
+                if (!isLoading && !error && data && data[data.length - 1].more) {
+                    return <ActivityIndicator style={styles.moreLoading} />;
                 }
-            />
-        </>
+            }}
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            refreshControl={
+                <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                    progressViewOffset={StatusBar.currentHeight}
+                    colors={[appTheme.colors.primary]}
+                    progressBackgroundColor={appTheme.colors.surface}
+                />
+            }
+        />
     );
 }
 
 const styles = StyleSheet.create({
-    header: {
-        backgroundColor: 'transparent',
-    },
     moreLoading: {
         marginVertical: '2%'
     }

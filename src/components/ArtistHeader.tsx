@@ -5,7 +5,7 @@ import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedbac
 import { Card, Text, useTheme } from 'react-native-paper';
 import { Artist } from '../types/albumArtist';
 
-export const AlbumHeader = ({ artist }: { artist?: Artist }) => {
+export const ArtistHeader = ({ artist }: { artist?: Artist }) => {
     const navigation = useNavigation();
     const appTheme = useTheme();
 
