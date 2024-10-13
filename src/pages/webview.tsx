@@ -1,8 +1,13 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import React, { useRef, useState } from 'react';
-import { SafeAreaView, StyleSheet, ToastAndroid } from 'react-native';
+import React, { useCallback, useRef, useState } from 'react';
+import { StyleSheet, ToastAndroid, View } from 'react-native';
 import { Appbar, ProgressBar, useTheme } from 'react-native-paper';
 import { WebView } from 'react-native-webview';
+import {
+  WebViewErrorEvent,
+  WebViewHttpErrorEvent,
+  WebViewProgressEvent
+} from 'react-native-webview/lib/WebViewTypes';
 import { WebViewMenu } from '../components/WebViewMenu';
 
 export interface WebViewParams {
@@ -19,10 +24,32 @@ export const WebViewScreen = () => {
   const webViewRef = useRef<WebView>(null);
   const { url, title } = route.params as WebViewParams;
 
+  const updateProgress = useCallback((
+    { nativeEvent }: WebViewProgressEvent,
+  ) => {
+    setLoadProgress(nativeEvent.progress);
+  }, []);
+
+  const toastHttpError = useCallback((event: WebViewHttpErrorEvent) => {
+    ToastAndroid.show(
+      `${event.nativeEvent.statusCode.toString()}: ${event.nativeEvent.description}`,
+      ToastAndroid.LONG,
+    );
+  }, []);
+
+  const toastError = useCallback((event: WebViewErrorEvent) => {
+    ToastAndroid.show(
+      `${event.nativeEvent.code}: ${event.nativeEvent.description}`,
+      ToastAndroid.LONG,
+    );
+  }, []);
+
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <Appbar>
-        <Appbar.BackAction onPress={() => navigation.goBack()} />
+        <Appbar.BackAction
+          onPress={() => navigation.goBack()}
+        />
         <Appbar.Action
           icon="reload"
           onPress={() => {
@@ -44,25 +71,15 @@ export const WebViewScreen = () => {
 
       <WebView
         ref={webViewRef}
-        style={{ backgroundColor: appTheme.colors.background }}
+        style={{
+          backgroundColor: appTheme.colors.background
+        }}
         source={{ uri: url }}
-        onLoadProgress={({ nativeEvent }) => {
-          setLoadProgress(nativeEvent.progress);
-        }}
-        onHttpError={(event) => {
-          ToastAndroid.show(
-            `${event.nativeEvent.statusCode.toString()}: ${event.nativeEvent.description}`,
-            ToastAndroid.LONG,
-          );
-        }}
-        onError={(event) => {
-          ToastAndroid.show(
-            `${event.nativeEvent.code}: ${event.nativeEvent.description}`,
-            ToastAndroid.LONG,
-          );
-        }}
+        onLoadProgress={updateProgress}
+        onHttpError={toastHttpError}
+        onError={toastError}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
