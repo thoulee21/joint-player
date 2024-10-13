@@ -1,34 +1,42 @@
 import { NetInfoStateType, useNetInfoInstance } from '@react-native-community/netinfo';
 import { useNavigation } from '@react-navigation/native';
-import React, { useMemo, useState } from 'react';
-import { StatusBar, StyleSheet, ToastAndroid, View } from 'react-native';
+import React, { useCallback, useMemo, useState } from 'react';
+import { StyleSheet, ToastAndroid, View } from 'react-native';
 import HapticFeedBack, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { ActivityIndicator, Button, Portal, Text } from 'react-native-paper';
+import { ActivityIndicator, Appbar, Button, Portal, Text, useTheme } from 'react-native-paper';
 import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
 import useSWR from 'swr';
-import { Main as MvMain } from '../types/mv';
 import { BlurBackground } from '../components/BlurBackground';
 import { CommentList } from '../components/CommentList';
 import { DialogWithRadioBtns } from '../components/DialogWithRadioBtns';
+import { LottieAnimation } from '../components/LottieAnimation';
 import { MvCover } from '../components/MvCover';
 import { TrackInfoBar } from '../components/TrackInfoBar';
+import { Main as MvMain } from '../types/mv';
 
-const NoMV = () => {
+const MvAppbar = () => {
+    const navigation = useNavigation();
+    const track = useActiveTrack();
+
+    const { mutate } = useSWR<MvMain>(
+        `http://music.163.com/api/mv/detail?id=${track?.mvid}`
+    );
+
     return (
-        <>
-            <TrackInfoBar style={styles.noMvInfoBar} />
-            <Text
-                variant="headlineSmall"
-                style={styles.noMv}
-            >
-                No MV for the song
-            </Text>
-        </>
+        <Appbar.Header style={styles.header}>
+            <Appbar.BackAction onPress={navigation.goBack} />
+            <Appbar.Content title={track?.title} />
+            <Appbar.Action
+                icon="refresh"
+                onPress={() => mutate()}
+            />
+        </Appbar.Header>
     );
 };
 
 export function MvDetail() {
-    const navigator = useNavigation();
+    const navigation = useNavigation();
+    const appTheme = useTheme();
     const { netInfo } = useNetInfoInstance();
     const track = useActiveTrack();
 
@@ -52,7 +60,7 @@ export function MvDetail() {
     const goMvPlayer = () => {
         TrackPlayer.pause();
         // @ts-ignore
-        navigator.navigate('MvPlayer', { res: res });
+        navigation.navigate('MvPlayer', { res: res });
 
         if (netInfo.type === NetInfoStateType.cellular) {
             ToastAndroid.show(
@@ -62,7 +70,7 @@ export function MvDetail() {
         }
     };
 
-    const ResSwitch = (props: any) => (
+    const ResSwitch = useCallback((props: any) => (
         <Button {...props}
             icon="video-switch-outline"
             onPress={() => {
@@ -74,7 +82,7 @@ export function MvDetail() {
         >
             {res || btns[btns.length - 1]}P
         </Button>
-    );
+    ), [btns, res]);
 
     const BottomBtns = () => {
         return (
@@ -92,39 +100,55 @@ export function MvDetail() {
         );
     };
 
+    const renderResSwitch = useCallback((props: any) => (
+        <ResSwitch {...props} />
+    ), [ResSwitch]);
+
     if (isLoading) {
-        return (
-            <ActivityIndicator
-                size="large"
-                style={styles.loading}
-            />
-        );
+        return (<ActivityIndicator size="large" style={styles.loading} />);
     }
 
     if (error) {
         return (
-            <Text
-                variant="headlineSmall"
-                style={styles.noMv}
-            >
-                Failed to load MV
-            </Text>
+            <BlurBackground>
+                <MvAppbar />
+                <LottieAnimation
+                    animation="breathe"
+                    caption="Try again later"
+                >
+                    <Text style={[
+                        styles.center,
+                        { color: appTheme.colors.error }
+                    ]}>
+                        Error: {error.message}
+                    </Text>
+                </LottieAnimation>
+            </BlurBackground>
+        );
+    }
+
+    if (!track?.mvid) {
+        return (
+            <BlurBackground>
+                <MvAppbar />
+                <LottieAnimation
+                    animation="watermelon"
+                    loop={false}
+                    caption="No MV available"
+                />
+            </BlurBackground>
         );
     }
 
     return (
         <BlurBackground>
-            {track?.mvid
-                ? <>
-                    <MvCover>
-                        <TrackInfoBar right={() => <ResSwitch />} />
-                        <BottomBtns />
-                    </MvCover>
-
-                    <CommentList
-                        commentThreadId={`R_MV_5_${track?.mvid}`}
-                    />
-                </> : <NoMV />}
+            <MvCover>
+                <TrackInfoBar right={renderResSwitch} />
+                <BottomBtns />
+            </MvCover>
+            <CommentList
+                commentThreadId={`R_MV_5_${track?.mvid}`}
+            />
 
             <Portal>
                 <DialogWithRadioBtns
@@ -139,16 +163,11 @@ export function MvDetail() {
 }
 
 const styles = StyleSheet.create({
+    header: {
+        backgroundColor: 'transparent',
+    },
     loading: {
         marginTop: '80%',
-    },
-    noMv: {
-        textAlign: 'center',
-        marginTop: '15%'
-    },
-    noMvInfoBar: {
-        marginTop: StatusBar.currentHeight,
-        marginVertical: '5%',
     },
     row: {
         flexDirection: 'row',
@@ -156,4 +175,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         width: '100%'
     },
+    center: {
+        textAlign: 'center',
+    }
 });

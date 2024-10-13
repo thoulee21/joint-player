@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { Avatar, List } from 'react-native-paper';
+import { Style } from 'react-native-paper/lib/typescript/components/List/utils';
 import { useActiveTrack } from 'react-native-track-player';
 import { ArtistNames } from './ArtistNames';
 
@@ -8,7 +9,9 @@ const placeholderImg = 'https://picsum.photos/100';
 
 export const TrackInfoBar = ({ style, right }: {
     style?: StyleProp<ViewStyle>;
-    right?: () => React.ReactNode;
+    right?: ({ color, style }: {
+        color: string, style?: Style
+    }) => React.ReactNode;
 }) => {
     const track = useActiveTrack();
     const avatarImg = track?.artwork || placeholderImg;
