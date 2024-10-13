@@ -13,11 +13,14 @@ export const AboutItem = () => {
         return <List.Icon {...props} icon="chevron-right" />;
     }, []);
 
-    return <List.Item
-        title="About"
-        description="View app information"
-        onPress={() => navigation.navigate('About' as never)}
-        left={Info}
-        right={ChevronRight}
-    />;
+    return (
+        <List.Item
+            title="About"
+            onPress={() => {
+                navigation.navigate('About' as never);
+            }}
+            left={Info}
+            right={ChevronRight}
+        />
+    );
 };
