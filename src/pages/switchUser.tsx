@@ -8,7 +8,7 @@ import { BlurBackground } from '../components/BlurBackground';
 import { LottieAnimation } from '../components/LottieAnimation';
 import { UserList } from '../components/UserList';
 
-export const Login = () => {
+export const SwitchUser = () => {
     const navigation = useNavigation();
     const { netInfo } = useNetInfoInstance();
 
@@ -40,6 +40,10 @@ export const Login = () => {
                 onIconPress={openDrawer}
                 onSubmitEditing={search}
                 selectTextOnFocus
+                onClearIconPress={() => {
+                    setSearchQuery('');
+                    setShowQuery('');
+                }}
             />
 
             {searchQuery

@@ -1,7 +1,7 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import React, { useMemo } from 'react';
 import { Icon } from 'react-native-paper';
-import { Favs, Login, Player, Settings } from '../pages';
+import { Favs, SwitchUser, Player, Settings } from '../pages';
 import { BlurBackground } from './BlurBackground';
 import { DrawerItemList } from './DrawerItemList';
 import { Spacer } from './Spacer';
@@ -23,8 +23,8 @@ const ROUTES = [
         unfocusedIcon: 'heart-outline',
     },
     {
-        name: 'Account',
-        component: Login,
+        name: 'Switch User',
+        component: SwitchUser,
         focusedIcon: 'account',
         unfocusedIcon: 'account-outline',
     },
