@@ -1,11 +1,12 @@
 import React, { useCallback } from 'react';
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { Divider, Text, useTheme } from 'react-native-paper';
 //@ts-expect-error
 import SwipeableFlatList from 'react-native-swipeable-list';
 import { useAppSelector } from '../hook';
 import { favs } from '../redux/slices';
 import { TrackType } from '../services/GetTracksService';
+import { LottieAnimation } from './LottieAnimation';
 import {
     AddToQueueButton,
     DeleteFavButton,
@@ -24,13 +25,25 @@ export const FavsList = () => {
     const favorites = useAppSelector(favs);
 
     const NoFavs = () => (
-        <Text style={styles.noFavs} variant="titleLarge">
-            No favorites yet
-        </Text>
+        <LottieAnimation
+            animation="watermelon"
+            loop={false}
+            caption="Add some songs to your favorites"
+            style={{
+                height: Dimensions.get('window').height / 1.2,
+                width: Dimensions.get('window').width,
+            }}
+        >
+            <Text style={styles.noFavs} variant="titleLarge">
+                No favorites yet
+            </Text>
+        </LottieAnimation>
     );
 
-    const renderItem = useCallback((props: ListItemProps) =>
-        <SongItem {...props} />, []);
+    const renderItem = useCallback((props: ListItemProps) => (
+        <SongItem {...props} />
+    ), []);
+
     const renderQuickActions = useCallback((props: QuickActionsProps) => (
         <QuickActionsWrapper {...props}>
             <DeleteFavButton />
@@ -55,9 +68,10 @@ export const FavsList = () => {
 };
 
 const styles = StyleSheet.create({
-    favs: { flex: 1 },
+    favs: {
+        flex: 1
+    },
     noFavs: {
         textAlign: 'center',
-        marginTop: '50%',
     },
 });

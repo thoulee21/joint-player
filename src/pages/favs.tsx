@@ -1,54 +1,15 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import HapticFeedback, {
-    HapticFeedbackTypes
-} from 'react-native-haptic-feedback';
-import { Appbar, Button, Dialog, Portal, Text } from 'react-native-paper';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
+import { Appbar, Portal } from 'react-native-paper';
 import TrackPlayer from 'react-native-track-player';
-import { useAppDispatch, useAppSelector } from '../hook';
-import { clearFavs, favs, setQueueAsync } from '../redux/slices';
 import { BlurBackground } from '../components/BlurBackground';
+import { ConfirmClearFavsDialog } from '../components/ConfirmClearFavsDialog';
 import { FavsList } from '../components/FavsList';
 import { TracksHeader } from '../components/TracksHeader';
-
-const ConfirmClearFavsDialog = ({ visible, hideDialog }: {
-    visible: boolean;
-    hideDialog: () => void;
-}) => {
-    const dispatch = useAppDispatch();
-
-    const confirmClearFavorites = () => {
-        HapticFeedback.trigger(
-            HapticFeedbackTypes.effectTick
-        );
-        hideDialog();
-        dispatch(clearFavs());
-    };
-
-    return (
-        <Dialog
-            visible={visible}
-            onDismiss={hideDialog}
-            dismissable={false}
-            dismissableBackButton
-        >
-            <Dialog.Icon icon="alert" size={40} />
-            <Dialog.Title>Clear Favorites</Dialog.Title>
-            <Dialog.Content>
-                <Text>
-                    Are you sure you want to clear all favorites?
-                </Text>
-            </Dialog.Content>
-            <Dialog.Actions>
-                <Button onPress={hideDialog}>Cancel</Button>
-                <Button onPress={confirmClearFavorites}>
-                    OK
-                </Button>
-            </Dialog.Actions>
-        </Dialog>
-    );
-};
+import { useAppDispatch, useAppSelector } from '../hook';
+import { favs, setQueueAsync } from '../redux/slices';
 
 export function Favs() {
     const dispatch = useAppDispatch();
@@ -57,34 +18,35 @@ export function Favs() {
     const favsValue = useAppSelector(favs);
     const [dialogVisible, setDialogVisible] = useState(false);
 
-    const playAll = async () => {
+    const playAll = useCallback(async () => {
         await dispatch(setQueueAsync(favsValue));
         await TrackPlayer.play();
-    };
+
+        //no dispatch needed here
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [favsValue]);
+
+    const openDrawer = useCallback(() => {
+        HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
+        // @ts-expect-error
+        navigation.openDrawer();
+    }, [navigation]);
+
+    const showConfirmDialog = useCallback(() => {
+        HapticFeedback.trigger(HapticFeedbackTypes.notificationWarning);
+        setDialogVisible(true);
+    }, []);
 
     return (
         <BlurBackground>
             <Appbar.Header style={styles.appbar}>
-                <Appbar.Action
-                    icon="menu"
-                    onPress={() => {
-                        HapticFeedback.trigger(
-                            HapticFeedbackTypes.effectHeavyClick
-                        );
-                        // @ts-expect-error
-                        navigation.openDrawer();
-                    }}
-                />
+                <Appbar.Action icon="menu" onPress={openDrawer} />
                 <Appbar.Content title="Favorites" />
+
                 <Appbar.Action
                     icon="delete-forever-outline"
                     disabled={favsValue.length === 0}
-                    onPress={() => {
-                        HapticFeedback.trigger(
-                            HapticFeedbackTypes.notificationWarning
-                        );
-                        setDialogVisible(true);
-                    }}
+                    onPress={showConfirmDialog}
                 />
             </Appbar.Header>
 
