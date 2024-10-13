@@ -7,8 +7,6 @@ import RNRestart from 'react-native-restart';
 import { useAppSelector } from '../hook';
 import { selectDevModeEnabled } from '../redux/slices';
 
-const TITLE = 'Check for updates';
-
 export const UpdateChecker = () => {
     const appTheme = useTheme();
     const isDev = useAppSelector(selectDevModeEnabled);
@@ -54,7 +52,7 @@ export const UpdateChecker = () => {
     const performUpdateAlert = useCallback(() => {
         Alert.alert(
             availableUpdate?.createdAt
-                ? `New update available: ${availableUpdate?.createdAt.toLocaleString()}`
+                ? `New update available:\n${availableUpdate?.createdAt.toLocaleString()}`
                 : 'New update available',
             'Do you want to update now?',
             [
@@ -118,7 +116,7 @@ export const UpdateChecker = () => {
 
     return (
         <List.Item
-            title={TITLE}
+            title="Check for updates"
             description={description}
             onPress={handleUpdatePress}
             onLongPress={showCurrent}
