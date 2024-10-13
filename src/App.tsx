@@ -26,14 +26,9 @@ export default function App() {
 
   useEffect(() => {
     if (isUpdatePending) {
-      ToastAndroid.show(
-        'An update is pending. Restart the app to apply the update.',
-        ToastAndroid.SHORT
-      );
+      ToastAndroid.show('An update is pending...', ToastAndroid.SHORT);
     }
-    // show toast at startup
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isUpdatePending]);
 
   return (
     <AppContainer>
