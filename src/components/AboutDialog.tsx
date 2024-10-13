@@ -1,6 +1,5 @@
 import React from 'react';
-import { Linking } from 'react-native';
-import { Button, Dialog, Divider, Text } from 'react-native-paper';
+import { Button, Dialog, Text } from 'react-native-paper';
 import packageData from '../../package.json';
 
 const copyright = `Copyright©${new Date().getFullYear()} ${packageData.author.name
@@ -10,9 +9,6 @@ export const AboutDialog = ({ visible, hideDialog }: {
     visible: boolean,
     hideDialog: () => void
 }) => {
-    const gotoHomepage = () => Linking.openURL(packageData.homepage);
-    const mailto = () => Linking.openURL(`mailto:${packageData.author.email}`);
-
     return (
         <Dialog visible={visible} onDismiss={hideDialog}>
             <Dialog.Icon icon="information-outline" size={40} />
@@ -21,12 +17,7 @@ export const AboutDialog = ({ visible, hideDialog }: {
                 <Text>{copyright}</Text>
             </Dialog.Content>
 
-            <Divider />
             <Dialog.Actions>
-                <Button icon="email-outline" onPress={mailto}>E-Mail</Button>
-                <Button icon="github" onPress={gotoHomepage}>Homepage</Button>
-
-                <Divider />
                 <Button onPress={hideDialog}>Close</Button>
             </Dialog.Actions>
         </Dialog>

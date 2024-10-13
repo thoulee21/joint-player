@@ -4,6 +4,7 @@ import { StyleSheet } from 'react-native';
 import { Appbar, Divider, List, Portal, Snackbar } from 'react-native-paper';
 import { AboutDialog } from '../components/AboutDialog';
 import { BlurBackground } from '../components/BlurBackground';
+import { ContactMe } from '../components/ContactMe';
 import { IssueReportItem } from '../components/IssueReportItem';
 import { ListWrapper } from '../components/ListWrapper';
 import { UpdateChecker } from '../components/UpdateChecker';
@@ -47,6 +48,8 @@ export function AboutScreen() {
                         }}
                     />
                     <UpdateChecker />
+
+                    <ContactMe />
                     <Divider />
 
                     <IssueReportItem />
