@@ -1,7 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, StyleSheet } from 'react-native';
-import { Appbar, Divider, List, Portal, Snackbar, useTheme } from 'react-native-paper';
+import { StyleSheet } from 'react-native';
+import {
+    Appbar,
+    Divider,
+    List,
+    Portal,
+    Snackbar,
+    useTheme
+} from 'react-native-paper';
 import RNRestart from 'react-native-restart';
 import { BlurBackground } from '../components/BlurBackground';
 import { ClearAllDataItem } from '../components/ClearAllDataItem';
@@ -25,27 +32,25 @@ export function DevScreen() {
                 <Appbar.Content title="Developer Options" />
             </Appbar.Header>
 
-            <KeyboardAvoidingView behavior="height">
-                <ListWrapper bottomViewHeight={100}>
-                    <DevSwitchItem />
+            <ListWrapper bottomViewHeight={100}>
+                <DevSwitchItem />
+                <Divider />
+
+                <List.Section
+                    title="Data Management"
+                    titleStyle={{ color: appTheme.colors.secondary }}
+                >
+                    <ViewAppDataItem />
+                    <ExportDataItem />
+                    <ImportDataItem
+                        setRestartBarVisible={setRestartBarVisible}
+                    />
+                    <ClearAllDataItem />
                     <Divider />
+                </List.Section>
 
-                    <List.Section
-                        title="Data Management"
-                        titleStyle={{ color: appTheme.colors.secondary }}
-                    >
-                        <ViewAppDataItem />
-                        <ExportDataItem />
-                        <ImportDataItem
-                            setRestartBarVisible={setRestartBarVisible}
-                        />
-                        <ClearAllDataItem />
-                        <Divider />
-                    </List.Section>
-
-                    <RestartItem />
-                </ListWrapper>
-            </KeyboardAvoidingView>
+                <RestartItem />
+            </ListWrapper>
 
             <Portal>
                 <Snackbar
