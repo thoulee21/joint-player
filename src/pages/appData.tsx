@@ -5,7 +5,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { Appbar, Icon, SegmentedButtons } from 'react-native-paper';
+import { Appbar, Icon, SegmentedButtons, useTheme } from 'react-native-paper';
 import packageJson from '../../package.json';
 import { BlurBackground } from '../components/BlurBackground';
 import { DataItemType } from '../components/DataItem';
@@ -59,6 +59,7 @@ const StorageList = () => {
 };
 
 export function AppDataScreen() {
+    const appTheme = useTheme();
     const navigation = useNavigation();
 
     const renderTapBar = useCallback(({
@@ -66,13 +67,14 @@ export function AppDataScreen() {
     }: MaterialTopTabBarProps) => {
         const tabBarItems = state.routes.map((route, index) => {
             const { title, tabBarIcon } = descriptors[route.key].options;
-            return ({
+            return {
                 value: state.routeNames[index],
                 label: title,
                 icon: tabBarIcon ? ({ color }: { color: string }) => (
                     tabBarIcon({ color, focused: state.index === index })
                 ) : undefined,
-            });
+                showSelectedCheck: true,
+            };
         });
 
         return (
@@ -83,9 +85,16 @@ export function AppDataScreen() {
                 onValueChange={(value) => {
                     topTabNavi.navigate(value);
                 }}
+                theme={{
+                    ...appTheme,
+                    colors: {
+                        ...appTheme.colors,
+                        secondaryContainer: 'transparent',
+                    }
+                }}
             />
         );
-    }, []);
+    }, [appTheme]);
 
     return (
         <BlurBackground>
