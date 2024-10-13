@@ -1,17 +1,27 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { List } from 'react-native-paper';
 
 export const IssueReportItem = () => {
     const navigation = useNavigation();
+
+    const IssueReportIcon = useCallback((props: any) => {
+        return <List.Icon {...props} icon="message-text-outline" />;
+    }, []);
+
+    const ChevronRight = useCallback((props: any) => {
+        return <List.Icon {...props} icon="chevron-right" />;
+    }, []);
+
     return (
         <List.Item
             title="Report Issue"
-            left={(props) => <List.Icon {...props} icon="message-text-outline" />}
-            right={(props) => <List.Icon {...props} icon="chevron-right" />}
-            //@ts-expect-error
-            onPress={() => navigation.push('IssueReport')}
-            description="Report an issue or send feedback"
+            left={IssueReportIcon}
+            right={ChevronRight}
+            onPress={() => {
+                //@ts-expect-error
+                navigation.push('IssueReport');
+            }}
         />
     );
 };
