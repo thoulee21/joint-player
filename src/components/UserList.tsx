@@ -1,9 +1,10 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { FlatList, StyleSheet, ToastAndroid } from 'react-native';
+import { Dimensions, FlatList, StyleSheet, ToastAndroid } from 'react-native';
 import { ActivityIndicator, List, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
 import { useDebounce } from '../hook';
 import { Main, Userprofile } from '../types/searchUsers';
+import { LottieAnimation } from './LottieAnimation';
 import { UserItem } from './UserItem';
 
 export const UserList = ({ searchQuery }: { searchQuery: string }) => {
@@ -53,17 +54,26 @@ export const UserList = ({ searchQuery }: { searchQuery: string }) => {
 
     if (error) {
         return (
-            <List.Item
-                title={error.message}
-                titleStyle={{ color: appTheme.colors.error }}
-                description="Try to search later or with another query"
-                left={(props) => (
-                    <List.Icon {...props}
-                        icon="alert-circle-outline"
-                        color={appTheme.colors.error}
-                    />
-                )}
-            />
+            <>
+                <List.Item
+                    title={error.message}
+                    titleStyle={{ color: appTheme.colors.error }}
+                    left={(props) => (
+                        <List.Icon {...props}
+                            icon="alert-circle-outline"
+                            color={appTheme.colors.error}
+                        />
+                    )}
+                />
+                <LottieAnimation
+                    style={{
+                        height: Dimensions.get('window').height / 1.5,
+                        width: Dimensions.get('window').width
+                    }}
+                    animation="breathe"
+                    caption="Try to search later or with another query"
+                />
+            </>
         );
     }
 
@@ -82,11 +92,15 @@ export const UserList = ({ searchQuery }: { searchQuery: string }) => {
                         style={styles.footerLoading}
                     /> : null}
             ListEmptyComponent={
-                <List.Item
-                    title="No users found"
-                    description={
-                        data?.[0].message
-                        || 'Try another search query'
+                <LottieAnimation
+                    style={{
+                        height: Dimensions.get('window').height / 1.2,
+                        width: Dimensions.get('window').width
+                    }}
+                    animation="breathe"
+                    caption={
+                        `No users found\n${data?.[0].message
+                        || 'Try another search query later'}`
                     }
                 />
             }
