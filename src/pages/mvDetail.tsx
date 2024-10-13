@@ -113,7 +113,7 @@ export function MvDetail() {
             <BlurBackground>
                 <MvAppbar />
                 <LottieAnimation
-                    animation="breathe"
+                    animation="sushi"
                     caption="Try again later"
                 >
                     <Text style={[

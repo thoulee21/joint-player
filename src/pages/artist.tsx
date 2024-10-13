@@ -29,7 +29,7 @@ export function Artist() {
                 </Appbar.Header>
 
                 <LottieAnimation
-                    animation="breathe"
+                    animation="sushi"
                     caption="Try to refresh later"
                 >
                     <Text style={[
