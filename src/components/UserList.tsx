@@ -6,13 +6,12 @@ import { useDebounce } from '../hook';
 import { Main, Userprofile } from '../types/searchUsers';
 import { UserItem } from './UserItem';
 
-export const UserList = ({ searchQuery }: { searchQuery: string; }) => {
+export const UserList = ({ searchQuery }: { searchQuery: string }) => {
     const appTheme = useTheme();
     const [refreshing, setRefreshing] = useState(false);
 
-    const { data, setSize, error, mutate, isLoading } = useSWRInfinite<Main>(
-        (index) =>
-            `https://music.163.com/api/search/get/web?s=${searchQuery}&type=1002&offset=${index * 15}&limit=15`,
+    const { data, setSize, error, mutate, isLoading } = useSWRInfinite<Main>((index) =>
+        `https://music.163.com/api/search/get/web?s=${searchQuery}&type=1002&offset=${index * 15}&limit=15`,
     );
 
     const users = useMemo(() => {
@@ -25,6 +24,7 @@ export const UserList = ({ searchQuery }: { searchQuery: string; }) => {
                 ToastAndroid.SHORT
             );
         }
+
         return [];
     }, [data]);
 
@@ -33,14 +33,19 @@ export const UserList = ({ searchQuery }: { searchQuery: string; }) => {
         [data, users]
     );
 
+    const refresh = async () => {
+        setRefreshing(true);
+        await mutate();
+        setRefreshing(false);
+    };
+
     const loadMore = useDebounce(() => {
-        if (hasMore) {
-            setSize(prev => prev + 1);
-        }
+        if (hasMore) { setSize(prev => prev + 1); }
     }, 1000);
 
-    const renderItem = useCallback(({ item }: { item: Userprofile }) =>
-        <UserItem item={item} />, []);
+    const renderItem = useCallback(({ item }: { item: Userprofile }) => (
+        <UserItem item={item} />
+    ), []);
 
     if (isLoading) {
         return <ActivityIndicator size="large" style={styles.loading} />;
@@ -62,12 +67,6 @@ export const UserList = ({ searchQuery }: { searchQuery: string; }) => {
         );
     }
 
-    const refresh = async () => {
-        setRefreshing(true);
-        await mutate();
-        setRefreshing(false);
-    };
-
     return (
         <FlatList
             data={users}
@@ -86,7 +85,8 @@ export const UserList = ({ searchQuery }: { searchQuery: string; }) => {
                 <List.Item
                     title="No users found"
                     description={
-                        data?.[0].message || 'Try another search query'
+                        data?.[0].message
+                        || 'Try another search query'
                     }
                 />
             }
