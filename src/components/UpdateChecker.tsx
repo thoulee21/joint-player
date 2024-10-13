@@ -4,11 +4,14 @@ import { Alert, ToastAndroid } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { ActivityIndicator, List, useTheme } from 'react-native-paper';
 import RNRestart from 'react-native-restart';
+import { useAppSelector } from '../hook';
+import { selectDevModeEnabled } from '../redux/slices';
 
 const TITLE = 'Check for updates';
 
 export const UpdateChecker = () => {
     const appTheme = useTheme();
+    const isDev = useAppSelector(selectDevModeEnabled);
 
     const {
         currentlyRunning,
@@ -16,19 +19,17 @@ export const UpdateChecker = () => {
         isChecking,
         isDownloading,
         lastCheckForUpdateTimeSinceRestart: lastCheck,
-        availableUpdate,
     } = Updates.useUpdates();
 
-    const showRunType = useCallback(() => {
-        HapticFeedback.trigger(HapticFeedbackTypes.effectClick);
-
-        ToastAndroid.show(
-            currentlyRunning.isEmbeddedLaunch
-                ? 'This app is running from built-in code'
-                : 'This app is running an update',
-            ToastAndroid.SHORT
-        );
-    }, [currentlyRunning.isEmbeddedLaunch]);
+    const showCurrent = useCallback(() => {
+        if (isDev) {
+            HapticFeedback.trigger(HapticFeedbackTypes.effectClick);
+            Alert.alert(
+                'Current update info',
+                JSON.stringify(currentlyRunning, null, 2)
+            );
+        }
+    }, [currentlyRunning, isDev]);
 
     const fetchUpdateAndRestart = async () => {
         try {
@@ -45,8 +46,7 @@ export const UpdateChecker = () => {
     const performUpdateAlert = useCallback(() => {
         Alert.alert(
             TITLE,
-            `An update(${availableUpdate?.createdAt
-            }) is available. Do you want to proceed?`,
+            'An update is available. Do you want to proceed?',
             [
                 { text: 'Cancel' },
                 {
@@ -57,7 +57,7 @@ export const UpdateChecker = () => {
                 }
             ]
         );
-    }, [availableUpdate?.createdAt, isUpdatePending]);
+    }, [isUpdatePending]);
 
     const checkForUpdate = async () => {
         try {
@@ -111,7 +111,7 @@ export const UpdateChecker = () => {
             title={TITLE}
             description={description}
             onPress={handleUpdatePress}
-            onLongPress={showRunType}
+            onLongPress={showCurrent}
             disabled={isProcessing}
             left={renderUpdateIcon}
             right={renderActivityIndicator}
