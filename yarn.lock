@@ -8224,7 +8224,7 @@ __metadata:
     react-native-media-console: "npm:^2.2.0"
     react-native-pager-view: "npm:^6.4.1"
     react-native-paper: "npm:^5.12.5"
-    react-native-reanimated: "npm:3.15.1"
+    react-native-reanimated: "npm:3.15.5"
     react-native-restart: "npm:^0.0.27"
     react-native-safe-area-context: "npm:^4.10.5"
     react-native-screens: "npm:^3.34.0"
@@ -10641,9 +10641,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:3.15.1":
-  version: 3.15.1
-  resolution: "react-native-reanimated@npm:3.15.1"
+"react-native-reanimated@npm:3.15.5":
+  version: 3.15.5
+  resolution: "react-native-reanimated@npm:3.15.5"
   dependencies:
     "@babel/plugin-transform-arrow-functions": "npm:^7.0.0-0"
     "@babel/plugin-transform-class-properties": "npm:^7.0.0-0"
@@ -10660,7 +10660,7 @@ __metadata:
     "@babel/core": ^7.0.0-0
     react: "*"
     react-native: "*"
-  checksum: 10c0/d402ecc602617093cf464d315aa4c0a3e42431a9c41d027f2f2f276ec44801c668dd5c64925de8c1cd5db478908a5a62d186684c2373a27053afe47d7002fe06
+  checksum: 10c0/20eebe3e252afbc5bcb3496e974227c3da04e498b8133d74e421be1c9588c37bf8156f5f28fe42a230f1b1e4ac672372a5b032e409abbab9a9e6aab1920643b1
   languageName: node
   linkType: hard
 
