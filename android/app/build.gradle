@@ -82,13 +82,13 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.jointplayer"
+    namespace 'com.thoulee.jointplayer'
     defaultConfig {
-        applicationId "com.jointplayer"
+        applicationId 'com.thoulee.jointplayer'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 26
-        versionName "5.0.2"
+        versionCode 1
+        versionName "5.1.1"
     }
     signingConfigs {
         debug {

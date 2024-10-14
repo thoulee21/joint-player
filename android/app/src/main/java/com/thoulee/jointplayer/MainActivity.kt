@@ -1,4 +1,4 @@
-package com.jointplayer
+package com.thoulee.jointplayer
 
 import android.os.Bundle
 import expo.modules.ReactActivityDelegateWrapper

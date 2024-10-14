@@ -1,4 +1,4 @@
-package com.jointplayer
+package com.thoulee.jointplayer
 
 import android.content.res.Configuration
 import expo.modules.ApplicationLifecycleDispatcher
