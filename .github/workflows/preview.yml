@@ -20,6 +20,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Setup new yarn
+        run: |
+          corepack enable
+          yarn set version stable
+      
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -33,9 +38,7 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Install dependencies
-        run: |
-          corepack enable
-          yarn set version stable
+        run: 
           yarn install
 
       - name: Create preview

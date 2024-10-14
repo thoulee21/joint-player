@@ -11,7 +11,12 @@ jobs:
       steps:
         - name: 🏗 Setup repo
           uses: actions/checkout@v3
-  
+        
+        - name: Setup new yarn
+          run: |
+            corepack enable
+            yarn set version stable
+
         - name: 🏗 Setup Node
           uses: actions/setup-node@v3
           with:
@@ -25,9 +30,7 @@ jobs:
             token: ${{ secrets.EXPO_TOKEN }}
   
         - name: 📦 Install dependencies
-          run: |
-            corepack enable
-            yarn set version stable
+          run:
             yarn install
   
         - name: 🚀 Create update

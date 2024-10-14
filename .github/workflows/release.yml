@@ -22,7 +22,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: gradle
-
+      
+      - name: Setup new yarn
+        run: |
+          corepack enable
+          yarn set version stable
+          
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
@@ -37,9 +42,7 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install Dependencies Using yarn
-        run: |
-          corepack enable
-          yarn set version stable
+        run: 
           yarn install
           
       - name: Build Android Release
