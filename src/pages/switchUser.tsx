@@ -1,9 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
-import HapticFeedback, {
-    HapticFeedbackTypes
-} from 'react-native-haptic-feedback';
 import { Searchbar } from 'react-native-paper';
 import { BlurBackground } from '../components/BlurBackground';
 import { LottieAnimation } from '../components/LottieAnimation';
@@ -21,12 +18,6 @@ export const SwitchUser = () => {
         }
     }, [searchQuery, showQuery]);
 
-    const openDrawer = useCallback(() => {
-        HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
-        //@ts-expect-error
-        navigation.openDrawer();
-    }, [navigation]);
-
     return (
         <BlurBackground>
             <Searchbar
@@ -34,8 +25,8 @@ export const SwitchUser = () => {
                 placeholder="Search for a user"
                 onChangeText={setShowQuery}
                 value={showQuery}
-                icon="menu"
-                onIconPress={openDrawer}
+                icon="arrow-left"
+                onIconPress={navigation.goBack}
                 onSubmitEditing={search}
                 selectTextOnFocus
                 onClearIconPress={() => {
