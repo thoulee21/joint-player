@@ -6,6 +6,7 @@ import { ActivityIndicator, List, Portal, Text, useTheme } from 'react-native-pa
 import useSWRInfinite from 'swr/infinite';
 import { useDebounce } from '../hook';
 import { Comment, Main as CommentsMain } from '../types/comments';
+import type { ListLRProps } from '../types/paperListItem';
 import { CommentItem } from './CommentItem';
 import { NoCommentsItem, NoInternetItem, RetryItem } from './CommentSpecialItems';
 import { ScrollToBtns } from './ScrollToBtns';
@@ -85,33 +86,40 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
         }
     });
 
-    const sectionFooterStyle = useMemo(() => [styles.sectionFooter, {
-        color: appTheme.dark
-            ? appTheme.colors.onSurfaceDisabled
-            : appTheme.colors.backdrop,
-    }], [appTheme.colors.backdrop, appTheme.colors.onSurfaceDisabled, appTheme.dark]);
+    const sectionFooterStyle = useMemo(() => [
+        styles.sectionFooter,
+        {
+            color: appTheme.dark
+                ? appTheme.colors.onSurfaceDisabled
+                : appTheme.colors.backdrop,
+        }
+    ], [appTheme.colors.backdrop, appTheme.colors.onSurfaceDisabled, appTheme.dark]);
+
+    const renderLoadingIndicator = useCallback((props: ListLRProps) => (
+        <ActivityIndicator {...props} size={16} />
+    ), []);
+
+    const renderCheckIcon = useCallback((props: ListLRProps) => (
+        <List.Icon {...props} icon="check-all" color={appTheme.colors.primary} />
+    ), [appTheme.colors.primary]);
 
     const renderSectionFooter = useCallback(({ section }: { section: any }) => {
         if (section.title === 'Latest Comments') {
             if (showData[0].data.length !== (data || [])[0].total) {
                 return <List.Item
                     title="Loading more comments..."
-                    left={props => <ActivityIndicator {...props} size={16} />}
+                    left={renderLoadingIndicator}
                     titleStyle={sectionFooterStyle}
                 />;
             } else {
                 return <List.Item
                     title="All comments loaded!"
                     titleStyle={sectionFooterStyle}
-                    left={props => <List.Icon
-                        {...props}
-                        icon="check-all"
-                        color={appTheme.colors.primary}
-                    />}
+                    left={renderCheckIcon}
                 />;
             }
         } else { return <View />; }
-    }, [appTheme.colors.primary, data, sectionFooterStyle, showData]);
+    }, [data, renderCheckIcon, renderLoadingIndicator, sectionFooterStyle, showData]);
 
     const renderSectionHeader = useCallback(({ section }: { section: any }) => (
         <Text style={styles.header}>
