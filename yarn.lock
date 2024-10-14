@@ -8238,7 +8238,7 @@ __metadata:
     react-redux: "npm:^9.1.1"
     swr: "npm:^2.2.5"
     typescript: "npm:5.4.5"
-    user-agents: "npm:^1.1.217"
+    user-agents: "npm:^1.1.327"
     uuid: "npm:^10.0.0"
   languageName: unknown
   linkType: soft
@@ -12619,12 +12619,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"user-agents@npm:^1.1.217":
-  version: 1.1.325
-  resolution: "user-agents@npm:1.1.325"
+"user-agents@npm:^1.1.327":
+  version: 1.1.327
+  resolution: "user-agents@npm:1.1.327"
   dependencies:
     lodash.clonedeep: "npm:^4.5.0"
-  checksum: 10c0/59aa5c41d10b6397665fc979764a3829f50f7355ae41118bf8dd175486b6367db1999dd259cbce3742076875e8e4524e8eac16beba47a101564ab0ff4f9ebfa7
+  checksum: 10c0/6096371a617164ace07321345a33dab53d5c114c7c546e67f231ca9e03b5cb2d06567ed500ad548a0a961a6f260d9578e13cc2380f5c4e6d33c49d3b9528a841
   languageName: node
   linkType: hard
 
