@@ -1,7 +1,10 @@
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import React, { useMemo } from 'react';
+import {
+    createDrawerNavigator,
+    type DrawerContentComponentProps
+} from '@react-navigation/drawer';
+import React, { useCallback, useMemo } from 'react';
 import { Icon } from 'react-native-paper';
-import { Favs, SwitchUser, Player, Settings } from '../pages';
+import { Favs, Player, Settings } from '../pages';
 import { BlurBackground } from './BlurBackground';
 import { DrawerItemList } from './DrawerItemList';
 import { Spacer } from './Spacer';
@@ -23,12 +26,6 @@ const ROUTES = [
         unfocusedIcon: 'heart-outline',
     },
     {
-        name: 'Switch User',
-        component: SwitchUser,
-        focusedIcon: 'account',
-        unfocusedIcon: 'account-outline',
-    },
-    {
         name: 'Settings',
         component: Settings,
         focusedIcon: 'cog',
@@ -36,37 +33,49 @@ const ROUTES = [
     },
 ];
 
+const drawerIcon = (
+    focusedIcon: string, unfocusedIcon: string
+) =>
+    ({ color, focused, size }: {
+        color: string, focused: boolean, size: number
+    }) => (
+        <Icon
+            size={size}
+            source={focused ? focusedIcon : unfocusedIcon}
+            color={color}
+        />
+    );
+
 export function DrawerNavi() {
     const DrawerRoutes = useMemo(() =>
-        ROUTES.map(({ name, component, focusedIcon, unfocusedIcon }) => (
+        ROUTES.map(({
+            name, component, focusedIcon, unfocusedIcon
+        }) => (
             <Drawer.Screen
                 key={name}
                 name={name}
                 component={component}
                 options={{
-                    drawerIcon: ({ color, focused, size }) => (
-                        <Icon
-                            size={size}
-                            source={focused ? focusedIcon : unfocusedIcon}
-                            color={color}
-                        />
-                    ),
+                    drawerIcon:
+                        drawerIcon(focusedIcon, unfocusedIcon)
                 }}
             />
         )), []);
+
+    const renderDrawerContent = useCallback(
+        (props: DrawerContentComponentProps) => (
+            <BlurBackground>
+                <UserHeader />
+                <Spacer />
+                <DrawerItemList {...props} />
+            </BlurBackground>
+        ), []);
 
     return (
         <Drawer.Navigator
             initialRouteName="Player"
             screenOptions={{ headerShown: false }}
-            drawerContent={(props) =>
-                <BlurBackground>
-                    <UserHeader />
-                    <Spacer />
-
-                    <DrawerItemList {...props} />
-                </BlurBackground>
-            }
+            drawerContent={renderDrawerContent}
         >
             {DrawerRoutes}
         </Drawer.Navigator>

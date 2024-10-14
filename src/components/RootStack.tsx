@@ -16,7 +16,8 @@ import {
     LyricsScreen,
     MvDetail,
     MvPlayer,
-    WebViewScreen
+    SwitchUser,
+    WebViewScreen,
 } from '../pages';
 import { DrawerNavi } from './DrawerNavi';
 
@@ -59,6 +60,7 @@ export function RootStack() {
             <Stack.Screen name="Dev" component={DevScreen} />
             <Stack.Screen name="About" component={AboutScreen} />
             <Stack.Screen name="AppData" component={AppDataScreen} />
+            <Stack.Screen name="SwitchUser" component={SwitchUser} />
         </Stack.Navigator>
     );
 }

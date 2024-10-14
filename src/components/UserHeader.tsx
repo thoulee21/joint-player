@@ -77,18 +77,23 @@ export const UserHeader = memo(({ userId }: { userId?: number }) => {
         }
     };
 
+    const goSwitchUser = () => {
+        HapticFeedback.trigger(HapticFeedbackTypes.effectClick);
+        //@ts-expect-error
+        navigation.navigate('SwitchUser');
+    };
+
     return (
-        <TouchableWithoutFeedback
-            onLongPress={viewBackground}
-        >
+        <TouchableWithoutFeedback onLongPress={viewBackground}>
             <ImageBackground
                 style={styles.header}
                 imageStyle={styles.img}
                 source={{ uri: data?.profile.backgroundUrl }}
             >
                 <TouchableRipple
-                    style={styles.avatar}
                     borderless
+                    style={styles.avatar}
+                    onPress={goSwitchUser}
                     onLongPress={viewAvatar}
                 >
                     <Avatar.Image
