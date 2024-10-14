@@ -6,7 +6,7 @@
         {
             "label": "Assemble Release",
             "type": "shell",
-            "command": ".\\gradlew assembleRelease",
+            "command": ".\\gradlew clean && .\\gradlew assembleRelease",
             "group": {
                 "kind": "build",
                 "isDefault": true
