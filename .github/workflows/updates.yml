@@ -25,7 +25,10 @@ jobs:
             token: ${{ secrets.EXPO_TOKEN }}
   
         - name: 📦 Install dependencies
-          run: yarn install
+          run: |
+            corepack enable
+            yarn set version stable
+            yarn install
   
         - name: 🚀 Create update
           run: yarn create:update

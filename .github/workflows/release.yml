@@ -37,12 +37,16 @@ jobs:
             ${{ runner.os }}-yarn-
 
       - name: Install Dependencies Using yarn
-        run: yarn
+        run: |
+          corepack enable
+          yarn set version stable
+          yarn install
           
       - name: Build Android Release
         run: |
           chmod +x ./android/gradlew
-          yarn build:android
+          cd android
+          ./gradlew assembleRelease
 
       - name: Automatic Releases
         uses: marvinpinto/action-automatic-releases@v1.2.1
