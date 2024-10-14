@@ -56,7 +56,8 @@ export const UserList = ({ searchQuery }: { searchQuery: string }) => {
         return (
             <View style={styles.errorView}>
                 <LottieAnimation
-                    animation="sushi"
+                    animation="watermelon"
+                    loop={false}
                     caption="Try to search later or with another query"
                 />
                 <List.Item
@@ -89,7 +90,8 @@ export const UserList = ({ searchQuery }: { searchQuery: string }) => {
                         height: Dimensions.get('window').height / 1.2,
                         width: Dimensions.get('window').width
                     }}
-                    animation="sushi"
+                    animation="watermelon"
+                    loop={false}
                     caption={
                         `No users found\n${data?.[0].message
                         || 'Try another search query later'}`
