@@ -9,6 +9,12 @@
     "updates": {
       "url": "https://u.expo.dev/7cd6ef29-acd5-424e-a325-4e449f660a0b"
     },
-    "version": "5.1.1"
+    "version": "5.1.3",
+    "android": {
+      "versionCode": 4
+    },
+    "ios": {
+      "buildNumber": "1"
+    }
   }
 }
