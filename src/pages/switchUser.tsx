@@ -48,7 +48,8 @@ export const SwitchUser = () => {
                 ? <UserList searchQuery={searchQuery} />
                 : <LottieAnimation
                     caption="Login to use your custom settings"
-                    animation="sushi"
+                    animation="welcome"
+                    loop={false}
                 />}
         </BlurBackground>
     );
