@@ -9,7 +9,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import React, { PropsWithChildren, useEffect, useMemo } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { getColors } from 'react-native-image-colors';
+import ImageColors from 'react-native-image-colors';
 import { AndroidImageColors } from 'react-native-image-colors/build/types';
 import {
     MD3DarkTheme,
@@ -59,7 +59,7 @@ export function AppContainer({ children }: PropsWithChildren) {
     useEffect(() => {
         const setTheme = async () => {
             if (track?.artwork) {
-                const colors = await getColors(track.artwork);
+                const colors = await ImageColors.getColors(track.artwork);
                 // TODO: multiple platform support
                 const androidColors = (colors as AndroidImageColors);
 

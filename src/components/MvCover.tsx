@@ -4,7 +4,7 @@ import { BlurView } from 'expo-blur';
 import React, { PropsWithChildren, memo, useCallback, useEffect, useState } from 'react';
 import { Alert, Dimensions, ImageBackground, StatusBar, StyleSheet } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { getColors } from 'react-native-image-colors';
+import ImageColors from 'react-native-image-colors';
 import { AndroidImageColors } from 'react-native-image-colors/build/types';
 import { Card, useTheme } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
@@ -49,7 +49,7 @@ export const MvCover = memo(({ children }: PropsWithChildren) => {
     });
 
     const StatusBarStyleHandler = useDebounce(async () => {
-        const colors = await getColors(data?.data.cover || placeholderImg);
+        const colors = await ImageColors.getColors(data?.data.cover || placeholderImg);
         const imgColor = Color((colors as AndroidImageColors).average);
 
         setIsMvCoverDark(imgColor.isDark());
