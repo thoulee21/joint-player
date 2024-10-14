@@ -14,11 +14,12 @@ export const DevSwitchItem = () => {
         <List.Icon {...props} icon="code-tags" />
     ), []);
 
-    const renderSwitch = useCallback((props: ListLRProps) => (
-        <View pointerEvents="none" {...props}>
-            <Switch value={isDev} />
-        </View>
-    ), [isDev]);
+    const renderSwitch = useCallback(
+        (props: ListLRProps) => (
+            <View pointerEvents="none" {...props}>
+                <Switch value={isDev} />
+            </View>
+        ), [isDev]);
 
     const onPressSwitch = useCallback(() => {
         HapticFeedback.trigger(HapticFeedbackTypes.effectClick);

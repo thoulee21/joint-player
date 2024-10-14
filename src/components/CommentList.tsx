@@ -6,8 +6,8 @@ import { ActivityIndicator, List, Portal, Text, useTheme } from 'react-native-pa
 import useSWRInfinite from 'swr/infinite';
 import { useDebounce } from '../hook';
 import { Comment, Main as CommentsMain } from '../types/comments';
-import { NoCommentsItem, NoInternetItem, RetryItem } from './CommentSpecialItems';
 import { CommentItem } from './CommentItem';
+import { NoCommentsItem, NoInternetItem, RetryItem } from './CommentSpecialItems';
 import { ScrollToBtns } from './ScrollToBtns';
 
 export interface Section {
@@ -67,11 +67,11 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
 
     const onRefresh = useCallback(async () => {
         setRefreshing(true);
-        HapticFeedback.trigger(
-            HapticFeedbackTypes.effectClick
-        );
+        HapticFeedback.trigger(HapticFeedbackTypes.effectClick);
+
         await mutate();
         setRefreshing(false);
+
         //no mutate
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -96,7 +96,7 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
             if (showData[0].data.length !== (data || [])[0].total) {
                 return <List.Item
                     title="Loading more comments..."
-                    left={props => <ActivityIndicator {...props} size={16}/>}
+                    left={props => <ActivityIndicator {...props} size={16} />}
                     titleStyle={sectionFooterStyle}
                 />;
             } else {
