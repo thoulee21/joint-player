@@ -7,8 +7,6 @@ on:
 
 jobs:
     update:
-      # Only generate updates for non-version commits
-      if: "!startsWith(github.event.head_commit.message, 'v')"
       runs-on: ubuntu-latest
       steps:
         - name: 🏗 Setup repo
@@ -36,4 +34,4 @@ jobs:
             yarn install
   
         - name: 🚀 Create update
-          run: yarn create:update
+          run: eas update --auto --channel production --non-interactive --platform android
