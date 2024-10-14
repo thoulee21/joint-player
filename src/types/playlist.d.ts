@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 export interface Main {
     result: Result;
     code:   number;
