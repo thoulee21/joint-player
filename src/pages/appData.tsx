@@ -96,6 +96,33 @@ export function AppDataScreen() {
         );
     }, [appTheme]);
 
+    const renderStateIcon = useCallback(
+        ({ color }: { color: string }) => (
+            <Icon
+                source="cellphone-information"
+                color={color}
+                size={20}
+            />
+        ), []);
+
+    const renderStorageIcon = useCallback(
+        ({ color }: { color: string }) => (
+            <Icon
+                source="database-cog-outline"
+                color={color}
+                size={20}
+            />
+        ), []);
+
+    const renderPackageIcon = useCallback(
+        ({ color }: { color: string }) => (
+            <Icon
+                source="package-variant"
+                color={color}
+                size={20}
+            />
+        ), []);
+
     return (
         <BlurBackground>
             <Appbar.Header style={styles.transparent}>
@@ -117,13 +144,7 @@ export function AppDataScreen() {
                     component={ReduxState}
                     options={{
                         title: 'State',
-                        tabBarIcon: ({ color }) => (
-                            <Icon
-                                source="cellphone-information"
-                                color={color}
-                                size={20}
-                            />
-                        )
+                        tabBarIcon: renderStateIcon,
                     }}
                 />
                 <TopTab.Screen
@@ -131,13 +152,7 @@ export function AppDataScreen() {
                     component={StorageList}
                     options={{
                         title: 'Storage',
-                        tabBarIcon: ({ color }) => (
-                            <Icon
-                                source="database-cog-outline"
-                                color={color}
-                                size={20}
-                            />
-                        )
+                        tabBarIcon: renderStorageIcon,
                     }}
                 />
                 <TopTab.Screen
@@ -145,13 +160,7 @@ export function AppDataScreen() {
                     component={PackageData}
                     options={{
                         title: 'Package',
-                        tabBarIcon: ({ color }) => (
-                            <Icon
-                                source="package-variant"
-                                color={color}
-                                size={20}
-                            />
-                        )
+                        tabBarIcon: renderPackageIcon,
                     }}
                 />
             </TopTab.Navigator>

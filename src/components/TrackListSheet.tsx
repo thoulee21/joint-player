@@ -6,8 +6,8 @@ import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
 import { useAppDispatch, useAppSelector } from '../hook';
 import { queue, setQueue } from '../redux/slices';
 import { TrackType } from '../services/GetTracksService';
-import { TrackItem } from './TrackItem';
 import { BottomSheetPaper } from './BottomSheetPaper';
+import { TrackItem } from './TrackItem';
 
 interface TrackListProps {
   bottomSheetRef: React.RefObject<BottomSheet>;
@@ -49,19 +49,23 @@ function TrackList({
     );
   }, [bottomSheetRef, navigation]);
 
+  const renderEmptyTrack = useCallback(() => {
+    return (
+      <View style={styles.noTracks}>
+        <Text variant="headlineSmall">
+          No tracks
+        </Text>
+      </View>
+    );
+  }, []);
+
   return (
     <BottomSheetFlatList
       style={styles.root}
       showsVerticalScrollIndicator={false}
       keyExtractor={(item) => item.id.toString()}
       data={tracks}
-      ListEmptyComponent={() => (
-        <View style={styles.noTracks}>
-          <Text variant="headlineSmall">
-            No tracks
-          </Text>
-        </View>
-      )}
+      ListEmptyComponent={renderEmptyTrack}
       renderItem={renderTrack}
     />
   );

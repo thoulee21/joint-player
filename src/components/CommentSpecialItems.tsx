@@ -1,19 +1,23 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { List, useTheme } from 'react-native-paper';
+import type { ListLRProps } from '../types/paperListItem';
 import { LottieAnimation } from './LottieAnimation';
 
-export const NoInternetItem = ({ error }: { error: any }) => {
+const AlertIcon = (props: ListLRProps) => {
     const appTheme = useTheme();
+    return (
+        <List.Icon
+            {...props}
+            color={appTheme.colors.error}
+            icon="alert-circle-outline"
+        />
+    );
+};
+export const NoInternetItem = ({ error }: { error: any }) => {
     return (
         <LottieAnimation animation="sushi">
             <List.Item
-                left={props => (
-                    <List.Icon
-                        {...props}
-                        color={appTheme.colors.error}
-                        icon="alert-circle-outline"
-                    />
-                )}
+                left={AlertIcon}
                 title="No internet connection"
                 description={error.message}
             />
@@ -22,17 +26,10 @@ export const NoInternetItem = ({ error }: { error: any }) => {
 };
 
 export const RetryItem = ({ error, onRetry }: { error: any, onRetry: () => void }) => {
-    const appTheme = useTheme();
     return (
         <LottieAnimation animation="sushi">
             <List.Item
-                left={props => (
-                    <List.Icon
-                        {...props}
-                        color={appTheme.colors.error}
-                        icon="alert-circle-outline"
-                    />
-                )}
+                left={AlertIcon}
                 title="Failed to load comments. Tap to retry."
                 description={error.message}
                 onPress={onRetry}
@@ -42,15 +39,17 @@ export const RetryItem = ({ error, onRetry }: { error: any, onRetry: () => void 
 };
 
 export const NoCommentsItem = () => {
+    const renderCommentIcon = useCallback((props: ListLRProps) => (
+        <List.Icon
+            {...props}
+            icon="comment-outline"
+        />
+    ), []);
+
     return (
         <LottieAnimation animation="watermelon">
             <List.Item
-                left={props => (
-                    <List.Icon
-                        {...props}
-                        icon="comment-outline"
-                    />
-                )}
+                left={renderCommentIcon}
                 title="No comments"
                 description="Be the first to comment!"
             />

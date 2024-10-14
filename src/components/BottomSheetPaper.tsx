@@ -1,8 +1,9 @@
 import BottomSheet, {
   BottomSheetBackdrop,
-  BottomSheetView
+  BottomSheetView,
+  type BottomSheetBackdropProps
 } from '@gorhom/bottom-sheet';
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { BlurBackground } from './BlurBackground';
@@ -14,6 +15,20 @@ export const BottomSheetPaper = ({
   bottomSheetRef: React.RefObject<BottomSheet>;
 }>) => {
   const appTheme = useTheme();
+
+  const renderBackground = useCallback((props: any) => (
+    <View {...props}>
+      <BlurBackground />
+    </View>
+  ), []);
+
+  const renderBackDrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop {...props}
+        enableTouchThrough
+      />
+    ), []);
+
   return (
     <BottomSheet
       ref={bottomSheetRef}
@@ -27,16 +42,8 @@ export const BottomSheetPaper = ({
       enablePanDownToClose
       android_keyboardInputMode="adjustResize"
       enableOverDrag={false} //防止与FlatList（ScrollView）冲突
-      backgroundComponent={(props) =>
-        <View {...props}>
-          <BlurBackground />
-        </View>
-      }
-      backdropComponent={(props) =>
-        <BottomSheetBackdrop {...props}
-          enableTouchThrough
-        />
-      }
+      backgroundComponent={renderBackground}
+      backdropComponent={renderBackDrop}
     >
       <BottomSheetView style={styles.bottomView}>
         {children}

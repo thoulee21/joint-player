@@ -10,6 +10,14 @@ export const ContactMe = () => {
         <List.Icon {...props} icon="open-in-new" />
     ), []);
 
+    const EmailIcon = useCallback((props: any) => (
+        <List.Icon {...props} icon="email-outline" />
+    ), []);
+
+    const GithubIcon = useCallback((props: any) => (
+        <List.Icon {...props} icon="github" />
+    ), []);
+
     return (
         <List.Section
             title="Contact the Developer"
@@ -21,14 +29,14 @@ export const ContactMe = () => {
                 onPress={() => {
                     Linking.openURL(`mailto:${packageData.author.email}`);
                 }}
-                left={(props) => <List.Icon {...props} icon="email-outline" />}
+                left={EmailIcon}
                 right={OpenIcon}
             />
             <List.Item
                 title="Homepage"
                 description={packageData.homepage}
                 onPress={() => Linking.openURL(packageData.homepage)}
-                left={(props) => <List.Icon {...props} icon="github" />}
+                left={GithubIcon}
                 right={OpenIcon}
             />
         </List.Section>

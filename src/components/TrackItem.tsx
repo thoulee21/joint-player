@@ -1,6 +1,6 @@
 import BottomSheet from '@gorhom/bottom-sheet';
 import Color from 'color';
-import React, { memo, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { TextStyle } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { IconButton, List, useTheme } from 'react-native-paper';
@@ -9,20 +9,21 @@ import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
 import { useAppDispatch } from '../hook';
 import { removeFromQueueAsync } from '../redux/slices';
 import { TrackType } from '../services/GetTracksService';
+import type { ListLRProps } from '../types/paperListItem';
 
 export interface ListRightProps {
     color: string;
     style?: Style;
 }
 
-export const TrackItem = (
-    { item, index, navigation, bottomSheetRef }: {
-        item: TrackType;
-        index: number;
-        navigation: any;
-        bottomSheetRef: React.RefObject<BottomSheet>
-    }
-) => {
+export const TrackItem = ({
+    item, index, navigation, bottomSheetRef
+}: {
+    item: TrackType;
+    index: number;
+    navigation: any;
+    bottomSheetRef: React.RefObject<BottomSheet>
+}) => {
     const dispatch = useAppDispatch();
     const appTheme = useTheme();
     const currentTrack = useActiveTrack();
@@ -41,7 +42,7 @@ export const TrackItem = (
         bottomSheetRef.current?.close();
     }, [bottomSheetRef, index]);
 
-    const MvButton = memo((props: ListRightProps) => {
+    const renderMvButton = useCallback((props: ListRightProps) => {
         const goMV = () => {
             if (!active) {
                 chooseTrack();
@@ -61,13 +62,29 @@ export const TrackItem = (
                 />
             );
         }
-    });
+    }, [active, bottomSheetRef, chooseTrack, item.mvid, navigation]);
 
     const remove = () => {
         HapticFeedback.trigger(
             HapticFeedbackTypes.effectDoubleClick
         );
         dispatch(removeFromQueueAsync(index));
+    };
+
+    const renderIcon = useCallback(
+        ({ color, style }: ListLRProps) => (
+            <List.Icon
+                style={style}
+                color={active ? appTheme.colors.primary : color}
+                icon={active ? 'music-circle' : 'music-circle-outline'}
+            />
+        ), [active, appTheme.colors.primary]);
+
+    const listStyle = {
+        backgroundColor: active
+            ? Color(appTheme.colors.secondaryContainer)
+                .fade(appTheme.dark ? 0.4 : 0.6).string()
+            : undefined,
     };
 
     return (
@@ -78,20 +95,9 @@ export const TrackItem = (
             onLongPress={remove}
             descriptionNumberOfLines={1}
             titleStyle={titleStyle}
-            style={{
-                backgroundColor: active
-                    ? Color(appTheme.colors.secondaryContainer)
-                        .fade(appTheme.dark ? 0.4 : 0.6).string()
-                    : undefined,
-            }}
-            left={({ color, style }) => (
-                <List.Icon
-                    style={style}
-                    color={active ? appTheme.colors.primary : color}
-                    icon={active ? 'music-circle' : 'music-circle-outline'}
-                />
-            )}
-            right={(props) => <MvButton {...props} />}
+            style={listStyle}
+            left={renderIcon}
+            right={renderMvButton}
         />
     );
 };

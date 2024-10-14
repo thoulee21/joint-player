@@ -3,8 +3,11 @@ import React, { useState } from 'react';
 import { Share, ToastAndroid } from 'react-native';
 import HapticFeedback from 'react-native-haptic-feedback';
 import { IconButton, Menu } from 'react-native-paper';
+import type { Style } from 'react-native-paper/lib/typescript/components/List/utils';
 
-export const MoreBtn = ({ data }: { data: string }) => {
+export const MoreBtn = ({ data, color, style }: {
+    data: string, color: string, style?: Style
+}) => {
     const [menuVisible, setMenuVisible] = useState(false);
 
     const onPostPressed = () => {
@@ -17,6 +20,8 @@ export const MoreBtn = ({ data }: { data: string }) => {
         anchor={
             <IconButton
                 icon="dots-vertical"
+                iconColor={color}
+                style={style}
                 onPress={() => {
                     HapticFeedback.trigger('effectHeavyClick');
                     setMenuVisible(true);

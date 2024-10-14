@@ -16,18 +16,20 @@ export const TrackInfoBar = ({ style, right }: {
     const track = useActiveTrack();
     const avatarImg = track?.artwork || placeholderImg;
 
+    const renderAvatar = ({ style: leftStyle }: { style: Style }) => (
+        <Avatar.Image
+            size={40}
+            style={leftStyle}
+            source={{ uri: avatarImg }}
+        />
+    );
+
     return (
         <List.Item
             title={track?.title}
             description={<ArtistNames />}
             style={[styles.bar, style]}
-            left={({ style: leftStyle }) =>
-                <Avatar.Image
-                    size={40}
-                    style={leftStyle}
-                    source={{ uri: avatarImg }}
-                />
-            }
+            left={renderAvatar}
             right={right}
         />
     );

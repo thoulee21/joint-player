@@ -26,6 +26,12 @@ export function Albums({ artistID }: { artistID: number }) {
         <Album item={item} />
     ), []);
 
+    const renderLoading = useCallback(() => {
+        if (!isLoading && !error && data && data[data.length - 1].more) {
+            return <ActivityIndicator style={styles.moreLoading} />;
+        }
+    }, [isLoading, error, data]);
+
     if (error) {
         return (
             <Text style={{ color: appTheme.colors.error }}>
@@ -42,11 +48,7 @@ export function Albums({ artistID }: { artistID: number }) {
             keyExtractor={(item) => item.id.toString()}
             renderItem={renderItem}
             onEndReached={loadMore}
-            ListFooterComponent={() => {
-                if (!isLoading && !error && data && data[data.length - 1].more) {
-                    return <ActivityIndicator style={styles.moreLoading} />;
-                }
-            }}
+            ListFooterComponent={renderLoading}
             refreshing={refreshing}
             onRefresh={onRefresh}
             refreshControl={

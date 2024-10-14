@@ -6,7 +6,7 @@ import useSWRInfinite from 'swr/infinite';
 import { AlbumContent } from '../components/AlbumContent';
 import { AlbumDescription } from '../components/AlbumDescription';
 import { BlurBackground } from '../components/BlurBackground';
-import { HeaderCard } from '../components/HeaderCard';
+import { AlbumHeaderCard } from '../components/HeaderCard';
 import { TracksHeader } from '../components/TracksHeader';
 import { useAppDispatch } from '../hook/reduxHooks';
 import { setQueueAsync } from '../redux/slices/queue';
@@ -32,7 +32,7 @@ export function AlbumDetail() {
 
     return (
         <BlurBackground style={styles.container}>
-            <HeaderCard album={album} />
+            <AlbumHeaderCard album={album} />
             <AlbumDescription
                 description={data && data[0].album.description}
             />

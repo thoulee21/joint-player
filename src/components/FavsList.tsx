@@ -20,25 +20,24 @@ interface ListItemProps {
     index: number
 }
 
+const NoFavs = () => (
+    <LottieAnimation
+        animation="watermelon"
+        loop={false}
+        caption="Add some songs to your favorites"
+        style={{
+            height: Dimensions.get('window').height / 1.2,
+            width: Dimensions.get('window').width,
+        }}
+    >
+        <Text style={styles.noFavs} variant="titleLarge">
+            No favorites yet
+        </Text>
+    </LottieAnimation>
+);
 export const FavsList = () => {
     const appTheme = useTheme();
     const favorites = useAppSelector(favs);
-
-    const NoFavs = () => (
-        <LottieAnimation
-            animation="watermelon"
-            loop={false}
-            caption="Add some songs to your favorites"
-            style={{
-                height: Dimensions.get('window').height / 1.2,
-                width: Dimensions.get('window').width,
-            }}
-        >
-            <Text style={styles.noFavs} variant="titleLarge">
-                No favorites yet
-            </Text>
-        </LottieAnimation>
-    );
 
     const renderItem = useCallback((props: ListItemProps) => (
         <SongItem {...props} />

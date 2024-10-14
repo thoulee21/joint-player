@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback } from 'react';
 import { ViewStyle } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { List, Text, useTheme } from 'react-native-paper';
@@ -7,9 +7,10 @@ import TrackPlayer from 'react-native-track-player';
 import { useAppDispatch } from '../hook';
 import { clearAddOneAsync } from '../redux/slices';
 import { TrackType } from '../services/GetTracksService';
+import type { ListLRProps } from '../types/paperListItem';
 
 const IndexOfSong = memo(({ style: leftStyle, index }: {
-    style: Style, index: number
+    style?: Style, index: number
 }) => {
     const appTheme = useTheme();
     return (
@@ -42,11 +43,13 @@ export const SongItem = memo(({ item, index, style }: {
         await TrackPlayer.play();
     };
 
+    const renderIndex = useCallback((props: ListLRProps) => (
+        <IndexOfSong {...props} index={index} />
+    ), [index]);
+
     return (
         <List.Item
-            left={(props) => (
-                <IndexOfSong {...props} index={index} />
-            )}
+            left={renderIndex}
             title={item.title}
             description={
                 item.artists.map(ar => ar.name).join(', ')

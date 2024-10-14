@@ -1,7 +1,7 @@
 import BottomSheet from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ScrollView, StatusBar, StyleSheet } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { IconButton, Searchbar, useTheme } from 'react-native-paper';
@@ -55,6 +55,27 @@ export function Player() {
     setSearching(false);
   }, 3000);
 
+  const pressSearchIcon = useCallback(() => {
+    if (keyword) {
+      setKeyword('');
+    } else {
+      searchSongs();
+    }
+
+    HapticFeedback.trigger(
+      HapticFeedbackTypes.effectHeavyClick
+    );
+  }, [keyword, searchSongs]);
+
+  const renderSearchIcon = useCallback((props: any) => (
+    <IconButton {...props}
+      icon={keyword ? 'close' : 'magnify'}
+      animated
+      loading={searching}
+      onPress={pressSearchIcon}
+    />
+  ), [keyword, searching, pressSearchIcon]);
+
   return (
     <BlurBackground style={styles.searchbarContainer}>
       <Searchbar
@@ -75,24 +96,7 @@ export function Player() {
             HapticFeedbackTypes.effectHeavyClick
           );
         }}
-        right={(props) => (
-          <IconButton {...props}
-            icon={keyword ? 'close' : 'magnify'}
-            animated
-            loading={searching}
-            onPress={() => {
-              if (keyword) {
-                setKeyword('');
-              } else {
-                searchSongs();
-              }
-
-              HapticFeedback.trigger(
-                HapticFeedbackTypes.effectHeavyClick
-              );
-            }}
-          />
-        )}
+        right={renderSearchIcon}
         blurOnSubmit
         selectTextOnFocus
         selectionColor={

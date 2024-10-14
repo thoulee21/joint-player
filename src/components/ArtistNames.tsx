@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { FlatList, StyleProp, TextStyle } from 'react-native';
 import HapticFeedback, {
     HapticFeedbackTypes
@@ -29,16 +29,16 @@ export const ArtistNames = ({ textStyle }:
         });
     };
 
+    const renderSeparator = useCallback(() => (
+        <Text style={[textStyle, { color: themedGray }]}>/</Text>
+    ), [textStyle, themedGray]);
+
     return (
         <FlatList
             data={track?.artists as Artist[]}
             horizontal
             keyExtractor={(item) => item.id.toString()}
-            ItemSeparatorComponent={() => (
-                <Text style={[textStyle,
-                    { color: themedGray }
-                ]}>/</Text>
-            )}
+            ItemSeparatorComponent={renderSeparator}
             renderItem={({ item }) => (
                 <Text
                     style={[textStyle, {

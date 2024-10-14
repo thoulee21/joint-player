@@ -1,37 +1,42 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Avatar, IconButton, List } from 'react-native-paper';
 import { HotAlbum } from '../types/albumArtist';
+import type { ListLRProps } from '../types/paperListItem';
 import { ArtistNames } from './ArtistNames';
 
-export const HeaderCard = ({ album }: { album: HotAlbum }) => {
+export const AlbumHeaderCard = ({ album }: { album: HotAlbum }) => {
     const navigation = useNavigation();
 
-    const goComments = () => {
+    const goComments = useCallback(() => {
         //@ts-ignore
         navigation.push('Comments', {
             commentThreadId: album.commentThreadId
         });
-    };
+    }, [album.commentThreadId, navigation]);
+
+    const renderAlbumPic = useCallback((props: ListLRProps) => (
+        <Avatar.Image {...props}
+            source={{ uri: album.picUrl }}
+            size={40}
+        />
+    ), [album.picUrl]);
+
+    const renderCommentBtn = useCallback((props: ListLRProps) => (
+        <IconButton {...props}
+            icon="comment-text-outline"
+            onPress={goComments}
+        />
+    ), [goComments]);
 
     return (
         <View style={styles.card}>
             <List.Item
-                left={(props) => (
-                    <Avatar.Image {...props}
-                        source={{ uri: album.picUrl }}
-                        size={40}
-                    />
-                )}
+                left={renderAlbumPic}
                 title={album.name}
                 description={<ArtistNames />}
-                right={(props) => (
-                    <IconButton {...props}
-                        icon="comment-text-outline"
-                        onPress={goComments}
-                    />
-                )}
+                right={renderCommentBtn}
             />
         </View>
     );

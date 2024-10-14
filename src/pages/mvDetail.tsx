@@ -34,6 +34,24 @@ const MvAppbar = () => {
     );
 };
 
+const BottomBtns = ({ data, goMvPlayer }: {
+    data?: MvMain, goMvPlayer: () => void
+}) => {
+    return (
+        <View style={styles.row}>
+            <Button icon="heart-outline">
+                {data?.data.likeCount.toLocaleString()}
+            </Button>
+            <Button
+                icon="play-circle"
+                onPress={goMvPlayer}
+            >
+                {data?.data.playCount.toLocaleString()}
+            </Button>
+        </View>
+    );
+};
+
 export function MvDetail() {
     const navigation = useNavigation();
     const appTheme = useTheme();
@@ -84,22 +102,6 @@ export function MvDetail() {
         </Button>
     ), [btns, res]);
 
-    const BottomBtns = () => {
-        return (
-            <View style={styles.row}>
-                <Button icon="heart-outline">
-                    {data?.data.likeCount.toLocaleString()}
-                </Button>
-                <Button
-                    icon="play-circle"
-                    onPress={goMvPlayer}
-                >
-                    {data?.data.playCount.toLocaleString()}
-                </Button>
-            </View>
-        );
-    };
-
     const renderResSwitch = useCallback((props: any) => (
         <ResSwitch {...props} />
     ), [ResSwitch]);
@@ -144,7 +146,7 @@ export function MvDetail() {
         <BlurBackground>
             <MvCover>
                 <TrackInfoBar right={renderResSwitch} />
-                <BottomBtns />
+                <BottomBtns data={data} goMvPlayer={goMvPlayer} />
             </MvCover>
             <CommentList
                 commentThreadId={`R_MV_5_${track?.mvid}`}
