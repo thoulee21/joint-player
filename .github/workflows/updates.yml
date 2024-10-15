@@ -36,4 +36,4 @@ jobs:
             yarn install
   
         - name: 🚀 Create update
-          run: yarn create:update
+          run: eas update --channel production --platform android --auto --non-interactive
