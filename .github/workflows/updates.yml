@@ -34,6 +34,9 @@ jobs:
         - name: 📦 Install dependencies
           run:
             yarn install
-  
+        
+        - name: Configure EAS
+          run: eas update:configure --platform android --non-interactive
+
         - name: 🚀 Create update
           run: eas update --channel production --platform android --auto --non-interactive
