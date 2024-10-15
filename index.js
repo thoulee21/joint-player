@@ -22,7 +22,11 @@ Sentry.init({
         replaysOnErrorSampleRate: 1.0,
     },
     integrations: [
-        Sentry.mobileReplayIntegration(),
+        Sentry.mobileReplayIntegration({
+            maskAllImages: false,
+            maskAllText: false,
+            maskAllVectors: false,
+        }),
         Sentry.reactNativeTracingIntegration(),
     ],
 });
