@@ -35,7 +35,6 @@
     "color": "^4.2.3",
     "expo": "~51.0.37",
     "expo-blur": "~13.0.2",
-    "expo-dev-client": "~4.0.28",
     "expo-screen-orientation": "~7.0.5",
     "expo-splash-screen": "~0.27.6",
     "expo-updates": "~0.25.27",
