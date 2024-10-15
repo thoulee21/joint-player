@@ -3,7 +3,6 @@ import {
     MaterialTopTabBarProps
 } from '@react-navigation/material-top-tabs';
 import { useNavigation } from '@react-navigation/native';
-import * as Updates from 'expo-updates';
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Appbar, Icon, SegmentedButtons, useTheme } from 'react-native-paper';
@@ -16,27 +15,6 @@ import { Storage } from '../utils';
 import { StorageKeys } from '../utils/storageKeys';
 
 const TopTab = createMaterialTopTabNavigator();
-
-const ExpoUpdateLogs = () => {
-    const [logs, setLogs] = useState<DataItemType[]>([]);
-
-    useEffect(() => {
-        const fetchLogs = async () => {
-            const logEntries = await Updates.readLogEntriesAsync();
-            const logItems = logEntries.map(
-                (entry, index) => ({
-                    name: `Log ${index + 1}`,
-                    data: entry,
-                }));
-
-            setLogs(logItems);
-        };
-
-        fetchLogs();
-    }, []);
-
-    return (<DataList dataItems={logs} />);
-}
 
 const PackageData = () => {
     const packageData = Object.keys(packageJson).map((key) => ({
@@ -145,15 +123,6 @@ export function AppDataScreen() {
             />
         ), []);
 
-    const renderUpdateIcon = useCallback(
-        ({ color }: { color: string }) => (
-            <Icon
-                source="cloud-download"
-                color={color}
-                size={20}
-            />
-        ), []);
-
     return (
         <BlurBackground>
             <Appbar.Header style={styles.transparent}>
@@ -192,14 +161,6 @@ export function AppDataScreen() {
                     options={{
                         title: 'Package',
                         tabBarIcon: renderPackageIcon,
-                    }}
-                />
-                <TopTab.Screen
-                    name="ExpoUpdateLogs"
-                    component={ExpoUpdateLogs}
-                    options={{
-                        title: 'Expo Updates',
-                        tabBarIcon: renderUpdateIcon,
                     }}
                 />
             </TopTab.Navigator>
