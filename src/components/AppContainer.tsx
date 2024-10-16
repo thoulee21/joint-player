@@ -73,9 +73,7 @@ export function AppContainer({ children }: PropsWithChildren) {
 
         setTheme().finally(() => {
             if (track?.artwork && isPlayerReady) {
-                setTimeout(() => {
-                    SplashScreen.hideAsync();
-                }, 50);
+                SplashScreen.hideAsync();
             }
         });
         //no `updateTheme` here
