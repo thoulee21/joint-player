@@ -4,25 +4,27 @@ import { StyleSheet, View, ViewStyle } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-export const ANIMATIONS = {
+const ANIMATIONS = {
     sushi: require('../assets/animations/sushi.json'),
     watermelon: require('../assets/animations/watermelon.json'),
     welcome: require('../assets/animations/welcome.json'),
+    rocket: require('../assets/animations/rocket.json'),
+    breathe: require('../assets/animations/breathe.json'),
 };
-
-export const ANIMATIONS_KEYS = Object.keys(ANIMATIONS) as (keyof typeof ANIMATIONS)[];
 
 export const LottieAnimation = ({
     children,
     caption,
     animation,
     loop = true,
-    style
+    style,
+    colorFilters
 }: PropsWithChildren<{
     caption?: string;
     animation: keyof typeof ANIMATIONS;
     loop?: boolean;
     style?: ViewStyle;
+    colorFilters?: Array<{ keypath: string; color: string }>;
 }>) => {
     const insets = useSafeAreaInsets();
     return (
@@ -36,6 +38,7 @@ export const LottieAnimation = ({
                 resizeMode="contain"
                 enableMergePathsAndroidForKitKatAndAbove
                 enableSafeModeAndroid
+                colorFilters={colorFilters}
             />
             {children}
             <Text
