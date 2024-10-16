@@ -1,13 +1,14 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
-import { Searchbar } from 'react-native-paper';
+import { Searchbar, useTheme } from 'react-native-paper';
 import { BlurBackground } from '../components/BlurBackground';
 import { LottieAnimation } from '../components/LottieAnimation';
 import { UserList } from '../components/UserList';
 
 export const SwitchUser = () => {
     const navigation = useNavigation();
+    const appTheme = useTheme();
 
     const [showQuery, setShowQuery] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
@@ -41,6 +42,12 @@ export const SwitchUser = () => {
                     caption="Login to use your custom settings"
                     animation="welcome"
                     loop={false}
+                    colorFilters={[
+                        { keypath: 'ball', color: appTheme.colors.primary },
+                        { keypath: 'welcome 1', color: appTheme.colors.primary },
+                        { keypath: 'welcome 3', color: appTheme.colors.primary },
+                        { keypath: 'welcome 2', color: appTheme.colors.onBackground },
+                    ]}
                 />}
         </BlurBackground>
     );
