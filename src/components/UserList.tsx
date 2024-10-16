@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { Dimensions, FlatList, StyleSheet, ToastAndroid, View } from 'react-native';
+import { Dimensions, FlatList, StyleSheet, ToastAndroid } from 'react-native';
 import { ActivityIndicator, List, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
 import { useDebounce } from '../hook';
@@ -48,25 +48,29 @@ export const UserList = ({ searchQuery }: { searchQuery: string }) => {
         <UserItem item={item} />
     ), []);
 
+    const breatheColorFilters = useMemo(() => [
+        { keypath: 'Breathe out', color: appTheme.colors.onBackground },
+        { keypath: 'Breathe in', color: appTheme.colors.onBackground },
+    ], [appTheme.colors.onBackground]);
+
     if (isLoading) {
         return <ActivityIndicator size="large" style={styles.loading} />;
     }
 
     if (error) {
         return (
-            <View style={styles.errorView}>
-                <LottieAnimation
-                    animation="watermelon"
-                    loop={false}
-                    caption="Try to search later or with another query"
-                />
+            <LottieAnimation
+                animation="breathe"
+                caption="Try to search later or with another query"
+                colorFilters={breatheColorFilters}
+            >
                 <List.Item
                     title={`Error: ${error.message}`}
                     titleStyle={[styles.error, {
                         color: appTheme.colors.error
                     }]}
                 />
-            </View>
+            </LottieAnimation>
         );
     }
 
@@ -87,7 +91,7 @@ export const UserList = ({ searchQuery }: { searchQuery: string }) => {
             ListEmptyComponent={
                 <LottieAnimation
                     style={{
-                        height: Dimensions.get('window').height / 1.2,
+                        height: Dimensions.get('window').height / 1.1,
                         width: Dimensions.get('window').width
                     }}
                     animation="watermelon"
@@ -112,7 +116,4 @@ const styles = StyleSheet.create({
     error: {
         textAlign: 'center',
     },
-    errorView: {
-        flex: 1,
-    }
 });
