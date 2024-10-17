@@ -40,14 +40,7 @@ export const SwitchUser = () => {
                 ? <UserList searchQuery={searchQuery} />
                 : <LottieAnimation
                     caption="Login to use your custom settings"
-                    animation="welcome"
-                    loop={false}
-                    colorFilters={[
-                        { keypath: 'ball', color: appTheme.colors.primary },
-                        { keypath: 'welcome 1', color: appTheme.colors.primary },
-                        { keypath: 'welcome 3', color: appTheme.colors.primary },
-                        { keypath: 'welcome 2', color: appTheme.colors.onBackground },
-                    ]}
+                    animation="rocket"
                 />}
         </BlurBackground>
     );
