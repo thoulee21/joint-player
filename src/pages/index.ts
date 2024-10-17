@@ -6,11 +6,11 @@ export * from './comments';
 export * from './dev';
 export * from './favs';
 export * from './issueReport';
-export * from './switchUser';
 export * from './lyrics';
 export * from './mv';
 export * from './mvDetail';
 export * from './player';
 export * from './settings';
+export * from './switchUser';
 export * from './webview';
 
