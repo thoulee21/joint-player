@@ -4,7 +4,7 @@ import { StyleSheet, View, ViewStyle } from 'react-native';
 import { Text } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const ANIMATIONS = {
+export const ANIMATIONS = {
     sushi: require('../assets/animations/sushi.json'),
     watermelon: require('../assets/animations/watermelon.json'),
     welcome: require('../assets/animations/welcome.json'),

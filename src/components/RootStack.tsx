@@ -8,6 +8,7 @@ import React from 'react';
 import {
     AboutScreen,
     AlbumDetail,
+    AniGallery,
     AppDataScreen,
     Artist,
     Comments,
@@ -61,6 +62,7 @@ export function RootStack() {
             <Stack.Screen name="About" component={AboutScreen} />
             <Stack.Screen name="AppData" component={AppDataScreen} />
             <Stack.Screen name="SwitchUser" component={SwitchUser} />
+            <Stack.Screen name="AniGallery" component={AniGallery} />
         </Stack.Navigator>
     );
 }

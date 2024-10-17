@@ -1,5 +1,6 @@
 export * from './about';
 export * from './album';
+export * from './aniGallery';
 export * from './appData';
 export * from './artist';
 export * from './comments';
