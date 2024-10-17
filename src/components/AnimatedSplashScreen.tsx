@@ -2,7 +2,7 @@ import LottieView from 'lottie-react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { Animated, Easing, StyleSheet } from 'react-native';
 
-export const REMAINING_DURATION = 500;
+export const REMAINING_DURATION = 800;
 
 const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
 
@@ -17,8 +17,7 @@ export const AnimatedSplashScreen = ({ isLoadEnd }: { isLoadEnd: boolean }) => {
             Animated.loop(
                 Animated.timing(loadingProgress.current, {
                     toValue: 64 / 147, // stage 1 / total stage
-                    duration: 1017,
-                    easing: Easing.linear,
+                    duration: 1000,
                     useNativeDriver: true,
                 })
             ).start();
@@ -27,7 +26,7 @@ export const AnimatedSplashScreen = ({ isLoadEnd }: { isLoadEnd: boolean }) => {
                 isInteraction: true,
                 toValue: 1,
                 duration: REMAINING_DURATION,
-                easing: Easing.sin,
+                easing: Easing.ease,
                 useNativeDriver: true,
             }).start(() => {
                 // 动画完成后开始淡出
