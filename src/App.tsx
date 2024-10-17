@@ -1,4 +1,3 @@
-import * as SplashScreen from 'expo-splash-screen';
 import { useUpdates } from 'expo-updates';
 import React, { useEffect } from 'react';
 import { ToastAndroid } from 'react-native';
@@ -6,8 +5,6 @@ import { AppContainer } from './components/AppContainer';
 import { RootStack } from './components/RootStack';
 import { useAppDispatch } from './hook/reduxHooks';
 import { initBlurRadius, initFavs, initUser } from './redux/slices';
-
-SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const dispatch = useAppDispatch();

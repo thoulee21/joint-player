@@ -5,9 +5,8 @@ import {
     DefaultTheme as NavigationDefaultTheme,
 } from '@react-navigation/native';
 import Color from 'color';
-import * as SplashScreen from 'expo-splash-screen';
-import React, { PropsWithChildren, useEffect, useMemo } from 'react';
-import { StatusBar, StyleSheet } from 'react-native';
+import React, { PropsWithChildren, useEffect, useMemo, useState } from 'react';
+import { DeviceEventEmitter, StatusBar, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ImageColors from 'react-native-image-colors';
 import { AndroidImageColors } from 'react-native-image-colors/build/types';
@@ -23,6 +22,7 @@ import { useAppDispatch, useAppSelector } from '../hook/reduxHooks';
 import { useSetupPlayer } from '../hook/useSetupPlayer';
 import { selectDarkModeEnabled, setDarkMode } from '../redux/slices/darkMode';
 import { requestInit } from '../utils/requestInit';
+import { AnimatedSplashScreen, REMAINING_DURATION } from './AnimatedSplashScreen';
 
 const swrConfig: SWRConfiguration = {
     fetcher: (resource, init) =>
@@ -34,6 +34,7 @@ export function AppContainer({ children }: PropsWithChildren) {
     const dispatch = useAppDispatch();
     const track = useActiveTrack();
 
+    const [isReady, setIsReady] = useState(false);
     const isPlayerReady = useSetupPlayer();
     const isDarkMode = useAppSelector(selectDarkModeEnabled);
     const { theme: colorTheme, updateTheme } = useMaterial3Theme();
@@ -73,9 +74,11 @@ export function AppContainer({ children }: PropsWithChildren) {
 
         setTheme().finally(() => {
             if (track?.artwork && isPlayerReady) {
+                DeviceEventEmitter.emit('loadEnd');
+
                 setTimeout(() => {
-                    SplashScreen.hideAsync();
-                }, 10)
+                    setIsReady(true);
+                }, REMAINING_DURATION);
             }
         });
         //no `updateTheme` here
@@ -94,6 +97,7 @@ export function AppContainer({ children }: PropsWithChildren) {
                 <PaperProvider theme={isDarkMode ? MyDarkTheme : MyLightTheme}>
                     <NavigationContainer theme={isDarkMode ? NaviDarkTheme : NaviLightTheme}>
                         {children}
+                        <AnimatedSplashScreen isLoadEnd={isReady} />
                     </NavigationContainer>
                 </PaperProvider>
             </SWRConfig>
