@@ -1,14 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
-import {
-    Appbar,
-    Divider,
-    List,
-    Portal,
-    Snackbar,
-    useTheme
-} from 'react-native-paper';
+import { Appbar, Divider, List, Portal, Snackbar, useTheme } from 'react-native-paper';
 import RNRestart from 'react-native-restart';
 import { BlurBackground } from '../components/BlurBackground';
 import { ClearAllDataItem } from '../components/ClearAllDataItem';
