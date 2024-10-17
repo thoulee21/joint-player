@@ -86,9 +86,11 @@ export function AppContainer({ children }: PropsWithChildren) {
     }, [isPlayerReady, track?.artwork]);
 
     useEffect(() => {
-        StatusBar.setBackgroundColor('transparent');
-        StatusBar.setTranslucent(true);
-        StatusBar.setBarStyle(isDarkMode ? 'light-content' : 'dark-content');
+        if (isReady) {
+            StatusBar.setBackgroundColor('transparent');
+            StatusBar.setTranslucent(true);
+            StatusBar.setBarStyle(isDarkMode ? 'light-content' : 'dark-content');
+        }
     }, [isDarkMode]);
 
     return (
