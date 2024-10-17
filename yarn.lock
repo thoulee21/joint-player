@@ -1862,7 +1862,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expo/config-types@npm:^51.0.0-unreleased, @expo/config-types@npm:^51.0.3":
+"@expo/config-types@npm:^51.0.3":
   version: 51.0.3
   resolution: "@expo/config-types@npm:51.0.3"
   checksum: 10c0/bd87a729da985b0097ab29367c0473a2bced5ff211d416f342729e1b2631a7c00d62878e05cdee49ece7e3b65d3296957917f24380d57e2faef2cf220194fdec
@@ -2032,27 +2032,6 @@ __metadata:
     base64-js: "npm:^1.2.3"
     xmlbuilder: "npm:^14.0.0"
   checksum: 10c0/134315260a7828bc1ce4563e2af67499b498feae46c39c5c2cab9d72082402a42d3b7575f13e269022bcf3c28668948ea960dd4943bd38f52f9c01154317aac5
-  languageName: node
-  linkType: hard
-
-"@expo/prebuild-config@npm:7.0.8":
-  version: 7.0.8
-  resolution: "@expo/prebuild-config@npm:7.0.8"
-  dependencies:
-    "@expo/config": "npm:~9.0.0-beta.0"
-    "@expo/config-plugins": "npm:~8.0.8"
-    "@expo/config-types": "npm:^51.0.0-unreleased"
-    "@expo/image-utils": "npm:^0.5.0"
-    "@expo/json-file": "npm:^8.3.0"
-    "@react-native/normalize-colors": "npm:0.74.85"
-    debug: "npm:^4.3.1"
-    fs-extra: "npm:^9.0.0"
-    resolve-from: "npm:^5.0.0"
-    semver: "npm:^7.6.0"
-    xml2js: "npm:0.6.0"
-  peerDependencies:
-    expo-modules-autolinking: ">=0.8.1"
-  checksum: 10c0/aca22d101c0662abb7a7a02a05214a340c8b342569df71eb0b08328d4889a90ee495542c8f955538be2f8bc6b07a85dad63c6e6d13c7156b6b300a77ae0da124
   languageName: node
   linkType: hard
 
@@ -6541,17 +6520,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-splash-screen@npm:~0.27.6":
-  version: 0.27.6
-  resolution: "expo-splash-screen@npm:0.27.6"
-  dependencies:
-    "@expo/prebuild-config": "npm:7.0.8"
-  peerDependencies:
-    expo: "*"
-  checksum: 10c0/9cb8a7a04c2fd95dcc84800f63a0abece5d659ab70a961debb51ca9fd63cf582c15d33ac2fa421d31a4d7bd9f04d9a232d2a03e044bcf2105e18b8da84e59f10
-  languageName: node
-  linkType: hard
-
 "expo-structured-headers@npm:~3.8.0":
   version: 3.8.0
   resolution: "expo-structured-headers@npm:3.8.0"
@@ -8251,7 +8219,6 @@ __metadata:
     expo: "npm:~51.0.37"
     expo-blur: "npm:~13.0.2"
     expo-screen-orientation: "npm:~7.0.5"
-    expo-splash-screen: "npm:~0.27.6"
     expo-updates: "npm:~0.25.27"
     install-expo-modules: "npm:^0.10.0"
     lottie-react-native: "npm:^7.0.0"
