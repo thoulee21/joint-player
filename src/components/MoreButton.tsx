@@ -1,6 +1,6 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import React, { useState } from 'react';
-import { Share, ToastAndroid } from 'react-native';
+import { Share, StatusBar, ToastAndroid } from 'react-native';
 import HapticFeedback from 'react-native-haptic-feedback';
 import { IconButton, Menu } from 'react-native-paper';
 import type { Style } from 'react-native-paper/lib/typescript/components/List/utils';
@@ -17,6 +17,7 @@ export const MoreBtn = ({ data, color, style }: {
 
     return <Menu
         elevation={1}
+        statusBarHeight={StatusBar.currentHeight}
         anchor={
             <IconButton
                 icon="dots-vertical"

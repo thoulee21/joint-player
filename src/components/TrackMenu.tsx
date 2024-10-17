@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
+import { StatusBar } from 'react-native';
 import HapticFeedback, {
   HapticFeedbackTypes
 } from 'react-native-haptic-feedback';
@@ -19,6 +20,7 @@ export function TrackMenu(props: any) {
       visible={visible}
       elevation={1}
       onDismiss={closeMenu}
+      statusBarHeight={StatusBar.currentHeight}
       anchor={
         <IconButton
           {...props}
