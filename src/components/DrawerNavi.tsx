@@ -74,7 +74,10 @@ export function DrawerNavi() {
     return (
         <Drawer.Navigator
             initialRouteName="Player"
-            screenOptions={{ headerShown: false }}
+            screenOptions={{
+                headerShown: false,
+                lazy: false
+            }}
             drawerContent={renderDrawerContent}
         >
             {DrawerRoutes}
