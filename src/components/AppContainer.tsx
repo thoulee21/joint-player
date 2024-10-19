@@ -22,7 +22,6 @@ import { useAppDispatch, useAppSelector } from '../hook/reduxHooks';
 import { useSetupPlayer } from '../hook/useSetupPlayer';
 import { selectDarkModeEnabled, setDarkMode } from '../redux/slices/darkMode';
 import { requestInit } from '../utils/requestInit';
-import { AnimatedSplashScreen, REMAINING_DURATION } from './AnimatedSplashScreen';
 
 const swrConfig: SWRConfiguration = {
     fetcher: (resource, init) =>
@@ -34,10 +33,16 @@ export function AppContainer({ children }: PropsWithChildren) {
     const dispatch = useAppDispatch();
     const track = useActiveTrack();
 
-    const [isReady, setIsReady] = useState(false);
+    const [isAniDone, setIsAniDone] = useState(false);
     const isPlayerReady = useSetupPlayer();
     const isDarkMode = useAppSelector(selectDarkModeEnabled);
     const { theme: colorTheme, updateTheme } = useMaterial3Theme();
+
+    useEffect(() => {
+        DeviceEventEmitter.addListener('aniDone', () => {
+            setIsAniDone(true);
+        })
+    }, []);
 
     const MyLightTheme = useMemo(() => ({
         ...MD3LightTheme,
@@ -75,10 +80,6 @@ export function AppContainer({ children }: PropsWithChildren) {
         setTheme().finally(() => {
             if (track?.artwork && isPlayerReady) {
                 DeviceEventEmitter.emit('loadEnd');
-
-                setTimeout(() => {
-                    setIsReady(true);
-                }, REMAINING_DURATION);
             }
         });
         //no `updateTheme` here
@@ -86,20 +87,20 @@ export function AppContainer({ children }: PropsWithChildren) {
     }, [isPlayerReady, track?.artwork]);
 
     useEffect(() => {
-        if (isReady) {
-            StatusBar.setBackgroundColor('transparent');
-            StatusBar.setTranslucent(true);
-            StatusBar.setBarStyle(isDarkMode ? 'light-content' : 'dark-content');
+        if (isAniDone) {
+            StatusBar.setBarStyle(
+                isDarkMode ? 'light-content' : 'dark-content'
+            );
         }
-    }, [isDarkMode]);
+    }, [isDarkMode, isAniDone]);
 
     return (
         <GestureHandlerRootView style={styles.rootView}>
             <SWRConfig value={swrConfig}>
                 <PaperProvider theme={isDarkMode ? MyDarkTheme : MyLightTheme}>
                     <NavigationContainer theme={isDarkMode ? NaviDarkTheme : NaviLightTheme}>
+                        <StatusBar translucent />
                         {children}
-                        <AnimatedSplashScreen isLoadEnd={isReady} />
                     </NavigationContainer>
                 </PaperProvider>
             </SWRConfig>
