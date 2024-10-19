@@ -1,12 +1,12 @@
 import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import React, { useCallback, useEffect } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Portal, Text } from 'react-native-paper';
+import { Dimensions, StyleSheet } from 'react-native';
 import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
 import { useAppDispatch, useAppSelector } from '../hook';
 import { queue, setQueue } from '../redux/slices';
 import { TrackType } from '../services/GetTracksService';
 import { BottomSheetPaper } from './BottomSheetPaper';
+import { LottieAnimation } from './LottieAnimation';
 import { TrackItem } from './TrackItem';
 
 interface TrackListProps {
@@ -14,9 +14,7 @@ interface TrackListProps {
   navigation: any;
 }
 
-function TrackList({
-  bottomSheetRef, navigation
-}: TrackListProps) {
+export function TrackListSheet({ bottomSheetRef }: TrackListProps) {
   const dispatch = useAppDispatch();
   const currentTrack = useActiveTrack();
   const tracks = useAppSelector(queue);
@@ -43,43 +41,32 @@ function TrackList({
       <TrackItem
         item={item}
         index={index}
-        navigation={navigation}
         bottomSheetRef={bottomSheetRef}
       />
     );
-  }, [bottomSheetRef, navigation]);
+  }, [bottomSheetRef]);
 
   const renderEmptyTrack = useCallback(() => {
     return (
-      <View style={styles.noTracks}>
-        <Text variant="headlineSmall">
-          No tracks
-        </Text>
-      </View>
+      <LottieAnimation
+        animation='teapot'
+        style={styles.noTracks}
+        caption='No tracks found'
+      />
     );
   }, []);
 
   return (
-    <BottomSheetFlatList
-      style={styles.root}
-      showsVerticalScrollIndicator={false}
-      keyExtractor={(item) => item.id.toString()}
-      data={tracks}
-      ListEmptyComponent={renderEmptyTrack}
-      renderItem={renderTrack}
-    />
-  );
-}
-
-export function TrackListSheet(props: TrackListProps) {
-  return (
-    <Portal>
-      <BottomSheetPaper
-        bottomSheetRef={props.bottomSheetRef}
-      >
-        <TrackList {...props} />
-      </BottomSheetPaper>
-    </Portal>
+    <BottomSheetPaper bottomSheetRef={bottomSheetRef}>
+      <BottomSheetFlatList
+        style={styles.root}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={(item) => item.id.toString()}
+        data={tracks}
+        ListEmptyComponent={renderEmptyTrack}
+        renderItem={renderTrack}
+      />
+    </BottomSheetPaper>
   );
 }
 
@@ -88,8 +75,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   noTracks: {
-    flex: 1,
-    alignItems: 'center',
-    marginTop: '20%'
+    height: Dimensions.get('window').height,
+    width: Dimensions.get('window').width,
   },
 });

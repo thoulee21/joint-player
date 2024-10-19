@@ -4,7 +4,7 @@ import Color from 'color';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ScrollView, StatusBar, StyleSheet } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { IconButton, Searchbar, useTheme } from 'react-native-paper';
+import { IconButton, Portal, Searchbar, useTheme } from 'react-native-paper';
 import TrackPlayer from 'react-native-track-player';
 import { BlurBackground } from '../components/BlurBackground';
 import { BottomBar } from '../components/BottomBar';
@@ -77,49 +77,53 @@ export function Player() {
   ), [keyword, searching, pressSearchIcon]);
 
   return (
-    <BlurBackground style={styles.searchbarContainer}>
-      <Searchbar
-        placeholder={placeholderKeyword || 'Search for songs'}
-        placeholderTextColor={appTheme.dark
-          ? appTheme.colors.onSurfaceDisabled
-          : appTheme.colors.backdrop}
-        style={styles.searchbar}
-        inputStyle={{ color: appTheme.colors.onSurface }}
-        onChangeText={setKeyword}
-        value={keyword}
-        onSubmitEditing={searchSongs}
-        icon="menu"
-        onIconPress={() => {
-          //@ts-ignore
-          navigation.openDrawer();
-          HapticFeedback.trigger(
-            HapticFeedbackTypes.effectHeavyClick
-          );
-        }}
-        right={renderSearchIcon}
-        blurOnSubmit
-        selectTextOnFocus
-        selectionColor={
-          Color(appTheme.colors.inversePrimary)
-            .fade(0.5).string()
-        }
-      />
+    <Portal.Host>
+      <BlurBackground style={styles.searchbarContainer}>
+        <Searchbar
+          placeholder={placeholderKeyword || 'Search for songs'}
+          placeholderTextColor={appTheme.dark
+            ? appTheme.colors.onSurfaceDisabled
+            : appTheme.colors.backdrop}
+          style={styles.searchbar}
+          inputStyle={{ color: appTheme.colors.onSurface }}
+          onChangeText={setKeyword}
+          value={keyword}
+          onSubmitEditing={searchSongs}
+          icon="menu"
+          onIconPress={() => {
+            //@ts-ignore
+            navigation.openDrawer();
+            HapticFeedback.trigger(
+              HapticFeedbackTypes.effectHeavyClick
+            );
+          }}
+          right={renderSearchIcon}
+          blurOnSubmit
+          selectTextOnFocus
+          selectionColor={
+            Color(appTheme.colors.inversePrimary)
+              .fade(0.5).string()
+          }
+        />
 
-      <ScrollView
-        style={styles.screenContainer}
-        showsVerticalScrollIndicator={false}
-      >
-        <TrackInfo />
-        <Progress />
-        <PlayControls />
-      </ScrollView>
+        <ScrollView
+          style={styles.screenContainer}
+          showsVerticalScrollIndicator={false}
+        >
+          <TrackInfo />
+          <Progress />
+          <PlayControls />
+        </ScrollView>
 
-      <BottomBar bottomSheetRef={bottomSheetRef} />
-      <TrackListSheet
-        bottomSheetRef={bottomSheetRef}
-        navigation={navigation}
-      />
-    </BlurBackground>
+        <BottomBar bottomSheetRef={bottomSheetRef} />
+        <Portal>
+          <TrackListSheet
+            bottomSheetRef={bottomSheetRef}
+            navigation={navigation}
+          />
+        </Portal>
+      </BlurBackground>
+    </Portal.Host>
   );
 }
 

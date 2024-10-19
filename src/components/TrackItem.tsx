@@ -1,4 +1,5 @@
 import BottomSheet from '@gorhom/bottom-sheet';
+import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
 import React, { useCallback } from 'react';
 import { TextStyle } from 'react-native';
@@ -16,14 +17,12 @@ export interface ListRightProps {
     style?: Style;
 }
 
-export const TrackItem = ({
-    item, index, navigation, bottomSheetRef
-}: {
+export const TrackItem = ({ item, index, bottomSheetRef }: {
     item: TrackType;
     index: number;
-    navigation: any;
     bottomSheetRef: React.RefObject<BottomSheet>
 }) => {
+    const navigation = useNavigation();
     const dispatch = useAppDispatch();
     const appTheme = useTheme();
     const currentTrack = useActiveTrack();
