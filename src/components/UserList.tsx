@@ -48,11 +48,6 @@ export const UserList = ({ searchQuery }: { searchQuery: string }) => {
         <UserItem item={item} />
     ), []);
 
-    const breatheColorFilters = useMemo(() => [
-        { keypath: 'Breathe out', color: appTheme.colors.onBackground },
-        { keypath: 'Breathe in', color: appTheme.colors.onBackground },
-    ], [appTheme.colors.onBackground]);
-
     if (isLoading) {
         return <ActivityIndicator size="large" style={styles.loading} />;
     }
@@ -62,7 +57,6 @@ export const UserList = ({ searchQuery }: { searchQuery: string }) => {
             <LottieAnimation
                 animation="breathe"
                 caption="Try to search later or with another query"
-                colorFilters={breatheColorFilters}
             >
                 <List.Item
                     title={`Error: ${error.message}`}
