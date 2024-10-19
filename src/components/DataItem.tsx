@@ -58,14 +58,8 @@ export const DataItem = ({ item }: { item: DataItemType }) => {
     }, [appTheme, expended, isArray, item]);
 
     const renderDataAvatar = useCallback((props: any) => (
-        <Avatar.Text
-            {...props}
+        <Avatar.Text {...props}
             label={item.name[0].toLocaleUpperCase()}
-            style={{
-                backgroundColor: isArray
-                    ? appTheme.colors.tertiary
-                    : undefined,
-            }}
         />
     ), [appTheme.colors.tertiary, isArray, item.name]);
 
@@ -77,6 +71,7 @@ export const DataItem = ({ item }: { item: DataItemType }) => {
         <IconButton
             icon={expended ? 'chevron-up' : 'chevron-down'}
             onPress={toggleExpended}
+            animated
         />
     ), [expended, toggleExpended]);
 
@@ -88,13 +83,9 @@ export const DataItem = ({ item }: { item: DataItemType }) => {
             <Card.Title
                 title={item.name}
                 subtitle={!isArray
-                    ? upperFirst(typeof item.data)
-                    : `Array ${item.data.length} item(s)`}
-                subtitleStyle={{
-                    color: isArray
-                        ? appTheme.colors.tertiary
-                        : appTheme.colors.primary,
-                }}
+                    ? typeof item.data
+                    : `array[${item.data.length}]`}
+                subtitleStyle={{ color: appTheme.colors.secondary }}
                 left={renderDataAvatar}
                 right={isArray ? renderExpandSwitch : renderMoreButton}
             />
