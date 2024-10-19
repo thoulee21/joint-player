@@ -53,7 +53,7 @@ export const AnimatedSplashScreen = ({ children }: PropsWithChildren) => {
                 // 动画完成后开始淡出
                 Animated.timing(opacity.current, {
                     toValue: 0,
-                    duration: 350,
+                    duration: 300,
                     useNativeDriver: true,
                 }).start(() => setIsAniDone(true));
             })
