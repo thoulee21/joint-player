@@ -47,7 +47,7 @@ export const NoCommentsItem = () => {
     ), []);
 
     return (
-        <LottieAnimation animation="watermelon">
+        <LottieAnimation animation="teapot">
             <List.Item
                 left={renderCommentIcon}
                 title="No comments"

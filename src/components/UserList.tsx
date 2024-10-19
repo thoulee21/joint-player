@@ -94,8 +94,7 @@ export const UserList = ({ searchQuery }: { searchQuery: string }) => {
                         height: Dimensions.get('window').height / 1.1,
                         width: Dimensions.get('window').width
                     }}
-                    animation="watermelon"
-                    loop={false}
+                    animation="teapot"
                     caption={
                         `No users found\n${data?.[0].message
                         || 'Try another search query later'}`

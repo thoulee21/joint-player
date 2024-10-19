@@ -6,10 +6,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const ANIMATIONS = {
     sushi: require('../assets/animations/sushi.json'),
-    watermelon: require('../assets/animations/watermelon.json'),
     welcome: require('../assets/animations/welcome.json'),
     rocket: require('../assets/animations/rocket.json'),
     breathe: require('../assets/animations/breathe.json'),
+    teapot: require('../assets/animations/teapot.json'),
 };
 
 export const LottieAnimation = ({

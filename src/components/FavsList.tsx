@@ -22,8 +22,7 @@ interface ListItemProps {
 
 const NoFavs = () => (
     <LottieAnimation
-        animation="watermelon"
-        loop={false}
+        animation="teapot"
         caption="Add some songs to your favorites"
         style={{
             height: Dimensions.get('window').height / 1.2,

@@ -134,8 +134,7 @@ export function MvDetail() {
             <BlurBackground>
                 <MvAppbar />
                 <LottieAnimation
-                    animation="watermelon"
-                    loop={false}
+                    animation="teapot"
                     caption="No MV available"
                 />
             </BlurBackground>
