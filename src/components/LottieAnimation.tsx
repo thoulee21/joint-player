@@ -1,5 +1,5 @@
 import LottieView from 'lottie-react-native';
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, forwardRef, useMemo, type ForwardedRef } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 
@@ -10,7 +10,9 @@ export const ANIMATIONS = {
     teapot: require('../assets/animations/teapot.json'),
 };
 
-export const LottieAnimation = ({
+export type AniKeys = keyof typeof ANIMATIONS
+
+export const LottieAnimation = forwardRef(({
     children,
     caption,
     animation,
@@ -20,15 +22,15 @@ export const LottieAnimation = ({
     progress,
 }: PropsWithChildren<{
     caption?: string;
-    animation: keyof typeof ANIMATIONS;
+    animation: AniKeys;
     loop?: boolean;
     style?: ViewStyle;
-    colorFilters?: Array<{ keypath: string; color: string }>;
+    colorFilters?: { keypath: string; color: string }[];
     progress?: number;
-}>) => {
+}>, ref: ForwardedRef<LottieView>) => {
     const appTheme = useTheme();
 
-    const aniColorFilters = {
+    const aniColorFilters = useMemo(() => ({
         breathe: [
             { keypath: 'Breathe out', color: appTheme.colors.onBackground },
             { keypath: 'Breathe in', color: appTheme.colors.onBackground },
@@ -39,11 +41,12 @@ export const LottieAnimation = ({
             { keypath: 'ball', color: appTheme.colors.primary },
             { keypath: 'welcome 2', color: appTheme.colors.background },
         ],
-    };
+    }), [appTheme.colors]);
 
     return (
         <View style={[styles.view, style]}>
             <LottieView
+                ref={ref}
                 key={animation}
                 source={ANIMATIONS[animation]}
                 autoPlay
@@ -65,7 +68,7 @@ export const LottieAnimation = ({
             </Text>
         </View>
     );
-};
+});
 
 const styles = StyleSheet.create({
     view: {
