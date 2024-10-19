@@ -1,6 +1,6 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useNavigation } from "@react-navigation/native";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { StyleSheet } from "react-native";
 import { Appbar } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -12,6 +12,7 @@ const BottomTab = createMaterialTopTabNavigator();
 export const AniGallery = () => {
     const navigation = useNavigation();
     const insets = useSafeAreaInsets();
+    const [isTransparent, setIsTransparent] = useState(true);
 
     const renderAniPage = useCallback((name: keyof typeof ANIMATIONS) => {
         return () => (
@@ -34,15 +35,19 @@ export const AniGallery = () => {
 
     return (
         <BlurBackground>
-            <Appbar.Header style={styles.transparent}>
+            <Appbar.Header style={isTransparent && styles.transparent}>
                 <Appbar.BackAction onPress={navigation.goBack} />
                 <Appbar.Content title="Animation Gallery" />
+                <Appbar.Action
+                    icon={isTransparent ? 'format-color-fill' : 'material-design'}
+                    onPress={() => setIsTransparent(!isTransparent)}
+                />
             </Appbar.Header>
 
             <BottomTab.Navigator
                 backBehavior="none"
-                tabBarPosition="bottom"
-                sceneContainerStyle={styles.transparent}
+                tabBarPosition={isTransparent ? 'bottom' : 'top'}
+                sceneContainerStyle={isTransparent && styles.transparent}
                 screenOptions={{
                     tabBarStyle: [styles.tabBarIndicator, {
                         marginBottom: insets.bottom
@@ -61,6 +66,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     tabBarIndicator: {
-        height: 4
+        height: 3
     }
 })
