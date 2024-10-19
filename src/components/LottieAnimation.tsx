@@ -4,7 +4,6 @@ import { StyleSheet, View, ViewStyle } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 
 export const ANIMATIONS = {
-    sushi: require('../assets/animations/sushi.json'),
     welcome: require('../assets/animations/welcome.json'),
     rocket: require('../assets/animations/rocket.json'),
     breathe: require('../assets/animations/breathe.json'),

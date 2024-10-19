@@ -15,7 +15,7 @@ const AlertIcon = (props: ListLRProps) => {
 };
 export const NoInternetItem = ({ error }: { error: any }) => {
     return (
-        <LottieAnimation animation="sushi">
+        <LottieAnimation animation="breathe">
             <List.Item
                 left={AlertIcon}
                 title="No internet connection"
@@ -27,7 +27,7 @@ export const NoInternetItem = ({ error }: { error: any }) => {
 
 export const RetryItem = ({ error, onRetry }: { error: any, onRetry: () => void }) => {
     return (
-        <LottieAnimation animation="sushi">
+        <LottieAnimation animation="breathe">
             <List.Item
                 left={AlertIcon}
                 title="Failed to load comments. Tap to retry."

@@ -57,7 +57,7 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
     if (error) {
         return (
             <LottieAnimation
-                animation="sushi"
+                animation="breathe"
                 caption="Try to refresh later"
             >
                 <Text style={[

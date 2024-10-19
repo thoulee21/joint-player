@@ -25,7 +25,7 @@ export function LyricsScreen() {
         return (
             <LyricsContainer>
                 <LottieAnimation
-                    animation="sushi"
+                    animation="breathe"
                     caption="Try again later"
                 >
                     <List.Item
