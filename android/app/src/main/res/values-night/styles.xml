@@ -4,6 +4,6 @@
     <item name="android:windowBackground">@color/splashScreen</item>
     <item name="android:windowTranslucentStatus">true</item>
     <item name="android:windowTranslucentNavigation">true</item>
-    <item name="android:windowLightStatusBar">false</item>
+    <item name="android:windowLightStatusBar">true</item>
   </style>
 </resources>
