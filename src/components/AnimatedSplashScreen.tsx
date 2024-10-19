@@ -67,7 +67,7 @@ export const AnimatedSplashScreen = ({ children }: PropsWithChildren) => {
             {children}
             {!isAniDone && (
                 <Animated.View style={[
-                    { ...styles.rootView, zIndex: 2 },
+                    styles.rootView, styles.aniView,
                     { opacity: opacity.current },
                 ]}>
                     <AnimatedLottieView
@@ -98,5 +98,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Appearance.getColorScheme() === 'dark'
             ? 'black' : 'white',
+    },
+    aniView: {
+        zIndex: 2,
     },
 });

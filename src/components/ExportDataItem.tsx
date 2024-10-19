@@ -27,7 +27,7 @@ export const ExportDataItem = () => {
                 },
             );
             return granted === PermissionsAndroid.RESULTS.GRANTED;
-        } catch (_) {
+        } catch {
             return false;
         }
     }, []);

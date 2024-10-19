@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 const beautify = require('js-beautify').html;
 const child = require('child_process');
 const detectIndent = require('detect-indent');
