@@ -25,7 +25,7 @@ export function AboutScreen() {
             visible={devSnackbarVisible}
             onDismiss={() => setDevSnackbarVisible(false)}
             action={{
-                label: 'Go to Dev',
+                label: 'Dev',
                 //@ts-expect-error
                 onPress: () => navigation.navigate('Dev'),
             }}
