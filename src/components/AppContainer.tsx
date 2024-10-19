@@ -6,7 +6,7 @@ import {
 } from '@react-navigation/native';
 import Color from 'color';
 import React, { PropsWithChildren, useEffect, useMemo, useState } from 'react';
-import { DeviceEventEmitter, StatusBar, StyleSheet } from 'react-native';
+import { DeviceEventEmitter, StatusBar, StyleSheet, ToastAndroid } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ImageColors from 'react-native-image-colors';
 import { AndroidImageColors } from 'react-native-image-colors/build/types';
@@ -78,13 +78,17 @@ export function AppContainer({ children }: PropsWithChildren) {
         };
 
         setTheme().finally(() => {
-            if (track?.artwork && isPlayerReady) {
+            if (track?.artwork) {
                 DeviceEventEmitter.emit('loadEnd');
             }
         });
-        //no `updateTheme` here
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isPlayerReady, track?.artwork]);
+    }, [track?.artwork]);
+
+    useEffect(() => {
+        if (isPlayerReady) {
+            ToastAndroid.show('Player ready', ToastAndroid.SHORT);
+        }
+    }, [isPlayerReady]);
 
     useEffect(() => {
         if (isAniDone) {

@@ -30,11 +30,17 @@ export const getTracks = async (keyword?: string): Promise<Track[]> => {
       const storedFavs = await AsyncStorage.getItem(StorageKeys.Favs);
       if (!storedFavs) {
         const storedKeyword = await AsyncStorage.getItem(StorageKeys.Keyword);
-        //restore last keyword
+        ToastAndroid.show(
+          `Restoring last keyword: ${storedKeyword}`,
+          ToastAndroid.SHORT
+        );
         keyword = storedKeyword ? storedKeyword : 'One Republic';
       } else {
-        //restore favs
         const favs = JSON.parse(storedFavs) as TrackType[];
+        ToastAndroid.show(
+          `Restoring favorites: ${favs.length} tracks`,
+          ToastAndroid.SHORT
+        );
         await TrackPlayer.add(favs);
         return favs;
       }
