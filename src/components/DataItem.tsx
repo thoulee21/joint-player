@@ -1,7 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Avatar, Card, IconButton, Text, useTheme } from 'react-native-paper';
-import { upperFirst } from '../utils';
 import { ArrayDataList } from './ArrayDataList';
 import { DataMoreBtn } from './DataMoreButton';
 import { JSONViewer } from './JsonViewer';

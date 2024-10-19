@@ -61,7 +61,7 @@ export const UserList = ({ searchQuery }: { searchQuery: string }) => {
                 <List.Item
                     title={`Error: ${error.message}`}
                     titleStyle={[styles.error, {
-                        color: appTheme.colors.error
+                        color: appTheme.colors.error,
                     }]}
                 />
             </LottieAnimation>
@@ -86,7 +86,7 @@ export const UserList = ({ searchQuery }: { searchQuery: string }) => {
                 <LottieAnimation
                     style={{
                         height: Dimensions.get('window').height / 1.1,
-                        width: Dimensions.get('window').width
+                        width: Dimensions.get('window').width,
                     }}
                     animation="teapot"
                     caption={
@@ -101,10 +101,10 @@ export const UserList = ({ searchQuery }: { searchQuery: string }) => {
 
 const styles = StyleSheet.create({
     footerLoading: {
-        marginVertical: '5%'
+        marginVertical: '5%',
     },
     loading: {
-        marginTop: '20%'
+        marginTop: '20%',
     },
     error: {
         textAlign: 'center',

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { StyleSheet } from 'react-native';
 import { ActivityIndicator, List, Text, useTheme } from 'react-native-paper';
-import { useActiveTrack, useProgress, } from 'react-native-track-player';
+import { useActiveTrack, useProgress } from 'react-native-track-player';
 import useSWR from 'swr';
 import { LottieAnimation } from '../components/LottieAnimation';
 import { FALLBACK_ID, LyricsContainer, TranslateContext } from '../components/LyricsContainer';
@@ -32,7 +32,7 @@ export function LyricsScreen() {
                         title="Failed to load lyrics"
                         titleStyle={[
                             styles.center,
-                            { color: appTheme.colors.error }
+                            { color: appTheme.colors.error },
                         ]}
                         description={error.message}
                         descriptionStyle={styles.center}

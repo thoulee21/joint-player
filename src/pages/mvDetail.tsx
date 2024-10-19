@@ -116,7 +116,7 @@ export function MvDetail() {
                 >
                     <Text style={[
                         styles.center,
-                        { color: appTheme.colors.error }
+                        { color: appTheme.colors.error },
                     ]}>
                         Error: {error.message}
                     </Text>
@@ -170,9 +170,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-end',
-        width: '100%'
+        width: '100%',
     },
     center: {
         textAlign: 'center',
-    }
+    },
 });

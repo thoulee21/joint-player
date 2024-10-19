@@ -85,7 +85,7 @@ export const AddToQueueButton = () => {
 };
 
 export const QuickActionsWrapper = memo(({
-    children, index, item
+    children, index, item,
 }: PropsWithChildren<QuickActionsProps>
 ) => {
     return (

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import HapticFeedback, {
-    HapticFeedbackTypes
+    HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
 import { Text } from 'react-native-paper';
 

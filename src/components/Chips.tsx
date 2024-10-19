@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import HapticFeedback, {
-    HapticFeedbackTypes
+    HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
 import { Chip } from 'react-native-paper';
 
@@ -37,6 +37,6 @@ const styles = StyleSheet.create({
     chip: {
         marginLeft: '3%',
         marginVertical: '1%',
-        width: 'auto'
+        width: 'auto',
     },
 });

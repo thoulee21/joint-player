@@ -17,7 +17,7 @@ export const UpdateChecker = () => {
         isChecking,
         isDownloading,
         lastCheckForUpdateTimeSinceRestart: lastCheck,
-        availableUpdate
+        availableUpdate,
     } = Updates.useUpdates();
 
     const showCurrent = useCallback(() => {
@@ -61,8 +61,8 @@ export const UpdateChecker = () => {
                     text: 'OK',
                     onPress: isUpdatePending
                         ? () => RNRestart.Restart()
-                        : fetchUpdateAndRestart
-                }
+                        : fetchUpdateAndRestart,
+                },
             ]
         );
     }, [availableUpdate?.createdAt, isUpdatePending]);

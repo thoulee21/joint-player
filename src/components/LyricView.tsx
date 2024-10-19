@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import HapticFeedback, {
-    HapticFeedbackTypes
+    HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
 import { Text, useTheme } from 'react-native-paper';
 import TrackPlayer from 'react-native-track-player';
@@ -26,7 +26,7 @@ const LyricItem = ({ lrcLine, active }:
             numberOfLines={10}
             style={[
                 styles.lyricText,
-                { color: lineColor }
+                { color: lineColor },
             ]}
             onPress={() => {
                 HapticFeedback.trigger(

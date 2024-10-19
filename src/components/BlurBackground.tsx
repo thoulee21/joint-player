@@ -35,5 +35,5 @@ const styles = StyleSheet.create({
     root: {
         flex: 1,
         display: 'flex',
-    }
+    },
 });

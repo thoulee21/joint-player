@@ -1,14 +1,14 @@
 import React, { useCallback, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import HapticFeedBack, {
-    HapticFeedbackTypes
+    HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
 import {
     Button,
     Dialog,
     RadioButton,
     Text,
-    TouchableRipple
+    TouchableRipple,
 } from 'react-native-paper';
 
 type DialogProps = {
@@ -20,7 +20,7 @@ type DialogProps = {
 };
 
 export const DialogWithRadioBtns = ({
-    btns, visible, close, setValue, defaultValue
+    btns, visible, close, setValue, defaultValue,
 }: DialogProps) => {
     if (!defaultValue) {
         defaultValue = btns[btns.length - 1];

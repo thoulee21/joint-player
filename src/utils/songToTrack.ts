@@ -12,6 +12,6 @@ export function songToTrack(song: Song): TrackType {
         duration: song.duration / 1000,
         album: song.album.name,
         albumRaw: song.album,
-        mvid: song.mvid
+        mvid: song.mvid,
     };
 }

@@ -76,7 +76,7 @@ export const MvCover = memo(({ children }: PropsWithChildren) => {
                     // @ts-ignore
                     navigation.navigate('WebView', {
                         title: data?.data.name,
-                        url: data?.data.cover
+                        url: data?.data.cover,
                     });
                 }
             }}
@@ -108,5 +108,5 @@ const styles = StyleSheet.create({
     },
     square: {
         borderRadius: 0,
-    }
+    },
 });

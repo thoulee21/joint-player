@@ -2,7 +2,7 @@ import {
     StackCardInterpolationProps,
     StackNavigationOptions,
     TransitionPresets,
-    createStackNavigator
+    createStackNavigator,
 } from '@react-navigation/stack';
 import React from 'react';
 import {
@@ -37,7 +37,7 @@ const flexAnimation = ({ current, layouts }:
                 }),
             },
         ],
-    }
+    },
 });
 
 const screenOptions: StackNavigationOptions = {

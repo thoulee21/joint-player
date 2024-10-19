@@ -11,7 +11,7 @@ import {
     AddToQueueButton,
     DeleteFavButton,
     QuickActionsProps,
-    QuickActionsWrapper
+    QuickActionsWrapper,
 } from './QuickActions';
 import { SongItem } from './SongItem';
 
@@ -67,7 +67,7 @@ export const FavsList = () => {
 
 const styles = StyleSheet.create({
     favs: {
-        flex: 1
+        flex: 1,
     },
     noFavs: {
         textAlign: 'center',

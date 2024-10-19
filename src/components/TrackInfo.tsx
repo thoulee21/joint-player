@@ -6,10 +6,10 @@ import {
   ImageBackground,
   StyleSheet,
   TouchableWithoutFeedback,
-  View
+  View,
 } from 'react-native';
 import HapticFeedback, {
-  HapticFeedbackTypes
+  HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
 import { Surface, Text, useTheme } from 'react-native-paper';
 import { useActiveTrack, useProgress } from 'react-native-track-player';

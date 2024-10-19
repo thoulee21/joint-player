@@ -4,7 +4,7 @@ import HapticFeedback, {
 } from 'react-native-haptic-feedback';
 import { IconButton } from 'react-native-paper';
 import TrackPlayer, {
-    useActiveTrack
+    useActiveTrack,
 } from 'react-native-track-player';
 
 export function BackwardButton() {

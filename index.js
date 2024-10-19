@@ -1,3 +1,4 @@
+import React from 'react';
 import { AppRegistry } from 'react-native';
 import { Provider as ReduxProvider } from 'react-redux';
 import { name as appName } from './package.json';

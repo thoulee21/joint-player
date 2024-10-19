@@ -6,7 +6,7 @@ import { Main as CommentsMain } from '../types/comments';
 import { Section } from './CommentList';
 
 export const ScrollToBtns = memo(({
-    showData, commentsRef, data, atTop
+    showData, commentsRef, data, atTop,
 }: {
     showData: Section[],
     commentsRef: React.RefObject<SectionList>,
@@ -29,7 +29,7 @@ export const ScrollToBtns = memo(({
             });
         },
         // no commentsRef
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+
     })), [showData]);
 
     const onStateChange = useCallback(({ open }: { open: boolean }) => {

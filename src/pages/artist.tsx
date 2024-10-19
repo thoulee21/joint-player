@@ -34,7 +34,7 @@ export function Artist() {
                 >
                     <Text style={[
                         styles.error,
-                        { color: appTheme.colors.error }
+                        { color: appTheme.colors.error },
                     ]}>
                         Error: {error.message}
                     </Text>
@@ -71,6 +71,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     header: {
-        backgroundColor: 'transparent'
-    }
+        backgroundColor: 'transparent',
+    },
 });

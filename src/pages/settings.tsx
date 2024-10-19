@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import HapticFeedback, {
-  HapticFeedbackTypes
+  HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
 import { Appbar, Divider, List, useTheme } from 'react-native-paper';
 import { AboutItem } from '../components/AboutItem';
@@ -37,7 +37,7 @@ export function Settings() {
         <List.Section
           title="Appearance"
           titleStyle={{
-            color: appTheme.colors.secondary
+            color: appTheme.colors.secondary,
           }}
         >
           <ThemeColorIndicator />

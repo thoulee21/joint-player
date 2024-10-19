@@ -40,11 +40,11 @@ function App() {
     Promise.all([
       dispatch(initBlurRadius()),
       dispatch(initFavs()),
-      dispatch(initUser())
+      dispatch(initUser()),
     ]);
 
     // no dispatch
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, []);
 
   useEffect(() => {

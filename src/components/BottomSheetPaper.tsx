@@ -1,7 +1,7 @@
 import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetView,
-  type BottomSheetBackdropProps
+  type BottomSheetBackdropProps,
 } from '@gorhom/bottom-sheet';
 import React, { PropsWithChildren, useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -36,7 +36,7 @@ export const BottomSheetPaper = ({
       handleIndicatorStyle={{
         backgroundColor: appTheme.dark
           ? appTheme.colors.onSurfaceDisabled
-          : appTheme.colors.backdrop
+          : appTheme.colors.backdrop,
       }}
       snapPoints={['35%', '90%']}
       enablePanDownToClose
@@ -54,6 +54,6 @@ export const BottomSheetPaper = ({
 
 const styles = StyleSheet.create({
   bottomView: {
-    flex: 1
+    flex: 1,
   },
 });

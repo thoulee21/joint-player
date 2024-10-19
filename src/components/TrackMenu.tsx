@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { StatusBar } from 'react-native';
 import HapticFeedback, {
-  HapticFeedbackTypes
+  HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
 import { IconButton, Menu } from 'react-native-paper';
 import { CommentsMenu } from './CommentsMenu';

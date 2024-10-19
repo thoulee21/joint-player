@@ -5,7 +5,7 @@ import { RootState } from '../store';
 import { StorageKeys } from '../../utils/storageKeys';
 
 const initialState = {
-    value: [] as TrackType[]
+    value: [] as TrackType[],
 };
 
 export const favsSlice = createSlice({
@@ -32,13 +32,13 @@ export const favsSlice = createSlice({
         clearFavs: (state) => {
             state.value = [];
             AsyncStorage.removeItem(StorageKeys.Favs);
-        }
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(initFavs.fulfilled, (state, action) => {
             state.value = action.payload;
         });
-    }
+    },
 });
 
 export const initFavs = createAsyncThunk(

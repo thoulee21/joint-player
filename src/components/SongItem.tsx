@@ -19,7 +19,7 @@ const IndexOfSong = memo(({ style: leftStyle, index }: {
             style={[leftStyle, {
                 color: appTheme.dark
                     ? appTheme.colors.onSurfaceDisabled
-                    : appTheme.colors.backdrop
+                    : appTheme.colors.backdrop,
             }]}
         >
             {index + 1}

@@ -99,9 +99,7 @@ const Lyric = React.forwardRef<
         index: currentIndex,
         viewPosition: 0.1,
       });
-    } catch (e) {
-      // ignore scrollToIndex failed
-    }
+    } catch (_) { }
   });
 
   // auto scroll

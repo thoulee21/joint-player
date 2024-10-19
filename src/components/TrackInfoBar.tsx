@@ -39,5 +39,5 @@ const styles = StyleSheet.create({
     bar: {
         paddingRight: 0,
         marginBottom: 0,
-    }
+    },
 });

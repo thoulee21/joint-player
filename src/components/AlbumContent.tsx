@@ -62,7 +62,7 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
             >
                 <Text style={[
                     styles.error,
-                    { color: appTheme.colors.error }
+                    { color: appTheme.colors.error },
                 ]}>
                     Error: {error.message}
                 </Text>
@@ -107,15 +107,15 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
 
 const styles = StyleSheet.create({
     loading: {
-        marginTop: '40%'
+        marginTop: '40%',
     },
     moreLoading: {
-        marginVertical: '2%'
+        marginVertical: '2%',
     },
     tracks: {
-        height: Dimensions.get('window').height * 0.7
+        height: Dimensions.get('window').height * 0.7,
     },
     error: {
-        textAlign: 'center'
-    }
+        textAlign: 'center',
+    },
 });

@@ -1,6 +1,6 @@
 import {
     createMaterialTopTabNavigator,
-    MaterialTopTabBarProps
+    MaterialTopTabBarProps,
 } from '@react-navigation/material-top-tabs';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -63,7 +63,7 @@ export function AppDataScreen() {
     const navigation = useNavigation();
 
     const renderTapBar = useCallback(({
-        state, navigation: topTabNavi, descriptors
+        state, navigation: topTabNavi, descriptors,
     }: MaterialTopTabBarProps) => {
         const tabBarItems = state.routes.map((route, index) => {
             const { title, tabBarIcon } = descriptors[route.key].options;
@@ -90,7 +90,7 @@ export function AppDataScreen() {
                     colors: {
                         ...appTheme.colors,
                         secondaryContainer: 'transparent',
-                    }
+                    },
                 }}
             />
         );

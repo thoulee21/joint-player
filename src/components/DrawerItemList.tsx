@@ -1,12 +1,12 @@
 import {
     DrawerDescriptorMap,
-    DrawerNavigationHelpers
+    DrawerNavigationHelpers,
 } from '@react-navigation/drawer/lib/typescript/src/types';
 import {
     CommonActions,
     DrawerActions,
     DrawerNavigationState,
-    ParamListBase
+    ParamListBase,
 } from '@react-navigation/native';
 import Color from 'color';
 import React, { useCallback } from 'react';
@@ -42,7 +42,7 @@ function DrawerItems({ state, navigation, descriptors }: Props) {
                         ? DrawerActions.closeDrawer()
                         : CommonActions.navigate({
                             name: item.name,
-                            merge: true
+                            merge: true,
                         })),
                     target: state.key,
                 });
@@ -79,7 +79,7 @@ function DrawerItems({ state, navigation, descriptors }: Props) {
                 onPress={onPress}
                 active={focused}
                 style={[styles.drawerItem, {
-                    backgroundColor
+                    backgroundColor,
                 }]}
             />
         );

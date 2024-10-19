@@ -26,7 +26,7 @@ export const DevSwitchItem = () => {
         dispatch(toggleDevModeValue());
 
         // no dispatch in deps
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+
     }, []);
 
     return (

@@ -14,7 +14,7 @@ import {
     MD3DarkTheme,
     MD3LightTheme,
     PaperProvider,
-    adaptNavigationTheme
+    adaptNavigationTheme,
 } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
 import { SWRConfig, SWRConfiguration } from 'swr';
@@ -41,7 +41,7 @@ export function AppContainer({ children }: PropsWithChildren) {
     useEffect(() => {
         DeviceEventEmitter.addListener('aniDone', () => {
             setIsAniDone(true);
-        })
+        });
     }, []);
 
     const MyLightTheme = useMemo(() => ({
@@ -114,6 +114,6 @@ export function AppContainer({ children }: PropsWithChildren) {
 
 const styles = StyleSheet.create({
     rootView: {
-        flex: 1
-    }
+        flex: 1,
+    },
 });

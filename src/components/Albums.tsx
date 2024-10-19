@@ -66,6 +66,6 @@ export function Albums({ artistID }: { artistID: number }) {
 
 const styles = StyleSheet.create({
     moreLoading: {
-        marginVertical: '2%'
-    }
+        marginVertical: '2%',
+    },
 });

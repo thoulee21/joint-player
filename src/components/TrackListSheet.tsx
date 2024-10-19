@@ -31,7 +31,7 @@ export function TrackListSheet({ bottomSheetRef }: TrackListProps) {
 
     getQueue();
     // no dispatch
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [currentTrack]);
 
   const renderTrack = useCallback(({ item, index }:
@@ -49,9 +49,9 @@ export function TrackListSheet({ bottomSheetRef }: TrackListProps) {
   const renderEmptyTrack = useCallback(() => {
     return (
       <LottieAnimation
-        animation='teapot'
+        animation="teapot"
         style={styles.noTracks}
-        caption='No tracks found'
+        caption="No tracks found"
       />
     );
   }, []);

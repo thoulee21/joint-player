@@ -6,7 +6,7 @@ import { WebView } from 'react-native-webview';
 import {
   WebViewErrorEvent,
   WebViewHttpErrorEvent,
-  WebViewProgressEvent
+  WebViewProgressEvent,
 } from 'react-native-webview/lib/WebViewTypes';
 import { WebViewMenu } from '../components/WebViewMenu';
 
@@ -72,7 +72,7 @@ export const WebViewScreen = () => {
       <WebView
         ref={webViewRef}
         style={{
-          backgroundColor: appTheme.colors.background
+          backgroundColor: appTheme.colors.background,
         }}
         source={{ uri: url }}
         onLoadProgress={updateProgress}

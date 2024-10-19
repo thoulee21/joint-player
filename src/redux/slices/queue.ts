@@ -75,7 +75,7 @@ export const queueSlice = createSlice({
         clearAddOne: (state, action: PayloadAction<TrackType>) => {
             state.value = [];
             state.value.push(action.payload);
-        }
+        },
     },
 });
 

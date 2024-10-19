@@ -30,7 +30,7 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
     );
 
     const showData = useMemo(() => {
-        let sections: Section[] = [];
+        const sections: Section[] = [];
         if (data) {
             const hotComments = data[0]?.hotComments || [];
             const latestComments = data[0]?.comments || [];
@@ -91,7 +91,7 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
             color: appTheme.dark
                 ? appTheme.colors.onSurfaceDisabled
                 : appTheme.colors.backdrop,
-        }
+        },
     ], [appTheme.colors.backdrop, appTheme.colors.onSurfaceDisabled, appTheme.dark]);
 
     const renderLoadingIndicator = useCallback((props: ListLRProps) => (
@@ -135,18 +135,18 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
     ), []);
 
     if (isLoading) {
-        return <ActivityIndicator style={styles.loading} size="large" />
+        return <ActivityIndicator style={styles.loading} size="large" />;
     }
 
     if (error) {
         if (!netInfo.isConnected) {
-            return <NoInternetItem error={error} />
+            return <NoInternetItem error={error} />;
         } else {
-            return <RetryItem error={error} onRetry={onRefresh} />
+            return <RetryItem error={error} onRetry={onRefresh} />;
         }
     }
 
-    if ((data ?? [])[0]?.total === 0) { return <NoCommentsItem /> }
+    if ((data ?? [])[0]?.total === 0) { return <NoCommentsItem />; }
 
     return (
         <>
@@ -196,5 +196,5 @@ const styles = StyleSheet.create({
     },
     sectionFooter: {
         fontSize: 14,
-    }
+    },
 });

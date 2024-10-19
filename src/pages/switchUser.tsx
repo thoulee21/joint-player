@@ -1,14 +1,13 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { StatusBar, StyleSheet } from 'react-native';
-import { Searchbar, useTheme } from 'react-native-paper';
+import { Searchbar } from 'react-native-paper';
 import { BlurBackground } from '../components/BlurBackground';
 import { LottieAnimation } from '../components/LottieAnimation';
 import { UserList } from '../components/UserList';
 
 export const SwitchUser = () => {
     const navigation = useNavigation();
-    const appTheme = useTheme();
 
     const [showQuery, setShowQuery] = useState('');
     const [searchQuery, setSearchQuery] = useState('');
@@ -50,6 +49,6 @@ const styles = StyleSheet.create({
     searchbar: {
         marginTop: StatusBar.currentHeight,
         marginHorizontal: '2%',
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
     },
 });

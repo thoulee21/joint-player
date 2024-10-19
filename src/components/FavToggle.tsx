@@ -34,7 +34,7 @@ export const FavToggle = () => {
       }
     }
     //no dispatch
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [favorites, isFav, track]);
 
   return (
@@ -58,5 +58,5 @@ const styles = StyleSheet.create({
     bottom: 0,
     //圆
     borderRadius: 50,
-  }
+  },
 });

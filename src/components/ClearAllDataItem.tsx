@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { Alert } from 'react-native';
 import HapticFeedback, {
-    HapticFeedbackTypes
+    HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
 import { List, useTheme } from 'react-native-paper';
 import RNRestart from 'react-native-restart';

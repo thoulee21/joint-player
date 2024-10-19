@@ -22,7 +22,7 @@ export function CommentsMenu({ onPostPressed, navigation }:
             onPress={() => {
                 // @ts-ignore
                 navigation.push('Comments', {
-                    commentThreadId: `R_SO_4_${track?.id}`
+                    commentThreadId: `R_SO_4_${track?.id}`,
                 });
                 onPostPressed();
             }}

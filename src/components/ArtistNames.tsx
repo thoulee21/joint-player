@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
 import { FlatList, StyleProp, TextStyle } from 'react-native';
 import HapticFeedback, {
-    HapticFeedbackTypes
+    HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
 import { Text, useTheme } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
@@ -42,7 +42,7 @@ export const ArtistNames = ({ textStyle }:
             renderItem={({ item }) => (
                 <Text
                     style={[textStyle, {
-                        color: appTheme.colors.primary
+                        color: appTheme.colors.primary,
                     }]}
                     onPress={() => goArtist(item)}
                 >{item.name}</Text>

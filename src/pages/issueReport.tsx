@@ -9,7 +9,7 @@ import {
     ScrollView,
     StyleSheet,
     ToastAndroid,
-    View
+    View,
 } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Appbar, HelperText, TextInput, useTheme } from 'react-native-paper';
@@ -78,7 +78,7 @@ export const IssueReport = () => {
                         }
                         style={[
                             styles.inputField,
-                            { backgroundColor: inputBackgroundColor }
+                            { backgroundColor: inputBackgroundColor },
                         ]}
                     />
 

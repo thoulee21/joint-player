@@ -6,7 +6,7 @@ import {
     DeviceEventEmitter,
     Easing,
     StatusBar,
-    StyleSheet
+    StyleSheet,
 } from 'react-native';
 
 export const THEME_COLOR = '#2a8fcf';
@@ -24,7 +24,7 @@ export const AnimatedSplashScreen = ({ children }: PropsWithChildren) => {
     useEffect(() => {
         DeviceEventEmitter.addListener('loadEnd', () => {
             setIsLoadEnd(true);
-        })
+        });
 
         StatusBar.setBarStyle(
             Appearance.getColorScheme() === 'dark'
@@ -58,7 +58,7 @@ export const AnimatedSplashScreen = ({ children }: PropsWithChildren) => {
                     easing: Easing.ease,
                     useNativeDriver: true,
                 }).start(() => setIsAniDone(true));
-            })
+            });
         }
     }, [loadingProgress, opacity, isLoadEnd]);
 
@@ -68,10 +68,10 @@ export const AnimatedSplashScreen = ({ children }: PropsWithChildren) => {
             {!isAniDone && (
                 <Animated.View style={[
                     { ...styles.rootView, zIndex: 2 },
-                    { opacity: opacity.current }
+                    { opacity: opacity.current },
                 ]}>
                     <AnimatedLottieView
-                        source={require("../assets/animations/welcome.json")}
+                        source={require('../assets/animations/welcome.json')}
                         progress={loadingProgress.current}
                         colorFilters={[
                             { keypath: 'welcome 1', color: THEME_COLOR },
@@ -80,7 +80,7 @@ export const AnimatedSplashScreen = ({ children }: PropsWithChildren) => {
                             {
                                 keypath: 'welcome 2',
                                 color: Appearance.getColorScheme() === 'dark'
-                                    ? 'white' : 'black'
+                                    ? 'white' : 'black',
                             },
                         ]}
                         style={styles.rootView}
@@ -89,7 +89,7 @@ export const AnimatedSplashScreen = ({ children }: PropsWithChildren) => {
             )}
         </>
     );
-}
+};
 
 const styles = StyleSheet.create({
     rootView: {

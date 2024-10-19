@@ -12,7 +12,7 @@ export const AlbumHeaderCard = ({ album }: { album: HotAlbum }) => {
     const goComments = useCallback(() => {
         //@ts-ignore
         navigation.push('Comments', {
-            commentThreadId: album.commentThreadId
+            commentThreadId: album.commentThreadId,
         });
     }, [album.commentThreadId, navigation]);
 
@@ -44,6 +44,6 @@ export const AlbumHeaderCard = ({ album }: { album: HotAlbum }) => {
 
 const styles = StyleSheet.create({
     card: {
-        marginHorizontal: '2%'
+        marginHorizontal: '2%',
     },
 });

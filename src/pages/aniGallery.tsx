@@ -1,10 +1,10 @@
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { useNavigation } from "@react-navigation/native";
-import React, { useCallback, useMemo } from "react";
-import { StyleSheet } from "react-native";
-import { Appbar } from "react-native-paper";
-import { BlurBackground } from "../components/BlurBackground";
-import { ANIMATIONS, LottieAnimation } from "../components/LottieAnimation";
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useMemo } from 'react';
+import { StyleSheet } from 'react-native';
+import { Appbar } from 'react-native-paper';
+import { BlurBackground } from '../components/BlurBackground';
+import { ANIMATIONS, LottieAnimation } from '../components/LottieAnimation';
 
 const BottomTab = createMaterialTopTabNavigator();
 
@@ -17,7 +17,7 @@ export const AniGallery = () => {
                 animation={name}
                 caption={name.toLocaleUpperCase()}
             />
-        )
+        );
     }, []);
 
     const AniPages = useMemo(() =>
@@ -43,7 +43,7 @@ export const AniGallery = () => {
                 sceneContainerStyle={styles.transparent}
                 screenOptions={{
                     tabBarStyle: styles.tabBarIndicator,
-                    tabBarIndicatorStyle: styles.tabBarIndicator
+                    tabBarIndicatorStyle: styles.tabBarIndicator,
                 }}
             >
                 {AniPages}
@@ -54,10 +54,10 @@ export const AniGallery = () => {
 
 const styles = StyleSheet.create({
     transparent: {
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
     },
     tabBarIndicator: {
         height: 3,
         borderRadius: 10,
-    }
-})
+    },
+});

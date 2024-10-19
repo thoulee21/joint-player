@@ -27,7 +27,7 @@ export const Album = ({ item }: { item: HotAlbum }) => {
                 subtitleStyle={{
                     color: appTheme.dark
                         ? appTheme.colors.onSurfaceDisabled
-                        : appTheme.colors.backdrop
+                        : appTheme.colors.backdrop,
                 }}
             />
         </Card>
@@ -40,6 +40,6 @@ const styles = StyleSheet.create({
         height: 200,
     },
     album: {
-        margin: '2%'
+        margin: '2%',
     },
 });

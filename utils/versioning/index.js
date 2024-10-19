@@ -1,19 +1,19 @@
-const beautify = require("js-beautify").html;
-const child = require("child_process");
-const detectIndent = require("detect-indent");
-const dottie = require("dottie");
-const flattenDeep = require("lodash.flattendeep");
-const fs = require("fs");
-const list = require("./util").list;
-const log = require("./util").log;
-const path = require("path");
-const plist = require("plist");
-const pSettle = require("p-settle");
-const resolveFrom = require("resolve-from");
-const semver = require("semver");
-const stripIndents = require("common-tags/lib/stripIndents");
-const unique = require("lodash.uniq");
-const Xcode = require("pbxproj-dom/xcode").Xcode;
+const beautify = require('js-beautify').html;
+const child = require('child_process');
+const detectIndent = require('detect-indent');
+const dottie = require('dottie');
+const flattenDeep = require('lodash.flattendeep');
+const fs = require('fs');
+const list = require('./util').list;
+const log = require('./util').log;
+const path = require('path');
+const plist = require('plist');
+const pSettle = require('p-settle');
+const resolveFrom = require('resolve-from');
+const semver = require('semver');
+const stripIndents = require('common-tags/lib/stripIndents');
+const unique = require('lodash.uniq');
+const Xcode = require('pbxproj-dom/xcode').Xcode;
 
 /**
  * Custom type definition for Promises
@@ -23,7 +23,7 @@ const Xcode = require("pbxproj-dom/xcode").Xcode;
  */
 
 const env = {
-	target: process.env.RNV && list(process.env.RNV)
+	target: process.env.RNV && list(process.env.RNV),
 };
 
 /**
@@ -33,8 +33,8 @@ const env = {
  */
 function getDefaults() {
 	return {
-		android: "android/app/build.gradle",
-		ios: "ios"
+		android: 'android/app/build.gradle',
+		ios: 'ios',
 	};
 }
 
@@ -51,7 +51,7 @@ function getPlistFilenames(xcode) {
 				return project.targets.filter(Boolean).map(target => {
 					return target.buildConfigurationsList.buildConfigurations.map(
 						config => {
-							return config.ast.value.get("buildSettings").get("INFOPLIST_FILE")
+							return config.ast.value.get('buildSettings').get('INFOPLIST_FILE')
 								.text;
 						}
 					);
@@ -103,7 +103,7 @@ function getNewVersionCode(programOpts, versionCode, versionName, resetBuild) {
  */
 function getCFBundleShortVersionString(versionName) {
 	const match =
-		versionName && typeof versionName === "string"
+		versionName && typeof versionName === 'string'
 			? versionName.match(/\d*\.\d*.\d*/g)
 			: [];
 	return match && match[0] ? match[0] : versionName;
@@ -138,42 +138,42 @@ function version(program, projectPath) {
 
 	const projPath = path.resolve(
 		process.cwd(),
-		projectPath || prog.args[0] || ""
+		projectPath || prog.args[0] || ''
 	);
 
 	const programOpts = Object.assign({}, prog, {
 		android: path.join(projPath, prog.android),
-		ios: path.join(projPath, prog.ios)
+		ios: path.join(projPath, prog.ios),
 	});
 
 	const targets = [].concat(programOpts.target, env.target).filter(Boolean);
 	var appPkg;
 
 	try {
-		resolveFrom(projPath, "react-native");
-		appPkg = require(path.join(projPath, "package.json"));
+		resolveFrom(projPath, 'react-native');
+		appPkg = require(path.join(projPath, 'package.json'));
 	} catch (err) {
 		if (err.message === "Cannot find module 'react-native'") {
 			log({
-				style: "red",
-				text: `Is this the right folder? ${err.message} in ${projPath}`
+				style: 'red',
+				text: `Is this the right folder? ${err.message} in ${projPath}`,
 			});
 		} else {
 			log({
-				style: "red",
-				text: err.message
+				style: 'red',
+				text: err.message,
 			});
 
 			log({
-				style: "red",
+				style: 'red',
 				text:
-					"Is this the right folder? Looks like there isn't a package.json here"
+					"Is this the right folder? Looks like there isn't a package.json here",
 			});
 		}
 
 		log({
-			style: "yellow",
-			text: "Pass the project path as an argument, see --help for usage"
+			style: 'yellow',
+			text: 'Pass the project path as an argument, see --help for usage',
 		});
 
 		if (program.outputHelp) {
@@ -184,10 +184,10 @@ function version(program, projectPath) {
 	}
 
 	var appJSON;
-	const appJSONPath = path.join(projPath, "app.json");
+	const appJSONPath = path.join(projPath, 'app.json');
 	const isExpoApp = isExpoProject(projPath);
 
-	isExpoApp && log({ text: "Expo detected" }, programOpts.quiet);
+	isExpoApp && log({ text: 'Expo detected' }, programOpts.quiet);
 
 	try {
 		appJSON = require(appJSONPath);
@@ -195,8 +195,8 @@ function version(program, projectPath) {
 		if (isExpoApp && !programOpts.incrementBuild) {
 			appJSON = Object.assign({}, appJSON, {
 				expo: Object.assign({}, appJSON.expo, {
-					version: appPkg.version
-				})
+					version: appPkg.version,
+				}),
 			});
 		}
 	} catch (err) { }
@@ -204,38 +204,38 @@ function version(program, projectPath) {
 	var android;
 	var ios;
 
-	if (!targets.length || targets.indexOf("android") > -1) {
+	if (!targets.length || targets.indexOf('android') > -1) {
 		android = new Promise(function (resolve, reject) {
-			log({ text: "Versioning Android..." }, programOpts.quiet);
+			log({ text: 'Versioning Android...' }, programOpts.quiet);
 
 			var gradleFile;
 
 			try {
-				gradleFile = fs.readFileSync(programOpts.android, "utf8");
+				gradleFile = fs.readFileSync(programOpts.android, 'utf8');
 			} catch (err) {
 				isExpoApp ||
 					reject([
 						{
-							style: "red",
-							text: "No gradle file found at " + programOpts.android
+							style: 'red',
+							text: 'No gradle file found at ' + programOpts.android,
 						},
 						{
-							style: "yellow",
-							text: 'Use the "--android" option to specify the path manually'
-						}
+							style: 'yellow',
+							text: 'Use the "--android" option to specify the path manually',
+						},
 					]);
 			}
 
 			if (!programOpts.incrementBuild && !isExpoApp) {
 				gradleFile = gradleFile.replace(
 					/versionName (["'])(.*)["']/,
-					"versionName $1" + appPkg.version + "$1"
+					'versionName $1' + appPkg.version + '$1'
 				);
 			}
 
 			if (!programOpts.neverIncrementBuild) {
 				if (isExpoApp) {
-					const versionCode = dottie.get(appJSON, "expo.android.versionCode");
+					const versionCode = dottie.get(appJSON, 'expo.android.versionCode');
 
 					appJSON = Object.assign({}, appJSON, {
 						expo: Object.assign({}, appJSON.expo, {
@@ -244,9 +244,9 @@ function version(program, projectPath) {
 									programOpts,
 									versionCode,
 									appPkg.version
-								)
-							})
-						})
+								),
+							}),
+						}),
 					});
 				} else {
 					gradleFile = gradleFile.replace(/versionCode (\d+)/, function (
@@ -259,7 +259,7 @@ function version(program, projectPath) {
 							appPkg.version
 						);
 
-						return "versionCode " + newVersionCodeNumber;
+						return 'versionCode ' + newVersionCodeNumber;
 					});
 				}
 			}
@@ -270,18 +270,18 @@ function version(program, projectPath) {
 				fs.writeFileSync(programOpts.android, gradleFile);
 			}
 
-			log({ text: "Android updated" }, programOpts.quiet);
+			log({ text: 'Android updated' }, programOpts.quiet);
 			resolve();
 		});
 	}
 
-	if (!targets.length || targets.indexOf("ios") > -1) {
+	if (!targets.length || targets.indexOf('ios') > -1) {
 		ios = new Promise(function (resolve, reject) {
-			log({ text: "Versioning iOS..." }, programOpts.quiet);
+			log({ text: 'Versioning iOS...' }, programOpts.quiet);
 
 			if (isExpoApp) {
 				if (!programOpts.neverIncrementBuild) {
-					const buildNumber = dottie.get(appJSON, "expo.ios.buildNumber");
+					const buildNumber = dottie.get(appJSON, 'expo.ios.buildNumber');
 
 					appJSON = Object.assign({}, appJSON, {
 						expo: Object.assign({}, appJSON.expo, {
@@ -291,62 +291,62 @@ function version(program, projectPath) {
 									parseInt(buildNumber, 10),
 									appPkg.version,
 									programOpts.resetBuild
-								).toString()
-							})
-						})
+								).toString(),
+							}),
+						}),
 					});
 				}
 
 				fs.writeFileSync(appJSONPath, JSON.stringify(appJSON, null, 2));
 			} else if (program.legacy) {
 				try {
-					child.execSync("xcode-select --print-path", {
-						stdio: ["ignore", "ignore", "pipe"]
+					child.execSync('xcode-select --print-path', {
+						stdio: ['ignore', 'ignore', 'pipe'],
 					});
 				} catch (err) {
 					reject([
 						{
-							style: "red",
-							text: err
+							style: 'red',
+							text: err,
 						},
 						{
-							style: "yellow",
-							text: "Looks like Xcode Command Line Tools aren't installed"
+							style: 'yellow',
+							text: "Looks like Xcode Command Line Tools aren't installed",
 						},
 						{
-							text: "\n  Install:\n\n    $ xcode-select --install\n"
-						}
+							text: '\n  Install:\n\n    $ xcode-select --install\n',
+						},
 					]);
 
 					return;
 				}
 
 				const agvtoolOpts = {
-					cwd: programOpts.ios
+					cwd: programOpts.ios,
 				};
 
 				try {
-					child.execSync("agvtool what-version", agvtoolOpts);
+					child.execSync('agvtool what-version', agvtoolOpts);
 				} catch (err) {
 					const stdout = err.stdout.toString().trim();
 
 					reject(
-						stdout.indexOf("directory") > -1
+						stdout.indexOf('directory') > -1
 							? [
 								{
-									style: "red",
-									text: "No project folder found at " + programOpts.ios
+									style: 'red',
+									text: 'No project folder found at ' + programOpts.ios,
 								},
 								{
-									style: "yellow",
-									text: 'Use the "--ios" option to specify the path manually'
-								}
+									style: 'yellow',
+									text: 'Use the "--ios" option to specify the path manually',
+								},
 							]
 							: [
 								{
-									style: "red",
-									text: stdout
-								}
+									style: 'red',
+									text: stdout,
+								},
 							]
 					);
 
@@ -355,17 +355,17 @@ function version(program, projectPath) {
 
 				if (!programOpts.incrementBuild) {
 					child.spawnSync(
-						"agvtool",
-						["new-marketing-version", appPkg.version],
+						'agvtool',
+						['new-marketing-version', appPkg.version],
 						agvtoolOpts
 					);
 				}
 
 				if (!programOpts.neverIncrementBuild) {
 					if (programOpts.resetBuild) {
-						child.execSync("agvtool new-version -all 1", agvtoolOpts);
+						child.execSync('agvtool new-version -all 1', agvtoolOpts);
 					} else {
-						child.execSync("agvtool next-version -all", agvtoolOpts);
+						child.execSync('agvtool next-version -all', agvtoolOpts);
 					}
 
 					if (programOpts.generateBuild) {
@@ -393,7 +393,7 @@ function version(program, projectPath) {
 				}
 
 				const projectFolder = path.join(programOpts.ios, xcodeProjects[0]);
-				const xcode = Xcode.open(path.join(projectFolder, "project.pbxproj"));
+				const xcode = Xcode.open(path.join(projectFolder, 'project.pbxproj'));
 				const plistFilenames = getPlistFilenames(xcode);
 
 				xcode.document.projects.forEach(project => {
@@ -406,8 +406,8 @@ function version(program, projectPath) {
 											programOpts,
 											parseInt(
 												config.ast.value
-													.get("buildSettings")
-													.get("CURRENT_PROJECT_VERSION").text,
+													.get('buildSettings')
+													.get('CURRENT_PROJECT_VERSION').text,
 												10
 											),
 											appPkg.version,
@@ -416,8 +416,8 @@ function version(program, projectPath) {
 
 										config.patch({
 											buildSettings: {
-												CURRENT_PROJECT_VERSION
-											}
+												CURRENT_PROJECT_VERSION,
+											},
 										});
 									}
 								}
@@ -427,7 +427,7 @@ function version(program, projectPath) {
 					const plistFiles = plistFilenames.map(filename => {
 						return fs.readFileSync(
 							path.join(programOpts.ios, filename),
-							"utf8"
+							'utf8'
 						);
 					});
 
@@ -446,7 +446,7 @@ function version(program, projectPath) {
 										? {
 											CFBundleShortVersionString: getCFBundleShortVersionString(
 												appPkg.version
-											)
+											),
 										}
 										: {},
 									!programOpts.neverIncrementBuild
@@ -456,7 +456,7 @@ function version(program, projectPath) {
 												parseInt(json.CFBundleVersion, 10),
 												appPkg.version,
 												programOpts.resetBuild
-											).toString()
+											).toString(),
 										}
 										: {}
 								)
@@ -473,21 +473,21 @@ function version(program, projectPath) {
 							<?xml version="1.0" encoding="UTF-8"?>
 							<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 							<plist version="1.0">` +
-							"\n" +
+							'\n' +
 							beautify(
 								fs
-									.readFileSync(path.join(programOpts.ios, filename), "utf8")
+									.readFileSync(path.join(programOpts.ios, filename), 'utf8')
 									.match(/<dict>[\s\S]*<\/dict>/)[0],
 								Object.assign(
 									{ end_with_newline: true },
-									indent.type === "tab"
+									indent.type === 'tab'
 										? { indent_with_tabs: true }
 										: { indent_size: indent.amount }
 								)
 							) +
 							stripIndents`
 							</plist>` +
-							"\n"
+							'\n'
 						);
 					});
 				});
@@ -495,7 +495,7 @@ function version(program, projectPath) {
 				xcode.save();
 			}
 
-			log({ text: "iOS updated" }, programOpts.quiet);
+			log({ text: 'iOS updated' }, programOpts.quiet);
 			resolve();
 		});
 	}
@@ -518,7 +518,7 @@ function version(program, projectPath) {
 					.forEach(function (err) {
 						if (program.outputHelp) {
 							log(
-								Object.assign({ style: "red", text: err.toString() }, err),
+								Object.assign({ style: 'red', text: err.toString() }, err),
 								programOpts.quiet
 							);
 						}
@@ -534,19 +534,19 @@ function version(program, projectPath) {
 							.map(function (err) {
 								return err.text;
 							})
-							.join(", ");
+							.join(', ');
 					})
-					.join("; ");
+					.join('; ');
 			}
 
 			const gitCmdOpts = {
-				cwd: projPath
+				cwd: projPath,
 			};
 
 			if (
 				programOpts.amend ||
 				(process.env.npm_lifecycle_event &&
-					process.env.npm_lifecycle_event.indexOf("version") > -1 &&
+					process.env.npm_lifecycle_event.indexOf('version') > -1 &&
 					!programOpts.neverAmend)
 			) {
 				const latestTag =
@@ -557,23 +557,23 @@ function version(program, projectPath) {
 					semver.valid(
 						semver.coerce(
 							child
-								.execSync("git log -1 --pretty=%s", gitCmdOpts)
+								.execSync('git log -1 --pretty=%s', gitCmdOpts)
 								.toString()
 								.trim()
 						)
 					) &&
 					child
-						.execSync("git describe --exact-match HEAD", gitCmdOpts)
+						.execSync('git describe --exact-match HEAD', gitCmdOpts)
 						.toString()
 						.trim();
 
-				log({ text: "Amending..." }, programOpts.quiet);
+				log({ text: 'Amending...' }, programOpts.quiet);
 
 				switch (process.env.npm_lifecycle_event) {
-					case "version":
+					case 'version':
 						child.spawnSync(
-							"git",
-							["add"].concat(
+							'git',
+							['add'].concat(
 								isExpoApp ? appJSONPath : [programOpts.android, programOpts.ios]
 							),
 							gitCmdOpts
@@ -581,12 +581,12 @@ function version(program, projectPath) {
 
 						break;
 
-					case "postversion":
+					case 'postversion':
 					default:
-						child.execSync("git commit -a --amend --no-edit", gitCmdOpts);
+						child.execSync('git commit -a --amend --no-edit', gitCmdOpts);
 
 						if (latestTag) {
-							log({ text: "Adjusting Git tag..." }, programOpts.quiet);
+							log({ text: 'Adjusting Git tag...' }, programOpts.quiet);
 
 							child.execSync(
 								`git tag -af ${latestTag} -m ${latestTag}`,
@@ -598,8 +598,8 @@ function version(program, projectPath) {
 
 			log(
 				{
-					style: "green",
-					text: "Done"
+					style: 'green',
+					text: 'Done',
 				},
 				programOpts.quiet
 			);
@@ -608,16 +608,16 @@ function version(program, projectPath) {
 				return true;
 			}
 
-			return child.execSync("git log -1 --pretty=%H", gitCmdOpts).toString();
+			return child.execSync('git log -1 --pretty=%H', gitCmdOpts).toString();
 		})
 		.catch(function (err) {
-			if (process.env.RNV_ENV === "ava") {
+			if (process.env.RNV_ENV === 'ava') {
 				console.error(err);
 			}
 
 			log({
-				style: "red",
-				text: "Done, with errors."
+				style: 'red',
+				text: 'Done, with errors.',
 			});
 
 			process.exit(1);
@@ -629,5 +629,5 @@ module.exports = {
 	getDefaults: getDefaults,
 	getPlistFilenames: getPlistFilenames,
 	isExpoProject: isExpoProject,
-	version: version
+	version: version,
 };

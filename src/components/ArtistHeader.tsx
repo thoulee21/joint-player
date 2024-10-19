@@ -29,7 +29,7 @@ export const ArtistHeader = ({ artist }: { artist?: Artist }) => {
                 <Text style={[styles.artistAlias, {
                     color: appTheme.dark
                         ? appTheme.colors.onSurfaceDisabled
-                        : appTheme.colors.backdrop
+                        : appTheme.colors.backdrop,
                 }]}>
                     {artist?.alias.join(', ')}
                 </Text>
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     albumHeaderTitle: {
         flexDirection: 'row',
         alignItems: 'baseline',
-        margin: '3%'
+        margin: '3%',
     },
     artistAlias: {
         marginLeft: '1%',

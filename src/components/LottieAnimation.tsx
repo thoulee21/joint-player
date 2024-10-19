@@ -39,7 +39,7 @@ export const LottieAnimation = ({
             { keypath: 'ball', color: appTheme.colors.primary },
             { keypath: 'welcome 2', color: appTheme.colors.background },
         ],
-    }
+    };
 
     return (
         <View style={[styles.view, style]}>
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     },
     animation: {
         width: '100%',
-        height: '50%'
+        height: '50%',
     },
     caption: {
         textAlign: 'center',

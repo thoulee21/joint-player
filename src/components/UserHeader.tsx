@@ -6,17 +6,17 @@ import {
     StatusBar,
     StyleSheet,
     TouchableWithoutFeedback,
-    View
+    View,
 } from 'react-native';
 import HapticFeedback, {
-    HapticFeedbackTypes
+    HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
 import {
     ActivityIndicator,
     Avatar,
     Text,
     TouchableRipple,
-    useTheme
+    useTheme,
 } from 'react-native-paper';
 import useSWR from 'swr';
 import { useAppSelector } from '../hook';
@@ -44,7 +44,7 @@ export const UserHeader = memo(({ userId }: { userId?: number }) => {
         return (
             <Text style={[
                 styles.errMsg,
-                { color: appTheme.colors.error }
+                { color: appTheme.colors.error },
             ]}>
                 Error: {error.message}
             </Text>
@@ -59,7 +59,7 @@ export const UserHeader = memo(({ userId }: { userId?: number }) => {
             //@ts-expect-error
             navigation.push('WebView', {
                 url: data?.profile.backgroundUrl,
-                title: 'User Background'
+                title: 'User Background',
             });
         }
     };
@@ -72,7 +72,7 @@ export const UserHeader = memo(({ userId }: { userId?: number }) => {
             //@ts-expect-error
             navigation.push('WebView', {
                 url: data?.profile.avatarUrl,
-                title: 'Avatar'
+                title: 'Avatar',
             });
         }
     };
@@ -132,5 +132,5 @@ const styles = StyleSheet.create({
     loading: {
         flex: 1,
         alignSelf: 'center',
-    }
+    },
 });

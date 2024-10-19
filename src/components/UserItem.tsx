@@ -14,7 +14,7 @@ export const UserItem = ({ item }: { item: Userprofile }) => {
 
     const user = {
         username: item.nickname,
-        id: item.userId
+        id: item.userId,
     };
 
     const login = useCallback(async () => {
@@ -28,7 +28,7 @@ export const UserItem = ({ item }: { item: Userprofile }) => {
         navigation.openDrawer();
 
         // no dispatch needed here
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+
     }, [item.nickname, navigation, user]);
 
     const renderAvatar = useCallback((props: ListLRProps) => (

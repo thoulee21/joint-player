@@ -29,7 +29,7 @@ export const VersionItem = ({ showDevSnackbar }: {
             }
         }
         // no dispatch
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+
     }, [devModeEnabled, hitCount]);
 
     const renderPlatformIcon = useCallback((props: ListLRProps) => (

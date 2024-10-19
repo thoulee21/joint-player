@@ -1,6 +1,6 @@
 import {
     createDrawerNavigator,
-    type DrawerContentComponentProps
+    type DrawerContentComponentProps,
 } from '@react-navigation/drawer';
 import React, { useCallback, useMemo } from 'react';
 import { Icon } from 'react-native-paper';
@@ -17,7 +17,7 @@ const ROUTES = [
         name: 'Player',
         component: Player,
         focusedIcon: 'music-circle',
-        unfocusedIcon: 'music-circle-outline'
+        unfocusedIcon: 'music-circle-outline',
     },
     {
         name: 'Favorites',
@@ -29,7 +29,7 @@ const ROUTES = [
         name: 'Settings',
         component: Settings,
         focusedIcon: 'cog',
-        unfocusedIcon: 'cog-outline'
+        unfocusedIcon: 'cog-outline',
     },
 ];
 
@@ -49,7 +49,7 @@ const drawerIcon = (
 export function DrawerNavi() {
     const DrawerRoutes = useMemo(() =>
         ROUTES.map(({
-            name, component, focusedIcon, unfocusedIcon
+            name, component, focusedIcon, unfocusedIcon,
         }) => (
             <Drawer.Screen
                 key={name}
@@ -57,7 +57,7 @@ export function DrawerNavi() {
                 component={component}
                 options={{
                     drawerIcon:
-                        drawerIcon(focusedIcon, unfocusedIcon)
+                        drawerIcon(focusedIcon, unfocusedIcon),
                 }}
             />
         )), []);
@@ -76,7 +76,7 @@ export function DrawerNavi() {
             initialRouteName="Player"
             screenOptions={{
                 headerShown: false,
-                lazy: false
+                lazy: false,
             }}
             drawerContent={renderDrawerContent}
         >
