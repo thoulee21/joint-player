@@ -1,16 +1,29 @@
+import Color from 'color';
 import LottieView from 'lottie-react-native';
-import React, { useEffect, useRef, useState } from 'react';
-import { Animated, Easing, StyleSheet } from 'react-native';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Animated, Appearance, Easing, StatusBar, StyleSheet } from 'react-native';
+import { useTheme } from 'react-native-paper';
 
 export const REMAINING_DURATION = 800;
 
 const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
 
 export const AnimatedSplashScreen = ({ isLoadEnd }: { isLoadEnd: boolean }) => {
-    const [visible, setVisible] = useState(true);
-
+    const appTheme = useTheme();
     const loadingProgress = useRef(new Animated.Value(0));
     const opacity = useRef(new Animated.Value(1));
+
+    const [visible, setVisible] = useState(true);
+    const themeColor = useMemo(() => Color('#2a8fcf').lighten(
+        Appearance.getColorScheme() === 'dark' ? 0.2 : 0.5
+    ).hex(), []);
+
+    useEffect(() => {
+        StatusBar.setBarStyle(
+            Appearance.getColorScheme() === 'dark'
+                ? 'light-content' : 'dark-content'
+        );
+    }, [])
 
     useEffect(() => {
         if (!isLoadEnd) {
@@ -40,7 +53,13 @@ export const AnimatedSplashScreen = ({ isLoadEnd }: { isLoadEnd: boolean }) => {
         }
     }, [isLoadEnd, loadingProgress, opacity]);
 
-    if (!visible) return null;
+    if (!visible) {
+        StatusBar.setBarStyle(
+            appTheme.dark ? 'light-content' : 'dark-content'
+        );
+
+        return null
+    };
 
     return (
         <Animated.View
@@ -53,9 +72,14 @@ export const AnimatedSplashScreen = ({ isLoadEnd }: { isLoadEnd: boolean }) => {
                 source={require("../assets/animations/welcome.json")}
                 progress={loadingProgress.current}
                 colorFilters={[
-                    { keypath: 'welcome 1', color: '#2a8fcf' },
-                    { keypath: 'welcome 3', color: '#2a8fcf' },
-                    { keypath: 'ball', color: '#2a8fcf' },
+                    { keypath: 'welcome 1', color: themeColor },
+                    { keypath: 'welcome 3', color: themeColor },
+                    { keypath: 'ball', color: themeColor },
+                    {
+                        keypath: 'welcome 2',
+                        color: Appearance.getColorScheme() === 'dark'
+                            ? 'white' : 'black'
+                    },
                 ]}
                 style={styles.rootView}
             />
@@ -68,6 +92,7 @@ const styles = StyleSheet.create({
         ...StyleSheet.absoluteFillObject,
         zIndex: 1,
         flex: 1,
-        backgroundColor: 'black',
+        backgroundColor: Appearance.getColorScheme() === 'dark'
+            ? 'black' : 'white',
     }
 });
