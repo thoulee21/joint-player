@@ -88,7 +88,7 @@ export function MvDetail() {
         }
     };
 
-    const ResSwitch = useCallback((props: any) => (
+    const renderResSwitch = useCallback((props: any) => (
         <Button {...props}
             icon="video-switch-outline"
             onPress={() => {
@@ -102,12 +102,8 @@ export function MvDetail() {
         </Button>
     ), [btns, res]);
 
-    const renderResSwitch = useCallback((props: any) => (
-        <ResSwitch {...props} />
-    ), [ResSwitch]);
-
     if (isLoading) {
-        return (<ActivityIndicator size="large" style={styles.loading} />);
+        return <ActivityIndicator size="large" style={styles.loading} />;
     }
 
     if (error) {
