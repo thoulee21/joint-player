@@ -85,7 +85,7 @@ export function AppContainer({ children }: PropsWithChildren) {
     }, [track?.artwork]);
 
     useEffect(() => {
-        if (isPlayerReady) {
+        if (isPlayerReady && __DEV__) {
             ToastAndroid.show('Player ready', ToastAndroid.SHORT);
         }
     }, [isPlayerReady]);
