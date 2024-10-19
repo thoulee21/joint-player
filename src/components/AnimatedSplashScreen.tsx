@@ -1,8 +1,15 @@
-import Color from 'color';
 import LottieView from 'lottie-react-native';
-import React, { useEffect, useMemo, useRef, useState, type PropsWithChildren } from 'react';
-import { Animated, Appearance, DeviceEventEmitter, Easing, StatusBar, StyleSheet } from 'react-native';
+import React, { useEffect, useRef, useState, type PropsWithChildren } from 'react';
+import {
+    Animated,
+    Appearance,
+    DeviceEventEmitter,
+    Easing,
+    StatusBar,
+    StyleSheet
+} from 'react-native';
 
+export const THEME_COLOR = '#2a8fcf';
 export const REMAINING_DURATION = 1000;
 
 const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
@@ -14,17 +21,11 @@ export const AnimatedSplashScreen = ({ children }: PropsWithChildren) => {
     const loadingProgress = useRef(new Animated.Value(0));
     const opacity = useRef(new Animated.Value(1));
 
-    const themeColor = useMemo(() => Color('#2a8fcf').lighten(
-        Appearance.getColorScheme() === 'dark' ? 0.2 : 0.5
-    ).hex(), []);
-
     useEffect(() => {
         DeviceEventEmitter.addListener('loadEnd', () => {
             setIsLoadEnd(true);
         })
-    }, []);
 
-    useEffect(() => {
         StatusBar.setBarStyle(
             Appearance.getColorScheme() === 'dark'
                 ? 'light-content' : 'dark-content'
@@ -73,9 +74,9 @@ export const AnimatedSplashScreen = ({ children }: PropsWithChildren) => {
                         source={require("../assets/animations/welcome.json")}
                         progress={loadingProgress.current}
                         colorFilters={[
-                            { keypath: 'welcome 1', color: themeColor },
-                            { keypath: 'welcome 3', color: themeColor },
-                            { keypath: 'ball', color: themeColor },
+                            { keypath: 'welcome 1', color: THEME_COLOR },
+                            { keypath: 'welcome 3', color: THEME_COLOR },
+                            { keypath: 'ball', color: THEME_COLOR },
                             {
                                 keypath: 'welcome 2',
                                 color: Appearance.getColorScheme() === 'dark'
@@ -97,5 +98,5 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: Appearance.getColorScheme() === 'dark'
             ? 'black' : 'white',
-    }
+    },
 });
