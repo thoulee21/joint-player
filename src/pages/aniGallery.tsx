@@ -44,9 +44,10 @@ export const AniGallery = () => {
                 tabBarPosition="bottom"
                 sceneContainerStyle={styles.transparent}
                 screenOptions={{
-                    tabBarStyle: [styles.tabBarStyle, {
+                    tabBarStyle: [styles.tabBarIndicator, {
                         marginBottom: insets.bottom
-                    }]
+                    }],
+                    tabBarIndicatorStyle: styles.tabBarIndicator
                 }}
             >
                 {AniPages}
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
     transparent: {
         backgroundColor: 'transparent'
     },
-    tabBarStyle: {
-        height: 2
+    tabBarIndicator: {
+        height: 5
     }
 })
