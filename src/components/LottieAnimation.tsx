@@ -1,8 +1,7 @@
 import LottieView from 'lottie-react-native';
 import React, { PropsWithChildren } from 'react';
 import { StyleSheet, View, ViewStyle } from 'react-native';
-import { Text } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Text, useTheme } from 'react-native-paper';
 
 export const ANIMATIONS = {
     sushi: require('../assets/animations/sushi.json'),
@@ -18,15 +17,31 @@ export const LottieAnimation = ({
     animation,
     loop = true,
     style,
-    colorFilters
+    colorFilters,
+    progress,
 }: PropsWithChildren<{
     caption?: string;
     animation: keyof typeof ANIMATIONS;
     loop?: boolean;
     style?: ViewStyle;
     colorFilters?: Array<{ keypath: string; color: string }>;
+    progress?: number;
 }>) => {
-    const insets = useSafeAreaInsets();
+    const appTheme = useTheme();
+
+    const aniColorFilters = {
+        breathe: [
+            { keypath: 'Breathe out', color: appTheme.colors.onBackground },
+            { keypath: 'Breathe in', color: appTheme.colors.onBackground },
+        ],
+        welcome: [
+            { keypath: 'welcome 1', color: appTheme.colors.primary },
+            { keypath: 'welcome 3', color: appTheme.colors.primary },
+            { keypath: 'ball', color: appTheme.colors.primary },
+            { keypath: 'welcome 2', color: appTheme.colors.background },
+        ],
+    }
+
     return (
         <View style={[styles.view, style]}>
             <LottieView
@@ -34,20 +49,18 @@ export const LottieAnimation = ({
                 source={ANIMATIONS[animation]}
                 autoPlay
                 loop={loop}
+                progress={progress}
                 style={styles.animation}
                 resizeMode="contain"
                 enableMergePathsAndroidForKitKatAndAbove
                 enableSafeModeAndroid
-                colorFilters={colorFilters}
+                colorFilters={colorFilters
+                    || aniColorFilters[animation as keyof typeof aniColorFilters]}
             />
             {children}
             <Text
                 variant="titleMedium"
-                style={[styles.caption, {
-                    marginLeft: insets.left,
-                    marginRight: insets.right,
-                    marginBottom: insets.bottom,
-                }]}
+                style={styles.caption}
             >
                 {caption}
             </Text>
