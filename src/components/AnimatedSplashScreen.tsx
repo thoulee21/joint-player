@@ -1,7 +1,7 @@
 import Color from 'color';
 import LottieView from 'lottie-react-native';
 import React, { useEffect, useMemo, useRef, useState, type PropsWithChildren } from 'react';
-import { Animated, Appearance, DeviceEventEmitter, StatusBar, StyleSheet } from 'react-native';
+import { Animated, Appearance, DeviceEventEmitter, Easing, StatusBar, StyleSheet } from 'react-native';
 
 export const REMAINING_DURATION = 1000;
 
@@ -53,7 +53,8 @@ export const AnimatedSplashScreen = ({ children }: PropsWithChildren) => {
                 // 动画完成后开始淡出
                 Animated.timing(opacity.current, {
                     toValue: 0,
-                    duration: 300,
+                    duration: 350,
+                    easing: Easing.exp,
                     useNativeDriver: true,
                 }).start(() => setIsAniDone(true));
             })
