@@ -54,7 +54,7 @@ export const AnimatedSplashScreen = ({ children }: PropsWithChildren) => {
                 Animated.timing(opacity.current, {
                     toValue: 0,
                     duration: 350,
-                    easing: Easing.exp,
+                    easing: Easing.ease,
                     useNativeDriver: true,
                 }).start(() => setIsAniDone(true));
             })
