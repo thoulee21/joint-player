@@ -6,7 +6,7 @@ import {
 } from '@react-navigation/native';
 import Color from 'color';
 import React, { PropsWithChildren, useEffect, useMemo, useState } from 'react';
-import { DeviceEventEmitter, StatusBar, StyleSheet, ToastAndroid } from 'react-native';
+import { DeviceEventEmitter, StatusBar, StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import ImageColors from 'react-native-image-colors';
 import { AndroidImageColors } from 'react-native-image-colors/build/types';
@@ -30,11 +30,12 @@ const swrConfig: SWRConfiguration = {
 };
 
 export function AppContainer({ children }: PropsWithChildren) {
+    useSetupPlayer();
+
     const dispatch = useAppDispatch();
     const track = useActiveTrack();
 
     const [isAniDone, setIsAniDone] = useState(false);
-    const isPlayerReady = useSetupPlayer();
     const isDarkMode = useAppSelector(selectDarkModeEnabled);
     const { theme: colorTheme, updateTheme } = useMaterial3Theme();
 
@@ -83,12 +84,6 @@ export function AppContainer({ children }: PropsWithChildren) {
             }
         });
     }, [track?.artwork]);
-
-    useEffect(() => {
-        if (isPlayerReady && __DEV__) {
-            ToastAndroid.show('Player ready', ToastAndroid.SHORT);
-        }
-    }, [isPlayerReady]);
 
     useEffect(() => {
         if (isAniDone) {
