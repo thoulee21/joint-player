@@ -61,6 +61,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent'
     },
     tabBarIndicator: {
-        height: 5
+        height: 4
     }
 })
