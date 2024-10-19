@@ -16,7 +16,7 @@ const config = mergeConfig(defaultConfig, expoDefaultConfig, {
     resolver: {
         watchFolders: [
             // Add your project's source folder path here
-            path.resolve(__dirname, 'src')
+            path.resolve(__dirname, 'src'),
         ],
         useWatchman: true,
     },
