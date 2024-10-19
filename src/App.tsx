@@ -2,8 +2,6 @@ import * as Sentry from '@sentry/react-native';
 import { useUpdates } from 'expo-updates';
 import React, { useEffect } from 'react';
 import { ToastAndroid } from 'react-native';
-import 'react-native-gesture-handler';
-import 'react-native-get-random-values';
 import TrackPlayer from 'react-native-track-player';
 import { AppContainer } from './components/AppContainer';
 import { RootStack } from './components/RootStack';
