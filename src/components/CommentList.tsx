@@ -2,7 +2,7 @@ import { useNetInfoInstance } from '@react-native-community/netinfo';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { RefreshControl, SectionList, StyleSheet, View } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { ActivityIndicator, List, Portal, Text, useTheme } from 'react-native-paper';
+import { ActivityIndicator, List, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
 import { useDebounce } from '../hook';
 import { Comment, Main as CommentsMain } from '../types/comments';
@@ -19,8 +19,10 @@ export interface Section {
 export function CommentList({ commentThreadId }: { commentThreadId: string }) {
     const appTheme = useTheme();
     const { netInfo } = useNetInfoInstance();
-    const [refreshing, setRefreshing] = useState(false);
     const commentsRef = useRef<SectionList>(null);
+
+    const [atTop, setAtTop] = useState(true);
+    const [refreshing, setRefreshing] = useState(false);
 
     const commentsPerPage = 5;
     const { data, error, isLoading, mutate, setSize } = useSWRInfinite<CommentsMain>((index) =>
@@ -72,9 +74,6 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
 
         await mutate();
         setRefreshing(false);
-
-        //no mutate
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const loadMore = useDebounce(() => {
@@ -112,73 +111,79 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
                     titleStyle={sectionFooterStyle}
                 />;
             } else {
-                return <List.Item
-                    title="All comments loaded!"
-                    titleStyle={sectionFooterStyle}
-                    left={renderCheckIcon}
-                />;
+                return (
+                    <List.Item
+                        title="All comments loaded!"
+                        titleStyle={sectionFooterStyle}
+                        left={renderCheckIcon}
+                    />
+                );
             }
         } else { return <View />; }
     }, [data, renderCheckIcon, renderLoadingIndicator, sectionFooterStyle, showData]);
 
     const renderSectionHeader = useCallback(({ section }: { section: any }) => (
-        <Text style={styles.header}>
+        <List.Subheader style={[styles.header, {
+            color: appTheme.colors.secondary,
+        }]}>
             {section.title}
-        </Text>
-    ), []);
+        </List.Subheader>
+    ), [appTheme.colors.secondary]);
 
     const renderItem = useCallback(({ item }: { item: Comment }) => (
         <CommentItem item={item} />
     ), []);
 
     if (isLoading) {
-        return (
-            <ActivityIndicator
-                style={styles.loading}
-                size="large"
-            />
-        );
-    } else if (error) {
-        if (!netInfo.isConnected) {
-            return <NoInternetItem error={error} />;
-        }
-        return <RetryItem error={error} onRetry={onRefresh} />;
-    } else if ((data ?? [])[0]?.total === 0) {
-        return <NoCommentsItem />;
-    } else {
-        return (
-            <Portal.Host>
-                <SectionList
-                    ref={commentsRef}
-                    sections={showData}
-                    keyExtractor={item => item.commentId.toString()}
-                    initialNumToRender={7}
-                    fadingEdgeLength={50}
-                    refreshing={refreshing}
-                    onRefresh={onRefresh}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={refreshing}
-                            onRefresh={onRefresh}
-                            colors={[appTheme.colors.primary]}
-                            progressBackgroundColor={appTheme.colors.surface}
-                        />
-                    }
-                    renderSectionHeader={renderSectionHeader}
-                    renderItem={renderItem}
-                    onEndReached={loadMore}
-                    onEndReachedThreshold={0.05}
-                    renderSectionFooter={renderSectionFooter}
-                />
-
-                <ScrollToBtns
-                    showData={showData}
-                    commentsRef={commentsRef}
-                    data={data}
-                />
-            </Portal.Host>
-        );
+        return <ActivityIndicator style={styles.loading} size="large" />
     }
+
+    if (error) {
+        if (!netInfo.isConnected) {
+            return <NoInternetItem error={error} />
+        } else {
+            return <RetryItem error={error} onRetry={onRefresh} />
+        }
+    }
+
+    if ((data ?? [])[0]?.total === 0) { return <NoCommentsItem /> }
+
+    return (
+        <>
+            <SectionList
+                ref={commentsRef}
+                sections={showData}
+                keyExtractor={item => item.commentId.toString()}
+                initialNumToRender={7}
+                fadingEdgeLength={50}
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                        colors={[appTheme.colors.primary]}
+                        progressBackgroundColor={appTheme.colors.surface}
+                    />
+                }
+                renderSectionHeader={renderSectionHeader}
+                renderItem={renderItem}
+                onEndReached={loadMore}
+                onEndReachedThreshold={0.05}
+                renderSectionFooter={renderSectionFooter}
+                onScroll={e =>
+                    setAtTop(e.nativeEvent.contentOffset.y < 5)
+                }
+            />
+
+            <ScrollToBtns
+                showData={showData}
+                commentsRef={commentsRef}
+                data={data}
+                atTop={atTop}
+            />
+        </>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -187,8 +192,6 @@ const styles = StyleSheet.create({
     },
     header: {
         fontSize: 16,
-        marginTop: '4%',
-        marginLeft: '4%',
         fontWeight: 'bold',
     },
     sectionFooter: {
