@@ -1,8 +1,6 @@
 module.exports = {
   root: true,
   extends: [
-    '@react-native-community',
-    'plugin:@typescript-eslint/recommended',
     '@react-native',
   ],
   plugins: ['@typescript-eslint'],
@@ -14,7 +12,7 @@ module.exports = {
     'linebreak-style': 'off',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'warn',
-    'no-console': 1,
+    'no-console': 0,
     '@typescript-eslint/no-duplicate-enum-values': 'off',
   },
   overrides: [
