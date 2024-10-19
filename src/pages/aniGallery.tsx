@@ -39,6 +39,7 @@ export const AniGallery = () => {
 
             <BottomTab.Navigator
                 backBehavior="none"
+                tabBarPosition="bottom"
                 sceneContainerStyle={styles.transparent}
                 screenOptions={{
                     tabBarStyle: styles.tabBarIndicator,
