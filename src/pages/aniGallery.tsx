@@ -1,23 +1,48 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useMemo } from 'react';
+import type LottieView from 'lottie-react-native';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { Appbar } from 'react-native-paper';
+import { Appbar, IconButton } from 'react-native-paper';
 import { BlurBackground } from '../components/BlurBackground';
-import { ANIMATIONS, LottieAnimation } from '../components/LottieAnimation';
+import { ANIMATIONS, LottieAnimation, type AniKeys } from '../components/LottieAnimation';
 
 const BottomTab = createMaterialTopTabNavigator();
+
+const AniPage = ({ name }: { name: AniKeys }) => {
+    const aniRef = useRef<LottieView>(null);
+    const [isPlaying, setIsPlaying] = useState(true);
+
+    return (
+        <LottieAnimation
+            ref={aniRef}
+            animation={name}
+            caption={name.toLocaleUpperCase()}
+        >
+            <IconButton
+                icon={isPlaying ? 'pause' : 'play'}
+                onPress={() => {
+                    if (isPlaying) {
+                        aniRef.current?.pause();
+                    } else {
+                        aniRef.current?.resume();
+                    }
+                    setIsPlaying(prev => !prev);
+                }}
+                animated
+                selected
+                style={styles.playButton}
+                size={60}
+            />
+        </LottieAnimation>
+    );
+};
 
 export const AniGallery = () => {
     const navigation = useNavigation();
 
-    const renderAniPage = useCallback((name: keyof typeof ANIMATIONS) => {
-        return () => (
-            <LottieAnimation
-                animation={name}
-                caption={name.toLocaleUpperCase()}
-            />
-        );
+    const renderAniPage = useCallback((name: AniKeys) => {
+        return () => <AniPage name={name} />;
     }, []);
 
     const AniPages = useMemo(() =>
@@ -25,7 +50,7 @@ export const AniGallery = () => {
             <BottomTab.Screen
                 key={index}
                 name={key}
-                component={renderAniPage(key as keyof typeof ANIMATIONS)}
+                component={renderAniPage(key as AniKeys)}
                 options={{ tabBarShowLabel: false }}
             />
         )), [ANIMATIONS]);
@@ -59,5 +84,8 @@ const styles = StyleSheet.create({
     tabBarIndicator: {
         height: 3,
         borderRadius: 10,
+    },
+    playButton: {
+        alignSelf: 'center',
     },
 });
