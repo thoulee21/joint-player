@@ -33,17 +33,16 @@ export function AppContainer({ children }: PropsWithChildren) {
     const dispatch = useAppDispatch();
     const track = useActiveTrack();
 
+    const [isAniDone, setIsAniDone] = useState(false);
     const isPlayerReady = useSetupPlayer();
     const isDarkMode = useAppSelector(selectDarkModeEnabled);
     const { theme: colorTheme, updateTheme } = useMaterial3Theme();
 
     useEffect(() => {
         DeviceEventEmitter.addListener('aniDone', () => {
-            StatusBar.setBarStyle(
-                isDarkMode ? 'light-content' : 'dark-content'
-            );
+            setIsAniDone(true);
         })
-    }, [isDarkMode]);
+    }, []);
 
     const MyLightTheme = useMemo(() => ({
         ...MD3LightTheme,
@@ -90,6 +89,14 @@ export function AppContainer({ children }: PropsWithChildren) {
             ToastAndroid.show('Player ready', ToastAndroid.SHORT);
         }
     }, [isPlayerReady]);
+
+    useEffect(() => {
+        if (isAniDone) {
+            StatusBar.setBarStyle(
+                isDarkMode ? 'light-content' : 'dark-content'
+            );
+        }
+    }, [isDarkMode, isAniDone]);
 
     return (
         <GestureHandlerRootView style={styles.rootView}>
