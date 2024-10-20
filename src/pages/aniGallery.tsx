@@ -4,9 +4,10 @@ import type LottieView from 'lottie-react-native';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { Appbar, IconButton } from 'react-native-paper';
+import { Appbar } from 'react-native-paper';
 import { BlurBackground } from '../components/BlurBackground';
 import { ANIMATIONS, LottieAnimation, type AniKeys } from '../components/LottieAnimation';
+import { upperFirst } from '../utils';
 
 const BottomTab = createMaterialTopTabNavigator();
 
@@ -27,17 +28,9 @@ const AniPage = ({ name }: { name: AniKeys }) => {
         <LottieAnimation
             ref={aniRef}
             animation={name}
-            caption={name.toLocaleUpperCase()}
-        >
-            <IconButton
-                icon={isPlaying ? 'pause' : 'play'}
-                selected
-                style={styles.playButton}
-                size={90}
-                animated
-                onPress={togglePlay}
-            />
-        </LottieAnimation>
+            caption={upperFirst(name)}
+            onPress={togglePlay}
+        />
     );
 };
 
@@ -87,8 +80,5 @@ const styles = StyleSheet.create({
     tabBarIndicator: {
         height: 3,
         borderRadius: 10,
-    },
-    playButton: {
-        alignSelf: 'center',
     },
 });
