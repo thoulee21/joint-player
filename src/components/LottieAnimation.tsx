@@ -1,6 +1,6 @@
 import LottieView from 'lottie-react-native';
 import React, { PropsWithChildren, forwardRef, useMemo, type ForwardedRef } from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback, View, ViewStyle } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 
 export const ANIMATIONS = {
@@ -20,6 +20,7 @@ export const LottieAnimation = forwardRef(({
     style,
     colorFilters,
     progress,
+    onPress,
 }: PropsWithChildren<{
     caption?: string;
     animation: AniKeys;
@@ -27,6 +28,7 @@ export const LottieAnimation = forwardRef(({
     style?: ViewStyle;
     colorFilters?: { keypath: string; color: string }[];
     progress?: number;
+    onPress?: () => void;
 }>, ref: ForwardedRef<LottieView>) => {
     const appTheme = useTheme();
 
@@ -45,20 +47,22 @@ export const LottieAnimation = forwardRef(({
 
     return (
         <View style={[styles.view, style]}>
-            <LottieView
-                ref={ref}
-                key={animation}
-                source={ANIMATIONS[animation]}
-                autoPlay
-                loop={loop}
-                progress={progress}
-                style={styles.animation}
-                resizeMode="contain"
-                enableMergePathsAndroidForKitKatAndAbove
-                enableSafeModeAndroid
-                colorFilters={colorFilters
-                    || aniColorFilters[animation as keyof typeof aniColorFilters]}
-            />
+            <TouchableWithoutFeedback onPress={onPress}>
+                <LottieView
+                    ref={ref}
+                    key={animation}
+                    source={ANIMATIONS[animation]}
+                    autoPlay
+                    loop={loop}
+                    progress={progress}
+                    style={styles.animation}
+                    resizeMode="contain"
+                    enableMergePathsAndroidForKitKatAndAbove
+                    enableSafeModeAndroid
+                    colorFilters={colorFilters
+                        || aniColorFilters[animation as keyof typeof aniColorFilters]}
+                />
+            </TouchableWithoutFeedback>
             {children}
             <Text
                 variant="titleMedium"
