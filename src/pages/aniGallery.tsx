@@ -2,9 +2,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import { useNavigation } from '@react-navigation/native';
 import type LottieView from 'lottie-react-native';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { StyleSheet, TouchableWithoutFeedback } from 'react-native';
-import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { Appbar } from 'react-native-paper';
+import { StyleSheet } from 'react-native';
+import { Appbar, IconButton } from 'react-native-paper';
 import { BlurBackground } from '../components/BlurBackground';
 import { ANIMATIONS, LottieAnimation, type AniKeys } from '../components/LottieAnimation';
 
@@ -14,26 +13,28 @@ const AniPage = ({ name }: { name: AniKeys }) => {
     const aniRef = useRef<LottieView>(null);
     const [isPlaying, setIsPlaying] = useState(true);
 
-    const togglePlayPause = useCallback(() => {
-        HapticFeedback.trigger(HapticFeedbackTypes.effectClick);
-
-        if (isPlaying) { aniRef.current?.pause(); }
-        else { aniRef.current?.resume(); }
-
-        setIsPlaying(prev => !prev);
-    }, [isPlaying]);
-
     return (
-        <TouchableWithoutFeedback
-            onPress={togglePlayPause}
-            style={styles.root}
+        <LottieAnimation
+            ref={aniRef}
+            animation={name}
+            caption={name.toLocaleUpperCase()}
         >
-            <LottieAnimation
-                ref={aniRef}
-                animation={name}
-                caption={name.toLocaleUpperCase()}
+            <IconButton
+                icon={isPlaying ? 'pause' : 'play'}
+                onPress={() => {
+                    if (isPlaying) {
+                        aniRef.current?.pause();
+                    } else {
+                        aniRef.current?.resume();
+                    }
+                    setIsPlaying(prev => !prev);
+                }}
+                animated
+                selected
+                style={styles.playButton}
+                size={60}
             />
-        </TouchableWithoutFeedback>
+        </LottieAnimation>
     );
 };
 
@@ -77,14 +78,14 @@ export const AniGallery = () => {
 };
 
 const styles = StyleSheet.create({
-    root: {
-        flex: 1,
-    },
     transparent: {
         backgroundColor: 'transparent',
     },
     tabBarIndicator: {
         height: 3,
         borderRadius: 10,
+    },
+    playButton: {
+        alignSelf: 'center',
     },
 });
