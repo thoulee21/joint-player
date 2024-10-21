@@ -11,7 +11,7 @@
   "scripts": {
     "start": "react-native start",
     "lint": "eslint .",
-    "postversion": "cd utils/versioning && node ./cli.js && node ./cli.js --generate-build",
+    "postversion": "cd utils/versioning && node ./cli.js --generate-build",
     "build:android": "cd android && ./gradlew clean && ./gradlew assembleRelease",
     "deploy:android": "adb install ./android/app/build/outputs/apk/release/app-release.apk",
     "create:update": "eas update --channel production --platform android --auto"
