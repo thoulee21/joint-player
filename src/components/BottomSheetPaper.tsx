@@ -38,7 +38,7 @@ export const BottomSheetPaper = ({
           ? appTheme.colors.onSurfaceDisabled
           : appTheme.colors.backdrop,
       }}
-      snapPoints={['35%', '90%']}
+      snapPoints={['60%']}
       enablePanDownToClose
       android_keyboardInputMode="adjustResize"
       enableOverDrag={false} //防止与FlatList（ScrollView）冲突
