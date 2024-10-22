@@ -56,7 +56,6 @@ export function LyricsScreen() {
             <LyricsContainer>
                 <LottieAnimation
                     animation="teapot"
-                    loop={false}
                 >
                     <Text
                         variant="displaySmall"
