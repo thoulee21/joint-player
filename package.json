@@ -33,7 +33,7 @@
     "@sentry/react-native": "^5.24.1",
     "@shopify/flash-list": "1.7.1",
     "color": "^4.2.3",
-    "expo": "~51.0.37",
+    "expo": "~51.0.38",
     "expo-blur": "~13.0.2",
     "expo-screen-orientation": "~7.0.5",
     "expo-updates": "~0.25.27",
