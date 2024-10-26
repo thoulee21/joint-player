@@ -1,5 +1,11 @@
 import LottieView from 'lottie-react-native';
-import React, { useEffect, useRef, useState, type PropsWithChildren } from 'react';
+import React, {
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+    type PropsWithChildren,
+} from 'react';
 import {
     Animated,
     Appearance,
@@ -62,6 +68,17 @@ export const AnimatedSplashScreen = ({ children }: PropsWithChildren) => {
         }
     }, [loadingProgress, opacity, isLoadEnd]);
 
+    const colorFilters = useMemo(() => [
+        { keypath: 'welcome 1', color: THEME_COLOR },
+        { keypath: 'welcome 3', color: THEME_COLOR },
+        { keypath: 'ball', color: THEME_COLOR },
+        {
+            keypath: 'welcome 2',
+            color: Appearance.getColorScheme() === 'dark'
+                ? 'white' : 'black',
+        },
+    ], []);
+
     return (
         <>
             {children}
@@ -73,16 +90,7 @@ export const AnimatedSplashScreen = ({ children }: PropsWithChildren) => {
                     <AnimatedLottieView
                         source={require('../assets/animations/welcome.json')}
                         progress={loadingProgress.current}
-                        colorFilters={[
-                            { keypath: 'welcome 1', color: THEME_COLOR },
-                            { keypath: 'welcome 3', color: THEME_COLOR },
-                            { keypath: 'ball', color: THEME_COLOR },
-                            {
-                                keypath: 'welcome 2',
-                                color: Appearance.getColorScheme() === 'dark'
-                                    ? 'white' : 'black',
-                            },
-                        ]}
+                        colorFilters={colorFilters}
                         style={styles.rootView}
                     />
                 </Animated.View>
