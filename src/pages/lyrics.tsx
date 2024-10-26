@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { StyleSheet } from 'react-native';
-import { ActivityIndicator, List, Text, useTheme } from 'react-native-paper';
+import { ActivityIndicator, List, useTheme } from 'react-native-paper';
 import { useActiveTrack, useProgress } from 'react-native-track-player';
 import useSWR from 'swr';
 import { LottieAnimation } from '../components/LottieAnimation';
@@ -56,15 +56,8 @@ export function LyricsScreen() {
             <LyricsContainer>
                 <LottieAnimation
                     animation="teapot"
-                    loop={false}
-                >
-                    <Text
-                        variant="displaySmall"
-                        style={[styles.center, styles.reason]}
-                    >
-                        No lyrics found
-                    </Text>
-                </LottieAnimation>
+                    caption="No lyrics found"
+                />
             </LyricsContainer>
         );
     }
@@ -85,8 +78,5 @@ const styles = StyleSheet.create({
     },
     center: {
         textAlign: 'center',
-    },
-    reason: {
-        fontWeight: 'bold',
     },
 });
