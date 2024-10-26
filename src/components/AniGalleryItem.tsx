@@ -1,8 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
-import { useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { List } from 'react-native-paper';
 import type { ListLRProps } from '../types/paperListItem';
-import React from 'react';
+
 export const AniGalleryItem = () => {
     const navigation = useNavigation();
 
