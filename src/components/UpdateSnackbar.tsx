@@ -31,7 +31,6 @@ export const UpdateSnackbar = () => {
                 onPress: () => {
                     //@ts-expect-error
                     navigation.push('About');
-                    setUpdateSnackbarVisible(false);
                 },
             }}
         >
