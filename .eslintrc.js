@@ -7,7 +7,7 @@ module.exports = {
   rules: {
     '@typescript-eslint/func-call-spacing': 'off',
     'prettier/prettier': 'off',
-    'react-hooks/exhaustive-deps': 0,
+    'react-hooks/exhaustive-deps': 'warn',
     'react-native/no-inline-styles': 'warn',
     'linebreak-style': 'off',
     'no-unused-vars': 'off',
