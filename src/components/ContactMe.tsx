@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react';
 import { Linking } from 'react-native';
-import { List, useTheme } from 'react-native-paper';
+import { Divider, List, useTheme } from 'react-native-paper';
 import packageData from '../../package.json';
+import { IssueReportItem } from './IssueReportItem';
 
 export const ContactMe = () => {
     const appTheme = useTheme();
@@ -39,6 +40,9 @@ export const ContactMe = () => {
                 left={GithubIcon}
                 right={OpenIcon}
             />
+
+            <IssueReportItem />
+            <Divider />
         </List.Section>
     );
 };

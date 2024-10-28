@@ -1,12 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { Appbar, Divider, List, Portal, Snackbar } from 'react-native-paper';
+import { Appbar, List, Portal, Snackbar } from 'react-native-paper';
 import { AboutDialog } from '../components/AboutDialog';
 import { AniGalleryItem } from '../components/AniGalleryItem';
 import { BlurBackground } from '../components/BlurBackground';
 import { ContactMe } from '../components/ContactMe';
-import { IssueReportItem } from '../components/IssueReportItem';
 import { ListWrapper } from '../components/ListWrapper';
 import { UpdateChecker } from '../components/UpdateChecker';
 import { VersionItem } from '../components/VersionItem';
@@ -51,8 +50,6 @@ export function AboutScreen() {
                     <UpdateChecker />
 
                     <ContactMe />
-                    <IssueReportItem />
-                    <Divider />
 
                     <AniGalleryItem />
                     <List.Item
