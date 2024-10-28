@@ -97,7 +97,11 @@ function DrawerItems({ state, navigation, descriptors }: Props) {
 
 export function DrawerItemList(props: Props) {
     return (
-        <Drawer.Section {...props} showDivider={false}>
+        <Drawer.Section
+            {...props}
+            showDivider={false}
+            style={styles.drawerList}
+        >
             <DrawerItems {...props} />
         </Drawer.Section>
     );
@@ -106,5 +110,8 @@ export function DrawerItemList(props: Props) {
 const styles = StyleSheet.create({
     drawerItem: {
         marginVertical: 2,
+    },
+    drawerList: {
+        marginTop: 10,
     },
 });

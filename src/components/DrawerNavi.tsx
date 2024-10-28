@@ -7,7 +7,6 @@ import { Icon } from 'react-native-paper';
 import { Favs, Player, Settings } from '../pages';
 import { BlurBackground } from './BlurBackground';
 import { DrawerItemList } from './DrawerItemList';
-import { Spacer } from './Spacer';
 import { UserHeader } from './UserHeader';
 
 const Drawer = createDrawerNavigator();
@@ -35,10 +34,9 @@ const ROUTES = [
 
 const drawerIcon = (
     focusedIcon: string, unfocusedIcon: string
-) =>
-    ({ color, focused, size }: {
-        color: string, focused: boolean, size: number
-    }) => (
+) => ({ color, focused, size }: {
+    color: string, focused: boolean, size: number
+}) => (
         <Icon
             size={size}
             source={focused ? focusedIcon : unfocusedIcon}
@@ -66,14 +64,12 @@ export function DrawerNavi() {
         (props: DrawerContentComponentProps) => (
             <BlurBackground>
                 <UserHeader />
-                <Spacer />
                 <DrawerItemList {...props} />
             </BlurBackground>
         ), []);
 
     return (
         <Drawer.Navigator
-            initialRouteName="Player"
             screenOptions={{
                 headerShown: false,
                 lazy: false,
