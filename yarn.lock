@@ -3419,10 +3419,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native/typescript-config@npm:0.75.4":
-  version: 0.75.4
-  resolution: "@react-native/typescript-config@npm:0.75.4"
-  checksum: 10c0/3c19e89f3eb330557082b54b224a1c4a4b0e5681b2367769dc9846bcf0b85de6b3b55a8d56ac07e8e7a3fee8ea8f05b45f2c8c92d557c77c994b6d9413e8a829
+"@react-native/typescript-config@npm:0.76.0":
+  version: 0.76.0
+  resolution: "@react-native/typescript-config@npm:0.76.0"
+  checksum: 10c0/46d39f8f881b691c3aff3423f381c08c128e030486240cf2dc01432eba9c011654bc187a53d4e16c0d1f198cc278a0857cc646a8c0bf60fadcefc7f65816966a
   languageName: node
   linkType: hard
 
@@ -9306,7 +9306,7 @@ __metadata:
     "@react-native/babel-preset": "npm:^0.75.4"
     "@react-native/eslint-config": "npm:^0.75.4"
     "@react-native/metro-config": "npm:0.75.4"
-    "@react-native/typescript-config": "npm:0.75.4"
+    "@react-native/typescript-config": "npm:0.76.0"
     "@react-navigation/drawer": "npm:^6.7.2"
     "@react-navigation/material-top-tabs": "npm:^6.6.14"
     "@react-navigation/native": "npm:^6.1.18"
