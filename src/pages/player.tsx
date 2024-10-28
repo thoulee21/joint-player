@@ -121,8 +121,10 @@ export function Player() {
           <PlayControls />
         </ScrollView>
 
-        <UpdateSnackbar />
         <BottomBar bottomSheetRef={bottomSheetRef} />
+        <Portal>
+          <UpdateSnackbar />
+        </Portal>
         <Portal>
           <TrackListSheet
             bottomSheetRef={bottomSheetRef}
