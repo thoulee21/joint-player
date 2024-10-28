@@ -62,7 +62,7 @@
     "react-native-webview": "^13.12.3",
     "react-redux": "^9.1.2",
     "swr": "^2.2.5",
-    "user-agents": "^1.1.217",
+    "user-agents": "^1.1.341",
     "uuid": "^10.0.0"
   },
   "devDependencies": {
