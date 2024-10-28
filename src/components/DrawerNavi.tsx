@@ -9,7 +9,6 @@ import { BlurBackground } from './BlurBackground';
 import { DrawerItemList } from './DrawerItemList';
 import { Spacer } from './Spacer';
 import { UserHeader } from './UserHeader';
-import { UpdateSnackbar } from './UpdateSnackbar';
 
 const Drawer = createDrawerNavigator();
 
@@ -69,7 +68,6 @@ export function DrawerNavi() {
                 <UserHeader />
                 <Spacer />
                 <DrawerItemList {...props} />
-                <UpdateSnackbar />
             </BlurBackground>
         ), []);
 

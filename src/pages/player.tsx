@@ -12,6 +12,7 @@ import { PlayControls } from '../components/PlayControls';
 import { Progress } from '../components/Progress';
 import { TrackInfo } from '../components/TrackInfo';
 import { TrackListSheet } from '../components/TrackListSheet';
+import { UpdateSnackbar } from '../components/UpdateSnackbar';
 import { useAppDispatch, useThrottle } from '../hook';
 import { setQueue } from '../redux/slices';
 import { getTracks, TrackType } from '../services/GetTracksService';
@@ -115,6 +116,7 @@ export function Player() {
           <PlayControls />
         </ScrollView>
 
+        <UpdateSnackbar />
         <BottomBar bottomSheetRef={bottomSheetRef} />
         <Portal>
           <TrackListSheet
