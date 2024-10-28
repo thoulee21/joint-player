@@ -51,9 +51,9 @@ export function AboutScreen() {
                     <UpdateChecker />
 
                     <ContactMe />
+                    <IssueReportItem />
                     <Divider />
 
-                    <IssueReportItem />
                     <AniGalleryItem />
                     <List.Item
                         title="About This App"
