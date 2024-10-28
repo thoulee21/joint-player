@@ -25,9 +25,9 @@ export function AboutScreen() {
             visible={devSnackbarVisible}
             onDismiss={() => setDevSnackbarVisible(false)}
             action={{
-                label: 'Dev',
+                label: 'Jump',
                 //@ts-expect-error
-                onPress: () => navigation.navigate('Dev'),
+                onPress: () => navigation.push('Dev'),
             }}
         >
             Developer options enabled!
