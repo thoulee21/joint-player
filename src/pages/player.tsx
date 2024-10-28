@@ -22,6 +22,7 @@ import { StorageKeys } from '../utils/storageKeys';
 export function Player() {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
+
   const appTheme = useTheme();
   const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -49,37 +50,41 @@ export function Player() {
       TrackPlayer.play();
     } else if (placeholderKeyword) {
       setKeyword(placeholderKeyword);
-      dispatch(setQueue(await getTracks(placeholderKeyword) as TrackType[]));
+      dispatch(setQueue(
+        await getTracks(placeholderKeyword) as TrackType[]
+      ));
       TrackPlayer.play();
     }
 
     setSearching(false);
   }, 3000);
 
-  const pressSearchIcon = useCallback(() => {
-    if (keyword) {
-      setKeyword('');
-    } else {
-      searchSongs();
-    }
+  const pressRightIcon = useCallback(() => {
+    // Clear keyword if it's not empty, otherwise search
+    if (keyword) { setKeyword(''); }
+    else { searchSongs(); }
 
     HapticFeedback.trigger(
       HapticFeedbackTypes.effectHeavyClick
     );
   }, [keyword, searchSongs]);
 
-  const renderSearchIcon = useCallback((props: any) => (
-    <IconButton {...props}
+  // Render clear or search icon
+  const renderRightIcon = useCallback((props: any) => (
+    <IconButton
+      {...props}
       icon={keyword ? 'close' : 'magnify'}
       animated
       loading={searching}
-      onPress={pressSearchIcon}
+      onPress={pressRightIcon}
     />
-  ), [keyword, searching, pressSearchIcon]);
+  ), [keyword, searching, pressRightIcon]);
 
   return (
     <Portal.Host>
-      <BlurBackground style={styles.searchbarContainer}>
+      <BlurBackground
+        style={{ paddingTop: StatusBar.currentHeight }}
+      >
         <Searchbar
           placeholder={placeholderKeyword || 'Search for songs'}
           placeholderTextColor={appTheme.dark
@@ -98,7 +103,7 @@ export function Player() {
               HapticFeedbackTypes.effectHeavyClick
             );
           }}
-          right={renderSearchIcon}
+          right={renderRightIcon}
           blurOnSubmit
           selectTextOnFocus
           selectionColor={
@@ -137,8 +142,5 @@ const styles = StyleSheet.create({
   searchbar: {
     margin: 10,
     backgroundColor: 'transparent',
-  },
-  searchbarContainer: {
-    paddingTop: StatusBar.currentHeight,
   },
 });
