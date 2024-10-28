@@ -1,7 +1,5 @@
 import * as Sentry from '@sentry/react-native';
-import { useUpdates } from 'expo-updates';
 import React, { useEffect } from 'react';
-import { ToastAndroid } from 'react-native';
 import TrackPlayer from 'react-native-track-player';
 import { AppContainer } from './components/AppContainer';
 import { RootStack } from './components/RootStack';
@@ -32,7 +30,6 @@ Sentry.init({
 
 function App() {
   const dispatch = useAppDispatch();
-  const { isUpdatePending } = useUpdates();
 
   useEffect(() => {
     Promise.all([
@@ -40,16 +37,9 @@ function App() {
       dispatch(initFavs()),
       dispatch(initUser()),
     ]);
-
-    // no dispatch
-
+    // no dispatch in deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    if (isUpdatePending) {
-      ToastAndroid.show('An update is pending...', ToastAndroid.SHORT);
-    }
-  }, [isUpdatePending]);
 
   return (
     <AppContainer>
