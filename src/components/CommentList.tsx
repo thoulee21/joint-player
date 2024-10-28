@@ -74,6 +74,8 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
 
         await mutate();
         setRefreshing(false);
+        // no mutate
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const loadMore = useDebounce(() => {

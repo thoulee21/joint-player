@@ -29,8 +29,8 @@ export const VersionItem = ({ showDevSnackbar }: {
             }
         }
         // no dispatch
-
-    }, [devModeEnabled, hitCount]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [devModeEnabled, hitCount, showDevSnackbar]);
 
     const renderPlatformIcon = useCallback((props: ListLRProps) => (
         <PlatformIcon {...props} />

@@ -29,7 +29,7 @@ export const ScrollToBtns = memo(({
             });
         },
         // no commentsRef
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     })), [showData]);
 
     const onStateChange = useCallback(({ open }: { open: boolean }) => {
@@ -48,6 +48,8 @@ export const ScrollToBtns = memo(({
             viewOffset: 0,
             animated: true,
         });
+        // no commentsRef
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

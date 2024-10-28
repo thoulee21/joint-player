@@ -83,6 +83,8 @@ export function AppContainer({ children }: PropsWithChildren) {
                 DeviceEventEmitter.emit('loadEnd');
             }
         });
+        // no dispatch, no updateTheme
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [track?.artwork]);
 
     useEffect(() => {

@@ -23,7 +23,7 @@ export function Favs() {
         await TrackPlayer.play();
 
         //no dispatch needed here
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [favsValue]);
 
     const openDrawer = useCallback(() => {

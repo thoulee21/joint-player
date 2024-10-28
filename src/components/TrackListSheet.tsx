@@ -31,7 +31,7 @@ export function TrackListSheet({ bottomSheetRef }: TrackListProps) {
 
     getQueue();
     // no dispatch
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTrack]);
 
   const renderTrack = useCallback(({ item, index }:

@@ -49,7 +49,7 @@ export const AniGallery = () => {
                 component={renderAniPage(key as AniKeys)}
                 options={{ tabBarShowLabel: false }}
             />
-        )), [ANIMATIONS]);
+        )), [renderAniPage]);
 
     return (
         <BlurBackground>

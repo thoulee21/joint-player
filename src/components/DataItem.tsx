@@ -60,7 +60,7 @@ export const DataItem = ({ item }: { item: DataItemType }) => {
         <Avatar.Text {...props}
             label={item.name[0].toLocaleUpperCase()}
         />
-    ), [appTheme.colors.tertiary, isArray, item.name]);
+    ), [item.name]);
 
     const renderMoreButton = useCallback((props: { size: number }) => (
         <DataMoreBtn data={item.data} props={props} />

@@ -24,9 +24,8 @@ export const DevSwitchItem = () => {
     const onPressSwitch = useCallback(() => {
         HapticFeedback.trigger(HapticFeedbackTypes.effectClick);
         dispatch(toggleDevModeValue());
-
         // no dispatch in deps
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
