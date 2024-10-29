@@ -20,7 +20,7 @@ export const Progress = () => {
         minimumValue={0}
         maximumValue={duration}
         thumbTintColor={appTheme.colors.primary}
-        minimumTrackTintColor={appTheme.colors.primary}
+        minimumTrackTintColor={appTheme.colors.secondary}
         maximumTrackTintColor={appTheme.colors.tertiary}
         onSlidingComplete={TrackPlayer.seekTo}
       />
