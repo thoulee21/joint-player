@@ -1,6 +1,6 @@
 {
   "name": "jointplayer",
-  "version": "5.5.2",
+  "version": "5.5.3",
   "private": true,
   "homepage": "https://github.com/thoulee21/joint-player",
   "displayName": "Joint Player",
@@ -80,7 +80,7 @@
     "@types/user-agents": "^1.0.4",
     "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^8.10.0",
-    "@typescript-eslint/parser": "^8.10.0",
+    "@typescript-eslint/parser": "^8.11.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "eslint": "8.53.0",
     "eslint-plugin-jest": "^28.8.3",
