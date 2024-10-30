@@ -17,18 +17,21 @@ const ROUTES = [
         component: Player,
         focusedIcon: 'music-circle',
         unfocusedIcon: 'music-circle-outline',
+        lazy: false,
     },
     {
         name: 'Favorites',
         component: Favs,
         focusedIcon: 'heart',
         unfocusedIcon: 'heart-outline',
+        lazy: false,
     },
     {
         name: 'Settings',
         component: Settings,
         focusedIcon: 'cog',
         unfocusedIcon: 'cog-outline',
+        lazy: true,
     },
 ];
 
@@ -47,7 +50,7 @@ const drawerIcon = (
 export function DrawerNavi() {
     const DrawerRoutes = useMemo(() =>
         ROUTES.map(({
-            name, component, focusedIcon, unfocusedIcon,
+            name, component, focusedIcon, unfocusedIcon, lazy,
         }) => (
             <Drawer.Screen
                 key={name}
@@ -56,6 +59,7 @@ export function DrawerNavi() {
                 options={{
                     drawerIcon:
                         drawerIcon(focusedIcon, unfocusedIcon),
+                    lazy,
                 }}
             />
         )), []);
@@ -70,10 +74,7 @@ export function DrawerNavi() {
 
     return (
         <Drawer.Navigator
-            screenOptions={{
-                headerShown: false,
-                lazy: false,
-            }}
+            screenOptions={{ headerShown: false }}
             drawerContent={renderDrawerContent}
         >
             {DrawerRoutes}
