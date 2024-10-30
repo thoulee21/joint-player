@@ -22,7 +22,7 @@ export function BlurRadiusSlider() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const vibrate = useCallback((value: number) => {
+    const onValueChange = useCallback((value: number) => {
         if (value % SLIDER_STEP === 0) {
             setShowValue(value);
         }
@@ -38,6 +38,10 @@ export function BlurRadiusSlider() {
         </Text>
     ), [showValue]);
 
+    useEffect(() => {
+        HapticFeedback.trigger('effectHeavyClick');
+    }, [showValue]);
+
     const renderSlider = useCallback((props: any) => (
         <Slider
             {...props}
@@ -46,18 +50,14 @@ export function BlurRadiusSlider() {
             minimumTrackTintColor={appTheme.colors.secondary}
             maximumTrackTintColor={appTheme.colors.tertiary}
             onSlidingComplete={updateBlurRadius}
-            onValueChange={vibrate}
+            onValueChange={onValueChange}
             minimumValue={0}
             maximumValue={100}
             lowerLimit={15}
             step={SLIDER_STEP}
             value={showValue}
         />
-    ), [appTheme, showValue, vibrate, updateBlurRadius]);
-
-    useEffect(() => {
-        HapticFeedback.trigger('effectHeavyClick');
-    }, [showValue]);
+    ), [appTheme, showValue, onValueChange, updateBlurRadius]);
 
     return (
         <List.Item
