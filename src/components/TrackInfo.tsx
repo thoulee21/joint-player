@@ -1,18 +1,30 @@
+import Clipboard from '@react-native-clipboard/clipboard';
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
-  Alert,
   Dimensions,
   ImageBackground,
+  ScrollView,
   StyleSheet,
+  ToastAndroid,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import HapticFeedback, {
   HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
-import { Surface, Text, useTheme } from 'react-native-paper';
-import { useActiveTrack, useProgress } from 'react-native-track-player';
+import {
+  Button,
+  Dialog,
+  Portal,
+  Surface,
+  Text,
+  useTheme,
+} from 'react-native-paper';
+import {
+  useActiveTrack,
+  useProgress,
+} from 'react-native-track-player';
 import useSWR from 'swr';
 import { useAppSelector } from '../hook';
 import { selectDevModeEnabled } from '../redux/slices';
@@ -26,6 +38,10 @@ export const TrackInfo = () => {
   const navigation = useNavigation();
   const appTheme = useTheme();
 
+  const [visible, setVisible] = useState(false);
+  const showDialog = useCallback(() => setVisible(true), []);
+  const hideDialog = useCallback(() => setVisible(false), []);
+
   const track = useActiveTrack();
   const progress = useProgress();
 
@@ -35,6 +51,7 @@ export const TrackInfo = () => {
   );
 
   const devModeEnabled = useAppSelector(selectDevModeEnabled);
+
   const isTrial = useMemo(() => {
     const trackDuration = Math.trunc(track?.duration || 0);
     const progressDuration = Math.trunc(progress.duration || trackDuration);
@@ -46,76 +63,124 @@ export const TrackInfo = () => {
       HapticFeedback.trigger(
         HapticFeedbackTypes.effectHeavyClick
       );
-      if (__DEV__) {
-        console.info(JSON.stringify(track, null, 2));
-      } else {
-        Alert.alert(
-          track.title || 'Details',
-          JSON.stringify(track, null, 2),
-          [{ text: 'OK' }],
-          { cancelable: true }
-        );
-      }
+      console.info(
+        JSON.stringify(
+          track, null, 2
+        )
+      );
+      showDialog();
     }
-  }, [devModeEnabled, track]);
+  }, [devModeEnabled, showDialog, track]);
+
+  const copyTrackData = useCallback(() => {
+    Clipboard.setString(
+      JSON.stringify(
+        track, null, 2
+      )
+    );
+    ToastAndroid.showWithGravity(
+      'Copied to clipboard',
+      ToastAndroid.SHORT,
+      ToastAndroid.BOTTOM
+    );
+  }, [track]);
+
+  const viewTrackPic = useCallback(() => {
+    HapticFeedback.trigger(
+      HapticFeedbackTypes.effectTick
+    );
+    if (track?.artwork !== placeholderImg) {
+      // @ts-ignore
+      navigation.push('WebView', {
+        title: track?.title || 'Artwork',
+        url: imageUri,
+      });
+    }
+  }, [imageUri, navigation, track?.artwork, track?.title]);
+
+  const goLyrics = useCallback(() => {
+    if (track?.id && data?.lrc.lyric) {
+      HapticFeedback.trigger('effectHeavyClick');
+      // @ts-ignore
+      navigation.push('Lyrics');
+    }
+  }, [data?.lrc.lyric, navigation, track?.id]);
 
   return (
-    <View style={styles.container}>
-      <Surface
-        elevation={5}
-        style={[
-          styles.imgSurface,
-          { borderRadius: appTheme.roundness * 5 },
-        ]}
-      >
-        <TouchableWithoutFeedback
+    <>
+      <View style={styles.container}>
+        <Surface
+          elevation={5}
           style={[
-            styles.artwork,
+            styles.imgSurface,
             { borderRadius: appTheme.roundness * 5 },
           ]}
-          onPress={() => {
-            if (track?.id && data?.lrc.lyric) {
-              HapticFeedback.trigger('effectHeavyClick');
-              // @ts-ignore
-              navigation.push('Lyrics');
-            }
-          }}
-          onLongPress={() => {
-            HapticFeedback.trigger(HapticFeedbackTypes.effectTick);
-            if (track?.artwork !== placeholderImg) {
-              // @ts-ignore
-              navigation.push('WebView', {
-                title: track?.title || 'Artwork',
-                url: imageUri,
-              });
-            }
-          }}
         >
-          <ImageBackground
+          <TouchableWithoutFeedback
             style={[
               styles.artwork,
-              {
-                borderRadius: appTheme.roundness * 5,
-                backgroundColor: appTheme.colors.surface,
-              },
+              { borderRadius: appTheme.roundness * 5 },
             ]}
-            imageStyle={{ borderRadius: appTheme.roundness * 5 }}
-            source={{ uri: imageUri }}
-            resizeMode="cover"
+            onPress={goLyrics}
+            onLongPress={viewTrackPic}
           >
-            <FavToggle />
-          </ImageBackground>
-        </TouchableWithoutFeedback>
-      </Surface>
+            <ImageBackground
+              style={[
+                styles.artwork, {
+                  borderRadius: appTheme.roundness * 5,
+                  backgroundColor: appTheme.colors.surface,
+                },
+              ]}
+              imageStyle={{ borderRadius: appTheme.roundness * 5 }}
+              source={{ uri: imageUri }}
+              resizeMode="cover"
+            >
+              <FavToggle />
+            </ImageBackground>
+          </TouchableWithoutFeedback>
+        </Surface>
 
-      <Text
-        style={styles.titleText}
-        onPress={printTrackData}
-      >
-        {track?.title ?? 'No Track'}{isTrial ? ' (trial)' : ''}
-      </Text>
-      <ArtistNames textStyle={styles.artistsText} />
-    </View>
+        <Text
+          style={styles.titleText}
+          onPress={printTrackData}
+        >
+          {track?.title ?? 'No Track'}{isTrial ? ' (trial)' : ''}
+        </Text>
+        <ArtistNames textStyle={styles.artistsText} />
+      </View>
+
+      <Portal>
+        <Dialog
+          visible={visible}
+          onDismiss={hideDialog}
+          style={styles.dialog}
+        >
+          <Dialog.Title>Track Detail</Dialog.Title>
+          <Dialog.ScrollArea style={styles.smallPadding}>
+            <ScrollView
+              contentContainerStyle={styles.biggerPadding}
+            >
+              <Text selectable>
+                {JSON.stringify(
+                  track, null, 2
+                )}
+              </Text>
+            </ScrollView>
+          </Dialog.ScrollArea>
+          <Dialog.Actions>
+            <Button
+              icon="content-copy"
+              onPress={copyTrackData}
+            >
+              Copy
+            </Button>
+            <Button onPress={hideDialog}>
+              Close
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+    </>
   );
 };
 
@@ -141,5 +206,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '200',
     textAlign: 'center',
+  },
+  dialog: {
+    maxHeight: 0.8 * Dimensions.get('window').height,
+  },
+  smallPadding: {
+    paddingHorizontal: 0,
+  },
+  biggerPadding: {
+    paddingHorizontal: 24,
   },
 });
