@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, Dialog, Text } from 'react-native-paper';
-import packageData from '../../package.json';
+import { author, displayName } from '../../package.json';
 
-const copyright = `Copyright©${new Date().getFullYear()} ${packageData.author.name
-    }. All Rights Reserved.`;
+const date = new Date();
+const copyright = `Copyright©${date.getFullYear()} ${author.name}.`;
 
 export const AboutDialog = ({ visible, hideDialog }: {
     visible: boolean,
@@ -12,9 +12,12 @@ export const AboutDialog = ({ visible, hideDialog }: {
     return (
         <Dialog visible={visible} onDismiss={hideDialog}>
             <Dialog.Icon icon="information-outline" size={40} />
-            <Dialog.Title>{packageData.displayName}</Dialog.Title>
+            <Dialog.Title>{displayName}</Dialog.Title>
             <Dialog.Content>
-                <Text>{copyright}</Text>
+                <Text selectable>
+                    {copyright
+                        .concat(' All Rights Reserved.')}
+                </Text>
             </Dialog.Content>
 
             <Dialog.Actions>
