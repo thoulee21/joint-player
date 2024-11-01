@@ -17,16 +17,14 @@ import {
   ToastAndroid,
   View,
 } from 'react-native';
-import HapticFeedback, {
-  HapticFeedbackTypes,
-} from 'react-native-haptic-feedback';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import ImageColors from 'react-native-image-colors';
 import { type AndroidImageColors } from 'react-native-image-colors/build/types';
 import { Button, Card, Dialog, Portal, Text, useTheme } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
 import useSWR from 'swr';
 import { useAppSelector, useDebounce } from '../hook';
-import { selectDevModeEnabled } from '../redux/slices';
+import { blurRadius, selectDevModeEnabled } from '../redux/slices';
 import { Main as MvMain } from '../types/mv';
 import { placeholderImg } from './TrackInfo';
 
@@ -35,6 +33,7 @@ export const MvCover = ({ children }: PropsWithChildren) => {
   const appTheme = useTheme();
 
   const devModeEnabled = useAppSelector(selectDevModeEnabled);
+  const blurRadiusValue = useAppSelector(blurRadius);
 
   const [visible, setVisible] = useState(false);
   const showDialog = useCallback(() => setVisible(true), []);
@@ -109,7 +108,8 @@ export const MvCover = ({ children }: PropsWithChildren) => {
         >
           <View style={styles.cover}>
             <BlurView
-              experimentalBlurMethod="dimezisBlurView"
+              tint={appTheme.dark ? 'dark' : 'light'}
+              intensity={blurRadiusValue}
             >
               {children}
             </BlurView>
