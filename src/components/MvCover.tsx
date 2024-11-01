@@ -1,112 +1,174 @@
+import Clipboard from '@react-native-clipboard/clipboard';
 import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
 import { BlurView } from 'expo-blur';
-import React, { PropsWithChildren, memo, useCallback, useEffect, useState } from 'react';
-import { Alert, Dimensions, ImageBackground, StatusBar, StyleSheet } from 'react-native';
-import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
+import React, {
+  PropsWithChildren,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
+import {
+  Dimensions,
+  ImageBackground,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  ToastAndroid,
+  View,
+} from 'react-native';
+import HapticFeedback, {
+  HapticFeedbackTypes,
+} from 'react-native-haptic-feedback';
 import ImageColors from 'react-native-image-colors';
-import { AndroidImageColors } from 'react-native-image-colors/build/types';
-import { Card, useTheme } from 'react-native-paper';
+import { type AndroidImageColors } from 'react-native-image-colors/build/types';
+import { Button, Card, Dialog, Portal, Text, useTheme } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
 import useSWR from 'swr';
 import { useAppSelector, useDebounce } from '../hook';
-import { blurRadius, selectDevModeEnabled } from '../redux/slices';
+import { selectDevModeEnabled } from '../redux/slices';
 import { Main as MvMain } from '../types/mv';
 import { placeholderImg } from './TrackInfo';
 
-export const MvCover = memo(({ children }: PropsWithChildren) => {
-    const navigation = useNavigation();
-    const appTheme = useTheme();
+export const MvCover = ({ children }: PropsWithChildren) => {
+  const navigation = useNavigation();
+  const appTheme = useTheme();
 
-    const devModeEnabled = useAppSelector(selectDevModeEnabled);
-    const blurRadiusValue = useAppSelector(blurRadius);
-    const [isMvCoverDark, setIsMvCoverDark] = useState(appTheme.dark);
+  const devModeEnabled = useAppSelector(selectDevModeEnabled);
 
-    const track = useActiveTrack();
-    const { data } = useSWR<MvMain>(
-        `http://music.163.com/api/mv/detail?id=${track?.mvid}`
+  const [visible, setVisible] = useState(false);
+  const showDialog = useCallback(() => setVisible(true), []);
+  const hideDialog = useCallback(() => setVisible(false), []);
+
+  const track = useActiveTrack();
+  const { data } = useSWR<MvMain>(
+    `http://music.163.com/api/mv/detail?id=${track?.mvid}`
+  );
+
+  const printMvData = useCallback(() => {
+    if (devModeEnabled && data) {
+      console.info(JSON.stringify(data.data, null, 2));
+      showDialog();
+    }
+  }, [data, devModeEnabled, showDialog]);
+
+  const copyMvData = useCallback(() => {
+    Clipboard.setString(
+      JSON.stringify(data?.data, null, 2)
     );
+    ToastAndroid.showWithGravity(
+      'Copied to clipboard',
+      ToastAndroid.SHORT,
+      ToastAndroid.BOTTOM
+    );
+  }, [data]);
 
-    const printMvData = useCallback(() => {
-        if (devModeEnabled && data) {
-            if (__DEV__) {
-                console.info(JSON.stringify(data.data, null, 2));
-            } else {
-                Alert.alert(
-                    'MV Info',
-                    JSON.stringify(data.data, null, 2),
-                    [{ text: 'OK' }],
-                    { cancelable: true }
-                );
-            }
-        }
-    }, [data, devModeEnabled]);
+  const handleStatusBarStyle = useDebounce(async () => {
+    const colors = await ImageColors.getColors(data?.data.cover || placeholderImg);
+    const imgColor = Color((colors as AndroidImageColors).average);
 
-    const restoreStatusBarStyle = useDebounce(() => {
-        StatusBar.setBarStyle(
-            appTheme.dark ? 'light-content' : 'dark-content'
-        );
-    });
+    StatusBar.setBarStyle(
+      imgColor.isDark() ? 'light-content' : 'dark-content'
+    );
+  });
 
-    const StatusBarStyleHandler = useDebounce(async () => {
-        const colors = await ImageColors.getColors(data?.data.cover || placeholderImg);
-        const imgColor = Color((colors as AndroidImageColors).average);
+  const restoreStatusBarStyle = useDebounce(() => {
+    StatusBar.setBarStyle(
+      appTheme.dark ? 'light-content' : 'dark-content'
+    );
+  });
 
-        setIsMvCoverDark(imgColor.isDark());
-        StatusBar.setBarStyle(
-            imgColor.isDark() ? 'light-content' : 'dark-content'
-        );
-    });
+  useEffect(() => {
+    handleStatusBarStyle();
 
-    useEffect(() => {
-        StatusBarStyleHandler();
+    return restoreStatusBarStyle;
+  }, [handleStatusBarStyle, restoreStatusBarStyle]);
 
-        return restoreStatusBarStyle;
-    }, [StatusBarStyleHandler, appTheme, data, restoreStatusBarStyle, track]);
+  const viewMvPic = useCallback(() => {
+    HapticFeedback.trigger(
+      HapticFeedbackTypes.effectTick
+    );
+    if (data?.data.cover) {
+      // @ts-ignore
+      navigation.navigate('WebView', {
+        title: data?.data.name,
+        url: data?.data.cover,
+      });
+    }
+  }, [data, navigation]);
 
-    return (
-        <Card
-            style={styles.square}
-            onPress={printMvData}
-            onLongPress={() => {
-                HapticFeedback.trigger(
-                    HapticFeedbackTypes.effectTick
-                );
-                if (data?.data.cover) {
-                    // @ts-ignore
-                    navigation.navigate('WebView', {
-                        title: data?.data.name,
-                        url: data?.data.cover,
-                    });
-                }
-            }}
+  return (
+    <>
+      <Card
+        style={styles.square}
+        onPress={printMvData}
+        onLongPress={viewMvPic}
+      >
+        <ImageBackground
+          source={{ uri: data?.data.cover || placeholderImg }}
         >
-            <ImageBackground
-                source={{ uri: data?.data.cover || placeholderImg }}
+          <View style={styles.cover}>
+            <BlurView
+              experimentalBlurMethod="dimezisBlurView"
             >
-                <BlurView
-                    style={styles.cover}
-                    tint={isMvCoverDark ? 'dark' : 'light'}
-                    intensity={blurRadiusValue / 2}
-                >
-                    <BlurView
-                        tint={appTheme.dark ? 'dark' : 'light'}
-                        intensity={blurRadiusValue}
-                    >
-                        {children}
-                    </BlurView>
-                </BlurView>
-            </ImageBackground>
-        </Card>
-    );
-});
+              {children}
+            </BlurView>
+          </View>
+        </ImageBackground>
+      </Card>
+
+      <Portal>
+        <Dialog
+          visible={visible}
+          onDismiss={hideDialog}
+          style={styles.dialog}
+        >
+          <Dialog.Title>MV Detail</Dialog.Title>
+          <Dialog.ScrollArea style={styles.smallPadding}>
+            <ScrollView
+              contentContainerStyle={styles.biggerPadding}
+            >
+              <Text selectable>
+                {data && (
+                  JSON.stringify(
+                    data.data,
+                    null,
+                    2
+                  )
+                )}
+              </Text>
+            </ScrollView>
+          </Dialog.ScrollArea>
+          <Dialog.Actions>
+            <Button
+              icon="content-copy"
+              onPress={copyMvData}
+            >
+              Copy
+            </Button>
+            <Button onPress={hideDialog}>Close</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+    </>
+  );
+};
 
 const styles = StyleSheet.create({
-    cover: {
-        height: Dimensions.get('window').height / 3,
-        justifyContent: 'flex-end',
-    },
-    square: {
-        borderRadius: 0,
-    },
+  cover: {
+    height: Dimensions.get('window').height / 3,
+    justifyContent: 'flex-end',
+  },
+  square: {
+    borderRadius: 0,
+  },
+  dialog: {
+    maxHeight: 0.8 * Dimensions.get('window').height,
+  },
+  smallPadding: {
+    paddingHorizontal: 0,
+  },
+  biggerPadding: {
+    paddingHorizontal: 24,
+  },
 });
