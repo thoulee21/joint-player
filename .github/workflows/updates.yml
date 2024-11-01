@@ -3,12 +3,10 @@ name: Update
 on:
   push:
     branches:
-      - main
+      - update
 
 jobs:
     update:
-      # Only generate updates for non-version commits
-      if: ${{ !startsWith(github.event.head_commit.message, 'Version ') }}
       runs-on: ubuntu-latest
       steps:
         - name: 🏗 Setup repo
