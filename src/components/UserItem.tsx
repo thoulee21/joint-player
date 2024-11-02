@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
 import { ToastAndroid } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
@@ -24,8 +24,7 @@ export const UserItem = ({ item }: { item: Userprofile }) => {
         ToastAndroid.show(`Logged in as ${item.nickname}`, ToastAndroid.LONG);
 
         navigation.goBack();
-        //@ts-expect-error
-        navigation.openDrawer();
+        navigation.dispatch(DrawerActions.openDrawer());
 
         // no dispatch needed here
         // eslint-disable-next-line react-hooks/exhaustive-deps
