@@ -1,5 +1,4 @@
 import BottomSheet from '@gorhom/bottom-sheet';
-import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
 import React, { useCallback } from 'react';
 import { TextStyle } from 'react-native';
@@ -22,7 +21,6 @@ export const TrackItem = ({ item, index, bottomSheetRef }: {
     index: number;
     bottomSheetRef: React.RefObject<BottomSheet>
 }) => {
-    const navigation = useNavigation();
     const dispatch = useAppDispatch();
     const appTheme = useTheme();
     const currentTrack = useActiveTrack();
@@ -41,34 +39,27 @@ export const TrackItem = ({ item, index, bottomSheetRef }: {
         bottomSheetRef.current?.close();
     }, [bottomSheetRef, index]);
 
-    const renderMvButton = useCallback((props: ListRightProps) => {
-        const goMV = () => {
-            if (!active) {
-                chooseTrack();
-            } else {
-                bottomSheetRef.current?.close();
-            }
-            //@ts-ignore
-            navigation.navigate('MvDetail');
-        };
-
-        if (item.mvid) {
-            return (
-                <IconButton {...props}
-                    icon="video-outline"
-                    selected={active}
-                    onPress={goMV}
-                />
-            );
-        }
-    }, [active, bottomSheetRef, chooseTrack, item.mvid, navigation]);
-
-    const remove = () => {
+    const remove = useCallback(() => {
         HapticFeedback.trigger(
             HapticFeedbackTypes.effectDoubleClick
         );
         dispatch(removeFromQueueAsync(index));
-    };
+        //no dispatch in dependency array
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [index]);
+
+    const renderRightBtns = useCallback((props:
+        ListRightProps
+    ) => (
+        <IconButton
+            {...props}
+            icon="close"
+            iconColor={appTheme.dark
+                ? appTheme.colors.onSurfaceDisabled
+                : appTheme.colors.backdrop}
+            onPress={remove}
+        />
+    ), [remove, appTheme]);
 
     const renderIcon = useCallback(
         ({ color, style }: ListLRProps) => (
@@ -91,12 +82,11 @@ export const TrackItem = ({ item, index, bottomSheetRef }: {
             title={item.title}
             description={`${item.artist} - ${item.album}`}
             onPress={chooseTrack}
-            onLongPress={remove}
             descriptionNumberOfLines={1}
             titleStyle={titleStyle}
             style={listStyle}
             left={renderIcon}
-            right={renderMvButton}
+            right={renderRightBtns}
         />
     );
 };
