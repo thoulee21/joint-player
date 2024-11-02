@@ -1,5 +1,5 @@
 import BottomSheet from '@gorhom/bottom-sheet';
-import { useNavigation } from '@react-navigation/native';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 import Color from 'color';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ScrollView, StatusBar, StyleSheet } from 'react-native';
@@ -97,11 +97,7 @@ export function Player() {
           onSubmitEditing={searchSongs}
           icon="menu"
           onIconPress={() => {
-            //@ts-ignore
-            navigation.openDrawer();
-            HapticFeedback.trigger(
-              HapticFeedbackTypes.effectHeavyClick
-            );
+            navigation.dispatch(DrawerActions.openDrawer());
           }}
           right={renderRightIcon}
           blurOnSubmit

@@ -1,9 +1,6 @@
-import { useNavigation } from '@react-navigation/native';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import HapticFeedback, {
-  HapticFeedbackTypes,
-} from 'react-native-haptic-feedback';
 import { Appbar, Divider, List, useTheme } from 'react-native-paper';
 import { AboutItem } from '../components/AboutItem';
 import { BlurBackground } from '../components/BlurBackground';
@@ -23,11 +20,7 @@ export function Settings() {
           icon="menu"
           isLeading
           onPress={() => {
-            //@ts-ignore
-            navigation.openDrawer();
-            HapticFeedback.trigger(
-              HapticFeedbackTypes.effectHeavyClick
-            );
+            navigation.dispatch(DrawerActions.openDrawer());
           }}
         />
         <Appbar.Content title="Settings" />

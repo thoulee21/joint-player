@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { DrawerActions, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
@@ -27,9 +27,7 @@ export function Favs() {
     }, [favsValue]);
 
     const openDrawer = useCallback(() => {
-        HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
-        // @ts-expect-error
-        navigation.openDrawer();
+        navigation.dispatch(DrawerActions.openDrawer());
     }, [navigation]);
 
     const showConfirmDialog = useCallback(() => {
