@@ -8,6 +8,16 @@
     "runtimeVersion": "1.0.0",
     "updates": {
       "url": "https://u.expo.dev/7cd6ef29-acd5-424e-a325-4e449f660a0b"
-    }
+    },
+    "plugins": [
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "joint-player",
+          "organization": "thouworks"
+        }
+      ]
+    ]
   }
 }
