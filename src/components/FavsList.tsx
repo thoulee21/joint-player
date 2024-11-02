@@ -58,7 +58,7 @@ export const FavsList = () => {
             renderItem={renderItem}
             keyExtractor={(item: TrackType) => item.id.toString()}
             ListEmptyComponent={<NoFavs />}
-            maxSwipeDistance={110}
+            maxSwipeDistance={130}
             renderQuickActions={renderQuickActions}
             ItemSeparatorComponent={<Divider />}
         />
