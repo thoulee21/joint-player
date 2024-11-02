@@ -1,4 +1,3 @@
-const { mergeConfig } = require('@react-native/metro-config');
 const { getSentryExpoConfig } = require('@sentry/react-native/metro');
 
 /**
@@ -7,6 +6,7 @@ const { getSentryExpoConfig } = require('@sentry/react-native/metro');
  *
  * @type {import('metro-config').MetroConfig}
  */
-module.exports = mergeConfig(getSentryExpoConfig(__dirname), {
+module.exports = getSentryExpoConfig(__dirname, {
     resolver: { useWatchman: true },
+    annotateReactComponents: true,
 });
