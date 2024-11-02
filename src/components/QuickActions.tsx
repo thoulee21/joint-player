@@ -1,7 +1,20 @@
-import React, { PropsWithChildren, createContext, memo, useContext, useState } from 'react';
+import React, {
+    PropsWithChildren,
+    createContext,
+    useCallback,
+    useContext,
+    useState,
+} from 'react';
 import { StyleSheet, ToastAndroid, View } from 'react-native';
-import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { IconButton, Portal, Snackbar, useTheme } from 'react-native-paper';
+import HapticFeedback, {
+    HapticFeedbackTypes,
+} from 'react-native-haptic-feedback';
+import {
+    IconButton,
+    Portal,
+    Snackbar,
+    useTheme,
+} from 'react-native-paper';
 import { useAppDispatch } from '../hook';
 import { removeFav } from '../redux/slices/favs';
 import { addToQueueAsync } from '../redux/slices/queue';
@@ -12,27 +25,39 @@ export interface QuickActionsProps {
     item: TrackType;
 }
 
-export const QuickActionsContext = createContext({} as QuickActionsProps);
+export const QuickActionsContext = createContext(
+    {} as QuickActionsProps
+);
 
 export const DeleteFavButton = () => {
     const dispatch = useAppDispatch();
     const appTheme = useTheme();
 
     const { index } = useContext(QuickActionsContext);
-    const [confirmVisible, setConfirmVisible] = useState(false);
+    const [
+        confirmVisible,
+        setConfirmVisible,
+    ] = useState(false);
 
-    const remove = () => {
+    const hideSnackbar = useCallback(() => {
+        setConfirmVisible(false);
+    }, []);
+
+    const remove = useCallback(() => {
         HapticFeedback.trigger(
             HapticFeedbackTypes.effectTick
         );
         dispatch(removeFav(index));
-    };
+        //no dispatch needed here
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [index]);
 
     return (
         <>
             <IconButton
-                icon="delete"
+                icon="delete-outline"
                 style={styles.button}
+                size={34}
                 iconColor={appTheme.colors.error}
                 onPress={() => {
                     HapticFeedback.trigger(
@@ -45,7 +70,8 @@ export const DeleteFavButton = () => {
             <Portal>
                 <Snackbar
                     visible={confirmVisible}
-                    onDismiss={() => setConfirmVisible(false)}
+                    onDismiss={hideSnackbar}
+                    onIconPress={hideSnackbar}
                     action={{
                         label: 'OK',
                         onPress: remove,
@@ -67,12 +93,16 @@ export const AddToQueueButton = () => {
         <IconButton
             icon="playlist-plus"
             style={styles.button}
+            size={34}
             onPress={async () => {
                 HapticFeedback.trigger(
                     HapticFeedbackTypes.effectHeavyClick
                 );
+                const { payload } = await dispatch(
+                    addToQueueAsync(item)
+                );
 
-                if ((await dispatch(addToQueueAsync(item))).payload) {
+                if (payload) {
                     ToastAndroid.showWithGravity(
                         'Added to queue',
                         ToastAndroid.SHORT,
@@ -84,18 +114,20 @@ export const AddToQueueButton = () => {
     );
 };
 
-export const QuickActionsWrapper = memo(({
+export const QuickActionsWrapper = ({
     children, index, item,
 }: PropsWithChildren<QuickActionsProps>
 ) => {
     return (
         <View style={styles.container}>
-            <QuickActionsContext.Provider value={{ index, item }}>
+            <QuickActionsContext.Provider
+                value={{ index, item }}
+            >
                 {children}
             </QuickActionsContext.Provider>
         </View>
     );
-});
+};
 
 const styles = StyleSheet.create({
     container: {
