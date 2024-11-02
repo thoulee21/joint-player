@@ -22,6 +22,7 @@ import useSWR from 'swr';
 import { useAppSelector } from '../hook';
 import { selectUser } from '../redux/slices';
 import { Main } from '../types/userDetail';
+import { placeholderImg } from './TrackInfo';
 
 export const UserHeader = memo(({ userId }: { userId?: number }) => {
     const navigation = useNavigation();
@@ -88,7 +89,10 @@ export const UserHeader = memo(({ userId }: { userId?: number }) => {
             <ImageBackground
                 style={styles.header}
                 imageStyle={styles.img}
-                source={{ uri: data?.profile.backgroundUrl }}
+                source={{
+                    uri: data?.profile.backgroundUrl ||
+                        placeholderImg,
+                }}
             >
                 <TouchableRipple
                     borderless
@@ -105,7 +109,14 @@ export const UserHeader = memo(({ userId }: { userId?: number }) => {
                 <Text variant="labelLarge">
                     {data?.profile.nickname}
                 </Text>
-                <Text variant="labelMedium">
+                <Text
+                    variant="labelMedium"
+                    style={[styles.signature, {
+                        color: appTheme.dark
+                            ? appTheme.colors.onSurfaceDisabled
+                            : appTheme.colors.backdrop,
+                    }]}
+                >
                     {data?.profile.signature}
                 </Text>
             </ImageBackground>
@@ -132,5 +143,8 @@ const styles = StyleSheet.create({
     loading: {
         flex: 1,
         alignSelf: 'center',
+    },
+    signature: {
+        marginTop: 10,
     },
 });
