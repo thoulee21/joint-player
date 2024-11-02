@@ -176,6 +176,20 @@ export function CommentList({ commentThreadId }: { commentThreadId: string }) {
                 onScroll={e =>
                     setAtTop(e.nativeEvent.contentOffset.y < 5)
                 }
+                onScrollToIndexFailed={info => {
+                    const wait = new Promise(resolve =>
+                        setTimeout(resolve, 700)
+                    );
+                    wait.then(() => {
+                        commentsRef.current?.scrollToLocation({
+                            sectionIndex: info.index,
+                            itemIndex: 0,
+                            viewPosition: 0,
+                            viewOffset: 0,
+                            animated: true,
+                        });
+                    });
+                }}
             />
 
             <ScrollToBtns
