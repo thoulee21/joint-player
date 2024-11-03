@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export class Storage {
+export default class Storage {
   //直接传js值，不必转换字符串
   static set(key: string, value: any) {
     return AsyncStorage.setItem(key, JSON.stringify(value));
@@ -29,5 +29,3 @@ export class Storage {
     return AsyncStorage.clear();
   }
 }
-
-export default Storage;
