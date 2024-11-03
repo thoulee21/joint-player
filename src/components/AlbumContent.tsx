@@ -42,7 +42,11 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
     const renderItem = useCallback(({ index, item }: {
         index: number, item: Song
     }) => (
-        <SongItem index={index} item={songToTrack(item)} />
+        <SongItem
+            index={index}
+            item={songToTrack(item)}
+            showAlbum
+        />
     ), []);
 
     const renderQuickActions = useCallback(({ index, item }: {

@@ -27,11 +27,11 @@ const IndexOfSong = ({ style: leftStyle, index }: {
     );
 };
 
-export const SongItem = ({ item, index, style, inAlbum }: {
+export const SongItem = ({ item, index, style, showAlbum }: {
     item: TrackType,
     index: number,
     style?: ViewStyle,
-    inAlbum?: boolean
+    showAlbum?: boolean
 }) => {
     const dispatch = useAppDispatch();
     const appTheme = useTheme();
@@ -55,13 +55,13 @@ export const SongItem = ({ item, index, style, inAlbum }: {
             .map(ar => ar.name)
             .join(', ');
 
-        if (!inAlbum) {
+        if (showAlbum) {
             return artists
                 .concat(' - ', item.album);
         } else {
             return artists;
         }
-    }, [inAlbum, item.album, item.artists]);
+    }, [item.album, item.artists, showAlbum]);
 
     return (
         <List.Item
