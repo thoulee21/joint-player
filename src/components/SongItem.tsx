@@ -88,7 +88,7 @@ export const SongItem = ({
             onLongPress={onLongPress}
             style={[style, {
                 backgroundColor: isActive
-                    ? appTheme.colors.secondaryContainer
+                    ? appTheme.colors.primaryContainer
                     : appTheme.colors.surface,
             }]}
         />
