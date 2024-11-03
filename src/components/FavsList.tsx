@@ -1,24 +1,16 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { Dimensions, StyleSheet } from 'react-native';
+import DraggableFlatList, {
+    ScaleDecorator,
+    type RenderItemParams,
+} from 'react-native-draggable-flatlist';
 import { Divider, Text, useTheme } from 'react-native-paper';
-//@ts-expect-error
-import SwipeableFlatList from 'react-native-swipeable-list';
-import { useAppSelector } from '../hook';
-import { favs } from '../redux/slices';
+import { useAppDispatch, useAppSelector } from '../hook';
+import { favs, setFavs } from '../redux/slices';
 import { TrackType } from '../services/GetTracksService';
+import { DraggableItem } from './DraggableSongItem';
 import { LottieAnimation } from './LottieAnimation';
-import {
-    AddToQueueButton,
-    DeleteFavButton,
-    QuickActionsProps,
-    QuickActionsWrapper,
-} from './QuickActions';
 import { SongItem } from './SongItem';
-
-interface ListItemProps {
-    item: TrackType,
-    index: number
-}
 
 const NoFavs = () => (
     <LottieAnimation
@@ -34,33 +26,61 @@ const NoFavs = () => (
         </Text>
     </LottieAnimation>
 );
+
 export const FavsList = () => {
+    const dispatch = useAppDispatch();
     const appTheme = useTheme();
+
     const favorites = useAppSelector(favs);
+    const itemRefs = useRef(new Map());
 
-    const renderItem = useCallback((props: ListItemProps) => (
-        <SongItem {...props} showAlbum />
-    ), []);
+    const renderItem = useCallback(({
+        getIndex, drag, item, isActive,
+    }: RenderItemParams<TrackType>
+    ) => {
+        const index = getIndex() || 0;
+        return (
+            <ScaleDecorator>
+                <DraggableItem
+                    item={item}
+                    itemRefs={itemRefs}
+                >
+                    <SongItem
+                        item={item}
+                        index={index}
+                        onLongPress={drag}
+                        showAlbum
+                        isActive={isActive}
+                    />
+                </DraggableItem>
+            </ScaleDecorator>
+        );
+    }, []);
 
-    const renderQuickActions = useCallback((props: QuickActionsProps) => (
-        <QuickActionsWrapper {...props}>
-            <DeleteFavButton />
-            <AddToQueueButton />
-        </QuickActionsWrapper>
-    ), []);
+    const keyExtractor = useCallback(
+        (item: TrackType) => item.id.toString(), []
+    );
+
+    const updateFavs = useCallback((
+        { data: draggedData }: { data: TrackType[] }
+    ) => {
+        dispatch(setFavs(draggedData));
+        //no need to add dispatch to dependencies
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
-        <SwipeableFlatList
-            style={[styles.favs, {
-                backgroundColor: appTheme.colors.surface,
-            }]}
+        <DraggableFlatList
             data={favorites}
             renderItem={renderItem}
-            keyExtractor={(item: TrackType) => item.id.toString()}
+            keyExtractor={keyExtractor}
+            containerStyle={[styles.favs, {
+                backgroundColor: appTheme.colors.surface,
+            }]}
             ListEmptyComponent={<NoFavs />}
-            maxSwipeDistance={130}
-            renderQuickActions={renderQuickActions}
-            ItemSeparatorComponent={<Divider />}
+            ItemSeparatorComponent={Divider}
+            onDragEnd={updateFavs}
+            activationDistance={20}
         />
     );
 };
