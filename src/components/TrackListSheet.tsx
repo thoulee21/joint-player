@@ -1,7 +1,7 @@
-import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetFlashList } from '@gorhom/bottom-sheet';
 import React, { useCallback, useEffect } from 'react';
-import { Dimensions, StyleSheet } from 'react-native';
-import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
+import { DeviceEventEmitter, Dimensions, StyleSheet } from 'react-native';
+import TrackPlayer from 'react-native-track-player';
 import { useAppDispatch, useAppSelector } from '../hook';
 import { queue, setQueue } from '../redux/slices';
 import { TrackType } from '../services/GetTracksService';
@@ -9,30 +9,31 @@ import { BottomSheetPaper } from './BottomSheetPaper';
 import { LottieAnimation } from './LottieAnimation';
 import { TrackItem } from './TrackItem';
 
-interface TrackListProps {
+export function TrackListSheet({ bottomSheetRef }: {
   bottomSheetRef: React.RefObject<BottomSheet>;
-  navigation: any;
-}
-
-export function TrackListSheet({ bottomSheetRef }: TrackListProps) {
+}) {
   const dispatch = useAppDispatch();
-  const currentTrack = useActiveTrack();
   const tracks = useAppSelector(queue);
 
-  useEffect(() => {
-    async function getQueue() {
-      try {
-        const playerQueue = await TrackPlayer.getQueue();
-        if (playerQueue) {
-          dispatch(setQueue(playerQueue as TrackType[]));
-        }
-      } catch { } // ignore player errors
-    }
-
-    getQueue();
-    // no dispatch
+  const initQueue = useCallback(async () => {
+    try {
+      const playerQueue = await TrackPlayer.getQueue();
+      if (playerQueue) {
+        dispatch(
+          setQueue(playerQueue as TrackType[])
+        );
+      }
+    } catch { } // ignore player errors
+    //no dispatch dependency
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentTrack]);
+  }, []);
+
+  useEffect(() => {
+    DeviceEventEmitter.addListener(
+      'loadEnd',
+      initQueue
+    );
+  }, [initQueue]);
 
   const renderTrack = useCallback(({ item, index }:
     { item: TrackType; index: number }
@@ -44,7 +45,9 @@ export function TrackListSheet({ bottomSheetRef }: TrackListProps) {
         bottomSheetRef={bottomSheetRef}
       />
     );
-  }, [bottomSheetRef]);
+    //no bottomSheetRef dependency
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const renderEmptyTrack = useCallback(() => {
     return (
@@ -56,15 +59,19 @@ export function TrackListSheet({ bottomSheetRef }: TrackListProps) {
     );
   }, []);
 
+  const keyExtractor = useCallback(
+    (item: TrackType) => item.id.toString(), []
+  );
+
   return (
     <BottomSheetPaper ref={bottomSheetRef}>
-      <BottomSheetFlatList
-        style={styles.root}
+      <BottomSheetFlashList
         showsVerticalScrollIndicator={false}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={keyExtractor}
         data={tracks}
         ListEmptyComponent={renderEmptyTrack}
         renderItem={renderTrack}
+        estimatedItemSize={96}
       />
     </BottomSheetPaper>
   );
