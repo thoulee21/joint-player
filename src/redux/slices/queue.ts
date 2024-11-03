@@ -10,8 +10,7 @@ const initialState = {
 export const setQueueAsync = createAsyncThunk(
     'queue/setQueueAsync',
     async (tracks: TrackType[], { dispatch }) => {
-        await TrackPlayer.reset();
-        await TrackPlayer.add(tracks);
+        await TrackPlayer.setQueue(tracks);
         dispatch(setQueue(tracks));
     }
 );
@@ -50,8 +49,7 @@ export const clearQueueAsync = createAsyncThunk(
 export const clearAddOneAsync = createAsyncThunk(
     'queue/clearAddOneAsync',
     async (track: TrackType, { dispatch }) => {
-        await TrackPlayer.reset();
-        await TrackPlayer.add(track);
+        TrackPlayer.setQueue([track]);
         dispatch(clearAddOne(track));
     }
 );
