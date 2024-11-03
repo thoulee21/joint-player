@@ -5,8 +5,17 @@ import { Button, Dialog, Portal, Text } from 'react-native-paper';
 export const AlbumDescription = ({ description }: { description?: string }) => {
   const [dialogVisible, setDialogVisible] = useState(false);
 
-  const showDialog = useCallback(() => setDialogVisible(true), []);
-  const hideDialog = useCallback(() => setDialogVisible(false), []);
+  const showDialog = useCallback(() => {
+    if (description) {
+      if (description.length > 100) {
+        setDialogVisible(true);
+      }
+    }
+  }, [description]);
+
+  const hideDialog = useCallback(() => {
+    setDialogVisible(false);
+  }, []);
 
   if (!description) { return null; }
 
@@ -16,7 +25,7 @@ export const AlbumDescription = ({ description }: { description?: string }) => {
         <TouchableOpacity onPress={showDialog}>
           <Text
             style={styles.scrollView}
-            numberOfLines={7}
+            numberOfLines={2}
           >
             {description}
           </Text>
@@ -48,7 +57,7 @@ export const AlbumDescription = ({ description }: { description?: string }) => {
 
 const styles = StyleSheet.create({
   root: {
-    height: 150,
+    height: 50,
   },
   scrollView: {
     marginHorizontal: '6%',
