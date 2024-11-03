@@ -86,7 +86,7 @@ export const TrackItem = ({
     return (
         <List.Item
             title={item.title}
-            description={`${item.artist} - ${item.album}`}
+            description={item.artist}
             onPress={chooseTrack}
             onLongPress={!active ? drag : undefined}
             descriptionNumberOfLines={1}
