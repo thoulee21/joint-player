@@ -25,10 +25,7 @@ export const FavToggle = () => {
       );
 
       if (isFav) {
-        const favIndex = favorites.findIndex(
-          (fav) => fav.id === track.id
-        );
-        dispatch(removeFav(favIndex));
+        dispatch(removeFav(track as TrackType));
       } else {
         dispatch(addFav(track as TrackType));
       }
