@@ -29,7 +29,9 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
         setRefreshing(true);
         await mutate();
         setRefreshing(false);
-    }, [mutate]);
+        // no mutate
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const loadMore = useDebounce(() => {
         if (hasMore) {
