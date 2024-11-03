@@ -1,7 +1,6 @@
 import React, { useCallback, useRef } from 'react';
 import { Dimensions, StyleSheet } from 'react-native';
 import DraggableFlatList, {
-    ScaleDecorator,
     type RenderItemParams,
 } from 'react-native-draggable-flatlist';
 import { Divider, Text, useTheme } from 'react-native-paper';
@@ -37,25 +36,17 @@ export const FavsList = () => {
     const renderItem = useCallback(({
         getIndex, drag, item, isActive,
     }: RenderItemParams<TrackType>
-    ) => {
-        const index = getIndex() || 0;
-        return (
-            <ScaleDecorator>
-                <DraggableItem
-                    item={item}
-                    itemRefs={itemRefs}
-                >
-                    <SongItem
-                        item={item}
-                        index={index}
-                        onLongPress={drag}
-                        showAlbum
-                        isActive={isActive}
-                    />
-                </DraggableItem>
-            </ScaleDecorator>
-        );
-    }, []);
+    ) => (
+        <DraggableItem item={item} itemRefs={itemRefs}>
+            <SongItem
+                item={item}
+                index={getIndex() || 0}
+                onLongPress={drag}
+                showAlbum
+                isActive={isActive}
+            />
+        </DraggableItem>
+    ), []);
 
     const keyExtractor = useCallback(
         (item: TrackType) => item.id.toString(), []

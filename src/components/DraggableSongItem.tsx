@@ -3,6 +3,7 @@ import React, {
     type MutableRefObject,
     type PropsWithChildren,
 } from 'react';
+import { ScaleDecorator } from 'react-native-draggable-flatlist';
 import SwipeableItem, {
     type OpenDirection,
     type SwipeableItemImperativeRef,
@@ -55,18 +56,20 @@ export const DraggableItem = ({
     }, [item.id, itemRefs]);
 
     return (
-        <SwipeableItem
-            key={item.id}
-            item={item}
-            ref={ref}
-            onChange={onChange}
-            overSwipe={50}
-            renderUnderlayRight={renderUnderlayRight}
-            renderUnderlayLeft={renderUnderlayLeft}
-            snapPointsLeft={[100]}
-            snapPointsRight={[100]}
-        >
-            {children}
-        </SwipeableItem>
+        <ScaleDecorator>
+            <SwipeableItem
+                key={item.id}
+                item={item}
+                ref={ref}
+                onChange={onChange}
+                overSwipe={50}
+                renderUnderlayRight={renderUnderlayRight}
+                renderUnderlayLeft={renderUnderlayLeft}
+                snapPointsLeft={[100]}
+                snapPointsRight={[100]}
+            >
+                {children}
+            </SwipeableItem>
+        </ScaleDecorator>
     );
 };
