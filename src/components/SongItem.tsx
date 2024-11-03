@@ -34,6 +34,7 @@ export const SongItem = ({
     showAlbum,
     showIndex,
     onLongPress,
+    isActive,
 }: {
     item: TrackType,
     index: number,
@@ -41,6 +42,7 @@ export const SongItem = ({
     showAlbum?: boolean,
     showIndex?: boolean,
     onLongPress?: () => void,
+    isActive?: boolean,
 }) => {
     const dispatch = useAppDispatch();
     const appTheme = useTheme();
@@ -85,9 +87,10 @@ export const SongItem = ({
             onPress={play}
             onLongPress={onLongPress}
             style={[style, {
-                backgroundColor: appTheme.colors.surface,
+                backgroundColor: isActive
+                    ? appTheme.colors.secondaryContainer
+                    : appTheme.colors.surface,
             }]}
         />
     );
 };
-
