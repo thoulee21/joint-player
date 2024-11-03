@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { useUpdates } from 'expo-updates';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Snackbar } from 'react-native-paper';
 
 export const UpdateSnackbar = () => {
@@ -12,19 +12,24 @@ export const UpdateSnackbar = () => {
         setUpdateSnackbarVisible,
     ] = useState(false);
 
+    const showSnackbar = useCallback(() =>
+        setUpdateSnackbarVisible(true), []
+    );
+
+    const hideSnackbar = useCallback(() =>
+        setUpdateSnackbarVisible(false), []
+    );
+
     useEffect(() => {
-        if (isUpdatePending) {
-            setUpdateSnackbarVisible(true);
-        }
-    }, [isUpdatePending]);
+        if (isUpdatePending) { showSnackbar(); }
+    }, [isUpdatePending, showSnackbar]);
 
     return (
         <Snackbar
             visible={updateSnackbarVisible}
             icon="progress-download"
-            onDismiss={() => {
-                setUpdateSnackbarVisible(false);
-            }}
+            onDismiss={hideSnackbar}
+            onIconPress={hideSnackbar}
             action={{
                 icon: 'arrow-right',
                 label: 'Update',

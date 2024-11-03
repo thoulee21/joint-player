@@ -19,10 +19,14 @@ export function AboutScreen() {
     const showDialog = () => setDialogVisible(true);
     const hideDialog = () => setDialogVisible(false);
 
+    const showDevSnackbar = () => setDevSnackbarVisible(true);
+    const hideDevSnackbar = () => setDevSnackbarVisible(false);
+
     const GoDevSnackbar = useCallback(() => (
         <Snackbar
             visible={devSnackbarVisible}
-            onDismiss={() => setDevSnackbarVisible(false)}
+            onDismiss={hideDevSnackbar}
+            onIconPress={hideDevSnackbar}
             action={{
                 label: 'Jump',
                 //@ts-expect-error
@@ -43,9 +47,7 @@ export function AboutScreen() {
 
                 <ListWrapper>
                     <VersionItem
-                        showDevSnackbar={() => {
-                            setDevSnackbarVisible(true);
-                        }}
+                        showDevSnackbar={showDevSnackbar}
                     />
                     <UpdateChecker />
 
