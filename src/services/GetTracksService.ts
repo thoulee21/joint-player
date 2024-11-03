@@ -55,8 +55,7 @@ export const getTracks = async (keyword?: string): Promise<Track[]> => {
       );
     }
 
-    await TrackPlayer.reset();
-    await TrackPlayer.add(fetchedData);
+    await TrackPlayer.setQueue(fetchedData);
     return fetchedData;
   }
   catch (e) {
