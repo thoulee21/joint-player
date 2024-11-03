@@ -25,8 +25,10 @@ export const favsSlice = createSlice({
                 AsyncStorage.setItem(StorageKeys.Favs, JSON.stringify(state.value));
             }
         },
-        removeFav: (state, action: PayloadAction<number>) => {
-            state.value.splice(action.payload, 1);
+        removeFav: (state, action: PayloadAction<TrackType>) => {
+            state.value = state.value.filter(
+                (fav) => fav.id !== action.payload.id
+            );
             AsyncStorage.setItem(StorageKeys.Favs, JSON.stringify(state.value));
         },
         clearFavs: (state) => {
