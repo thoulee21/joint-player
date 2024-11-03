@@ -1,15 +1,16 @@
 import React, { PropsWithChildren } from 'react';
 import { StyleSheet } from 'react-native';
-import { useTheme } from 'react-native-paper';
 import { useAnimatedStyle } from 'react-native-reanimated';
 import { useSwipeableItemParams } from 'react-native-swipeable-item';
 import { TrackType } from '../services/GetTracksService';
 import { QuickActionsWrapper } from './QuickActions';
 
-export const SwipeableUnderlay = ({ children, mode }:
-    PropsWithChildren<{ mode: 'left' | 'right' }>
-) => {
-    const appTheme = useTheme();
+export const SwipeableUnderlay = ({
+    children, mode, backgroundColor,
+}: PropsWithChildren<{
+    mode: 'left' | 'right';
+    backgroundColor: string;
+}>) => {
     const {
         percentOpen,
         item,
@@ -25,16 +26,15 @@ export const SwipeableUnderlay = ({ children, mode }:
         ? styles.underlayRight
         : styles.underlayLeft;
 
-    const style = [styles.row, {
-        backgroundColor: mode === 'right'
-            ? appTheme.colors.tertiaryContainer
-            : appTheme.colors.errorContainer,
-    }];
-
     return (
         <QuickActionsWrapper
             item={item}
-            style={[style, underlayStyle, animStyle]}
+            style={[
+                styles.row,
+                underlayStyle,
+                animStyle,
+                { backgroundColor },
+            ]}
         >
             {children}
         </QuickActionsWrapper>

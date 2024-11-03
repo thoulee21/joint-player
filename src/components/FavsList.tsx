@@ -36,16 +36,22 @@ export const FavsList = () => {
     const itemRefs = useRef(new Map());
 
     const renderUnderlayRight = useCallback(() => (
-        <SwipeableUnderlay mode="right">
+        <SwipeableUnderlay
+            mode="right"
+            backgroundColor={appTheme.colors.tertiaryContainer}
+        >
             <AddToQueueButton />
         </SwipeableUnderlay>
-    ), []);
+    ), [appTheme.colors.tertiaryContainer]);
 
     const renderUnderlayLeft = useCallback(() => (
-        <SwipeableUnderlay mode="left">
+        <SwipeableUnderlay
+            mode="left"
+            backgroundColor={appTheme.colors.errorContainer}
+        >
             <DeleteFavButton />
         </SwipeableUnderlay>
-    ), []);
+    ), [appTheme.colors.errorContainer]);
 
     const renderItem = useCallback(({
         getIndex, drag, item, isActive,
