@@ -20,9 +20,12 @@ export const store = configureStore({
         favs: favsSlice.reducer,
         user: userSlice.reducer,
     },
-    enhancers: (getDefaultEnhancers) => {
-        return getDefaultEnhancers().concat(sentryReduxEnhancer);
-    },
+    enhancers: (getDefaultEnhancers) => (
+        getDefaultEnhancers().concat(sentryReduxEnhancer)
+    ),
+    middleware: (getDefaultMiddleware) => (
+        getDefaultMiddleware({ serializableCheck: false })
+    ),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
