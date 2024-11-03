@@ -41,6 +41,8 @@ export const BottomSheetPaper = forwardRef<
     <BottomSheet
       ref={ref}
       index={-1}
+      enableDynamicSizing={false}
+      snapPoints={['100%']}
       handleIndicatorStyle={{
         backgroundColor: appTheme.dark
           ? appTheme.colors.onSurfaceDisabled
