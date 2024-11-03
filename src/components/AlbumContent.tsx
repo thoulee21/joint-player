@@ -1,19 +1,22 @@
-import React, { useCallback, useMemo, useState } from 'react';
-import { Dimensions, RefreshControl, StyleSheet } from 'react-native';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { RefreshControl, StyleSheet } from 'react-native';
+import DraggableFlatList, { type RenderItemParams } from 'react-native-draggable-flatlist';
 import { ActivityIndicator, Divider, Text, useTheme } from 'react-native-paper';
-//@ts-expect-error
-import SwipeableFlatList from 'react-native-swipeable-list';
 import useSWRInfinite from 'swr/infinite';
 import { useDebounce } from '../hook';
 import { HotAlbum } from '../types/albumArtist';
 import { Main, Song } from '../types/albumDetail';
 import { songToTrack } from '../utils';
+import { DraggableItem } from './DraggableSongItem';
 import { LottieAnimation } from './LottieAnimation';
-import { AddToQueueButton, QuickActionsWrapper } from './QuickActions';
+import { AddToQueueButton } from './QuickActions';
 import { SongItem } from './SongItem';
+import { SwipeableUnderlay } from './SwipeableUnderlay';
 
 export function AlbumContent({ album }: { album: HotAlbum }) {
     const appTheme = useTheme();
+    const itemRefs = useRef(new Map<string, Song>());
+
     const [refreshing, setRefreshing] = useState(false);
 
     const { data, error, setSize, mutate } = useSWRInfinite<Main>((index) =>
@@ -21,7 +24,9 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
     );
 
     const hasMore = useMemo(() =>
-        data && data[0].album.size !== data.flatMap((d) => d.album.songs).length,
+        data && data[0].album.size !== data.flatMap(
+            (d) => d.album.songs
+        ).length,
         [data]
     );
 
@@ -39,26 +44,35 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
         }
     });
 
-    const renderItem = useCallback(({ index, item }: {
-        index: number, item: Song
-    }) => (
-        <SongItem
-            index={index}
-            item={songToTrack(item)}
-            showIndex
-        />
-    ), []);
-
-    const renderQuickActions = useCallback(({ index, item }: {
-        index: number, item: Song
-    }) => (
-        <QuickActionsWrapper
-            index={index}
-            item={songToTrack(item)}
+    const renderUnderlayLeft = useCallback(() => (
+        <SwipeableUnderlay
+            mode="left"
+            backgroundColor={appTheme.colors.tertiaryContainer}
         >
             <AddToQueueButton />
-        </QuickActionsWrapper>
-    ), []);
+        </SwipeableUnderlay>
+    ), [appTheme.colors.tertiaryContainer]);
+
+    const renderItem = useCallback(({ getIndex, item }:
+        RenderItemParams<Song>
+    ) => {
+        const songItem = songToTrack(item);
+        const index = getIndex() || 0;
+
+        return (
+            <DraggableItem
+                item={songItem}
+                itemRefs={itemRefs}
+                renderUnderlayLeft={renderUnderlayLeft}
+            >
+                <SongItem
+                    index={index}
+                    item={songItem}
+                    showIndex
+                />
+            </DraggableItem>
+        );
+    }, [renderUnderlayLeft]);
 
     if (error) {
         return (
@@ -77,11 +91,11 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
     }
 
     return (
-        <SwipeableFlatList
-            data={data?.flatMap((d) => d.album.songs)}
+        <DraggableFlatList
+            data={data?.flatMap((d) => d.album.songs) || []}
             keyExtractor={(item: Song) => item.id.toString()}
             initialNumToRender={10}
-            style={[styles.tracks, {
+            containerStyle={[styles.container, {
                 backgroundColor: appTheme.colors.surface,
             }]}
             renderItem={renderItem}
@@ -101,12 +115,11 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
                     progressBackgroundColor={appTheme.colors.surface}
                 />
             }
-            maxSwipeDistance={50}
-            renderQuickActions={renderQuickActions}
-            ItemSeparatorComponent={<Divider />}
+            ItemSeparatorComponent={Divider}
             ListEmptyComponent={
                 <ActivityIndicator size="large" style={styles.loading} />
             }
+            activationDistance={20}
         />
     );
 }
@@ -118,8 +131,8 @@ const styles = StyleSheet.create({
     moreLoading: {
         marginVertical: '2%',
     },
-    tracks: {
-        height: Dimensions.get('window').height * 0.7,
+    container: {
+        flex: 1,
     },
     error: {
         textAlign: 'center',
