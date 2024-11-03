@@ -22,7 +22,6 @@ import { StorageKeys } from '../utils/storageKeys';
 export function Player() {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
-
   const appTheme = useTheme();
   const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -96,6 +95,7 @@ export function Player() {
           value={keyword}
           onSubmitEditing={searchSongs}
           icon="menu"
+          iconColor={appTheme.colors.onSurface}
           onIconPress={() => {
             navigation.dispatch(DrawerActions.openDrawer());
           }}
