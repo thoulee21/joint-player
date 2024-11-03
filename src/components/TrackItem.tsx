@@ -40,32 +40,36 @@ export const TrackItem = ({
     };
 
     const chooseTrack = useCallback(async () => {
-        await TrackPlayer.skip(index);
-        await TrackPlayer.play();
-        bottomSheetRef.current?.close();
-    }, [bottomSheetRef, index]);
+        if (!active) {
+            await TrackPlayer.skip(index);
+            await TrackPlayer.play();
+            bottomSheetRef.current?.close();
+        }
+        //no bottomSheetRef in dependency array
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [active, index]);
 
     const remove = useCallback(() => {
         HapticFeedback.trigger(
             HapticFeedbackTypes.effectDoubleClick
         );
+
         dispatch(removeFromQueueAsync(index));
         //no dispatch in dependency array
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [index]);
 
-    const renderRemoveBtn = useCallback((
-        props: ListRightProps
-    ) => (
-        <IconButton
-            {...props}
-            icon="close"
-            iconColor={appTheme.dark
-                ? appTheme.colors.onSurfaceDisabled
-                : appTheme.colors.backdrop}
-            onPress={remove}
-        />
-    ), [remove, appTheme]);
+    const renderRemoveBtn = useCallback(
+        (props: ListRightProps) => (
+            active || <IconButton
+                {...props}
+                icon="close"
+                iconColor={appTheme.dark
+                    ? appTheme.colors.onSurfaceDisabled
+                    : appTheme.colors.backdrop}
+                onPress={remove}
+            />
+        ), [appTheme, remove, active]);
 
     const renderIcon = useCallback(
         ({ color, style }: ListLRProps) => (
