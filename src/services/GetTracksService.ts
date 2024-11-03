@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Sentry from '@sentry/react-native';
 import { ToastAndroid } from 'react-native';
 import TrackPlayer, { Track } from 'react-native-track-player';
@@ -7,6 +6,7 @@ import type { Track as TrackData } from '../types/playlist';
 import { Artist } from '../types/songDetail';
 import { fetchSearchResults } from '../utils/fetchSearchResults';
 import { fetchTrackDetails } from '../utils/fetchTrackDetails';
+import { Storage } from '../utils/storage';
 import { StorageKeys } from '../utils/storageKeys';
 
 export interface TrackType {
@@ -27,12 +27,12 @@ export const getTracks = async (keyword?: string): Promise<Track[]> => {
     let songs: TrackData[] = [];
 
     if (!keyword) {
-      const storedFavs = await AsyncStorage.getItem(StorageKeys.Favs);
+      const storedFavs = await Storage.get(StorageKeys.Favs);
       if (!storedFavs) {
-        const storedKeyword = await AsyncStorage.getItem(StorageKeys.Keyword);
+        const storedKeyword: string | null = await Storage.get(StorageKeys.Keyword);
         keyword = storedKeyword ? storedKeyword : 'One Republic';
       } else {
-        const favs = JSON.parse(storedFavs) as TrackType[];
+        const favs = storedFavs as TrackType[];
         await TrackPlayer.add(favs);
         return favs;
       }
