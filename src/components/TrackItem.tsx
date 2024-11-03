@@ -20,7 +20,7 @@ export const TrackItem = ({
     item,
     index,
     bottomSheetRef,
-    onLongPress: drag,
+    onLongPress,
 }: {
     item: TrackType;
     index: number;
@@ -88,7 +88,7 @@ export const TrackItem = ({
             title={item.title}
             description={item.artist}
             onPress={chooseTrack}
-            onLongPress={!active ? drag : undefined}
+            onLongPress={onLongPress}
             descriptionNumberOfLines={1}
             titleStyle={titleStyle}
             style={listStyle}
