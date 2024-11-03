@@ -2,7 +2,7 @@ import { DrawerActions, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { Appbar, Portal } from 'react-native-paper';
+import { Appbar, Portal, useTheme } from 'react-native-paper';
 import TrackPlayer from 'react-native-track-player';
 import { BlurBackground } from '../components/BlurBackground';
 import { ConfirmClearFavsDialog } from '../components/ConfirmClearFavsDialog';
@@ -14,6 +14,7 @@ import { favs, setQueueAsync } from '../redux/slices';
 export function Favs() {
     const dispatch = useAppDispatch();
     const navigation = useNavigation();
+    const appTheme = useTheme();
 
     const favsValue = useAppSelector(favs);
     const [dialogVisible, setDialogVisible] = useState(false);
@@ -38,7 +39,11 @@ export function Favs() {
     return (
         <BlurBackground>
             <Appbar.Header style={styles.appbar}>
-                <Appbar.Action icon="menu" onPress={openDrawer} />
+                <Appbar.Action
+                    icon="menu"
+                    onPress={openDrawer}
+                    color={appTheme.colors.onSurface}
+                />
                 <Appbar.Content title="Favorites" />
 
                 <Appbar.Action
