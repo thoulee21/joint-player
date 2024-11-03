@@ -27,11 +27,20 @@ const IndexOfSong = ({ style: leftStyle, index }: {
     );
 };
 
-export const SongItem = ({ item, index, style, showAlbum }: {
+export const SongItem = ({
+    item,
+    index,
+    style,
+    showAlbum,
+    showIndex,
+    onLongPress,
+}: {
     item: TrackType,
     index: number,
     style?: ViewStyle,
-    showAlbum?: boolean
+    showAlbum?: boolean,
+    showIndex?: boolean,
+    onLongPress?: () => void,
 }) => {
     const dispatch = useAppDispatch();
     const appTheme = useTheme();
@@ -46,9 +55,13 @@ export const SongItem = ({ item, index, style, showAlbum }: {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [item]);
 
-    const renderIndex = useCallback((props: ListLRProps) => (
-        <IndexOfSong {...props} index={index} />
-    ), [index]);
+    const renderIndex = useCallback((props: ListLRProps) => {
+        if (showIndex) {
+            return (
+                <IndexOfSong {...props} index={index} />
+            );
+        }
+    }, [index, showIndex]);
 
     const description = useMemo(() => {
         const artists = item.artists
@@ -70,7 +83,7 @@ export const SongItem = ({ item, index, style, showAlbum }: {
             description={description}
             descriptionNumberOfLines={1}
             onPress={play}
-            rippleColor="transparent"
+            onLongPress={onLongPress}
             style={[style, {
                 backgroundColor: appTheme.colors.surface,
             }]}
