@@ -1,13 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Appbar, Divider, List, Portal, Snackbar, useTheme } from 'react-native-paper';
-import RNRestart from 'react-native-restart';
+import { Appbar, Divider, List, useTheme } from 'react-native-paper';
 import { BlurBackground } from '../components/BlurBackground';
 import { ClearAllDataItem } from '../components/ClearAllDataItem';
 import { DevSwitchItem } from '../components/DevSwitchItem';
-import { ExportDataItem } from '../components/ExportDataItem';
-import { ImportDataItem } from '../components/ImportDataItem';
 import { ListWrapper } from '../components/ListWrapper';
 import { RestartItem } from '../components/RestartItem';
 import { ViewAppDataItem } from '../components/ViewAppDataItem';
@@ -15,8 +12,6 @@ import { ViewAppDataItem } from '../components/ViewAppDataItem';
 export function DevScreen() {
     const navigation = useNavigation();
     const appTheme = useTheme();
-
-    const [restartBarVisible, setRestartBarVisible] = useState(false);
 
     return (
         <BlurBackground>
@@ -31,33 +26,17 @@ export function DevScreen() {
 
                 <List.Section
                     title="Data Management"
-                    titleStyle={{ color: appTheme.colors.secondary }}
+                    titleStyle={{
+                        color: appTheme.colors.secondary,
+                    }}
                 >
                     <ViewAppDataItem />
-                    <ExportDataItem />
-                    <ImportDataItem
-                        setRestartBarVisible={setRestartBarVisible}
-                    />
                     <ClearAllDataItem />
                     <Divider />
                 </List.Section>
 
                 <RestartItem />
             </ListWrapper>
-
-            <Portal>
-                <Snackbar
-                    visible={restartBarVisible}
-                    onDismiss={() => setRestartBarVisible(false)}
-                    onIconPress={() => setRestartBarVisible(false)}
-                    action={{
-                        label: 'Restart',
-                        onPress: () => RNRestart.Restart(),
-                    }}
-                >
-                    Data imported successfully! Restart the app to apply changes.
-                </Snackbar>
-            </Portal>
         </BlurBackground>
     );
 }
