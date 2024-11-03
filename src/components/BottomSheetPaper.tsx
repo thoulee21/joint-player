@@ -1,7 +1,5 @@
 import BottomSheet, {
-  BottomSheetBackdrop,
   BottomSheetView,
-  type BottomSheetBackdropProps,
   type BottomSheetBackgroundProps,
 } from '@gorhom/bottom-sheet';
 import React, {
@@ -30,13 +28,6 @@ export const BottomSheetPaper = forwardRef<
     </View>
   ), []);
 
-  const renderBackDrop = useCallback(
-    (props: BottomSheetBackdropProps) => (
-      <BottomSheetBackdrop {...props}
-        enableTouchThrough
-      />
-    ), []);
-
   return (
     <BottomSheet
       ref={ref}
@@ -54,7 +45,6 @@ export const BottomSheetPaper = forwardRef<
       android_keyboardInputMode="adjustResize"
       enableOverDrag={false} //防止与FlatList（ScrollView）冲突
       backgroundComponent={renderBackground}
-      backdropComponent={renderBackDrop}
     >
       <BottomSheetView style={styles.root}>
         {children}
