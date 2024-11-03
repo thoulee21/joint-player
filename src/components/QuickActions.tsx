@@ -8,20 +8,20 @@ import {
     LayoutAnimation,
     StyleSheet,
     ToastAndroid,
-    View,
-    type ViewStyle,
 } from 'react-native';
 import HapticFeedback, {
     HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
 import { IconButton, useTheme } from 'react-native-paper';
+import Animated, {
+    type AnimatedStyle,
+} from 'react-native-reanimated';
 import { useAppDispatch } from '../hook';
 import { removeFav } from '../redux/slices/favs';
 import { addToQueueAsync } from '../redux/slices/queue';
 import { TrackType } from '../services/GetTracksService';
 
 export interface QuickActionsProps {
-    index: number;
     item: TrackType;
 }
 
@@ -36,16 +36,20 @@ export const DeleteFavButton = () => {
     const dispatch = useAppDispatch();
     const appTheme = useTheme();
 
-    const { index, item } = useQuickActions();
+    const { item } = useQuickActions();
 
     const remove = useCallback(() => {
-        HapticFeedback.trigger(HapticFeedbackTypes.effectTick);
-        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+        HapticFeedback.trigger(
+            HapticFeedbackTypes.effectTick
+        );
+        LayoutAnimation.configureNext(
+            LayoutAnimation.Presets.spring
+        );
 
         dispatch(removeFav(item));
         //no dispatch needed here
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [index]);
+    }, [item]);
 
     return (
         <IconButton
@@ -63,7 +67,9 @@ export const AddToQueueButton = () => {
     const { item } = useQuickActions();
 
     const addToQueue = useCallback(async () => {
-        HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
+        HapticFeedback.trigger(
+            HapticFeedbackTypes.effectHeavyClick
+        );
 
         const { payload } = await dispatch(
             addToQueueAsync(item)
@@ -91,17 +97,16 @@ export const AddToQueueButton = () => {
 };
 
 export const QuickActionsWrapper = ({
-    children, index, item, style,
-}: PropsWithChildren<QuickActionsProps> & { style?: ViewStyle }
-) => {
+    children, item, style,
+}: PropsWithChildren<QuickActionsProps> & {
+    style?: AnimatedStyle<any>
+}) => {
     return (
-        <View style={[styles.container, style]}>
-            <QuickActionsContext.Provider
-                value={{ index, item }}
-            >
+        <Animated.View style={[styles.container, style]}>
+            <QuickActionsContext.Provider value={{ item }}>
                 {children}
             </QuickActionsContext.Provider>
-        </View>
+        </Animated.View>
     );
 };
 
