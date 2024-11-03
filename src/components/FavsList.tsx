@@ -39,7 +39,7 @@ export const FavsList = () => {
     const favorites = useAppSelector(favs);
 
     const renderItem = useCallback((props: ListItemProps) => (
-        <SongItem {...props} />
+        <SongItem {...props} showAlbum />
     ), []);
 
     const renderQuickActions = useCallback((props: QuickActionsProps) => (

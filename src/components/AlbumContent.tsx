@@ -45,7 +45,6 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
         <SongItem
             index={index}
             item={songToTrack(item)}
-            showAlbum
         />
     ), []);
 
