@@ -16,10 +16,16 @@ export interface ListRightProps {
     style?: Style;
 }
 
-export const TrackItem = ({ item, index, bottomSheetRef }: {
+export const TrackItem = ({
+    item,
+    index,
+    bottomSheetRef,
+    onLongPress: drag,
+}: {
     item: TrackType;
     index: number;
-    bottomSheetRef: React.RefObject<BottomSheet>
+    bottomSheetRef: React.RefObject<BottomSheet>,
+    onLongPress?: () => void;
 }) => {
     const dispatch = useAppDispatch();
     const appTheme = useTheme();
@@ -82,6 +88,7 @@ export const TrackItem = ({ item, index, bottomSheetRef }: {
             title={item.title}
             description={`${item.artist} - ${item.album}`}
             onPress={chooseTrack}
+            onLongPress={!active ? drag : undefined}
             descriptionNumberOfLines={1}
             titleStyle={titleStyle}
             style={listStyle}
