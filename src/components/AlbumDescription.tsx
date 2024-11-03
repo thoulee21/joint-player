@@ -1,40 +1,65 @@
-import React, { useState } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
-import HapticFeedback, {
-    HapticFeedbackTypes,
-} from 'react-native-haptic-feedback';
-import { Text } from 'react-native-paper';
+import React, { useCallback, useState } from 'react';
+import { Dimensions, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Button, Dialog, Portal, Text } from 'react-native-paper';
 
 export const AlbumDescription = ({ description }: { description?: string }) => {
-    const [showFullDesc, setShowFullDesc] = useState(false);
+  const [dialogVisible, setDialogVisible] = useState(false);
 
-    if (!description) {
-        return null;
-    }
+  const showDialog = useCallback(() => setDialogVisible(true), []);
+  const hideDialog = useCallback(() => setDialogVisible(false), []);
 
-    return (
-        <ScrollView
-            fadingEdgeLength={100}
-            showsVerticalScrollIndicator={showFullDesc}
+  if (!description) { return null; }
+
+  return (
+    <>
+      <View style={styles.root}>
+        <TouchableOpacity onPress={showDialog}>
+          <Text
+            style={styles.scrollView}
+            numberOfLines={7}
+          >
+            {description}
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      <Portal>
+        <Dialog
+          visible={dialogVisible}
+          onDismiss={hideDialog}
+          style={styles.dialog}
         >
-            <Text
-                style={styles.description}
-                numberOfLines={showFullDesc ? undefined : 5}
-                onPress={() => {
-                    HapticFeedback.trigger(
-                        HapticFeedbackTypes.effectHeavyClick
-                    );
-                    setShowFullDesc(!showFullDesc);
-                }}
+          <Dialog.Title>Album Description</Dialog.Title>
+          <Dialog.ScrollArea style={styles.smallPadding}>
+            <ScrollView
+              contentContainerStyle={styles.biggerPadding}
             >
-                {description}
-            </Text>
-        </ScrollView >
-    );
+              <Text selectable>{description}</Text>
+            </ScrollView>
+          </Dialog.ScrollArea>
+          <Dialog.Actions>
+            <Button onPress={hideDialog}>Close</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+    </>
+  );
 };
 
 const styles = StyleSheet.create({
-    description: {
-        marginHorizontal: '6%',
-    },
+  root: {
+    height: 150,
+  },
+  scrollView: {
+    marginHorizontal: '6%',
+  },
+  dialog: {
+    maxHeight: 0.8 * Dimensions.get('window').height,
+  },
+  smallPadding: {
+    paddingHorizontal: 0,
+  },
+  biggerPadding: {
+    paddingHorizontal: 24,
+  },
 });
