@@ -9743,7 +9743,6 @@ __metadata:
     react-native-safe-area-context: "npm:^4.14.0"
     react-native-screens: "npm:^3.35.0"
     react-native-swipeable-item: "npm:^2.0.9"
-    react-native-swipeable-list: "npm:^0.1.2"
     react-native-tab-view: "npm:4.0.0-rc.11"
     react-native-track-player: "npm:^4.1.1"
     react-native-vector-icons: "npm:^10.2.0"
@@ -12264,16 +12263,6 @@ __metadata:
     react-native-gesture-handler: ">=2.0.0"
     react-native-reanimated: ">=2.8.0"
   checksum: 10c0/012fd83b25000c6dd4213262c3f58a685baa5a717c8690a4540a58d9ae59340343e83f7ef7368f26139d64b7fdaaa883bdb0bb118941cedf6ef9be11cf25619f
-  languageName: node
-  linkType: hard
-
-"react-native-swipeable-list@npm:^0.1.2":
-  version: 0.1.2
-  resolution: "react-native-swipeable-list@npm:0.1.2"
-  peerDependencies:
-    react: ">=16.11.0"
-    react-native: ">=0.61.4"
-  checksum: 10c0/82312e96bb7b2c9ea3ed53fd350aeb1c86fc47092971324af6a489ae355b31e92b5562a05afd36293f37b0ed9e68dcfa043d106118f21438ecbe03926da88e9e
   languageName: node
   linkType: hard
 
