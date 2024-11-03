@@ -54,8 +54,8 @@ export const TrackItem = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [index]);
 
-    const renderRightBtns = useCallback((props:
-        ListRightProps
+    const renderRemoveBtn = useCallback((
+        props: ListRightProps
     ) => (
         <IconButton
             {...props}
@@ -93,7 +93,7 @@ export const TrackItem = ({
             titleStyle={titleStyle}
             style={listStyle}
             left={renderIcon}
-            right={renderRightBtns}
+            right={renderRemoveBtn}
         />
     );
 };
