@@ -38,9 +38,9 @@ export function AlbumDetail() {
             />
             {!error ? <TracksHeader
                 onPress={playAll}
-                length={
-                    data?.flatMap((d) => d.album.songs).length || 0
-                }
+                length={data?.flatMap(
+                    (d) => d.album.songs
+                ).length || 0}
             /> : null}
             <AlbumContent album={album} />
         </BlurBackground>
