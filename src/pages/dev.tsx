@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Appbar, Divider, List, useTheme } from 'react-native-paper';
+import { AniGalleryItem } from '../components/AniGalleryItem';
 import { BlurBackground } from '../components/BlurBackground';
 import { ClearAllDataItem } from '../components/ClearAllDataItem';
 import { DevSwitchItem } from '../components/DevSwitchItem';
@@ -35,6 +36,7 @@ export function DevScreen() {
                     <Divider />
                 </List.Section>
 
+                <AniGalleryItem />
                 <RestartItem />
             </ListWrapper>
         </BlurBackground>

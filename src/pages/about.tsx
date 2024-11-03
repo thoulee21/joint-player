@@ -3,7 +3,6 @@ import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Appbar, List, Portal, Snackbar } from 'react-native-paper';
 import { AboutDialog } from '../components/AboutDialog';
-import { AniGalleryItem } from '../components/AniGalleryItem';
 import { BlurBackground } from '../components/BlurBackground';
 import { ContactMe } from '../components/ContactMe';
 import { ListWrapper } from '../components/ListWrapper';
@@ -52,8 +51,6 @@ export function AboutScreen() {
                     <UpdateChecker />
 
                     <ContactMe />
-
-                    <AniGalleryItem />
                     <List.Item
                         title="About This App"
                         onPress={showDialog}
