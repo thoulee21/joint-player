@@ -1,7 +1,7 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../store';
+import { Storage } from '../../utils/storage';
 import { StorageKeys } from '../../utils/storageKeys';
+import { RootState } from '../store';
 
 export interface UserType {
     username: string;
@@ -20,11 +20,7 @@ export const userSlice = createSlice({
         setUser: (state, action: PayloadAction<UserType>) => {
             state.username = action.payload.username;
             state.id = action.payload.id;
-
-            AsyncStorage.setItem(
-                StorageKeys.User,
-                JSON.stringify(action.payload)
-            );
+            Storage.set(StorageKeys.User, action.payload);
         },
     },
     extraReducers: (builder) => {
@@ -38,8 +34,8 @@ export const userSlice = createSlice({
 export const initUser = createAsyncThunk(
     `${StorageKeys.User}/initUser`,
     async () => {
-        const user = await AsyncStorage.getItem(StorageKeys.User);
-        return user ? JSON.parse(user) : initialState;
+        const user = await Storage.get(StorageKeys.User);
+        return user ?? initialState;
     }
 );
 

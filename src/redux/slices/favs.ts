@@ -1,8 +1,8 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TrackType } from '../../services/GetTracksService';
-import { RootState } from '../store';
+import { Storage } from '../../utils/storage';
 import { StorageKeys } from '../../utils/storageKeys';
+import { RootState } from '../store';
 
 const initialState = {
     value: [] as TrackType[],
@@ -14,7 +14,7 @@ export const favsSlice = createSlice({
     reducers: {
         setFavs: (state, action: PayloadAction<TrackType[]>) => {
             state.value = action.payload;
-            AsyncStorage.setItem(StorageKeys.Favs, JSON.stringify(action.payload));
+            Storage.set(StorageKeys.Favs, action.payload);
         },
         addFav: (state, action: PayloadAction<TrackType>) => {
             const existIndex = state.value.findIndex(
@@ -22,18 +22,18 @@ export const favsSlice = createSlice({
             );
             if (existIndex === -1) {
                 state.value.push(action.payload);
-                AsyncStorage.setItem(StorageKeys.Favs, JSON.stringify(state.value));
+                Storage.set(StorageKeys.Favs, state.value);
             }
         },
         removeFav: (state, action: PayloadAction<TrackType>) => {
             state.value = state.value.filter(
                 (fav) => fav.id !== action.payload.id
             );
-            AsyncStorage.setItem(StorageKeys.Favs, JSON.stringify(state.value));
+            Storage.set(StorageKeys.Favs, state.value);
         },
         clearFavs: (state) => {
             state.value = [];
-            AsyncStorage.removeItem(StorageKeys.Favs);
+            Storage.set(StorageKeys.Favs, [] as TrackType[]);
         },
     },
     extraReducers: (builder) => {
@@ -46,8 +46,8 @@ export const favsSlice = createSlice({
 export const initFavs = createAsyncThunk(
     `${StorageKeys.Favs}/initFavs`,
     async () => {
-        const favs = await AsyncStorage.getItem(StorageKeys.Favs);
-        return favs ? JSON.parse(favs) : initialState.value;
+        const favs = await Storage.get(StorageKeys.Favs);
+        return favs ?? initialState.value;
     }
 );
 
