@@ -9,29 +9,19 @@ import SwipeableItem, {
     type SwipeableItemImperativeRef,
 } from 'react-native-swipeable-item';
 import { TrackType } from '../services/GetTracksService';
-import { AddToQueueButton, DeleteFavButton } from './QuickActions';
-import { SwipeableUnderlay } from './SwipeableUnderlay';
 
 export const DraggableItem = ({
     item,
     itemRefs,
     children,
+    renderUnderlayLeft,
+    renderUnderlayRight,
 }: PropsWithChildren<{
     item: TrackType,
     itemRefs: MutableRefObject<Map<any, any>>;
+    renderUnderlayLeft?: () => JSX.Element;
+    renderUnderlayRight?: () => JSX.Element;
 }>) => {
-    const renderUnderlayRight = useCallback(() => (
-        <SwipeableUnderlay mode="right">
-            <AddToQueueButton />
-        </SwipeableUnderlay>
-    ), []);
-
-    const renderUnderlayLeft = useCallback(() => (
-        <SwipeableUnderlay mode="left">
-            <DeleteFavButton />
-        </SwipeableUnderlay>
-    ), []);
-
     const onChange = useCallback(({ openDirection }: {
         openDirection: OpenDirection
     }) => {
@@ -65,8 +55,8 @@ export const DraggableItem = ({
                 overSwipe={50}
                 renderUnderlayRight={renderUnderlayRight}
                 renderUnderlayLeft={renderUnderlayLeft}
-                snapPointsLeft={[100]}
-                snapPointsRight={[100]}
+                snapPointsLeft={renderUnderlayLeft && [100]}
+                snapPointsRight={renderUnderlayRight && [100]}
             >
                 {children}
             </SwipeableItem>

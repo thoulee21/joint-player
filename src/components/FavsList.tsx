@@ -9,7 +9,9 @@ import { favs, setFavs } from '../redux/slices';
 import { TrackType } from '../services/GetTracksService';
 import { DraggableItem } from './DraggableSongItem';
 import { LottieAnimation } from './LottieAnimation';
+import { AddToQueueButton, DeleteFavButton } from './QuickActions';
 import { SongItem } from './SongItem';
+import { SwipeableUnderlay } from './SwipeableUnderlay';
 
 const NoFavs = () => (
     <LottieAnimation
@@ -33,11 +35,28 @@ export const FavsList = () => {
     const favorites = useAppSelector(favs);
     const itemRefs = useRef(new Map());
 
+    const renderUnderlayRight = useCallback(() => (
+        <SwipeableUnderlay mode="right">
+            <AddToQueueButton />
+        </SwipeableUnderlay>
+    ), []);
+
+    const renderUnderlayLeft = useCallback(() => (
+        <SwipeableUnderlay mode="left">
+            <DeleteFavButton />
+        </SwipeableUnderlay>
+    ), []);
+
     const renderItem = useCallback(({
         getIndex, drag, item, isActive,
     }: RenderItemParams<TrackType>
     ) => (
-        <DraggableItem item={item} itemRefs={itemRefs}>
+        <DraggableItem
+            item={item}
+            itemRefs={itemRefs}
+            renderUnderlayLeft={renderUnderlayLeft}
+            renderUnderlayRight={renderUnderlayRight}
+        >
             <SongItem
                 item={item}
                 index={getIndex() || 0}
@@ -46,7 +65,7 @@ export const FavsList = () => {
                 isActive={isActive}
             />
         </DraggableItem>
-    ), []);
+    ), [renderUnderlayLeft, renderUnderlayRight]);
 
     const keyExtractor = useCallback(
         (item: TrackType) => item.id.toString(), []
