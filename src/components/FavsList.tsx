@@ -3,6 +3,9 @@ import { Dimensions, StyleSheet } from 'react-native';
 import DraggableFlatList, {
     type RenderItemParams,
 } from 'react-native-draggable-flatlist';
+import HapticFeedback, {
+    HapticFeedbackTypes,
+} from 'react-native-haptic-feedback';
 import { Divider, Text, useTheme } from 'react-native-paper';
 import { useAppDispatch, useAppSelector } from '../hook';
 import { favs, setFavs } from '../redux/slices';
@@ -56,22 +59,33 @@ export const FavsList = () => {
     const renderItem = useCallback(({
         getIndex, drag, item, isActive,
     }: RenderItemParams<TrackType>
-    ) => (
-        <DraggableItem
-            item={item}
-            itemRefs={itemRefs}
-            renderUnderlayLeft={renderUnderlayLeft}
-            renderUnderlayRight={renderUnderlayRight}
-        >
-            <SongItem
+    ) => {
+        const index = getIndex() || 0;
+
+        const onLongPress = () => {
+            HapticFeedback.trigger(
+                HapticFeedbackTypes.effectTick
+            );
+            drag();
+        };
+
+        return (
+            <DraggableItem
                 item={item}
-                index={getIndex() || 0}
-                onLongPress={drag}
-                showAlbum
-                isActive={isActive}
-            />
-        </DraggableItem>
-    ), [renderUnderlayLeft, renderUnderlayRight]);
+                itemRefs={itemRefs}
+                renderUnderlayLeft={renderUnderlayLeft}
+                renderUnderlayRight={renderUnderlayRight}
+            >
+                <SongItem
+                    item={item}
+                    index={index}
+                    onLongPress={onLongPress}
+                    showAlbum
+                    isActive={isActive}
+                />
+            </DraggableItem>
+        );
+    }, [renderUnderlayLeft, renderUnderlayRight]);
 
     const keyExtractor = useCallback(
         (item: TrackType) => item.id.toString(), []
