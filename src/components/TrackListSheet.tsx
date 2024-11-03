@@ -57,7 +57,7 @@ export function TrackListSheet({ bottomSheetRef }: TrackListProps) {
   }, []);
 
   return (
-    <BottomSheetPaper bottomSheetRef={bottomSheetRef}>
+    <BottomSheetPaper ref={bottomSheetRef}>
       <BottomSheetFlatList
         style={styles.root}
         showsVerticalScrollIndicator={false}
