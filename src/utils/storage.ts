@@ -29,5 +29,3 @@ export class Storage {
     return AsyncStorage.clear();
   }
 }
-
-export default Storage;
