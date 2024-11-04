@@ -19,6 +19,10 @@ export function DevScreen() {
         <List.Icon icon="test-tube" {...props} />
     ), []);
 
+    const renderRightIcon = useCallback((props: ListLRProps) => (
+        <List.Icon {...props} icon="chevron-right" />
+    ), []);
+
     return (
         <BlurBackground>
             <Appbar.Header mode="large" style={styles.header}>
@@ -42,8 +46,10 @@ export function DevScreen() {
                 </List.Section>
 
                 <List.Item
+                    title="Experimental Test"
+                    description="This screen is for testing purposes"
                     left={renderTestIcon}
-                    title="Test"
+                    right={renderRightIcon}
                     onPress={() => {
                         navigation.navigate('Test' as never);
                     }}
