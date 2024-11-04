@@ -6,7 +6,7 @@ export const ViewAppDataItem = () => {
     const navigation = useNavigation();
 
     const renderDataBaseIcon = useCallback((props: any) => (
-        <List.Icon {...props} icon="database-outline" />
+        <List.Icon {...props} icon="database-cog-outline" />
     ), []);
 
     const renderChevronRightIcon = useCallback((props: any) => (
@@ -16,6 +16,7 @@ export const ViewAppDataItem = () => {
     return (
         <List.Item
             title="View App Data"
+            description="View the data that related to the app"
             left={renderDataBaseIcon}
             right={renderChevronRightIcon}
             onPress={() => {
