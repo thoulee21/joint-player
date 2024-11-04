@@ -124,7 +124,6 @@ export function Player() {
         <Portal>
           <TrackListSheet
             bottomSheetRef={bottomSheetRef}
-            navigation={navigation}
           />
         </Portal>
       </BlurBackground>
