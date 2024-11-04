@@ -25,7 +25,7 @@ export const AlbumHeaderCard = ({ album }: { album: HotAlbum }) => {
 
     const renderCommentBtn = useCallback((props: ListLRProps) => (
         <IconButton {...props}
-            icon="comment-text-outline"
+            icon="comment-text-multiple-outline"
             onPress={goComments}
         />
     ), [goComments]);
