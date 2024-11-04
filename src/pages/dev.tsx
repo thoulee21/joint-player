@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
-import { Appbar, Divider, List, useTheme } from 'react-native-paper';
+import { Appbar, Divider, List } from 'react-native-paper';
 import { AniGalleryItem } from '../components/AniGalleryItem';
 import { BlurBackground } from '../components/BlurBackground';
 import { ClearAllDataItem } from '../components/ClearAllDataItem';
@@ -13,7 +13,6 @@ import type { ListLRProps } from '../types/paperListItem';
 
 export function DevScreen() {
     const navigation = useNavigation();
-    const appTheme = useTheme();
 
     const renderTestIcon = useCallback((props: ListLRProps) => (
         <List.Icon icon="test-tube" {...props} />
@@ -34,16 +33,8 @@ export function DevScreen() {
                 <DevSwitchItem />
                 <Divider />
 
-                <List.Section
-                    title="Data Management"
-                    titleStyle={{
-                        color: appTheme.colors.secondary,
-                    }}
-                >
-                    <ViewAppDataItem />
-                    <ClearAllDataItem />
-                </List.Section>
-
+                <ViewAppDataItem />
+                <AniGalleryItem />
                 <List.Item
                     title="Experimental Test"
                     description="This screen is for testing purposes"
@@ -53,8 +44,9 @@ export function DevScreen() {
                         navigation.navigate('Test' as never);
                     }}
                 />
-                <AniGalleryItem />
+
                 <RestartItem />
+                <ClearAllDataItem />
             </ListWrapper>
         </BlurBackground>
     );
