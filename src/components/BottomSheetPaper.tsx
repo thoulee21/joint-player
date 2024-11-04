@@ -56,5 +56,7 @@ export const BottomSheetPaper = forwardRef<
 const styles = StyleSheet.create({
   root: {
     flex: 1,
+    flexGrow: 1,
+    flexDirection: 'column',
   },
 });
