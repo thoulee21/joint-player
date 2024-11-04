@@ -44,9 +44,9 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
         }
     });
 
-    const renderUnderlayRight = useCallback(() => (
+    const renderUnderlayLeft = useCallback(() => (
         <SwipeableUnderlay
-            mode="right"
+            mode="left"
             backgroundColor={appTheme.colors.surfaceVariant}
         >
             <AddToQueueButton />
@@ -63,7 +63,7 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
             <DraggableItem
                 item={songItem}
                 itemRefs={itemRefs}
-                renderUnderlayRight={renderUnderlayRight}
+                renderUnderlayLeft={renderUnderlayLeft}
             >
                 <SongItem
                     index={index}
@@ -72,7 +72,7 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
                 />
             </DraggableItem>
         );
-    }, [renderUnderlayRight]);
+    }, [renderUnderlayLeft]);
 
     if (error) {
         return (
