@@ -1,9 +1,10 @@
+import Color from 'color';
 import React, { useCallback, useMemo } from 'react';
 import { ViewStyle } from 'react-native';
 import HapticFeedback, {
   HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
-import { List, useTheme } from 'react-native-paper';
+import { IconButton, List, useTheme } from 'react-native-paper';
 import TrackPlayer from 'react-native-track-player';
 import { useAppDispatch } from '../hook';
 import { clearAddOneAsync } from '../redux/slices';
@@ -17,7 +18,7 @@ export const SongItem = ({
   style,
   showAlbum,
   showIndex,
-  onLongPress,
+  drag,
   isActive,
 }: {
   item: TrackType,
@@ -25,7 +26,7 @@ export const SongItem = ({
   style?: ViewStyle,
   showAlbum?: boolean,
   showIndex?: boolean,
-  onLongPress?: () => void,
+  drag?: () => void,
   isActive?: boolean,
 }) => {
   const dispatch = useAppDispatch();
@@ -34,7 +35,8 @@ export const SongItem = ({
   const songStyle = useMemo(() => ([
     style, {
       backgroundColor: isActive
-        ? appTheme.colors.primaryContainer
+        ? Color(appTheme.colors.secondaryContainer)
+          .fade(0.1).string()
         : appTheme.colors.surface,
     }]
   ), [style, isActive, appTheme]);
@@ -49,9 +51,11 @@ export const SongItem = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
 
-  const renderIndex = useCallback((props: ListLRProps) => (
-    showIndex && <IndexOfSong {...props} index={index} />
-  ), [index, showIndex]);
+  const renderIndex = useCallback((
+    props: ListLRProps
+  ) => (
+    <IndexOfSong {...props} index={index} />
+  ), [index]);
 
   const description = useMemo(() => {
     const artists = item.artists
@@ -65,14 +69,33 @@ export const SongItem = ({
     }
   }, [item.album, item.artists, showAlbum]);
 
+  const renderMusicIcon = useCallback(
+    ({ color, style: listStyle }: ListLRProps) => (
+      <List.Icon
+        style={listStyle}
+        color={isActive ? appTheme.colors.primary : color}
+        icon={isActive ? 'music-circle' : 'music-circle-outline'}
+      />
+    ), [appTheme.colors.primary, isActive]);
+
+  const renderDragIndicator = useCallback(
+    (props: ListLRProps) => (
+      drag && <IconButton
+        {...props}
+        icon="drag"
+        size={24}
+        onLongPress={drag}
+      />
+    ), [drag]);
+
   return (
     <List.Item
-      left={renderIndex}
       title={item.title}
+      left={showIndex ? renderIndex : renderMusicIcon}
+      right={renderDragIndicator}
       description={description}
       descriptionNumberOfLines={1}
       onPress={play}
-      onLongPress={onLongPress}
       style={songStyle}
     />
   );

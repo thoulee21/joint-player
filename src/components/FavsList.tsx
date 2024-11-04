@@ -41,20 +41,20 @@ export const FavsList = () => {
     const renderUnderlayRight = useCallback(() => (
         <SwipeableUnderlay
             mode="right"
-            backgroundColor={appTheme.colors.tertiaryContainer}
-        >
-            <AddToQueueButton />
-        </SwipeableUnderlay>
-    ), [appTheme.colors.tertiaryContainer]);
-
-    const renderUnderlayLeft = useCallback(() => (
-        <SwipeableUnderlay
-            mode="left"
             backgroundColor={appTheme.colors.errorContainer}
         >
             <DeleteFavButton />
         </SwipeableUnderlay>
-    ), [appTheme.colors.errorContainer]);
+    ), [appTheme]);
+
+    const renderUnderlayLeft = useCallback(() => (
+        <SwipeableUnderlay
+            mode="left"
+            backgroundColor={appTheme.colors.surfaceVariant}
+        >
+            <AddToQueueButton />
+        </SwipeableUnderlay>
+    ), [appTheme]);
 
     const renderItem = useCallback(({
         getIndex, drag, item, isActive,
@@ -62,7 +62,7 @@ export const FavsList = () => {
     ) => {
         const index = getIndex() || 0;
 
-        const onLongPress = () => {
+        const performDrag = () => {
             HapticFeedback.trigger(
                 HapticFeedbackTypes.effectTick
             );
@@ -79,7 +79,7 @@ export const FavsList = () => {
                 <SongItem
                     item={item}
                     index={index}
-                    onLongPress={onLongPress}
+                    drag={performDrag}
                     showAlbum
                     isActive={isActive}
                 />
