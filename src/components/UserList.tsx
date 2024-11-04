@@ -73,6 +73,7 @@ export const UserList = ({ searchQuery }: { searchQuery: string }) => {
             data={users}
             renderItem={renderItem}
             initialNumToRender={7}
+            fadingEdgeLength={50}
             onEndReachedThreshold={0.1}
             onEndReached={loadMore}
             onRefresh={refresh}
