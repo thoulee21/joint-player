@@ -1,4 +1,4 @@
-import BottomSheet, { BottomSheetFlashList } from '@gorhom/bottom-sheet';
+import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import React, { useCallback, useEffect } from 'react';
 import { DeviceEventEmitter, Dimensions, StyleSheet } from 'react-native';
 import TrackPlayer from 'react-native-track-player';
@@ -65,13 +65,12 @@ export function TrackListSheet({ bottomSheetRef }: {
 
   return (
     <BottomSheetPaper ref={bottomSheetRef}>
-      <BottomSheetFlashList
+      <BottomSheetFlatList
         showsVerticalScrollIndicator={false}
         keyExtractor={keyExtractor}
         data={tracks}
         ListEmptyComponent={renderEmptyTrack}
         renderItem={renderTrack}
-        estimatedItemSize={96}
       />
     </BottomSheetPaper>
   );
