@@ -7,14 +7,16 @@ export class Storage {
   }
 
   //拿到的就是js值，不必转换
-  static get(key: string) {
-    return AsyncStorage.getItem(key)
-      .then(value => {
-        if (value && value !== '') {
-          return JSON.parse(value);
-        }
-      })
-      .catch(() => null);
+  static async get(key: string) {
+    try {
+      const value = await AsyncStorage.getItem(key);
+      if (value && value !== '') {
+        return JSON.parse(value);
+      }
+      return null;
+    } catch {
+      return null;
+    }
   }
 
   static update(key: string, value: string | object) {
