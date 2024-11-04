@@ -80,8 +80,7 @@ export const UserHeader = memo(({ userId }: { userId?: number }) => {
 
     const goSwitchUser = () => {
         HapticFeedback.trigger(HapticFeedbackTypes.effectClick);
-        //@ts-expect-error
-        navigation.navigate('SwitchUser');
+        navigation.navigate('SwitchUser' as never);
     };
 
     return (
