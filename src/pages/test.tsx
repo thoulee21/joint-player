@@ -10,7 +10,7 @@ export const TestScreen = () => {
 
     return (
         <BlurBackground>
-            <Appbar.Header style={styles.appbar} mode="center-aligned">
+            <Appbar.Header style={styles.appbar}>
                 <Appbar.BackAction onPress={navigation.goBack} />
                 <Appbar.Content title="Experimental Test" />
             </Appbar.Header>
