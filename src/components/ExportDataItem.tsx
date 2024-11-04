@@ -11,7 +11,7 @@ export const ExportDataItem = () => {
     const [exporting, setExporting] = useState(false);
 
     const ExportIcon = useCallback((props: any) => (
-        <List.Icon {...props} icon="export-variant" />
+        <List.Icon {...props} icon="database-export-outline" />
     ), []);
 
     const requestStoragePermission = useCallback(async () => {

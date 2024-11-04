@@ -15,7 +15,7 @@ export const ImportDataItem = ({ setRestartBarVisible }: {
     setRestartBarVisible: (visible: boolean) => void
 }) => {
     const ImportIcon = useCallback((props: any) => (
-        <List.Icon {...props} icon="import" />
+        <List.Icon {...props} icon="database-import-outline" />
     ), []);
 
     const importData = useCallback(async (path: string) => {
