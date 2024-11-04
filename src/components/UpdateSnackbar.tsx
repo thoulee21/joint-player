@@ -29,7 +29,6 @@ export const UpdateSnackbar = () => {
             visible={updateSnackbarVisible}
             icon="progress-download"
             onDismiss={hideSnackbar}
-            onIconPress={hideSnackbar}
             action={{
                 icon: 'arrow-right',
                 label: 'Update',
