@@ -13,5 +13,6 @@ export * from './mvDetail';
 export * from './player';
 export * from './settings';
 export * from './switchUser';
+export * from './test';
 export * from './webview';
 

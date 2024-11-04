@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
 import { Appbar, Divider, List, useTheme } from 'react-native-paper';
 import { AniGalleryItem } from '../components/AniGalleryItem';
@@ -9,10 +9,15 @@ import { DevSwitchItem } from '../components/DevSwitchItem';
 import { ListWrapper } from '../components/ListWrapper';
 import { RestartItem } from '../components/RestartItem';
 import { ViewAppDataItem } from '../components/ViewAppDataItem';
+import type { ListLRProps } from '../types/paperListItem';
 
 export function DevScreen() {
     const navigation = useNavigation();
     const appTheme = useTheme();
+
+    const renderTestIcon = useCallback((props: ListLRProps) => (
+        <List.Icon icon="test-tube" {...props} />
+    ), []);
 
     return (
         <BlurBackground>
@@ -36,6 +41,13 @@ export function DevScreen() {
                     <Divider />
                 </List.Section>
 
+                <List.Item
+                    left={renderTestIcon}
+                    title="Test"
+                    onPress={() => {
+                        navigation.navigate('Test' as never);
+                    }}
+                />
                 <AniGalleryItem />
                 <RestartItem />
             </ListWrapper>
