@@ -46,7 +46,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/code-frame@npm:^7.25.9":
+"@babel/code-frame@npm:^7.25.9, @babel/code-frame@npm:^7.26.0":
   version: 7.26.2
   resolution: "@babel/code-frame@npm:7.26.2"
   dependencies:
@@ -94,6 +94,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/core@npm:^7.25.2":
+  version: 7.26.0
+  resolution: "@babel/core@npm:7.26.0"
+  dependencies:
+    "@ampproject/remapping": "npm:^2.2.0"
+    "@babel/code-frame": "npm:^7.26.0"
+    "@babel/generator": "npm:^7.26.0"
+    "@babel/helper-compilation-targets": "npm:^7.25.9"
+    "@babel/helper-module-transforms": "npm:^7.26.0"
+    "@babel/helpers": "npm:^7.26.0"
+    "@babel/parser": "npm:^7.26.0"
+    "@babel/template": "npm:^7.25.9"
+    "@babel/traverse": "npm:^7.25.9"
+    "@babel/types": "npm:^7.26.0"
+    convert-source-map: "npm:^2.0.0"
+    debug: "npm:^4.1.0"
+    gensync: "npm:^1.0.0-beta.2"
+    json5: "npm:^2.2.3"
+    semver: "npm:^6.3.1"
+  checksum: 10c0/91de73a7ff5c4049fbc747930aa039300e4d2670c2a91f5aa622f1b4868600fc89b01b6278385fbcd46f9574186fa3d9b376a9e7538e50f8d118ec13cfbcb63e
+  languageName: node
+  linkType: hard
+
 "@babel/eslint-parser@npm:^7.18.2":
   version: 7.25.8
   resolution: "@babel/eslint-parser@npm:7.25.8"
@@ -108,17 +131,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/eslint-parser@npm:^7.20.0":
-  version: 7.24.1
-  resolution: "@babel/eslint-parser@npm:7.24.1"
+"@babel/eslint-parser@npm:^7.25.1":
+  version: 7.25.9
+  resolution: "@babel/eslint-parser@npm:7.25.9"
   dependencies:
     "@nicolo-ribaudo/eslint-scope-5-internals": "npm:5.1.1-v1"
     eslint-visitor-keys: "npm:^2.1.0"
     semver: "npm:^6.3.1"
   peerDependencies:
     "@babel/core": ^7.11.0
-    eslint: ^7.5.0 || ^8.0.0
-  checksum: 10c0/76b066be5245fa24ea5726bea24ceca75811599dce43db5e120e91283f3a27be150a2b0559a8472bec2824f6abc66fb29e90b3f1889c596ec855a811fc83dc90
+    eslint: ^7.5.0 || ^8.0.0 || ^9.0.0
+  checksum: 10c0/7dc525da9a076906aff562f82373765785732edf306e2be6497e347ed73be80d3544f2f845a77c2376bfa1c7c8c3580ea7346b12b78d8ddf4365c44fe9c35c4b
   languageName: node
   linkType: hard
 
@@ -147,7 +170,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/generator@npm:^7.25.9":
+"@babel/generator@npm:^7.25.9, @babel/generator@npm:^7.26.0":
   version: 7.26.2
   resolution: "@babel/generator@npm:7.26.2"
   dependencies:
@@ -352,7 +375,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/helper-module-transforms@npm:^7.25.9":
+"@babel/helper-module-transforms@npm:^7.25.9, @babel/helper-module-transforms@npm:^7.26.0":
   version: 7.26.0
   resolution: "@babel/helper-module-transforms@npm:7.26.0"
   dependencies:
@@ -539,6 +562,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/helpers@npm:^7.26.0":
+  version: 7.26.0
+  resolution: "@babel/helpers@npm:7.26.0"
+  dependencies:
+    "@babel/template": "npm:^7.25.9"
+    "@babel/types": "npm:^7.26.0"
+  checksum: 10c0/343333cced6946fe46617690a1d0789346960910225ce359021a88a60a65bc0d791f0c5d240c0ed46cf8cc63b5fd7df52734ff14e43b9c32feae2b61b1647097
+  languageName: node
+  linkType: hard
+
 "@babel/highlight@npm:^7.10.4, @babel/highlight@npm:^7.25.7":
   version: 7.25.7
   resolution: "@babel/highlight@npm:7.25.7"
@@ -562,7 +595,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/parser@npm:^7.25.9, @babel/parser@npm:^7.26.2":
+"@babel/parser@npm:^7.25.9, @babel/parser@npm:^7.26.0, @babel/parser@npm:^7.26.2":
   version: 7.26.2
   resolution: "@babel/parser@npm:7.26.2"
   dependencies:
@@ -3729,13 +3762,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native/eslint-config@npm:^0.75.4":
-  version: 0.75.4
-  resolution: "@react-native/eslint-config@npm:0.75.4"
+"@react-native/eslint-config@npm:^0.76.1":
+  version: 0.76.1
+  resolution: "@react-native/eslint-config@npm:0.76.1"
   dependencies:
-    "@babel/core": "npm:^7.20.0"
-    "@babel/eslint-parser": "npm:^7.20.0"
-    "@react-native/eslint-plugin": "npm:0.75.4"
+    "@babel/core": "npm:^7.25.2"
+    "@babel/eslint-parser": "npm:^7.25.1"
+    "@react-native/eslint-plugin": "npm:0.76.1"
     "@typescript-eslint/eslint-plugin": "npm:^7.1.1"
     "@typescript-eslint/parser": "npm:^7.1.1"
     eslint-config-prettier: "npm:^8.5.0"
@@ -3745,17 +3778,18 @@ __metadata:
     eslint-plugin-react: "npm:^7.30.1"
     eslint-plugin-react-hooks: "npm:^4.6.0"
     eslint-plugin-react-native: "npm:^4.0.0"
+    hermes-eslint: "npm:^0.23.1"
   peerDependencies:
     eslint: ">=8"
     prettier: ">=2"
-  checksum: 10c0/70c0fce3b2a358e702748fe0b8e7d50c3a64c495abd52935a05c3abdb72cc2d92d9efe098d92a9370d99f3c8a0844ec5919c63ce9ed8d1845a44e7ddf3fa8f81
+  checksum: 10c0/f0199fbc485a7574f246afc6203435e6161d802ce71ac96151e57d5483b1e816e853c4a457b1311e654ef2c2980d456961ac05b5d7225f5ed5efa438b070683c
   languageName: node
   linkType: hard
 
-"@react-native/eslint-plugin@npm:0.75.4":
-  version: 0.75.4
-  resolution: "@react-native/eslint-plugin@npm:0.75.4"
-  checksum: 10c0/f6fe94e58901bd01177209cf1ffd45f4b7bf191dfa8e17cd2b734bb4fbdb3000cd817ccdd5c6a19214f585c74ea709a32b4623d237a343329ad96be2d50e258a
+"@react-native/eslint-plugin@npm:0.76.1":
+  version: 0.76.1
+  resolution: "@react-native/eslint-plugin@npm:0.76.1"
+  checksum: 10c0/d6bd073c6591a8a65968ab27718f247d170548dcfc524b26c6a79921c7b2cf9a69569c9f873ec6c592629eb6300ac6819cd76a1f8096c923e7a2c086a34ef862
   languageName: node
   linkType: hard
 
@@ -8360,6 +8394,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"hermes-eslint@npm:^0.23.1":
+  version: 0.23.1
+  resolution: "hermes-eslint@npm:0.23.1"
+  dependencies:
+    esrecurse: "npm:^4.3.0"
+    hermes-estree: "npm:0.23.1"
+    hermes-parser: "npm:0.23.1"
+  checksum: 10c0/2657e4916ea085fe8d3c52f7e8454e0c8652a483b8933b3e21f3ccd22bc0672ab5cfc1a528f74edefef29bc589a1690aebc237a92e4c9744448db0ac63c59722
+  languageName: node
+  linkType: hard
+
 "hermes-estree@npm:0.19.1":
   version: 0.19.1
   resolution: "hermes-estree@npm:0.19.1"
@@ -9697,7 +9742,7 @@ __metadata:
     "@react-native-community/slider": "npm:^4.5.5"
     "@react-native-media-console/reanimated": "npm:^2.2.4"
     "@react-native/babel-preset": "npm:^0.75.4"
-    "@react-native/eslint-config": "npm:^0.75.4"
+    "@react-native/eslint-config": "npm:^0.76.1"
     "@react-native/metro-config": "npm:0.75.4"
     "@react-native/typescript-config": "npm:0.75.4"
     "@react-navigation/drawer": "npm:^6.7.2"
