@@ -1,7 +1,7 @@
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { Appbar, Divider, List, Portal, Snackbar, useTheme } from 'react-native-paper';
+import { Appbar, List, Portal, Snackbar, useTheme } from 'react-native-paper';
 import RNRestart from 'react-native-restart';
 import { AboutItem } from '../components/AboutItem';
 import { BlurBackground } from '../components/BlurBackground';
@@ -44,7 +44,6 @@ export function Settings() {
           <ThemeColorIndicator />
           <BlurRadiusSlider />
         </List.Section>
-        <Divider />
 
         <List.Section
           title="Data Management"
@@ -54,7 +53,6 @@ export function Settings() {
           <ImportDataItem
             setRestartBarVisible={setRestartBarVisible}
           />
-          <Divider />
         </List.Section>
 
         <DevItem />

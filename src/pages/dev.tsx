@@ -42,7 +42,6 @@ export function DevScreen() {
                 >
                     <ViewAppDataItem />
                     <ClearAllDataItem />
-                    <Divider />
                 </List.Section>
 
                 <List.Item
