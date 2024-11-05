@@ -63,20 +63,22 @@ export const SongItem = ({
       .join(', ');
 
     if (showAlbum) {
-      return artists.concat(' - ', item.album);
+      return artists.concat('\n', item.album);
     } else {
       return artists;
     }
   }, [item.album, item.artists, showAlbum]);
 
-  const renderMusicIcon = useCallback(
+  const renderMusicImage = useCallback(
     ({ color, style: listStyle }: ListLRProps) => (
-      <List.Icon
-        style={listStyle}
-        color={isActive ? appTheme.colors.primary : color}
-        icon={isActive ? 'music-circle' : 'music-circle-outline'}
+      <List.Image
+        style={[listStyle, {
+          borderRadius: appTheme.roundness,
+          backgroundColor: color,
+        }]}
+        source={{ uri: item.artwork }}
       />
-    ), [appTheme.colors.primary, isActive]);
+    ), [appTheme.roundness, item.artwork]);
 
   const renderDragIndicator = useCallback(
     (props: ListLRProps) => (
@@ -91,10 +93,10 @@ export const SongItem = ({
   return (
     <List.Item
       title={item.title}
-      left={showIndex ? renderIndex : renderMusicIcon}
+      left={showIndex ? renderIndex : renderMusicImage}
       right={renderDragIndicator}
       description={description}
-      descriptionNumberOfLines={1}
+      descriptionNumberOfLines={2}
       onPress={play}
       style={songStyle}
     />
