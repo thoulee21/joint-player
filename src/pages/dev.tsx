@@ -48,7 +48,7 @@ export function DevScreen() {
           left={renderTestIcon}
           right={renderRightIcon}
           onPress={() => {
-            navigation.navigate('Test' as never);
+            // navigation.navigate('Test');
           }}
         />
 

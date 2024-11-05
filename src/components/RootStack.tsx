@@ -19,7 +19,6 @@ import {
     MvPlayer,
     Search,
     SwitchUser,
-    TestScreen,
     WebViewScreen,
 } from '../pages';
 import { DrawerNavi } from './DrawerNavi';
@@ -65,7 +64,6 @@ export function RootStack() {
             <Stack.Screen name="AppData" component={AppDataScreen} />
             <Stack.Screen name="SwitchUser" component={SwitchUser} />
             <Stack.Screen name="AniGallery" component={AniGallery} />
-            <Stack.Screen name="Test" component={TestScreen} />
             <Stack.Screen name="Search" component={Search} />
         </Stack.Navigator>
     );

@@ -14,6 +14,5 @@ export * from './player';
 export * from './search';
 export * from './settings';
 export * from './switchUser';
-export * from './test';
 export * from './webview';
 
