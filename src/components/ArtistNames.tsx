@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
-import { FlatList, StyleProp, TextStyle } from 'react-native';
+import { FlatList, StyleProp, StyleSheet, TextStyle } from 'react-native';
 import HapticFeedback, {
     HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
@@ -37,6 +37,8 @@ export const ArtistNames = ({ textStyle }:
         <FlatList
             data={track?.artists as Artist[]}
             horizontal
+            style={styles.names}
+            showsHorizontalScrollIndicator={false}
             keyExtractor={(item) => item.id.toString()}
             ItemSeparatorComponent={renderSeparator}
             renderItem={({ item }) => (
@@ -50,3 +52,9 @@ export const ArtistNames = ({ textStyle }:
         />
     );
 };
+
+const styles = StyleSheet.create({
+    names: {
+        maxWidth: '80%',
+    },
+});
