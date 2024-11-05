@@ -87,8 +87,8 @@ android {
         applicationId 'com.thoulee.jointplayer'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 5006000
-        versionName "5.6.0"
+        versionCode 5007000
+        versionName "5.7.0"
     }
     signingConfigs {
         debug {
