@@ -32,13 +32,12 @@ export const SongItem = ({
   const dispatch = useAppDispatch();
   const appTheme = useTheme();
 
-  const songStyle = useMemo(() => ([
-    style, {
-      backgroundColor: isActive
-        ? Color(appTheme.colors.secondaryContainer)
-          .fade(0.1).string()
-        : appTheme.colors.surface,
-    }]
+  const songStyle = useMemo(() => ([{
+    backgroundColor: isActive
+      ? Color(appTheme.colors.secondaryContainer)
+        .fade(0.1).string()
+      : appTheme.colors.surface,
+  }, style]
   ), [style, isActive, appTheme]);
 
   const play = useCallback(async () => {
