@@ -17,6 +17,7 @@ import {
     LyricsScreen,
     MvDetail,
     MvPlayer,
+    Search,
     SwitchUser,
     TestScreen,
     WebViewScreen,
@@ -65,6 +66,7 @@ export function RootStack() {
             <Stack.Screen name="SwitchUser" component={SwitchUser} />
             <Stack.Screen name="AniGallery" component={AniGallery} />
             <Stack.Screen name="Test" component={TestScreen} />
+            <Stack.Screen name="Search" component={Search} />
         </Stack.Navigator>
     );
 }
