@@ -38,9 +38,6 @@ export const SwitchUser = () => {
               setSearchQuery('');
               setShowQuery('');
             }}
-            iconColor={appTheme.dark
-              ? appTheme.colors.onSurfaceDisabled
-              : appTheme.colors.backdrop}
           />
         )}
         <Avatar.Image
@@ -50,13 +47,7 @@ export const SwitchUser = () => {
         />
       </View>
     );
-  }, [
-    appTheme,
-    data?.profile.avatarUrl,
-    error,
-    isAvatarLoading,
-    showQuery,
-  ]);
+  }, [data?.profile.avatarUrl, error, isAvatarLoading, showQuery]);
 
   const search = useCallback(() => {
     if (showQuery && searchQuery !== showQuery) {
