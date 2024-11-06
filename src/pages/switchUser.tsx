@@ -85,6 +85,7 @@ export const SwitchUser = () => {
         selectionColor={
           appTheme.colors.inversePrimary
         }
+        autoFocus
       />
 
       {searchQuery
