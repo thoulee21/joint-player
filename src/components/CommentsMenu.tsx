@@ -17,7 +17,7 @@ export function CommentsMenu({ onPostPressed, navigation }:
     return (
         <Menu.Item
             title="Comments"
-            leadingIcon="comment-outline"
+            leadingIcon="comment-text-multiple-outline"
             disabled={disabled}
             onPress={() => {
                 // @ts-ignore

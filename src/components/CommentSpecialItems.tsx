@@ -42,7 +42,7 @@ export const NoCommentsItem = () => {
     const renderCommentIcon = useCallback((props: ListLRProps) => (
         <List.Icon
             {...props}
-            icon="comment-outline"
+            icon="comment-text-multiple-outline"
         />
     ), []);
 
