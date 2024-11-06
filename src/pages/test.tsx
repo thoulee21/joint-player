@@ -1,9 +1,12 @@
 import React from 'react';
-import { Search } from './search';
+import { LottieAnimation } from '../components/LottieAnimation';
 
 export const TestScreen = () => {
     return (
-        <Search />
+       <LottieAnimation
+            animation="teapot"
+            caption="Test Screen"
+        />
     );
 };
 
