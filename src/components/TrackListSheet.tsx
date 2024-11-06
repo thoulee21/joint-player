@@ -39,14 +39,8 @@ export function TrackListSheet({ bottomSheetRef }: {
     { item: TrackType; index: number }
   ) => {
     return (
-      <TrackItem
-        item={item}
-        index={index}
-        bottomSheetRef={bottomSheetRef}
-      />
+      <TrackItem item={item} index={index} />
     );
-    //no bottomSheetRef dependency
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const renderEmptyTrack = useCallback(() => {

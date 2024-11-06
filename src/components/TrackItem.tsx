@@ -1,4 +1,4 @@
-import BottomSheet from '@gorhom/bottom-sheet';
+import { useBottomSheet } from '@gorhom/bottom-sheet';
 import Color from 'color';
 import React, { useCallback } from 'react';
 import { TextStyle } from 'react-native';
@@ -17,17 +17,14 @@ export interface ListRightProps {
 }
 
 export const TrackItem = ({
-    item,
-    index,
-    bottomSheetRef,
-    onLongPress,
+    item, index, onLongPress,
 }: {
     item: TrackType;
     index: number;
-    bottomSheetRef: React.RefObject<BottomSheet>,
     onLongPress?: () => void;
 }) => {
     const dispatch = useAppDispatch();
+    const { close } = useBottomSheet();
     const appTheme = useTheme();
     const currentTrack = useActiveTrack();
 
@@ -43,11 +40,9 @@ export const TrackItem = ({
         if (!active) {
             await TrackPlayer.skip(index);
             await TrackPlayer.play();
-            bottomSheetRef.current?.close();
+            close();
         }
-        //no bottomSheetRef in dependency array
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [active, index]);
+    }, [active, close, index]);
 
     const remove = useCallback(() => {
         HapticFeedback.trigger(
@@ -55,9 +50,7 @@ export const TrackItem = ({
         );
 
         dispatch(removeFromQueueAsync(index));
-        //no dispatch in dependency array
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [index]);
+    }, [dispatch, index]);
 
     const renderRemoveBtn = useCallback(
         (props: ListRightProps) => (
