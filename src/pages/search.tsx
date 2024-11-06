@@ -80,6 +80,7 @@ export const Search = () => {
                 selectionColor={Color(
                     appTheme.colors.inversePrimary
                 ).fade(0.5).string()}
+                autoFocus
             />
 
             {keyword ? (
@@ -100,6 +101,5 @@ const styles = StyleSheet.create({
         marginHorizontal: '4%',
         elevation: 0,
         shadowOpacity: 0,
-        backgroundColor: 'transparent',
     },
 });
