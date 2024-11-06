@@ -3,7 +3,7 @@ import Color from 'color';
 import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { IconButton, Searchbar, useTheme } from 'react-native-paper';
+import { Searchbar, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurBackground } from '../components/BlurBackground';
 import { LottieAnimation } from '../components/LottieAnimation';
@@ -42,23 +42,6 @@ export const Search = () => {
         }
     }, [placeholder, showQuery]);
 
-    const pressRightBtn = useCallback(() => {
-        HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
-
-        if (showQuery) { setShowQuery(''); }// clear button
-        else { searchSongs(); }// search button
-    }, [searchSongs, showQuery]);
-
-    // Render clear or search icon
-    const renderRightIcon = useCallback((props: any) => (
-        <IconButton
-            {...props}
-            icon={showQuery ? 'close' : 'magnify'}
-            animated
-            onPress={pressRightBtn}
-        />
-    ), [showQuery, pressRightBtn]);
-
     return (
         <BlurBackground style={{ paddingTop: insets.top }}>
             <Searchbar
@@ -66,7 +49,11 @@ export const Search = () => {
                 placeholderTextColor={appTheme.dark
                     ? appTheme.colors.onSurfaceDisabled
                     : appTheme.colors.backdrop}
-                style={styles.searchbar}
+                style={[styles.searchbar, {
+                    backgroundColor: Color(
+                        appTheme.colors.secondaryContainer
+                    ).fade(0.3).string(),
+                }]}
                 inputStyle={{ color: appTheme.colors.onSurface }}
                 onChangeText={setShowQuery}
                 value={showQuery}
@@ -74,7 +61,13 @@ export const Search = () => {
                 icon="arrow-left"
                 iconColor={appTheme.colors.onSurface}
                 onIconPress={navigation.goBack}
-                right={renderRightIcon}
+                traileringIcon="magnify"
+                onTraileringIconPress={() => {
+                    HapticFeedback.trigger(
+                        HapticFeedbackTypes.effectHeavyClick
+                    );
+                    searchSongs();
+                }}
                 blurOnSubmit
                 selectTextOnFocus
                 selectionColor={Color(
@@ -99,7 +92,5 @@ const styles = StyleSheet.create({
     searchbar: {
         marginVertical: '1%',
         marginHorizontal: '4%',
-        elevation: 0,
-        shadowOpacity: 0,
     },
 });
