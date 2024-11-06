@@ -1,8 +1,8 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { StyleSheet, ToastAndroid } from 'react-native';
+import { StyleSheet, ToastAndroid, View } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { IconButton, List, useTheme } from 'react-native-paper';
-import TrackPlayer from 'react-native-track-player';
+import TrackPlayer, { useActiveTrack, useIsPlaying } from 'react-native-track-player';
 import { IndexOfSong } from '../components/IndexOfSong';
 import { useAppDispatch } from '../hook';
 import { addToQueueAsync, clearAddOneAsync } from '../redux/slices';
@@ -16,7 +16,16 @@ export const SearchSongItem = ({ index, item }: {
 }) => {
   const dispatch = useAppDispatch();
   const appTheme = useTheme();
+
+  const currentTrack = useActiveTrack() as TrackType | undefined;
+  const { playing } = useIsPlaying();
+
   const [fetching, setFetching] = useState(false);
+  const [added, setAdded] = useState(false);
+
+  const isCurrentPlaying = useMemo(() => (
+    (currentTrack?.id === item.id.toString()) && playing
+  ), [currentTrack?.id, item.id, playing]);
 
   const renderIndex = useCallback((
     props: ListLRProps
@@ -37,24 +46,34 @@ export const SearchSongItem = ({ index, item }: {
     } else {
       await dispatch(addToQueueAsync(details as TrackType));
 
+      setAdded(true);
       ToastAndroid.showWithGravity(
         'Added to queue',
         ToastAndroid.SHORT,
         ToastAndroid.TOP
       );
     }
-    //no dispatch
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [item.id]);
+  }, [dispatch, item.id]);
 
-  const renderRight = useCallback((props: ListLRProps) => (
-    <IconButton
-      {...props}
-      icon="playlist-plus"
-      onPress={() => addToQueue()}
-      loading={fetching}
-    />
-  ), [addToQueue, fetching]);
+  const renderRight = useCallback((
+    props: ListLRProps
+  ) => (
+    <View style={styles.btns}>
+      <IconButton
+        {...props}
+        icon={added ? 'playlist-check' : 'playlist-plus'}
+        onPress={() => addToQueue()}
+        disabled={fetching || added}
+      />
+      <IconButton
+        {...props}
+        icon="play-circle-outline"
+        onPress={() => addToQueue(true)}
+        disabled={fetching || isCurrentPlaying}
+        selected
+      />
+    </View>
+  ), [addToQueue, added, fetching, isCurrentPlaying]);
 
   const description = useMemo(() => (
     `${item.artists.map(
@@ -71,7 +90,6 @@ export const SearchSongItem = ({ index, item }: {
       titleStyle={{ color: appTheme.colors.onSurface }}
       left={renderIndex}
       right={renderRight}
-      onPress={() => addToQueue(true)}
     />
   );
 };
@@ -80,4 +98,7 @@ const styles = StyleSheet.create({
   songItem: {
     backgroundColor: 'transparent',
   },
+  btns: {
+    flexDirection: 'row'
+  }
 });
