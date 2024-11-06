@@ -12,8 +12,9 @@ module.exports = {
     'linebreak-style': 'off',
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': 'warn',
-    'no-console': 0,
+    'no-console': 'off',
     '@typescript-eslint/no-duplicate-enum-values': 'off',
+    'comma-dangle': 'off'
   },
   overrides: [
     {
