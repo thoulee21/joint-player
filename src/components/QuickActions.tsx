@@ -19,7 +19,21 @@ export const DeleteFavButton = () => {
             HapticFeedbackTypes.effectTick
         );
         LayoutAnimation.configureNext(
-            LayoutAnimation.Presets.spring
+            {
+                duration: 250,
+                create: {
+                    type: LayoutAnimation.Types.easeIn,
+                    property: LayoutAnimation.Properties.opacity,
+                },
+                update: {
+                    type: LayoutAnimation.Types.easeIn,
+                    property: LayoutAnimation.Properties.opacity,
+                },
+                delete: {
+                    type: LayoutAnimation.Types.easeOut,
+                    property: LayoutAnimation.Properties.opacity,
+                },
+            }
         );
 
         dispatch(removeFav(item));
