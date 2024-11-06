@@ -132,10 +132,7 @@ export function AppDataScreen() {
 
             <TopTab.Navigator
                 backBehavior="none"
-                screenOptions={{
-                    lazy: true,
-                    swipeEnabled: false,
-                }}
+                screenOptions={{ lazy: true }}
                 tabBar={renderTapBar}
                 sceneContainerStyle={styles.transparent}
             >
