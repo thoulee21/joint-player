@@ -1,15 +1,14 @@
 import BottomSheet, {
-  BottomSheetView,
+  BottomSheetBackdrop,
+  type BottomSheetBackdropProps,
   type BottomSheetBackgroundProps,
+  useBottomSheetSpringConfigs,
 } from '@gorhom/bottom-sheet';
-import React, {
-  forwardRef,
-  PropsWithChildren,
-  useCallback,
-} from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { forwardRef, PropsWithChildren, useCallback } from 'react';
+import { View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Handle from './AniSheetHandle';
 import { BlurBackground } from './BlurBackground';
 
 export const BottomSheetPaper = forwardRef<
@@ -20,6 +19,17 @@ export const BottomSheetPaper = forwardRef<
   const appTheme = useTheme();
   const insets = useSafeAreaInsets();
 
+  const renderBackdrop = useCallback(
+    (props: BottomSheetBackdropProps) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+      />
+    ),
+    []
+  );
+
   const renderBackground = useCallback((
     props: BottomSheetBackgroundProps
   ) => (
@@ -28,35 +38,34 @@ export const BottomSheetPaper = forwardRef<
     </View>
   ), []);
 
+  const animationConfigs = useBottomSheetSpringConfigs({
+    damping: 80,
+    overshootClamping: true,
+    restDisplacementThreshold: 0.1,
+    restSpeedThreshold: 0.1,
+    stiffness: 500,
+  });
+
   return (
     <BottomSheet
       ref={ref}
       index={-1}
-      enableDynamicSizing={false}
-      snapPoints={['100%']}
       handleIndicatorStyle={{
-        backgroundColor: appTheme.dark
-          ? appTheme.colors.onSurfaceDisabled
-          : appTheme.colors.backdrop,
+        backgroundColor: appTheme.colors.outline
       }}
+      enableDynamicSizing={false}
+      snapPoints={['50%', '80%']}
       bottomInset={insets.bottom}
       topInset={insets.top}
       enablePanDownToClose
       android_keyboardInputMode="adjustResize"
       enableOverDrag={false} //防止与FlatList（ScrollView）冲突
       backgroundComponent={renderBackground}
+      animationConfigs={animationConfigs}
+      backdropComponent={renderBackdrop}
+      handleComponent={Handle}
     >
-      <BottomSheetView style={styles.root}>
-        {children}
-      </BottomSheetView>
+      {children}
     </BottomSheet>
   );
-});
-
-const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    flexGrow: 1,
-    flexDirection: 'column',
-  },
 });
