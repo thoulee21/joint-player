@@ -102,7 +102,7 @@ export const UserList = ({ searchQuery }: { searchQuery: string }) => {
 
 const styles = StyleSheet.create({
     footerLoading: {
-        marginVertical: '5%',
+        marginBottom: '5%',
     },
     loading: {
         marginTop: '20%',
