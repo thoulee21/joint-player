@@ -13,9 +13,9 @@ import {
 } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Appbar, HelperText, TextInput, useTheme } from 'react-native-paper';
+import { BlurBackground } from '../components/BlurBackground';
 import { useAppSelector } from '../hook';
 import { selectUser } from '../redux/slices';
-import { BlurBackground } from '../components/BlurBackground';
 
 export const IssueReport = () => {
     const ISSUE_MAX_LENGTH = 200;
@@ -32,9 +32,8 @@ export const IssueReport = () => {
     const inputBackgroundColor = Color(appTheme.colors.secondaryContainer).fade(0.7).string();
 
     const report = useCallback(() => {
-        const sentryId = Sentry.lastEventId();
         const feedback: UserFeedback = {
-            event_id: sentryId || Sentry.captureMessage('Report Issue'),
+            event_id: Sentry.captureMessage('Report Issue'),
             name: currentUser.username,
             email: email,
             comments: issue,
