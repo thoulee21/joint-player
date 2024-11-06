@@ -68,6 +68,13 @@ export const SearchSongList = ({ keyword }: { keyword: string }) => {
     </View>
   ), [isLoading]);
 
+  const hasMore = useMemo(() => {
+    if (!data) { return false; }
+
+    const total = data[data.length - 1].result.songCount;
+    return showData.length < total;
+  }, [data, showData.length]);
+
   return (
     !error ? (
       <FlashList
@@ -89,6 +96,11 @@ export const SearchSongList = ({ keyword }: { keyword: string }) => {
             progressBackgroundColor={appTheme.colors.surface}
           />
         }
+        ListFooterComponent={
+          hasMore && showData.length
+            ? <ActivityIndicator
+              style={styles.footerLoading}
+            /> : null}
       />
     ) : (
       <LottieAnimation
@@ -120,5 +132,8 @@ const styles = StyleSheet.create({
   },
   errTxt: {
     textAlign: 'center',
+  },
+  footerLoading: {
+    marginBottom: '5%',
   },
 });
