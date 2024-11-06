@@ -3,7 +3,7 @@ import { DrawerActions, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { IconButton, Portal, Searchbar, useTheme } from 'react-native-paper';
+import { Portal, Searchbar, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurBackground } from '../components/BlurBackground';
 import { BottomBar } from '../components/BottomBar';
@@ -40,10 +40,6 @@ export function Player() {
     navigation.navigate('Search');
   }, [navigation]);
 
-  const renderRightIcon = useCallback((props: any) => (
-    <IconButton {...props} icon="magnify" onPress={goSearch} />
-  ), [goSearch]);
-
   return (
     <Portal.Host>
       <BlurBackground style={{ paddingTop: insets.top }}>
@@ -60,7 +56,8 @@ export function Player() {
           onIconPress={() => {
             navigation.dispatch(DrawerActions.openDrawer());
           }}
-          right={renderRightIcon}
+          traileringIcon="magnify"
+          onTraileringIconPress={goSearch}
           onPress={goSearch}
         />
 
