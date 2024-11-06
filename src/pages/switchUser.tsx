@@ -65,13 +65,12 @@ export const SwitchUser = () => {
   }, [searchQuery, showQuery]);
 
   return (
-    <BlurBackground>
+    <BlurBackground style={{ paddingTop: insets.top }}>
       <Searchbar
         style={[styles.searchbar, {
           backgroundColor: Color(
             appTheme.colors.secondaryContainer
           ).fade(0.3).string(),
-          marginTop: insets.top,
         }]}
         placeholder="Search for a user"
         onChangeText={setShowQuery}
@@ -100,7 +99,8 @@ export const SwitchUser = () => {
 
 const styles = StyleSheet.create({
   searchbar: {
-    marginHorizontal: '2%',
+    marginVertical: '1%',
+    marginHorizontal: '4%',
   },
   rightBtns: {
     flexDirection: 'row',
