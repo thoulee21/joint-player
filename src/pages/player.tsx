@@ -1,4 +1,4 @@
-import BottomSheet from '@gorhom/bottom-sheet';
+import { type BottomSheetModal } from '@gorhom/bottom-sheet';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
@@ -18,7 +18,7 @@ import { StorageKeys } from '../utils/storageKeys';
 export function Player() {
   const navigation = useNavigation();
   const appTheme = useTheme();
-  const bottomSheetRef = useRef<BottomSheet>(null);
+  const bottomSheetRef = useRef<BottomSheetModal>(null);
 
   const insets = useSafeAreaInsets();
   const [placeholderKeyword, setPlaceholderKeyword] = useState('');

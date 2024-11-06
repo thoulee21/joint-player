@@ -1,4 +1,4 @@
-import BottomSheet from '@gorhom/bottom-sheet';
+import { type BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import React, { RefObject } from 'react';
 import { StyleSheet } from 'react-native';
@@ -9,7 +9,7 @@ import { Appbar } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
 
 export const BottomBar = ({ bottomSheetRef }:
-    { bottomSheetRef: RefObject<BottomSheet> }
+    { bottomSheetRef: RefObject<BottomSheetModal> }
 ) => {
     const navigation = useNavigation();
     const track = useActiveTrack();
@@ -52,7 +52,7 @@ export const BottomBar = ({ bottomSheetRef }:
                     HapticFeedback.trigger(
                         HapticFeedbackTypes.effectHeavyClick
                     );
-                    bottomSheetRef.current?.expand();
+                    bottomSheetRef.current?.present();
                 }}
             />
         </Appbar.Header>

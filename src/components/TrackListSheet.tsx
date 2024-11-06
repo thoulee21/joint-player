@@ -1,4 +1,4 @@
-import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet';
+import { BottomSheetFlatList, type BottomSheetModal } from '@gorhom/bottom-sheet';
 import React, { useCallback, useEffect } from 'react';
 import { DeviceEventEmitter, Dimensions, StyleSheet } from 'react-native';
 import TrackPlayer from 'react-native-track-player';
@@ -10,7 +10,7 @@ import { LottieAnimation } from './LottieAnimation';
 import { TrackItem } from './TrackItem';
 
 export function TrackListSheet({ bottomSheetRef }: {
-  bottomSheetRef: React.RefObject<BottomSheet>;
+  bottomSheetRef: React.RefObject<BottomSheetModal>;
 }) {
   const dispatch = useAppDispatch();
   const tracks = useAppSelector(queue);
