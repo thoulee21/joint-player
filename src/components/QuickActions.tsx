@@ -18,28 +18,13 @@ export const DeleteFavButton = () => {
         HapticFeedback.trigger(
             HapticFeedbackTypes.effectTick
         );
+
         LayoutAnimation.configureNext(
-            {
-                duration: 250,
-                create: {
-                    type: LayoutAnimation.Types.easeIn,
-                    property: LayoutAnimation.Properties.opacity,
-                },
-                update: {
-                    type: LayoutAnimation.Types.easeIn,
-                    property: LayoutAnimation.Properties.opacity,
-                },
-                delete: {
-                    type: LayoutAnimation.Types.easeOut,
-                    property: LayoutAnimation.Properties.opacity,
-                },
-            }
+            LayoutAnimation.Presets.easeInEaseOut
         );
 
         dispatch(removeFav(item));
-        //no dispatch needed here
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [item]);
+    }, [dispatch, item]);
 
     return (
         <IconButton
