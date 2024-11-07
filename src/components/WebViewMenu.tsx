@@ -1,6 +1,6 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import React, { useCallback, useState } from 'react';
-import { Linking, Share, StatusBar, ToastAndroid } from 'react-native';
+import { Share, StatusBar, ToastAndroid } from 'react-native';
 import HapticFeedback from 'react-native-haptic-feedback';
 import { Appbar, Menu } from 'react-native-paper';
 import WebView from 'react-native-webview';
@@ -31,12 +31,6 @@ export const WebViewMenu = ({ url, title, webViewRef }: {
             title: title,
         });
     }, [url, title]);
-
-    const openLinkInBrowser = useCallback(() => {
-        HapticFeedback.trigger('effectTick');
-        setMenuVisible(false);
-        Linking.openURL(url);
-    }, [url]);
 
     const clearCache = useCallback(() => {
         if (webViewRef.current?.clearCache) {
@@ -71,11 +65,6 @@ export const WebViewMenu = ({ url, title, webViewRef }: {
                 leadingIcon="share"
                 disabled={!url || !title}
                 onPress={shareLink}
-            />
-            <Menu.Item
-                title="Open in Browser"
-                leadingIcon="open-in-app"
-                onPress={openLinkInBrowser}
             />
             <Menu.Item
                 title="Clear Cache"
