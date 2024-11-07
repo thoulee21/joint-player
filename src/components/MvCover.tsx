@@ -39,6 +39,7 @@ export const MvCover = ({ children }: PropsWithChildren) => {
   const showDialog = useCallback(() => setVisible(true), []);
   const hideDialog = useCallback(() => setVisible(false), []);
 
+  const { height: windowsHeight } = Dimensions.get('window');
   const track = useActiveTrack();
   const { data } = useSWR<MvMain>(
     `http://music.163.com/api/mv/detail?id=${track?.mvid}`
@@ -106,7 +107,10 @@ export const MvCover = ({ children }: PropsWithChildren) => {
         <ImageBackground
           source={{ uri: data?.data.cover || placeholderImg }}
         >
-          <View style={styles.cover}>
+          <View style={[
+            styles.cover,
+            { height: windowsHeight / 3 }
+          ]}>
             <BlurView
               tint={appTheme.dark ? 'dark' : 'light'}
               intensity={blurRadiusValue}
@@ -156,14 +160,13 @@ export const MvCover = ({ children }: PropsWithChildren) => {
 
 const styles = StyleSheet.create({
   cover: {
-    height: Dimensions.get('window').height / 3,
     justifyContent: 'flex-end',
   },
   square: {
     borderRadius: 0,
   },
   dialog: {
-    maxHeight: 0.8 * Dimensions.get('window').height,
+    maxHeight: '80%',
   },
   smallPadding: {
     paddingHorizontal: 0,
