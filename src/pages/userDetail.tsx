@@ -2,9 +2,10 @@ import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
 import React from 'react';
 import { Linking, StyleSheet, View } from 'react-native';
-import { Appbar, List, Tooltip, useTheme } from 'react-native-paper';
+import { Appbar, List, Text, Tooltip, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurBackground } from '../components/BlurBackground';
+import { LottieAnimation } from '../components/LottieAnimation';
 import { PlaylistItem } from '../components/PlaylistItem';
 import { UserAttrs } from '../components/UserAttrs';
 import { UserBackground, UserInfo } from '../components/UserHeader';
@@ -23,6 +24,7 @@ export const UserDetail = () => {
     <BlurBackground>
       <UserBackground style={styles.background}>
         <Appbar.Header
+          elevated
           statusBarHeight={0}
           style={{
             backgroundColor: Color(
@@ -74,19 +76,39 @@ export const UserDetail = () => {
       >
         <PlaylistItem tracks={favorites} />
       </List.Section>
+
+      <LottieAnimation
+        animation="rocket"
+        style={styles.footer}
+      >
+        <Text
+          variant="labelSmall"
+          style={[styles.footerTxt, {
+            color: appTheme.colors.outline
+          }]}
+        >
+          Powered by Netease Cloud Music API
+        </Text>
+      </LottieAnimation>
     </BlurBackground>
   );
 };
 
 const styles = StyleSheet.create({
   info: {
-    marginTop: '30%',
+    marginTop: '33%',
   },
   background: {
     height: '80%',
   },
   attrs: {
-    marginVertical: '2.5%',
+    marginVertical: '3%',
     height: '12%',
   },
+  footer: {
+    justifyContent: 'flex-end',
+  },
+  footerTxt: {
+    textAlign: 'center',
+  }
 });
