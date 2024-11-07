@@ -37,6 +37,7 @@ export const placeholderImg = 'https://picsum.photos/800';
 export const TrackInfo = () => {
   const navigation = useNavigation();
   const appTheme = useTheme();
+  const window = Dimensions.get('window');
 
   const [visible, setVisible] = useState(false);
   const showDialog = useCallback(() => setVisible(true), []);
@@ -117,10 +118,6 @@ export const TrackInfo = () => {
           ]}
         >
           <TouchableWithoutFeedback
-            style={[
-              styles.artwork,
-              { borderRadius: appTheme.roundness * 5 },
-            ]}
             onPress={goLyrics}
             onLongPress={viewTrackPic}
           >
@@ -129,6 +126,7 @@ export const TrackInfo = () => {
                 styles.artwork, {
                   borderRadius: appTheme.roundness * 5,
                   backgroundColor: appTheme.colors.surface,
+                  width: window.width * 0.9,
                 },
               ]}
               imageStyle={{ borderRadius: appTheme.roundness * 5 }}
@@ -190,7 +188,6 @@ const styles = StyleSheet.create({
     marginTop: '4%',
   },
   artwork: {
-    width: Dimensions.get('window').width * 0.9,
     aspectRatio: 1,
   },
   imgSurface: {
@@ -208,7 +205,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   dialog: {
-    maxHeight: 0.8 * Dimensions.get('window').height,
+    maxHeight: '80%',
   },
   smallPadding: {
     paddingHorizontal: 0,
