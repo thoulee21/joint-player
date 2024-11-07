@@ -1,6 +1,17 @@
 import LottieView from 'lottie-react-native';
-import React, { PropsWithChildren, forwardRef, useMemo, type ForwardedRef } from 'react';
-import { StyleSheet, TouchableWithoutFeedback, View, ViewStyle } from 'react-native';
+import React, {
+    PropsWithChildren,
+    forwardRef,
+    useMemo,
+    type ForwardedRef,
+} from 'react';
+import {
+    StyleSheet,
+    TouchableWithoutFeedback,
+    View,
+    ViewStyle,
+    type StyleProp,
+} from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 
 export const ANIMATIONS = {
@@ -25,7 +36,7 @@ export const LottieAnimation = forwardRef(({
     caption?: string;
     animation: AniKeys;
     loop?: boolean;
-    style?: ViewStyle;
+    style?: StyleProp<ViewStyle>;
     colorFilters?: { keypath: string; color: string }[];
     progress?: number;
     onPress?: () => void;
