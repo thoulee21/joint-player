@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { FlatList, StyleSheet, ToastAndroid, View } from 'react-native';
+import { Dimensions, FlatList, StyleSheet, ToastAndroid } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { ActivityIndicator, List, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
@@ -10,6 +10,8 @@ import { UserItem } from './UserItem';
 
 export const UserList = ({ searchQuery }: { searchQuery: string }) => {
     const appTheme = useTheme();
+    const window = Dimensions.get('window');
+
     const [refreshing, setRefreshing] = useState(false);
 
     const { data, setSize, error, mutate, isLoading } = useSWRInfinite<Main>((index) =>
@@ -89,20 +91,22 @@ export const UserList = ({ searchQuery }: { searchQuery: string }) => {
             onRefresh={refresh}
             refreshing={refreshing}
             ListFooterComponent={
-                hasMore && users.length ? (
-                    <ActivityIndicator
+                hasMore && users.length
+                    ? <ActivityIndicator
                         style={styles.footerLoading}
-                    />) : null}
+                    /> : null}
             ListEmptyComponent={
-                <View style={styles.empty}>
-                    <LottieAnimation
-                        animation="teapot"
-                        caption={
-                            `No users found\n${data?.[0].message
-                            || 'Try another search query later'}`
-                        }
-                    />
-                </View>
+                <LottieAnimation
+                    style={{
+                        height: window.height / 1.4,
+                        width: window.width,
+                    }}
+                    animation="teapot"
+                    caption={
+                        `No users found\n${data?.[0].message
+                        || 'Try another search query later'}`
+                    }
+                />
             }
         />
     );
@@ -118,8 +122,4 @@ const styles = StyleSheet.create({
     error: {
         textAlign: 'center',
     },
-    empty: {
-        width: '100%',
-        height: '1500%',
-    }
 });
