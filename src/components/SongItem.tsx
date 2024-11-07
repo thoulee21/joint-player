@@ -81,14 +81,12 @@ export const SongItem = ({
 
   const renderDragIndicator = useCallback(
     (props: ListLRProps) => (
-      drag && (
-        <IconButton
-          {...props}
-          icon="drag"
-          size={24}
-          onLongPress={drag}
-        />
-      )
+      drag && <IconButton
+        {...props}
+        icon="drag"
+        size={24}
+        onLongPress={drag}
+      />
     ), [drag]);
 
   return (
@@ -100,7 +98,6 @@ export const SongItem = ({
       descriptionNumberOfLines={2}
       onPress={play}
       style={songStyle}
-      rippleColor="transparent"
     />
   );
 };
