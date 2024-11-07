@@ -1,4 +1,7 @@
-import { useNavigation } from '@react-navigation/native';
+import {
+  DrawerActions,
+  useNavigation,
+} from '@react-navigation/native';
 import React, { type PropsWithChildren } from 'react';
 import {
   Alert,
@@ -20,10 +23,15 @@ import {
   TouchableRipple,
   useTheme,
 } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import useSWR from 'swr';
 import { useAppSelector } from '../hook';
-import { selectDevModeEnabled, selectUser } from '../redux/slices';
+import {
+  selectDevModeEnabled,
+  selectUser,
+} from '../redux/slices';
 import { Main } from '../types/userDetail';
 import { placeholderImg } from './TrackInfo';
 
@@ -56,6 +64,7 @@ export const UserInfo = ({ userId, style }: {
   const goUser = () => {
     HapticFeedback.trigger(HapticFeedbackTypes.effectClick);
     navigation.navigate('UserDetail' as never);
+    navigation.dispatch(DrawerActions.closeDrawer());
   };
 
   const debugPrint = () => {
