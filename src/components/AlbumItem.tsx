@@ -8,17 +8,18 @@ import { toReadableDate } from '../utils';
 export const Album = ({ item }: { item: HotAlbum }) => {
     const navigation = useNavigation();
     const appTheme = useTheme();
+    const { width: windowWidth } = Dimensions.get('window');
 
     return (
         <Card
             style={styles.album}
             onPress={() => {
-                //@ts-ignore
+                //@ts-expect-error
                 navigation.navigate('AlbumDetail', { album: item });
             }}
         >
             <Card.Cover
-                style={styles.albumPic}
+                style={[styles.albumPic, { width: windowWidth / 2 - 20 }]}
                 source={{ uri: item.picUrl }}
             />
             <Card.Title
@@ -36,7 +37,6 @@ export const Album = ({ item }: { item: HotAlbum }) => {
 
 const styles = StyleSheet.create({
     albumPic: {
-        width: Dimensions.get('window').width / 2 - 20,
         height: 200,
     },
     album: {
