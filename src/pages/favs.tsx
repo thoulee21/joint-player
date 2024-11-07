@@ -1,4 +1,4 @@
-import { DrawerActions, useNavigation } from '@react-navigation/native';
+import { DrawerToggleButton } from '@react-navigation/drawer';
 import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
@@ -13,7 +13,6 @@ import { favs, setQueueAsync } from '../redux/slices';
 
 export function Favs() {
     const dispatch = useAppDispatch();
-    const navigation = useNavigation();
     const appTheme = useTheme();
 
     const favsValue = useAppSelector(favs);
@@ -22,28 +21,19 @@ export function Favs() {
     const playAll = useCallback(async () => {
         await dispatch(setQueueAsync(favsValue));
         await TrackPlayer.play();
-
-        //no dispatch needed here
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [favsValue]);
-
-    const openDrawer = useCallback(() => {
-        navigation.dispatch(DrawerActions.openDrawer());
-    }, [navigation]);
+    }, [dispatch, favsValue]);
 
     const showConfirmDialog = useCallback(() => {
-        HapticFeedback.trigger(HapticFeedbackTypes.notificationWarning);
+        HapticFeedback.trigger(
+            HapticFeedbackTypes.notificationWarning
+        );
         setDialogVisible(true);
     }, []);
 
     return (
         <BlurBackground>
             <Appbar.Header style={styles.appbar}>
-                <Appbar.Action
-                    icon="menu"
-                    onPress={openDrawer}
-                    color={appTheme.colors.onSurface}
-                />
+                <DrawerToggleButton tintColor={appTheme.colors.onSurface} />
                 <Appbar.Content title="Favorites" />
 
                 <Appbar.Action
