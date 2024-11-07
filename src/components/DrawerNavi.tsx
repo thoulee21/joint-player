@@ -11,17 +11,18 @@ import { UserHeader } from './UserHeader';
 
 const Drawer = createDrawerNavigator();
 
-const drawerIcon = (
-    focusedIcon: string, unfocusedIcon: string
-) => ({ color, focused, size }: {
-    color: string, focused: boolean, size: number
-}) => (
-        <Icon
-            size={size}
-            source={focused ? focusedIcon : unfocusedIcon}
-            color={color}
-        />
-    );
+const renderDrawerIcon = (focusedIcon: string) => (
+    { color, focused, size }: {
+        color: string, focused: boolean, size: number
+    }) => (
+    <Icon
+        size={size}
+        color={color}
+        source={
+            `${focusedIcon}${focused ? '' : '-outline'}`
+        }
+    />
+);
 
 export function DrawerNavi() {
     const renderDrawerContent = useCallback(
@@ -39,23 +40,14 @@ export function DrawerNavi() {
         >
             <Drawer.Screen name="Player" component={Player} options={{
                 lazy: false,
-                drawerIcon: drawerIcon(
-                    'music-circle',
-                    'music-circle-outline'
-                )
+                drawerIcon: renderDrawerIcon('music-circle'),
             }} />
             <Drawer.Screen name="Favorites" component={Favs} options={{
                 lazy: false,
-                drawerIcon: drawerIcon(
-                    'heart',
-                    'heart-outline'
-                )
+                drawerIcon: renderDrawerIcon('heart'),
             }} />
             <Drawer.Screen name="Settings" component={Settings} options={{
-                drawerIcon: drawerIcon(
-                    'cog',
-                    'cog-outline'
-                )
+                drawerIcon: renderDrawerIcon('cog'),
             }} />
         </Drawer.Navigator >
     );
