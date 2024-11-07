@@ -1,4 +1,3 @@
-import { useBottomSheet } from '@gorhom/bottom-sheet';
 import Color from 'color';
 import React, { useCallback, useRef } from 'react';
 import { TextStyle } from 'react-native';
@@ -27,8 +26,6 @@ export const TrackItem = ({
   const dispatch = useAppDispatch();
   const appTheme = useTheme();
   const aniRef = useRef<Animatable.View>(null);
-
-  const { close } = useBottomSheet();
   const currentTrack = useActiveTrack();
 
   const active = currentTrack?.url === item.url;
@@ -43,9 +40,8 @@ export const TrackItem = ({
     if (!active) {
       await TrackPlayer.skip(index);
       await TrackPlayer.play();
-      close();
     }
-  }, [active, close, index]);
+  }, [active, index]);
 
   const remove = useCallback(async () => {
     HapticFeedback.trigger(
