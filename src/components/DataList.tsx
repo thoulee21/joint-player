@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Dimensions, FlatList, Platform, StyleSheet, View } from 'react-native';
+import { FlatList, Platform, StyleSheet, View } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import { DataItem, DataItemType } from './DataItem';
 
@@ -12,7 +12,9 @@ export const DataList = ({ dataItems }: {
         <DataItem item={item} />
     ), []);
 
-    const keyExtractor = useCallback((item: DataItemType) => item.name, []);
+    const keyExtractor = useCallback(
+        (item: DataItemType) => item.name, []
+    );
 
     return (
         <FlatList
@@ -38,6 +40,6 @@ const styles = StyleSheet.create({
         height: Platform.OS === 'android' ? 20 : 0,
     },
     loading: {
-        marginTop: Dimensions.get('window').height / 2 - 100,
+        marginTop: '50%',
     },
 });
