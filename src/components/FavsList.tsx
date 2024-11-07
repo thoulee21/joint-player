@@ -95,9 +95,7 @@ export const FavsList = () => {
         { data: draggedData }: { data: TrackType[] }
     ) => {
         dispatch(setFavs(draggedData));
-        //no need to add dispatch to dependencies
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [dispatch]);
 
     return (
         <DraggableFlatList
