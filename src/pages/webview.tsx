@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useCallback, useRef, useState } from 'react';
-import { StatusBar, StyleSheet, ToastAndroid, View } from 'react-native';
+import { StyleSheet, ToastAndroid, View } from 'react-native';
 import { Appbar, ProgressBar, useTheme } from 'react-native-paper';
 import { WebView } from 'react-native-webview';
 import {
@@ -86,6 +86,5 @@ export const WebViewScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: StatusBar.currentHeight,
   },
 });
