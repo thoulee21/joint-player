@@ -27,5 +27,6 @@
         "tlyric",
         "Unlimit",
         "userprofiles"
-    ]
+    ],
+    "editor.tabSize": 2
 }
