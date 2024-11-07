@@ -1,6 +1,6 @@
 import { FlashList } from '@shopify/flash-list';
 import React, { useCallback, useMemo, useState } from 'react';
-import { RefreshControl, StyleSheet, View } from 'react-native';
+import { Dimensions, RefreshControl, StyleSheet, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { ActivityIndicator, Text, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
@@ -13,6 +13,7 @@ const itemsPerPage = 15;
 
 export const SearchSongList = ({ keyword }: { keyword: string }) => {
   const appTheme = useTheme();
+  const window = Dimensions.get('window');
   const [refreshing, setRefreshing] = useState(false);
 
   const {
@@ -69,12 +70,15 @@ export const SearchSongList = ({ keyword }: { keyword: string }) => {
   ), []);
 
   const renderEmpty = useCallback(() => (
-    <View style={styles.empty}>
+    <View style={{
+      height: window.height / 1.4,
+      width: window.width,
+    }}>
       {isLoading
         ? <ActivityIndicator size="large" style={styles.loading} />
         : <LottieAnimation caption="No songs found" animation="teapot" />}
     </View>
-  ), [isLoading]);
+  ), [isLoading, window]);
 
   const hasMore = useMemo(() => {
     if (!data) { return false; }
@@ -129,10 +133,6 @@ export const SearchSongList = ({ keyword }: { keyword: string }) => {
 };
 
 const styles = StyleSheet.create({
-  empty: {
-    height: '305%',
-    width: '100%',
-  },
   loading: {
     flex: 1,
     justifyContent: 'center',
