@@ -1,6 +1,6 @@
 import { useRoute } from '@react-navigation/native';
 import React from 'react';
-import { StatusBar, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import TrackPlayer from 'react-native-track-player';
 import useSWRInfinite from 'swr/infinite';
 import { AlbumContent } from '../components/AlbumContent';
@@ -51,6 +51,5 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignContent: 'center',
-        paddingTop: StatusBar.currentHeight,
     },
 });
