@@ -54,8 +54,7 @@ export const UserAttrs = () => {
             {data?.bindings
                 .filter(b => b.type === 1)
                 .map((b) => (
-                    <Chip
-                        icon="phone"
+                    <Chip icon="phone"
                         compact
                         style={styles.attr}
                         key="phoneNumber"
@@ -67,8 +66,8 @@ export const UserAttrs = () => {
                     </Chip>
                 ))}
 
-            <Chip icon="calendar" compact style={styles.attr} key="villageAge">
-                {Math.floor((data?.createDays || 0) / 365)} years
+            <Chip icon="star" compact style={styles.attr} key="level">
+                {data?.level} level
             </Chip>
             <Chip icon="account-multiple-outline" compact style={styles.attr} key="follows">
                 {data?.profile.follows} follows
@@ -77,8 +76,8 @@ export const UserAttrs = () => {
                 {data?.profile.followeds} followeds
             </Chip>
 
-            <Chip icon="star" compact style={styles.attr} key="level">
-                {data?.level} level
+            <Chip icon="calendar" compact style={styles.attr} key="villageAge">
+                {Math.floor((data?.createDays || 0) / 365)} years
             </Chip>
             <Chip icon="timer-outline" compact style={styles.attr} key="timeSpentOnMusic">
                 {data?.listenSongs.toLocaleString()} hours
