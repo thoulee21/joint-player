@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
 import React, { useCallback, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Avatar, IconButton, Searchbar, useTheme } from 'react-native-paper';
+import { Avatar, IconButton, Searchbar, Tooltip, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useSWR from 'swr';
 import { BlurBackground } from '../components/BlurBackground';
@@ -40,14 +40,16 @@ export const SwitchUser = () => {
             }}
           />
         )}
-        <Avatar.Image
-          {...props}
-          size={40}
-          source={{ uri: data?.profile.avatarUrl }}
-        />
+        <Tooltip title={data?.profile.nickname || 'No username'}>
+          <Avatar.Image
+            {...props}
+            size={40}
+            source={{ uri: data?.profile.avatarUrl }}
+          />
+        </Tooltip>
       </View>
     );
-  }, [data?.profile.avatarUrl, error, isAvatarLoading, showQuery]);
+  }, [data, error, isAvatarLoading, showQuery]);
 
   const search = useCallback(() => {
     if (showQuery && searchQuery !== showQuery) {
