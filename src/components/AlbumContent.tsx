@@ -1,7 +1,15 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { RefreshControl, StyleSheet } from 'react-native';
-import DraggableFlatList, { type RenderItemParams } from 'react-native-draggable-flatlist';
-import { ActivityIndicator, Divider, Text, useTheme } from 'react-native-paper';
+import * as Animatable from 'react-native-animatable';
+import DraggableFlatList, {
+  type RenderItemParams,
+} from 'react-native-draggable-flatlist';
+import {
+  ActivityIndicator,
+  Divider,
+  Text,
+  useTheme,
+} from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
 import { useDebounce } from '../hook';
 import { HotAlbum } from '../types/albumArtist';
@@ -64,19 +72,29 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
     const index = getIndex() || 0;
 
     return (
-      <DraggableItem
-        item={songItem}
-        itemRefs={itemRefs}
-        renderUnderlayLeft={renderUnderlayLeft}
+      <Animatable.View
+        animation={
+          showData.length < 20
+            ? 'fadeIn' : undefined
+        }
+        duration={500}
+        delay={index * 100}
+        useNativeDriver
       >
-        <SongItem
-          index={index}
+        <DraggableItem
           item={songItem}
-          showIndex
-        />
-      </DraggableItem>
+          itemRefs={itemRefs}
+          renderUnderlayLeft={renderUnderlayLeft}
+        >
+          <SongItem
+            index={index}
+            item={songItem}
+            showIndex
+          />
+        </DraggableItem>
+      </Animatable.View>
     );
-  }, [renderUnderlayLeft]);
+  }, [renderUnderlayLeft, showData.length]);
 
   const keyExtractor = useCallback(
     (item: Song) => item.id.toString(), []
@@ -125,7 +143,10 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
       }
       ItemSeparatorComponent={Divider}
       ListEmptyComponent={
-        <ActivityIndicator size="large" style={styles.loading} />
+        <ActivityIndicator
+          size="large"
+          style={styles.loading}
+        />
       }
       activationDistance={20}
     />
