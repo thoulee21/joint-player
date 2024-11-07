@@ -31,8 +31,9 @@ export const UserItem = ({ item }: { item: Userprofile }) => {
     }, [item.nickname, navigation, user]);
 
     const renderAvatar = useCallback((props: ListLRProps) => (
-        <Avatar.Image {...props}
-            size={40}
+        <Avatar.Image
+            {...props}
+            size={50}
             source={{ uri: item.avatarUrl }}
         />
     ), [item.avatarUrl]);
