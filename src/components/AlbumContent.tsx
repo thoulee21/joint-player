@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { RefreshControl, StyleSheet } from 'react-native';
-import * as Animatable from 'react-native-animatable';
 import DraggableFlatList, { type RenderItemParams } from 'react-native-draggable-flatlist';
 import { ActivityIndicator, Divider, Text, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
@@ -54,33 +53,34 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
     </SwipeableUnderlay>
   ), [appTheme]);
 
-  const renderItem = useCallback(({ getIndex, item }:
-    RenderItemParams<Song>
+  const showData = useMemo(() => (
+    data?.flatMap((d) => d.album.songs) || []
+  ), [data]);
+
+  const renderItem = useCallback((
+    { getIndex, item }: RenderItemParams<Song>
   ) => {
     const songItem = songToTrack(item);
     const index = getIndex() || 0;
 
     return (
-      <Animatable.View
-        animation="fadeIn"
-        duration={500}
-        delay={index * 100}
-        useNativeDriver
+      <DraggableItem
+        item={songItem}
+        itemRefs={itemRefs}
+        renderUnderlayLeft={renderUnderlayLeft}
       >
-        <DraggableItem
+        <SongItem
+          index={index}
           item={songItem}
-          itemRefs={itemRefs}
-          renderUnderlayLeft={renderUnderlayLeft}
-        >
-          <SongItem
-            index={index}
-            item={songItem}
-            showIndex
-          />
-        </DraggableItem>
-      </Animatable.View>
+          showIndex
+        />
+      </DraggableItem>
     );
   }, [renderUnderlayLeft]);
+
+  const keyExtractor = useCallback(
+    (item: Song) => item.id.toString(), []
+  );
 
   if (error) {
     return (
@@ -100,8 +100,8 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
 
   return (
     <DraggableFlatList
-      data={data?.flatMap((d) => d.album.songs) || []}
-      keyExtractor={(item: Song) => item.id.toString()}
+      data={showData}
+      keyExtractor={keyExtractor}
       initialNumToRender={10}
       containerStyle={[styles.container, {
         backgroundColor: appTheme.colors.surface,
