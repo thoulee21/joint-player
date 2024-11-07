@@ -1,12 +1,12 @@
 import { BottomSheetFlatList, type BottomSheetModal } from '@gorhom/bottom-sheet';
 import React, { useCallback, useEffect } from 'react';
-import { DeviceEventEmitter, Dimensions, StyleSheet } from 'react-native';
+import { DeviceEventEmitter, StyleSheet } from 'react-native';
+import { List } from 'react-native-paper';
 import TrackPlayer from 'react-native-track-player';
 import { useAppDispatch, useAppSelector } from '../hook';
 import { queue, setQueue } from '../redux/slices';
 import { TrackType } from '../services/GetTracksService';
 import { BottomSheetPaper } from './BottomSheetPaper';
-import { LottieAnimation } from './LottieAnimation';
 import { TrackItem } from './TrackItem';
 
 export function TrackListSheet({ bottomSheetRef }: {
@@ -24,9 +24,7 @@ export function TrackListSheet({ bottomSheetRef }: {
         );
       }
     } catch { } // ignore player errors
-    //no dispatch dependency
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     DeviceEventEmitter.addListener(
@@ -43,15 +41,20 @@ export function TrackListSheet({ bottomSheetRef }: {
     );
   }, []);
 
+  const renderEmptyIcon = useCallback(() => (
+    <List.Icon icon="music-circle-outline" />
+  ), []);
+
   const renderEmptyTrack = useCallback(() => {
     return (
-      <LottieAnimation
-        animation="teapot"
-        style={styles.noTracks}
-        caption="No tracks found"
+      <List.Item
+        title="No tracks in queue"
+        description="Add some songs to your queue"
+        left={renderEmptyIcon}
+        style={styles.noTrack}
       />
     );
-  }, []);
+  }, [renderEmptyIcon]);
 
   const keyExtractor = useCallback(
     (item: TrackType) => item.id.toString(), []
@@ -71,11 +74,7 @@ export function TrackListSheet({ bottomSheetRef }: {
 }
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-  },
-  noTracks: {
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width,
-  },
+  noTrack: {
+    marginHorizontal: '4%',
+  }
 });
