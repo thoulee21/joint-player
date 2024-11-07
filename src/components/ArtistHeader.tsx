@@ -1,13 +1,17 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
-import { Dimensions, StatusBar, StyleSheet, View } from 'react-native';
-import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
+import { StyleSheet, View } from 'react-native';
+import HapticFeedback, {
+    HapticFeedbackTypes,
+} from 'react-native-haptic-feedback';
 import { Card, Text, useTheme } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Artist } from '../types/albumArtist';
 
 export const ArtistHeader = ({ artist }: { artist?: Artist }) => {
     const navigation = useNavigation();
     const appTheme = useTheme();
+    const { top } = useSafeAreaInsets();
 
     const viewArtistPic = useCallback(() => {
         HapticFeedback.trigger(
@@ -21,7 +25,10 @@ export const ArtistHeader = ({ artist }: { artist?: Artist }) => {
     }, [artist, navigation]);
 
     return (
-        <View style={styles.albumHeader}>
+        <View style={[
+            styles.albumHeader,
+            { marginTop: top }
+        ]}>
             <View style={styles.albumHeaderTitle}>
                 <Text variant="headlineSmall">
                     {artist?.name}
@@ -46,8 +53,7 @@ const styles = StyleSheet.create({
     albumHeader: {
         marginHorizontal: '2%',
         marginBottom: '1%',
-        marginTop: StatusBar.currentHeight,
-        width: Dimensions.get('window').width - 20,
+        width: '94%',
     },
     albumHeaderTitle: {
         flexDirection: 'row',
