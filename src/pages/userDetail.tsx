@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Linking, StyleSheet, View } from 'react-native';
 import { Appbar, List, Text, Tooltip, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -20,6 +20,18 @@ export const UserDetail = () => {
   const user = useAppSelector(selectUser);
   const favorites = useAppSelector(favs);
 
+  const appbarBgColor = useMemo(() => {
+    if (appTheme.dark) {
+      return Color(
+        appTheme.colors.surface
+      ).alpha(0.5).string();
+    } else {
+      return Color(
+        appTheme.colors.surface
+      ).fade(0.4).string();
+    }
+  }, [appTheme.colors.surface, appTheme.dark]);
+
   return (
     <BlurBackground>
       <UserBackground style={styles.background}>
@@ -27,9 +39,7 @@ export const UserDetail = () => {
           elevated
           statusBarHeight={0}
           style={{
-            backgroundColor: Color(
-              appTheme.colors.surface
-            ).alpha(0.5).string(),
+            backgroundColor: appbarBgColor,
             paddingTop: insets.top,
             height: 56 + insets.top,
           }}
