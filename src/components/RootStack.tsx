@@ -46,11 +46,11 @@ export function RootStack() {
             <Stack.Screen name="AniGallery" component={AniGallery} />
             <Stack.Screen name="Test" component={TestScreen} />
             <Stack.Screen name="UserDetail" component={UserDetail} />
+            <Stack.Screen name="AlbumDetail" component={AlbumDetail} />
             <Stack.Group
                 screenOptions={TransitionPresets.ModalPresentationIOS}
             >
                 <Stack.Screen name="IssueReport" component={IssueReport} />
-                <Stack.Screen name="AlbumDetail" component={AlbumDetail} />
                 <Stack.Screen name="SwitchUser" component={SwitchUser} />
                 <Stack.Screen name="WebView" component={WebViewScreen} />
                 <Stack.Screen name="Search" component={Search} />
