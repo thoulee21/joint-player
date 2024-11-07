@@ -45,7 +45,7 @@ export const BottomSheetPaper = forwardRef<
           backgroundColor: appTheme.colors.outline
         }}
         enableDynamicSizing={false}
-        snapPoints={['60%', '90%']}
+        snapPoints={['35%', '90%', '100%']}
         bottomInset={insets.bottom}
         topInset={insets.top}
         enablePanDownToClose
