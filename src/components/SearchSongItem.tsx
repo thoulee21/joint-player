@@ -78,14 +78,14 @@ export const SearchSongItem = ({ index, item }: {
   const description = useMemo(() => (
     `${item.artists.map(
       (artist) => artist.name
-    ).join(', ')} - ${item.album.name}`
+    ).join(', ')}\n${item.album.name}`
   ), [item]);
 
   return (
     <List.Item
       title={item.name}
       description={description}
-      descriptionNumberOfLines={1}
+      descriptionNumberOfLines={2}
       style={styles.songItem}
       titleStyle={{ color: appTheme.colors.onSurface }}
       left={renderIndex}

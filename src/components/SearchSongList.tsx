@@ -94,7 +94,7 @@ export const SearchSongList = ({ keyword }: { keyword: string }) => {
         refreshing={refreshing}
         onRefresh={onRefresh}
         fadingEdgeLength={100}
-        estimatedItemSize={84}
+        estimatedItemSize={103.3}
         ListEmptyComponent={renderEmpty}
         refreshControl={
           <RefreshControl
