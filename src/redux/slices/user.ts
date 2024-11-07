@@ -22,6 +22,11 @@ export const userSlice = createSlice({
             state.id = action.payload.id;
             Storage.set(StorageKeys.User, action.payload);
         },
+        resetUser: (state) => {
+            state.username = initialState.username;
+            state.id = initialState.id;
+            Storage.remove(StorageKeys.User);
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(initUser.fulfilled, (state, action) => {
@@ -39,6 +44,6 @@ export const initUser = createAsyncThunk(
     }
 );
 
-export const { setUser } = userSlice.actions;
+export const { setUser, resetUser } = userSlice.actions;
 
 export const selectUser = (state: RootState) => state.user;
