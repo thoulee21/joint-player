@@ -28,7 +28,7 @@ export const UserDetail = () => {
     } else {
       return Color(
         appTheme.colors.surface
-      ).fade(0.4).string();
+      ).fade(0.5).string();
     }
   }, [appTheme.colors.surface, appTheme.dark]);
 
@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
   },
   attrs: {
     marginVertical: '3%',
-    height: '12%',
   },
   footer: {
     justifyContent: 'flex-end',
