@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
-import { Dimensions, FlatList, StyleSheet, ToastAndroid } from 'react-native';
+import { FlatList, StyleSheet, ToastAndroid, View } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 import { ActivityIndicator, List, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
 import { useDebounce } from '../hook';
@@ -44,8 +45,17 @@ export const UserList = ({ searchQuery }: { searchQuery: string }) => {
         if (hasMore) { setSize(prev => prev + 1); }
     }, 1000);
 
-    const renderItem = useCallback(({ item }: { item: Userprofile }) => (
-        <UserItem item={item} />
+    const renderItem = useCallback(({ item, index }: {
+        item: Userprofile, index: number
+    }) => (
+        <Animatable.View
+            animation="fadeIn"
+            duration={500}
+            delay={index * 100}
+            useNativeDriver
+        >
+            <UserItem item={item} />
+        </Animatable.View>
     ), []);
 
     if (isLoading) {
@@ -79,22 +89,20 @@ export const UserList = ({ searchQuery }: { searchQuery: string }) => {
             onRefresh={refresh}
             refreshing={refreshing}
             ListFooterComponent={
-                hasMore && users.length
-                    ? <ActivityIndicator
+                hasMore && users.length ? (
+                    <ActivityIndicator
                         style={styles.footerLoading}
-                    /> : null}
+                    />) : null}
             ListEmptyComponent={
-                <LottieAnimation
-                    style={{
-                        height: Dimensions.get('window').height / 1.1,
-                        width: Dimensions.get('window').width,
-                    }}
-                    animation="teapot"
-                    caption={
-                        `No users found\n${data?.[0].message
-                        || 'Try another search query later'}`
-                    }
-                />
+                <View style={styles.empty}>
+                    <LottieAnimation
+                        animation="teapot"
+                        caption={
+                            `No users found\n${data?.[0].message
+                            || 'Try another search query later'}`
+                        }
+                    />
+                </View>
             }
         />
     );
@@ -110,4 +118,8 @@ const styles = StyleSheet.create({
     error: {
         textAlign: 'center',
     },
+    empty: {
+        width: '100%',
+        height: '1500%',
+    }
 });
