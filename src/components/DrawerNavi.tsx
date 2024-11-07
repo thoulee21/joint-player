@@ -2,7 +2,7 @@ import {
     createDrawerNavigator,
     type DrawerContentComponentProps,
 } from '@react-navigation/drawer';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { Icon } from 'react-native-paper';
 import { Favs, Player, Settings } from '../pages';
 import { BlurBackground } from './BlurBackground';
@@ -10,30 +10,6 @@ import { DrawerItemList } from './DrawerItemList';
 import { UserHeader } from './UserHeader';
 
 const Drawer = createDrawerNavigator();
-
-const ROUTES = [
-    {
-        name: 'Player',
-        component: Player,
-        focusedIcon: 'music-circle',
-        unfocusedIcon: 'music-circle-outline',
-        lazy: false,
-    },
-    {
-        name: 'Favorites',
-        component: Favs,
-        focusedIcon: 'heart',
-        unfocusedIcon: 'heart-outline',
-        lazy: false,
-    },
-    {
-        name: 'Settings',
-        component: Settings,
-        focusedIcon: 'cog',
-        unfocusedIcon: 'cog-outline',
-        lazy: true,
-    },
-];
 
 const drawerIcon = (
     focusedIcon: string, unfocusedIcon: string
@@ -48,22 +24,6 @@ const drawerIcon = (
     );
 
 export function DrawerNavi() {
-    const DrawerRoutes = useMemo(() =>
-        ROUTES.map(({
-            name, component, focusedIcon, unfocusedIcon, lazy,
-        }) => (
-            <Drawer.Screen
-                key={name}
-                name={name}
-                component={component}
-                options={{
-                    drawerIcon:
-                        drawerIcon(focusedIcon, unfocusedIcon),
-                    lazy,
-                }}
-            />
-        )), []);
-
     const renderDrawerContent = useCallback(
         (props: DrawerContentComponentProps) => (
             <BlurBackground>
@@ -74,10 +34,29 @@ export function DrawerNavi() {
 
     return (
         <Drawer.Navigator
-            screenOptions={{ headerShown: false }}
             drawerContent={renderDrawerContent}
+            screenOptions={{ headerShown: false }}
         >
-            {DrawerRoutes}
-        </Drawer.Navigator>
+            <Drawer.Screen name="Player" component={Player} options={{
+                lazy: false,
+                drawerIcon: drawerIcon(
+                    'music-circle',
+                    'music-circle-outline'
+                )
+            }} />
+            <Drawer.Screen name="Favorites" component={Favs} options={{
+                lazy: false,
+                drawerIcon: drawerIcon(
+                    'heart',
+                    'heart-outline'
+                )
+            }} />
+            <Drawer.Screen name="Settings" component={Settings} options={{
+                drawerIcon: drawerIcon(
+                    'cog',
+                    'cog-outline'
+                )
+            }} />
+        </Drawer.Navigator >
     );
 }
