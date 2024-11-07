@@ -2,16 +2,11 @@ import React, {
   useCallback,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
+  useState,
 } from 'react';
-import {
-  Dimensions,
-  FlatList,
-  StyleProp,
-  View,
-  ViewStyle,
-} from 'react-native';
-import { useDebounce } from '../../../hook';
+import { FlatList, StyleProp, ViewStyle } from 'react-native';
 import { useCurrentIndex, useLocalAutoScroll } from '../hook';
 import type { LyricLine } from '../lyric';
 import { parseLyric } from '../util';
@@ -46,122 +41,112 @@ interface Props {
   style: StyleProp<ViewStyle>;
 }
 
-const MarginTopView = () => {
-  return (
-    <View
-      style={{ height: Dimensions.get('window').height / 10 }}
-    />
-  );
-};
-
-const MarginBottomView = () => {
-  return (
-    <View
-      style={{ height: Dimensions.get('window').height / 4.5 }}
-    />
-  );
-};
-
-const Lyric = React.forwardRef<
-  {
-    scrollToCurrentLine: () => void;
-    getCurrentLine: () => {
-      index: number;
-      lrcLine: LyricLine | null;
-    };
-  },
-  Props
->(function Lrc(
-  {
+const Lyric = React.forwardRef<{
+  scrollToCurrentLine: () => void;
+  getCurrentLine: () => {
+    index: number;
+    lrcLine: LyricLine | null;
+  };
+}, Props>(
+  function Lrc({
     lrc,
     lineRenderer,
     currentTime = 0,
     autoScroll = true,
-    autoScrollAfterUserScroll = 500,
+    autoScrollAfterUserScroll = 1000,
     onCurrentLineChange,
     style,
     ...props
-  }: Props,
-  ref,
-) {
-  const lrcRef = useRef<FlatList | null>(null);
-  const lrcLineList = parseLyric(lrc);
+  }: Props, ref
+  ) {
+    const lrcRef = useRef<FlatList | null>(null);
+    const [firstRun, setFirstRun] = useState(true);
 
-  const currentIndex = useCurrentIndex(lrcLineList, currentTime);
-  const { localAutoScroll, resetLocalAutoScroll, onScroll } = useLocalAutoScroll(
-    autoScroll,
-    autoScrollAfterUserScroll,
-  );
+    const lrcLineList = useMemo(() => parseLyric(lrc), [lrc]);
+    const currentIndex = useCurrentIndex(lrcLineList, currentTime);
 
-  const scrollToCurrentIndex = useDebounce(() => {
-    try {
+    const {
+      localAutoScroll,
+      resetLocalAutoScroll,
+      onScroll,
+    } = useLocalAutoScroll(
+      autoScroll,
+      autoScrollAfterUserScroll,
+    );
+
+    const scrollToCurrentIndex = useCallback(() => {
       lrcRef.current?.scrollToIndex({
         index: currentIndex,
         viewPosition: 0.1,
       });
-    } catch { }
-  });
+    }, [currentIndex]);
 
-  // auto scroll
-  useEffect(() => {
-    if (localAutoScroll) {
-      scrollToCurrentIndex();
-    }
-  }, [currentIndex, localAutoScroll, scrollToCurrentIndex]);
+    // auto scroll
+    useEffect(() => {
+      if (localAutoScroll) {
+        scrollToCurrentIndex();
+      }
+    }, [currentIndex, localAutoScroll, scrollToCurrentIndex]);
 
-  // on current line change
-  useEffect(() => {
-    onCurrentLineChange &&
-      onCurrentLineChange({
+    // on current line change
+    useEffect(() => {
+      onCurrentLineChange &&
+        onCurrentLineChange({
+          index: currentIndex,
+          lrcLine: lrcLineList[currentIndex] || null,
+        });
+    }, [lrcLineList, currentIndex, onCurrentLineChange]);
+
+    useImperativeHandle(ref, () => ({
+      getCurrentLine: () => ({
         index: currentIndex,
         lrcLine: lrcLineList[currentIndex] || null,
-      });
-  }, [lrcLineList, currentIndex, onCurrentLineChange]);
+      }),
 
-  useImperativeHandle(ref, () => ({
-    getCurrentLine: () => ({
-      index: currentIndex,
-      lrcLine: lrcLineList[currentIndex] || null,
-    }),
+      scrollToCurrentLine: () => {
+        resetLocalAutoScroll();
+        scrollToCurrentIndex();
+      },
+    }));
 
-    scrollToCurrentLine: () => {
-      resetLocalAutoScroll();
-      scrollToCurrentIndex();
-    },
-  }));
+    const renderItem = useCallback((
+      { item, index }: { item: LyricLine; index: number; }
+    ) => (
+      <>
+        {lineRenderer({
+          lrcLine: item,
+          index,
+          active: currentIndex === index,
+        })}
+      </>
+    ), [currentIndex, lineRenderer]);
 
-  const renderItem = useCallback(({ item, index }: {
-    item: LyricLine;
-    index: number;
-  }) => (
-    <>
-      {lineRenderer({
-        lrcLine: item,
-        index,
-        active: currentIndex === index,
-      })}
-    </>
-  ), [currentIndex, lineRenderer]);
+    return (
+      <FlatList
+        {...props}
+        ref={lrcRef}
+        scrollEventThrottle={30}
+        onScroll={onScroll}
+        style={style}
+        fadingEdgeLength={100}
+        data={lrcLineList}
+        renderItem={renderItem}
+        onScrollToIndexFailed={() => {
+          //ignore failed
+        }}
+        onStartReached={() => {
+          setTimeout(() => {
+            setFirstRun(false);
+          }, 2000);
 
-  return (
-    <FlatList
-      {...props}
-      ref={lrcRef}
-      scrollEventThrottle={30}
-      onScroll={onScroll}
-      style={style}
-      fadingEdgeLength={100}
-      data={lrcLineList}
-      renderItem={renderItem}
-      // ignore scrollToIndex failed
-      onScrollToIndexFailed={() => { }}
-      ListHeaderComponent={MarginTopView}
-      ListFooterComponent={MarginBottomView}
-      onStartReached={scrollToCurrentIndex}
-      onStartReachedThreshold={0.1}
-      showsVerticalScrollIndicator={false}
-    />
-  );
-});
+          if (firstRun) {
+            scrollToCurrentIndex();
+          }
+        }}
+        onStartReachedThreshold={0.1}
+        showsVerticalScrollIndicator={false}
+      />
+    );
+  });
 
 export default Lyric;
