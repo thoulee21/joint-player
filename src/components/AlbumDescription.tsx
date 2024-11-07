@@ -1,8 +1,10 @@
 import React, { useCallback, useState } from 'react';
-import { Dimensions, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { Button, Dialog, Portal, Text } from 'react-native-paper';
 
-export const AlbumDescription = ({ description }: { description?: string }) => {
+export const AlbumDescription = (
+  { description }: { description?: string }
+) => {
   const [dialogVisible, setDialogVisible] = useState(false);
 
   const showDialog = useCallback(() => {
@@ -63,7 +65,7 @@ const styles = StyleSheet.create({
     marginHorizontal: '6%',
   },
   dialog: {
-    maxHeight: 0.8 * Dimensions.get('window').height,
+    maxHeight: '80%',
   },
   smallPadding: {
     paddingHorizontal: 0,
