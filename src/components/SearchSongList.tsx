@@ -1,6 +1,7 @@
 import { FlashList } from '@shopify/flash-list';
 import React, { useCallback, useMemo, useState } from 'react';
-import { Dimensions, RefreshControl, StyleSheet, View } from 'react-native';
+import { RefreshControl, StyleSheet, View } from 'react-native';
+import * as Animatable from 'react-native-animatable';
 import { ActivityIndicator, Text, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
 import type { Main, Song } from '../types/searchSongs';
@@ -57,11 +58,18 @@ export const SearchSongList = ({ keyword }: { keyword: string }) => {
   const renderItem = useCallback((
     props: { index: number, item: Song }
   ) => (
-    <SearchSongItem {...props} />
+    <Animatable.View
+      animation="fadeIn"
+      duration={500}
+      delay={props.index * 100}
+      useNativeDriver
+    >
+      <SearchSongItem {...props} />
+    </Animatable.View>
   ), []);
 
   const renderEmpty = useCallback(() => (
-    <View style={styles.root}>
+    <View style={styles.empty}>
       {isLoading
         ? <ActivityIndicator size="large" style={styles.loading} />
         : <LottieAnimation caption="No songs found" animation="teapot" />}
@@ -121,9 +129,9 @@ export const SearchSongList = ({ keyword }: { keyword: string }) => {
 };
 
 const styles = StyleSheet.create({
-  root: {
-    height: Dimensions.get('window').height - 84,
-    width: Dimensions.get('window').width,
+  empty: {
+    height: '305%',
+    width: '100%',
   },
   loading: {
     flex: 1,
