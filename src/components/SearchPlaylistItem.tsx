@@ -34,11 +34,10 @@ export const PlaylistItem = ({ item }:
   return (
     <List.Item
       title={item.name}
-      titleNumberOfLines={2}
       description={
-        `by ${item.creator.nickname}\n${item.description || ''}`
+        `${item.creator.nickname}\n${item.description || ''}`
       }
-      descriptionNumberOfLines={3}
+      descriptionNumberOfLines={2}
       left={renderImg}
       onPress={() => {
         //@ts-expect-error
