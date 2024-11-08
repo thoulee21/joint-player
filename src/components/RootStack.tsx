@@ -17,9 +17,10 @@ import {
     MvDetail,
     MvPlayer,
     Search,
+    Settings,
     SwitchUser,
     TestScreen,
-    WebViewScreen
+    WebViewScreen,
 } from '../pages';
 import { DrawerNavi } from './DrawerNavi';
 
@@ -45,6 +46,7 @@ export function RootStack() {
             <Stack.Screen name="AniGallery" component={AniGallery} />
             <Stack.Screen name="Test" component={TestScreen} />
             <Stack.Screen name="AlbumDetail" component={AlbumDetail} />
+            <Stack.Screen name="Settings" component={Settings} />
             <Stack.Group
                 screenOptions={TransitionPresets.ModalPresentationIOS}
             >

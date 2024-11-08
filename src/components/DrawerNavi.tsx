@@ -4,7 +4,7 @@ import {
 } from '@react-navigation/drawer';
 import React, { useCallback } from 'react';
 import { Icon } from 'react-native-paper';
-import { Favs, Player, Settings, UserDetail } from '../pages';
+import { Favs, Player, UserDetail } from '../pages';
 import { BlurBackground } from './BlurBackground';
 import { DrawerItemList } from './DrawerItemList';
 import { UserHeader } from './UserHeader';
@@ -50,9 +50,6 @@ export function DrawerNavi() {
                 title: 'Account',
                 lazy: false,
                 drawerIcon: renderDrawerIcon('account'),
-            }} />
-            <Drawer.Screen name="Settings" component={Settings} options={{
-                drawerIcon: renderDrawerIcon('cog'),
             }} />
         </Drawer.Navigator >
     );

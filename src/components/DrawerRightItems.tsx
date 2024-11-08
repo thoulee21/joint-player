@@ -1,7 +1,5 @@
-import { useUpdates } from 'expo-updates';
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Badge, Text, useTheme } from 'react-native-paper';
+import { Text, useTheme } from 'react-native-paper';
 import { useAppSelector } from '../hook/reduxHooks';
 import { favs } from '../redux/slices/favs';
 
@@ -18,22 +16,3 @@ export const FavCount = () => {
     </Text>
   );
 };
-
-export const UpdateBadge = () => {
-  const { isUpdatePending } = useUpdates();
-  return isUpdatePending && (
-    <Badge
-      visible
-      size={8}
-      style={[
-        styles.badge,
-      ]}
-    />
-  );
-};
-
-const styles = StyleSheet.create({
-  badge: {
-    alignSelf: 'center',
-  },
-});

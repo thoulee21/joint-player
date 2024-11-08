@@ -13,7 +13,7 @@ import React, { useCallback } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { Drawer, useTheme } from 'react-native-paper';
 import { ActionDrawerItems } from './ActionDrawerItems';
-import { FavCount, UpdateBadge } from './DrawerRightItems';
+import { FavCount } from './DrawerRightItems';
 
 type Props = {
   state: DrawerNavigationState<ParamListBase>;
@@ -75,8 +75,6 @@ function DrawerItems({ state, navigation, descriptors }: Props) {
       switch (item.name) {
         case 'Favorites':
           return <FavCount />;
-        case 'Settings':
-          return <UpdateBadge />;
         default:
           return null;
       }

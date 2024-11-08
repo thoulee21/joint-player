@@ -50,7 +50,6 @@ export const UserDetail = () => {
                 }}
               >
                 <DrawerToggleButton tintColor={appTheme.colors.onSurface} />
-                <Appbar.Content title="Account" />
                 <Appbar.Action
                   icon="open-in-app"
                   onPress={() => {
@@ -64,6 +63,13 @@ export const UserDetail = () => {
                     Linking.openURL(
                       `https://music.163.com/user/home?id=${user.id}`
                     );
+                  }}
+                />
+                <Appbar.Content title="Account" />
+                <Appbar.Action
+                  icon="cog-outline"
+                  onPress={() => {
+                    navigation.navigate('Settings' as never);
                   }}
                 />
               </Appbar.Header>
