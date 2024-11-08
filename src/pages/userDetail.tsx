@@ -1,20 +1,19 @@
+import { DrawerToggleButton } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
-import React, { useCallback, useMemo } from 'react';
-import { Alert, Linking, ScrollView, StyleSheet, ToastAndroid, useWindowDimensions, View } from 'react-native';
-import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { Appbar, List, Portal, Text, Tooltip, useTheme } from 'react-native-paper';
+import React, { useMemo } from 'react';
+import { Linking, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Appbar, List, Portal, Text, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurBackground } from '../components/BlurBackground';
 import { LottieAnimation } from '../components/LottieAnimation';
 import { PlaylistItem } from '../components/PlaylistItem';
 import { UserAttrs } from '../components/UserAttrs';
 import { UserBackground, UserInfo } from '../components/UserHeader';
-import { useAppDispatch, useAppSelector } from '../hook';
-import { resetUser, selectUser } from '../redux/slices';
+import { useAppSelector } from '../hook';
+import { selectUser } from '../redux/slices';
 
 export const UserDetail = () => {
-  const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const appTheme = useTheme();
 
@@ -35,27 +34,6 @@ export const UserDetail = () => {
     }
   }, [appTheme.colors.surface, appTheme.dark]);
 
-  const logout = useCallback(() => {
-    HapticFeedback.trigger(
-      HapticFeedbackTypes.notificationWarning
-    );
-    Alert.alert(
-      'Logout',
-      'Are you sure to logout?', [
-      { text: 'Cancel', style: 'cancel' }, {
-        text: 'OK',
-        onPress: () => {
-          navigation.goBack();
-          dispatch(resetUser());
-          ToastAndroid.show(
-            'User logged out',
-            ToastAndroid.SHORT
-          );
-        }
-      }]
-    );
-  }, [dispatch, navigation]);
-
   return (
     <Portal.Host>
       <BlurBackground>
@@ -71,7 +49,8 @@ export const UserDetail = () => {
                   height: 56 + insets.top,
                 }}
               >
-                <Appbar.BackAction onPress={navigation.goBack} />
+                <DrawerToggleButton tintColor={appTheme.colors.onSurface} />
+                <Appbar.Content title="Account" />
                 <Appbar.Action
                   icon="open-in-app"
                   onPress={() => {
@@ -87,20 +66,6 @@ export const UserDetail = () => {
                     );
                   }}
                 />
-                <Appbar.Content title="User Detail" />
-                <Appbar.Action
-                  icon="logout"
-                  iconColor={appTheme.colors.error}
-                  onPress={logout}
-                />
-                <Tooltip title="Switch User" >
-                  <Appbar.Action
-                    icon="account-switch-outline"
-                    onPress={() => {
-                      navigation.navigate('SwitchUser' as never);
-                    }}
-                  />
-                </Tooltip>
               </Appbar.Header>
             </Portal>
 
