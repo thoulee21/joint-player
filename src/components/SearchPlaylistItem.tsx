@@ -44,6 +44,7 @@ export const PlaylistItem = ({ item }:
         //@ts-expect-error
         navigation.push('PlaylistDetail', {
           playlistID: item.id,
+          name: item.name,
         });
       }}
     />
@@ -58,5 +59,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     backgroundColor: 'rgba(0,0,0,0.5)',
     paddingHorizontal: 3,
+    color: 'white',
   },
 });
