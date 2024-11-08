@@ -1,6 +1,7 @@
 import { useRoute } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import TrackPlayer from 'react-native-track-player';
 import useSWRInfinite from 'swr/infinite';
 import { AlbumContent } from '../components/AlbumContent';
@@ -16,6 +17,7 @@ import { Main } from '../types/albumDetail';
 import { songToTrack } from '../utils/songToTrack';
 
 export function AlbumDetail() {
+    const insets = useSafeAreaInsets();
     const dispatch = useAppDispatch();
     const { album } = (useRoute().params as { album: HotAlbum });
 
@@ -31,7 +33,10 @@ export function AlbumDetail() {
     };
 
     return (
-        <BlurBackground style={styles.container}>
+        <BlurBackground style={[
+            styles.container,
+            { paddingTop: insets.top }]
+        }>
             <AlbumHeaderCard album={album} />
             <AlbumDescription
                 description={data && data[0].album.description}
