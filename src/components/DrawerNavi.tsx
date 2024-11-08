@@ -4,7 +4,12 @@ import {
 } from '@react-navigation/drawer';
 import React, { useCallback } from 'react';
 import { Icon } from 'react-native-paper';
-import { Favs, Player, UserDetail } from '../pages';
+import {
+    Favs,
+    Player,
+    SearchPlaylist,
+    UserDetail,
+} from '../pages';
 import { BlurBackground } from './BlurBackground';
 import { DrawerItemList } from './DrawerItemList';
 import { UserHeader } from './UserHeader';
@@ -45,6 +50,10 @@ export function DrawerNavi() {
             <Drawer.Screen name="Favorites" component={Favs} options={{
                 lazy: false,
                 drawerIcon: renderDrawerIcon('heart'),
+            }} />
+            <Drawer.Screen name="SearchPlaylist" component={SearchPlaylist} options={{
+                title: 'Playlist',
+                drawerIcon: renderDrawerIcon('playlist-music'),
             }} />
             <Drawer.Screen name="UserDetail" component={UserDetail} options={{
                 title: 'Account',
