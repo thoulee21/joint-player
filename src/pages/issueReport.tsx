@@ -33,7 +33,9 @@ export const IssueReport = () => {
     ) && email.length > 0;
 
     const sendable = issue && !emailHasErrors;
-    const inputBackgroundColor = Color(appTheme.colors.secondaryContainer).fade(0.7).string();
+    const inputBackgroundColor = Color(
+        appTheme.colors.secondaryContainer
+    ).fade(0.7).string();
 
     const report = useCallback(() => {
         const feedback: UserFeedback = {
