@@ -19,8 +19,7 @@ import {
     Search,
     SwitchUser,
     TestScreen,
-    UserDetail,
-    WebViewScreen,
+    WebViewScreen
 } from '../pages';
 import { DrawerNavi } from './DrawerNavi';
 
@@ -45,7 +44,6 @@ export function RootStack() {
             <Stack.Screen name="AppData" component={AppDataScreen} />
             <Stack.Screen name="AniGallery" component={AniGallery} />
             <Stack.Screen name="Test" component={TestScreen} />
-            <Stack.Screen name="UserDetail" component={UserDetail} />
             <Stack.Screen name="AlbumDetail" component={AlbumDetail} />
             <Stack.Group
                 screenOptions={TransitionPresets.ModalPresentationIOS}

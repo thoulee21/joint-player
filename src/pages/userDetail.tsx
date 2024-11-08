@@ -11,7 +11,7 @@ import { PlaylistItem } from '../components/PlaylistItem';
 import { UserAttrs } from '../components/UserAttrs';
 import { UserBackground, UserInfo } from '../components/UserHeader';
 import { useAppDispatch, useAppSelector } from '../hook';
-import { favs, resetUser, selectUser } from '../redux/slices';
+import { resetUser, selectUser } from '../redux/slices';
 
 export const UserDetail = () => {
   const dispatch = useAppDispatch();
@@ -22,7 +22,6 @@ export const UserDetail = () => {
   const window = useWindowDimensions();
 
   const user = useAppSelector(selectUser);
-  const favorites = useAppSelector(favs);
 
   const appbarBgColor = useMemo(() => {
     if (appTheme.dark) {
@@ -118,7 +117,7 @@ export const UserDetail = () => {
               color: appTheme.colors.secondary
             }}
           >
-            <PlaylistItem tracks={favorites} />
+            <PlaylistItem />
           </List.Section>
 
           <LottieAnimation

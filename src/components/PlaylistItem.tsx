@@ -1,13 +1,17 @@
 import { useNavigation } from '@react-navigation/native';
+import React, { useCallback } from 'react';
+import { List, Text, useTheme } from 'react-native-paper';
+import { useAppSelector } from '../hook';
+import { favs } from '../redux/slices';
 import type { TrackType } from '../services/GetTracksService';
-import { List, useTheme, Text } from 'react-native-paper';
-import { useCallback } from 'react';
 import type { ListLRProps } from '../types/paperListItem';
-import React from 'react';
 
-export const PlaylistItem = ({ tracks }: { tracks: TrackType[] }) => {
+export const PlaylistItem = ({ tracks }: { tracks?: TrackType[] }) => {
     const navigation = useNavigation();
     const appTheme = useTheme();
+
+    const favorites = useAppSelector(favs);
+    tracks = tracks || favorites;
 
     const renderFavImage = useCallback(
         (props: ListLRProps) => (
@@ -31,6 +35,8 @@ export const PlaylistItem = ({ tracks }: { tracks: TrackType[] }) => {
                 {tracks.length}
             </Text>
         ), [appTheme, tracks]);
+
+    if (!tracks.length) { return null; }
 
     return (
         <List.Item
