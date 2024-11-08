@@ -58,6 +58,15 @@ export const PlaylistSearch = ({ keyword }: { keyword: string }) => {
     setRefreshing(false);
   }, [mutate]);
 
+  if (isLoading) {
+    return (
+      <ActivityIndicator
+        style={styles.loading}
+        size="large"
+      />
+    );
+  }
+
   if (error) {
     return (
       <LottieAnimation
