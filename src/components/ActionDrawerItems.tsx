@@ -57,22 +57,36 @@ export const ActionDrawerItems = ({ navigation }: {
   }, [dispatch, navigation]);
 
   return (
-    <Drawer.Section showDivider={false}>
-      <Drawer.Item
-        label="Switch User"
-        icon="account-switch-outline"
-        onPress={() => {
-          navigation.closeDrawer();
-          navigation.navigate('SwitchUser');
-        }}
-      />
-      {!isLoggedOut && (
-        <Drawer.Item
-          label="Logout"
-          icon={renderLogoutIcon}
-          onPress={logout}
-        />
+    <>
+      {__DEV__ && (
+        <Drawer.Section>
+          <Drawer.Item
+            label="Test"
+            icon="test-tube"
+            onPress={() => {
+              navigation.closeDrawer();
+              navigation.navigate('Test');
+            }}
+          />
+        </Drawer.Section>
       )}
-    </Drawer.Section>
+      <Drawer.Section showDivider={false}>
+        <Drawer.Item
+          label="Switch User"
+          icon="account-switch-outline"
+          onPress={() => {
+            navigation.closeDrawer();
+            navigation.navigate('SwitchUser');
+          }}
+        />
+        {!isLoggedOut && (
+          <Drawer.Item
+            label="Logout"
+            icon={renderLogoutIcon}
+            onPress={logout}
+          />
+        )}
+      </Drawer.Section>
+    </>
   );
 };
