@@ -1,10 +1,35 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import fetchRetry from 'fetch-retry';
 import React, { useCallback, useState } from 'react';
-import { Image, ScrollView, StyleSheet, ToastAndroid, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
-import DraggableFlatList, { type RenderItemParams } from 'react-native-draggable-flatlist';
-import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { ActivityIndicator, Appbar, Badge, Chip, Dialog, Divider, Portal, Surface, Text, Tooltip, useTheme } from 'react-native-paper';
+import {
+  Image,
+  Linking,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View
+} from 'react-native';
+import DraggableFlatList, {
+  type RenderItemParams
+} from 'react-native-draggable-flatlist';
+import HapticFeedback, {
+  HapticFeedbackTypes
+} from 'react-native-haptic-feedback';
+import {
+  ActivityIndicator,
+  Appbar,
+  Badge,
+  Button,
+  Chip,
+  Dialog,
+  Divider,
+  Portal,
+  Surface,
+  Text,
+  Tooltip,
+  useTheme
+} from 'react-native-paper';
 import TrackPlayer from 'react-native-track-player';
 import useSWR from 'swr';
 import { BlurBackground } from '../components/BlurBackground';
@@ -31,7 +56,7 @@ export const PlaylistDetailScreen = () => {
 
   const fetcher = async (url: string): Promise<Main> => {
     const response = await fetchRetry(fetch, {
-      retries: 20, retryDelay: 1000,
+      retries: 50, retryDelay: 1000,
     })(url);
     const data = await response.json();
     return data;
@@ -74,7 +99,7 @@ export const PlaylistDetailScreen = () => {
   if (isLoading || data?.code !== 200) {
     return (
       <BlurBackground>
-        <Appbar.Header style={styles.appbar}>
+        <Appbar.Header style={styles.appbar} mode="medium">
           <Appbar.BackAction onPress={navigation.goBack} />
           <Appbar.Content title={name} />
           <Appbar.Action
@@ -105,28 +130,38 @@ export const PlaylistDetailScreen = () => {
   return (
     <Portal.Host>
       <BlurBackground>
-        <Appbar.Header style={styles.appbar}>
+        <Appbar.Header style={styles.appbar} mode="medium">
           <Appbar.BackAction onPress={navigation.goBack} />
           <Appbar.Content title={name} onPress={() => {
-            ToastAndroid.show(
-              name, ToastAndroid.LONG
-            );
+            setDialogVisible(true);
           }} />
-          <View>
+
+          {data.result.commentCount !== 0 && (
+            <View>
+              <Appbar.Action
+                icon="comment-text-multiple-outline"
+                onPress={() => {
+                  //@ts-expect-error
+                  navigation.push('Comments', {
+                    commentThreadId: data.result.commentThreadId,
+                  });
+                }}
+              />
+              <Badge style={styles.badge} size={18}>
+                {data.result.commentCount.toLocaleString()}
+              </Badge>
+            </View>
+          )}
+          <Tooltip title="Open in NetEase Music">
             <Appbar.Action
-              icon="comment-text-multiple-outline"
-              disabled={data.result.commentCount === 0}
+              icon="open-in-new"
               onPress={() => {
-                //@ts-expect-error
-                navigation.push('Comments', {
-                  commentThreadId: data.result.commentThreadId,
-                });
+                Linking.openURL(
+                  `orpheus://playlist/${playlistID}`
+                );
               }}
             />
-            <Badge style={styles.badge} size={18}>
-              {data.result.commentCount.toLocaleString()}
-            </Badge>
-          </View>
+          </Tooltip>
         </Appbar.Header>
 
         <View style={styles.header}>
@@ -158,28 +193,30 @@ export const PlaylistDetailScreen = () => {
           </TouchableWithoutFeedback>
 
           <View style={styles.headerRight}>
-            <Tooltip title={data.result.creator.userId.toString()}>
-              <Chip
-                style={styles.creator}
-                avatar={
-                  <Image source={{
-                    uri: data?.result.creator.avatarUrl
-                  }} />
-                }
-              >
-                {data?.result.creator.nickname}
-              </Chip>
-            </Tooltip>
+            <View style={styles.creator}>
+              <Tooltip title={data.result.creator.userId.toString()}>
+                <Chip
+                  style={styles.creatorChip}
+                  avatar={
+                    <Image source={{
+                      uri: data?.result.creator.avatarUrl
+                    }} />
+                  }
+
+                >
+                  {data?.result.creator.nickname}
+                </Chip>
+              </Tooltip>
+            </View>
 
             <TouchableOpacity onPress={() => {
               if (data.result.description) {
-                if (data?.result.description.length > 100) {
-                  setDialogVisible(true);
-                }
+                setDialogVisible(true);
               }
             }}>
-              <Text numberOfLines={6}>
-                {data?.result.description || 'No Description'}
+              <Text numberOfLines={4}>
+                {data?.result.description
+                  || `${data.result.name}\nNo Description :(`}
               </Text>
             </TouchableOpacity>
           </View>
@@ -217,19 +254,18 @@ export const PlaylistDetailScreen = () => {
           visible={dialogVisible}
           onDismiss={() => setDialogVisible(false)}
         >
-          <Dialog.Title>Playlist Description</Dialog.Title>
-          <Dialog.ScrollArea style={styles.smallPadding}>
-            <ScrollView style={styles.biggerPadding}>
-              <Text selectable>
-                {data.result.description}
-              </Text>
-            </ScrollView>
-          </Dialog.ScrollArea>
+          <Dialog.Title>{data.result.name}</Dialog.Title>
+          <ScrollView style={styles.biggerPadding}>
+            <Text selectable>
+              {data.result.description}
+            </Text>
+          </ScrollView>
           <Dialog.Actions>
-            <Appbar.Action
-              icon="close"
-              onPress={() => setDialogVisible(false)}
-            />
+            <Button onPress={() => {
+              setDialogVisible(false);
+            }}>
+              Close
+            </Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
@@ -255,12 +291,15 @@ const styles = StyleSheet.create({
   tag: {
     margin: '1%',
   },
-  creator: {
+  creatorChip: {
     marginBottom: '5%',
   },
+  creator: {
+    flexDirection: 'row'
+  },
   cover: {
-    width: 150,
-    height: 150,
+    width: 125,
+    height: 125,
     aspectRatio: 1,
   },
   header: {
@@ -274,9 +313,6 @@ const styles = StyleSheet.create({
   },
   dialog: {
     maxHeight: '80%',
-  },
-  smallPadding: {
-    paddingHorizontal: 0,
   },
   biggerPadding: {
     paddingHorizontal: 24,
