@@ -1,7 +1,6 @@
 import { FlashList, type ListRenderItemInfo } from '@shopify/flash-list';
 import React, { useCallback, useMemo, useState } from 'react';
 import { RefreshControl, StyleSheet, useWindowDimensions } from 'react-native';
-import * as Animatable from 'react-native-animatable';
 import { ActivityIndicator, List, Tooltip, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
 import type { Main, Playlist } from '../types/searchPlaylist';
@@ -11,7 +10,6 @@ import { PlaylistItem } from './SearchPlaylistItem';
 export const PlaylistSearch = ({ keyword }: { keyword: string }) => {
   const appTheme = useTheme();
   const window = useWindowDimensions();
-
   const [refreshing, setRefreshing] = useState(false);
 
   const {
@@ -36,15 +34,7 @@ export const PlaylistSearch = ({ keyword }: { keyword: string }) => {
     props: ListRenderItemInfo<Playlist>
   ) => (
     <Tooltip title={props.item.id.toString()}>
-      <Animatable.View
-        animation="fadeIn"
-        duration={500}
-        delay={props.index * 100}
-        useNativeDriver
-        easing="ease-in-out"
-      >
-        <PlaylistItem {...props} />
-      </Animatable.View>
+      <PlaylistItem {...props} />
     </Tooltip>
   ), []);
 
