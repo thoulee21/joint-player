@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
 import React, { useCallback, useState } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Avatar, IconButton, Searchbar, Tooltip, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -42,18 +42,20 @@ export const SwitchUser = () => {
           />
         )}
         <Tooltip title={data?.profile.nickname || 'No username'}>
-          <TouchableOpacity onPress={() => {
-            HapticFeedback.trigger(
-              HapticFeedbackTypes.effectHeavyClick
-            );
-            navigation.navigate('UserDetail' as never);
-          }}>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              HapticFeedback.trigger(
+                HapticFeedbackTypes.effectHeavyClick
+              );
+              navigation.navigate('UserDetail' as never);
+            }}
+          >
             <Avatar.Image
               {...props}
               size={40}
               source={{ uri: data?.profile.avatarUrl }}
             />
-          </TouchableOpacity>
+          </TouchableWithoutFeedback>
         </Tooltip>
       </View>
     );
