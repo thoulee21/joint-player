@@ -11,6 +11,7 @@ export * from './lyrics';
 export * from './mv';
 export * from './mvDetail';
 export * from './player';
+export * from './playlistDetail';
 export * from './search';
 export * from './searchPlaylist';
 export * from './settings';

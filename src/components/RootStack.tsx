@@ -16,6 +16,7 @@ import {
     LyricsScreen,
     MvDetail,
     MvPlayer,
+    PlaylistDetailScreen,
     Search,
     Settings,
     SwitchUser,
@@ -47,6 +48,7 @@ export function RootStack() {
             <Stack.Screen name="Test" component={TestScreen} />
             <Stack.Screen name="AlbumDetail" component={AlbumDetail} />
             <Stack.Screen name="Settings" component={Settings} />
+            <Stack.Screen name="PlaylistDetail" component={PlaylistDetailScreen} />
             <Stack.Group
                 screenOptions={TransitionPresets.ModalPresentationIOS}
             >
