@@ -27,7 +27,11 @@ export const IssueReport = () => {
     const [issue, setIssue] = useState('');
     const [email, setEmail] = useState('');
 
-    const emailHasErrors = (!email.includes('@') || !email.includes('.')) && email.length > 0;
+    const emailHasErrors = (
+        !email.includes('@')
+        || !email.includes('.')
+    ) && email.length > 0;
+
     const sendable = issue && !emailHasErrors;
     const inputBackgroundColor = Color(appTheme.colors.secondaryContainer).fade(0.7).string();
 
@@ -66,6 +70,7 @@ export const IssueReport = () => {
                         label="Issue Description"
                         multiline
                         numberOfLines={10}
+                        autoFocus
                         value={issue}
                         onChangeText={setIssue}
                         placeholder="Please describe the issue you encountered"
@@ -89,6 +94,7 @@ export const IssueReport = () => {
                             placeholder="Please enter your email address"
                             keyboardType="email-address"
                             textContentType="emailAddress"
+                            autoComplete="email"
                             error={emailHasErrors}
                             right={email && <TextInput.Icon
                                 icon="close"
