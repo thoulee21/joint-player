@@ -8,8 +8,8 @@ import { Text, useTheme } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
 import { Artist } from '../types/albumArtist';
 
-export const ArtistNames = ({ textStyle }:
-    { textStyle?: StyleProp<TextStyle> }
+export const ArtistNames = ({ textStyle, artists }:
+    { textStyle?: StyleProp<TextStyle>, artists?: Artist[] }
 ) => {
     const navigation = useNavigation();
     const appTheme = useTheme();
@@ -35,7 +35,7 @@ export const ArtistNames = ({ textStyle }:
 
     return (
         <FlatList
-            data={track?.artists as Artist[]}
+            data={artists || track?.artists as Artist[]}
             horizontal
             style={styles.names}
             showsHorizontalScrollIndicator={false}
