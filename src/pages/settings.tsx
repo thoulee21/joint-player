@@ -1,4 +1,4 @@
-import { DrawerActions, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Appbar, List, Portal, Snackbar, useTheme } from 'react-native-paper';
@@ -24,13 +24,7 @@ export function Settings() {
   return (
     <BlurBackground>
       <Appbar.Header style={styles.header} mode="large">
-        <Appbar.Action
-          icon="menu"
-          isLeading
-          onPress={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
-          }}
-        />
+        <Appbar.BackAction onPress={navigation.goBack} />
         <Appbar.Content title="Settings" />
       </Appbar.Header>
 

@@ -1,7 +1,8 @@
 import { DrawerActions, useNavigation } from '@react-navigation/native';
+import Color from 'color';
 import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import { Searchbar } from 'react-native-paper';
+import { Searchbar, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurBackground } from '../components/BlurBackground';
 import { LottieAnimation } from '../components/LottieAnimation';
@@ -10,6 +11,7 @@ import { PlaylistSearch } from '../components/PlaylistSearch';
 export const SearchPlaylist = () => {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
+  const appTheme = useTheme();
 
   const [keyword, setKeyword] = useState('');
   const [showKeyword, setShowKeyword] = useState('');
@@ -27,7 +29,11 @@ export const SearchPlaylist = () => {
         value={showKeyword}
         onChangeText={setShowKeyword}
         onSubmitEditing={search}
-        style={styles.searchbar}
+        style={[styles.searchbar, {
+          backgroundColor: Color(
+            appTheme.colors.secondaryContainer
+          ).fade(0.3).string(),
+        }]}
         icon="menu"
         onIconPress={() => {
           navigation.dispatch(
