@@ -1,7 +1,7 @@
 import { FlashList, type ListRenderItemInfo } from '@shopify/flash-list';
 import React, { useCallback, useMemo, useState } from 'react';
 import { RefreshControl, StyleSheet, useWindowDimensions } from 'react-native';
-import { ActivityIndicator, List, Tooltip, useTheme } from 'react-native-paper';
+import { ActivityIndicator, Text, Tooltip, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
 import type { Main, Playlist } from '../types/searchPlaylist';
 import { LottieAnimation } from './LottieAnimation';
@@ -62,10 +62,14 @@ export const PlaylistSearch = ({ keyword }: { keyword: string }) => {
       <LottieAnimation
         animation="breathe"
       >
-        <List.Item
-          title="Failed to load"
-          description={error.message}
-        />
+        <Text
+          variant="bodyLarge"
+          style={[styles.errTxt, {
+            color: appTheme.colors.error
+          }]}
+        >
+          {`Failed to load\n${error.message}`}
+        </Text>
       </LottieAnimation>
     );
   }
@@ -124,4 +128,7 @@ const styles = StyleSheet.create({
   loading: {
     marginTop: '50%',
   },
+  errTxt: {
+    textAlign: 'center'
+  }
 });
