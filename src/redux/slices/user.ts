@@ -8,7 +8,7 @@ export interface UserType {
     id: number;
 }
 
-const initialState = {
+export const initialState = {
     username: 'thouLee',
     id: 1492028517,
 };

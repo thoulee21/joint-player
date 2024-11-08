@@ -7,14 +7,24 @@ import HapticFeedback, {
   HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
 import { Drawer, Icon, useTheme } from 'react-native-paper';
-import { useAppDispatch } from '../hook/reduxHooks';
-import { resetUser } from '../redux/slices/user';
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '../hook/reduxHooks';
+import {
+  initialState as initialUser,
+  resetUser,
+  selectUser,
+} from '../redux/slices/user';
 
 export const ActionDrawerItems = ({ navigation }: {
   navigation: DrawerNavigationHelpers
 }) => {
   const dispatch = useAppDispatch();
   const appTheme = useTheme();
+
+  const currentUser = useAppSelector(selectUser);
+  const isLoggedOut = currentUser === initialUser;
 
   const renderLogoutIcon = useCallback(
     (props: any) => (
@@ -56,11 +66,13 @@ export const ActionDrawerItems = ({ navigation }: {
           navigation.navigate('SwitchUser');
         }}
       />
-      <Drawer.Item
-        label="Logout"
-        icon={renderLogoutIcon}
-        onPress={logout}
-      />
+      {!isLoggedOut && (
+        <Drawer.Item
+          label="Logout"
+          icon={renderLogoutIcon}
+          onPress={logout}
+        />
+      )}
     </Drawer.Section>
   );
 };
