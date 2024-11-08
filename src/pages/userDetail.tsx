@@ -7,7 +7,7 @@ import { Appbar, List, Portal, Text, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurBackground } from '../components/BlurBackground';
 import { LottieAnimation } from '../components/LottieAnimation';
-import { PlaylistItem } from '../components/PlaylistItem';
+import { PlaylistCover } from '../components/PlaylistCover';
 import { UserAttrs } from '../components/UserAttrs';
 import { UserBackground, UserInfo } from '../components/UserHeader';
 import { useAppSelector } from '../hook';
@@ -88,7 +88,7 @@ export const UserDetail = () => {
               color: appTheme.colors.secondary
             }}
           >
-            <PlaylistItem />
+            <PlaylistCover />
           </List.Section>
 
           <LottieAnimation

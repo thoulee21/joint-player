@@ -6,7 +6,7 @@ import { favs } from '../redux/slices';
 import type { TrackType } from '../services/GetTracksService';
 import type { ListLRProps } from '../types/paperListItem';
 
-export const PlaylistItem = ({ tracks }: { tracks?: TrackType[] }) => {
+export const PlaylistCover = ({ tracks }: { tracks?: TrackType[] }) => {
     const navigation = useNavigation();
     const appTheme = useTheme();
 
