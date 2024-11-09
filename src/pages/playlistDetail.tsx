@@ -5,6 +5,7 @@ import {
   Image,
   Linking,
   ScrollView,
+  Share,
   StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -53,6 +54,7 @@ export const PlaylistDetailScreen = () => {
 
   const { name, playlistID } = useRoute().params as RouteParams;
   const [dialogVisible, setDialogVisible] = useState(false);
+  const [showDot, setShowDot] = useState(true);
 
   const fetcher = async (url: string): Promise<Main> => {
     const response = await fetchRetry(fetch, {
@@ -141,15 +143,18 @@ export const PlaylistDetailScreen = () => {
               <Appbar.Action
                 icon="comment-text-multiple-outline"
                 onPress={() => {
+                  setShowDot(false);
                   //@ts-expect-error
                   navigation.push('Comments', {
                     commentThreadId: data.result.commentThreadId,
                   });
                 }}
               />
-              <Badge style={styles.badge} size={18}>
-                {data.result.commentCount.toLocaleString()}
-              </Badge>
+              {showDot && (
+                <Badge style={styles.badge} size={18}>
+                  {data.result.commentCount.toLocaleString()}
+                </Badge>
+              )}
             </View>
           )}
           <Tooltip title="Open in NetEase Music">
@@ -193,25 +198,33 @@ export const PlaylistDetailScreen = () => {
           </TouchableWithoutFeedback>
 
           <View style={styles.headerRight}>
-            <View style={styles.row}>
-              <Tooltip title={data.result.creator.userId.toString()}>
-                <Chip
-                  style={styles.creatorChip}
-                  avatar={
-                    <Image source={{
-                      uri: data?.result.creator.avatarUrl
-                    }} />
-                  }
-                >
-                  {data?.result.creator.nickname}
-                </Chip>
-              </Tooltip>
-            </View>
+            <Tooltip
+              title={data.result.creator.signature || 'No Signature'}
+            >
+              <Chip avatar={
+                <Image source={{
+                  uri: data?.result.creator.avatarUrl
+                }} />
+              }>
+                {data?.result.creator.nickname}
+              </Chip>
+            </Tooltip>
+
             <View style={styles.row}>
               <Button icon="heart-outline" compact>
                 {data.result.subscribedCount.toLocaleString()}
               </Button>
-              <Button icon="share" compact>
+              <Button icon="share-outline" compact onPress={() => {
+                Share.share({
+                  title: data.result.name,
+                  message: `Check out ${data.result.name} on NetEase Music!\nhttps://music.163.com/#/playlist?id=${playlistID}`,
+                  url: `https://music.163.com/#/playlist?id=${playlistID}`,
+                }, {
+                  dialogTitle: 'Share Playlist',
+                  tintColor: appTheme.colors.primary,
+                  subject: data.result.name,
+                });
+              }}>
                 {data.result.shareCount.toLocaleString()}
               </Button>
             </View>
@@ -235,7 +248,6 @@ export const PlaylistDetailScreen = () => {
               key={tag}
               icon="tag-text-outline"
               mode="outlined"
-              compact
               style={styles.tag}
             >{tag}</Chip>
           ))}
@@ -260,6 +272,7 @@ export const PlaylistDetailScreen = () => {
       <Portal>
         <Dialog
           visible={dialogVisible}
+          style={styles.dialog}
           onDismiss={() => setDialogVisible(false)}
         >
           <Dialog.Title>{data.result.name}</Dialog.Title>
@@ -298,9 +311,6 @@ const styles = StyleSheet.create({
   },
   tag: {
     margin: '1%',
-  },
-  creatorChip: {
-    marginBottom: '5%',
   },
   row: {
     flexDirection: 'row',
