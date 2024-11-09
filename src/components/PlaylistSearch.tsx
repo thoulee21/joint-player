@@ -91,7 +91,7 @@ export const PlaylistSearch = ({ keyword }: { keyword: string }) => {
           progressBackgroundColor={appTheme.colors.surface}
         />
       }
-      fadingEdgeLength={100}
+      fadingEdgeLength={50}
       ListEmptyComponent={
         !isLoading ? (
           <LottieAnimation

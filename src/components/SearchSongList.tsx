@@ -97,7 +97,7 @@ export const SearchSongList = ({ keyword }: { keyword: string }) => {
         onEndReached={loadMore}
         refreshing={refreshing}
         onRefresh={onRefresh}
-        fadingEdgeLength={100}
+        fadingEdgeLength={50}
         estimatedItemSize={103.3}
         ListEmptyComponent={renderEmpty}
         refreshControl={
