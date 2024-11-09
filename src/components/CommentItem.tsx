@@ -1,102 +1,173 @@
-import Color from 'color';
-import React, { memo, useCallback } from 'react';
-import { FlatList, StyleSheet } from 'react-native';
-import { Avatar, List, useTheme } from 'react-native-paper';
-import { BeReplied, Comment } from '../types/comments';
+import Clipboard from '@react-native-clipboard/clipboard';
+import React, { memo, useCallback, useState } from 'react';
+import { Share, StyleSheet, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
+import { Avatar, Button, Caption, List, Text, useTheme } from 'react-native-paper';
+import type { EllipsizeProp } from 'react-native-paper/src/types';
+import { Comment } from '../types/comments';
 import type { ListLRProps } from '../types/paperListItem';
-import { MoreBtn } from './MoreButton';
+import { BeRepliedComment } from './BeRepliedComment';
 
-export const BeRepliedComment = memo(({ reply }:
-    { reply: BeReplied }
+export const CommentItem = memo((
+  { item }: { item: Comment }
 ) => {
-    const appTheme = useTheme();
+  const appTheme = useTheme();
+  const [liked, setLiked] = useState(false);
 
-    const beRepliedStyle = [
-        styles.beReplied,
-        {
-            borderTopStartRadius: appTheme.roundness * 3,
-            borderBottomLeftRadius: appTheme.roundness * 3,
-            backgroundColor:
-                Color(appTheme.colors.surface)
-                    .fade(0.8).string(),
-        }];
+  const commentContent = ({
+    ellipsizeMode,
+    color: descriptionColor,
+    fontSize,
+  }: {
+    selectable: boolean;
+    ellipsizeMode: EllipsizeProp | undefined;
+    color: string;
+    fontSize: number;
+  }) => (
+    <View style={[styles.container, styles.column]}>
+      <TouchableOpacity
+        onLongPress={() => {
+          HapticFeedback.trigger(
+            HapticFeedbackTypes.effectHeavyClick
+          );
+          Clipboard.setString(item.content);
+          ToastAndroid.show(
+            'Copied to clipboard!',
+            ToastAndroid.SHORT
+          );
+        }}
+      >
+        <Text
+          ellipsizeMode={ellipsizeMode}
+          style={{ color: descriptionColor, fontSize }}
+        >
+          {item.content}
+        </Text>
+      </TouchableOpacity>
 
-    const renderLeft = useCallback((props: any) => (
-        <Avatar.Image
-            {...props}
-            size={30}
-            source={{ uri: reply.user.avatarUrl }}
-        />
-    ), [reply.user.avatarUrl]);
+      <View
+        style={[
+          styles.container,
+          styles.row,
+          styles.additionalPadding
+        ]}
+      >
+        <Button
+          icon={liked ? 'thumb-up' : 'thumb-up-outline'}
+          textColor={!liked ? appTheme.colors.outline : undefined}
+          compact
+          onPress={() => {
+            HapticFeedback.trigger(
+              HapticFeedbackTypes.effectClick
+            );
+            setLiked(prev => {
+              const newLiked = !prev;
+              if (newLiked) {
+                ToastAndroid.show(
+                  'Thanks for showing your support!',
+                  ToastAndroid.SHORT
+                );
+              } else {
+                ToastAndroid.show(
+                  'Feedback received!',
+                  ToastAndroid.SHORT
+                );
+              }
+              return newLiked;
+            });
+          }}
+        >
+          {liked ? item.likedCount + 1 : item.likedCount}
+        </Button>
+        <Button
+          icon="share-outline"
+          textColor={appTheme.colors.outline}
+          compact
+          onPress={() => {
+            Share.share({ message: item.content });
+          }}
+        >
+          Share
+        </Button>
+      </View>
+    </View>
+  );
 
-    const renderMoreButton = useCallback((props: ListLRProps) => (
-        <MoreBtn {...props} data={reply.content} />
-    ), [reply.content]);
+  const renderTitle = useCallback(({
+    ellipsizeMode, color: titleColor, fontSize
+  }: {
+    selectable: boolean;
+    ellipsizeMode: EllipsizeProp | undefined;
+    color: string;
+    fontSize: number;
+  }) => (
+    <View style={[
+      styles.container,
+      styles.row,
+      styles.customTitle
+    ]}>
+      <Text
+        ellipsizeMode={ellipsizeMode}
+        style={{ color: titleColor, fontSize }}
+      >
+        {item.user.nickname}
+      </Text>
+      <Caption>
+        {item.timeStr}
+        {item.ipLocation.location && ` · ${item.ipLocation.location}`}
+      </Caption>
+    </View>
+  ), [item]);
 
-    return (
-        <List.Item
-            style={beRepliedStyle}
-            title={reply.user.nickname}
-            titleStyle={{ color: appTheme.colors.secondary }}
-            description={reply.content}
-            descriptionStyle={{ color: appTheme.colors.onSurfaceVariant }}
-            descriptionNumberOfLines={20}
-            left={renderLeft}
-            right={renderMoreButton}
-        />
-    );
-});
-
-export const CommentItem = memo(({ item }:
-    { item: Comment }
-) => {
-    const appTheme = useTheme();
-
-    const commentContent = item.content.concat(
-        '\n\n❤️ ',
-        item.likedCount.toString(),
-        '  •  ',
-        item.timeStr,
-    );
-
-    const renderItem = useCallback(({ item: reply }: { item: BeReplied }) =>
-        <BeRepliedComment reply={reply} />, []);
-
-    const renderLeft = useCallback((props: any) => (
-        <Avatar.Image
-            {...props}
-            size={40}
-            source={{ uri: item.user.avatarUrl }}
-        />
+  const renderLeft = useCallback(
+    ({ color, style }: ListLRProps) => (
+      <Avatar.Image
+        style={[style, styles.avatar, {
+          backgroundColor: color
+        }]}
+        source={{ uri: item.user.avatarUrl }}
+        size={50}
+      />
     ), [item.user.avatarUrl]);
 
-    const renderMoreButton = useCallback((props: ListLRProps) => (
-        <MoreBtn {...props} data={item.content} />
-    ), [item.content]);
-
-    return (
-        <>
-            <List.Item
-                title={item.user.nickname}
-                titleStyle={{ color: appTheme.colors.primary }}
-                description={commentContent}
-                descriptionStyle={{ color: appTheme.colors.onBackground }}
-                descriptionNumberOfLines={20}
-                left={renderLeft}
-                right={renderMoreButton}
-            />
-
-            <FlatList
-                data={item.beReplied}
-                keyExtractor={(reply) => reply.beRepliedCommentId.toString()}
-                renderItem={renderItem}
-            />
-        </>
-    );
+  return (
+    <>
+      <List.Item
+        title={renderTitle}
+        titleStyle={{ color: appTheme.colors.primary }}
+        description={commentContent}
+        descriptionStyle={{
+          color: appTheme.colors.onBackground
+        }}
+        descriptionNumberOfLines={20}
+        left={renderLeft}
+      />
+      {item.beReplied.length === 1 && (
+        <BeRepliedComment reply={item.beReplied[0]} />
+      )}
+    </>
+  );
 });
 
 const styles = StyleSheet.create({
-    beReplied: {
-        marginLeft: '10%',
-    },
+  container: {
+    flex: 1,
+  },
+  avatar: {
+    alignSelf: 'flex-start',
+  },
+  row: {
+    flexDirection: 'row',
+  },
+  column: {
+    flexDirection: 'column',
+  },
+  customTitle: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+  },
+  additionalPadding: {
+    paddingTop: 8,
+  },
 });
