@@ -92,19 +92,21 @@ export const UserDetail = () => {
             <UserAttrs />
           </View>
 
-          <List.Section
-            title="Playlist"
-            titleStyle={{
-              color: appTheme.colors.secondary
-            }}
-          >
-            <PlaylistCover />
-            <FlashList
-              data={playlists}
-              renderItem={renderPlaylist}
-              estimatedItemSize={92}
-            />
-          </List.Section>
+          <FlashList
+            data={playlists}
+            renderItem={renderPlaylist}
+            estimatedItemSize={92}
+            ListHeaderComponent={
+              <>
+                <List.Subheader style={{
+                  color: appTheme.colors.secondary
+                }}>
+                  {playlists.length ? 'Playlists' : null}
+                </List.Subheader>
+                <PlaylistCover />
+              </>
+            }
+          />
 
           <LottieAnimation
             animation="rocket"
