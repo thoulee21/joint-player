@@ -6,8 +6,15 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { FlatList, StyleProp, ViewStyle } from 'react-native';
-import { useCurrentIndex, useLocalAutoScroll } from '../hook';
+import {
+  FlatList,
+  StyleProp,
+  ViewStyle
+} from 'react-native';
+import {
+  useCurrentIndex,
+  useLocalAutoScroll,
+} from '../hook';
 import type { LyricLine } from '../lyric';
 import { parseLyric } from '../util';
 
@@ -75,10 +82,12 @@ const Lyric = React.forwardRef<{
     );
 
     const scrollToCurrentIndex = useCallback(() => {
-      lrcRef.current?.scrollToIndex({
-        index: currentIndex,
-        viewPosition: 0.1,
-      });
+      try {
+        lrcRef.current?.scrollToIndex({
+          index: currentIndex,
+          viewPosition: 0.1,
+        });
+      } catch { }
     }, [currentIndex]);
 
     // auto scroll
@@ -131,9 +140,8 @@ const Lyric = React.forwardRef<{
         fadingEdgeLength={100}
         data={lrcLineList}
         renderItem={renderItem}
-        onScrollToIndexFailed={() => {
-          //ignore failed
-        }}
+        // ignore scrollToIndex failed
+        onScrollToIndexFailed={() => { }}
         onStartReached={() => {
           setTimeout(() => {
             setFirstRun(false);
