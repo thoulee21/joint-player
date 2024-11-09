@@ -9,6 +9,8 @@ import React, {
 import {
   FlatList,
   StyleProp,
+  useWindowDimensions,
+  View,
   ViewStyle
 } from 'react-native';
 import {
@@ -67,6 +69,7 @@ const Lyric = React.forwardRef<{
   }: Props, ref
   ) {
     const lrcRef = useRef<FlatList | null>(null);
+    const window = useWindowDimensions();
     const [firstRun, setFirstRun] = useState(true);
 
     const lrcLineList = useMemo(() => parseLyric(lrc), [lrc]);
@@ -142,6 +145,13 @@ const Lyric = React.forwardRef<{
         renderItem={renderItem}
         // ignore scrollToIndex failed
         onScrollToIndexFailed={() => { }}
+        // to make lyric at the center of the screen
+        ListHeaderComponent={
+          <View style={{ height: window.height / 10 }} />
+        }
+        ListFooterComponent={
+          <View style={{ height: window.height / 4.5 }} />
+        }
         onStartReached={() => {
           setTimeout(() => {
             setFirstRun(false);
