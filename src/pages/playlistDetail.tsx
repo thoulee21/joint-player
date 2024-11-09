@@ -55,6 +55,7 @@ export const PlaylistDetailScreen = () => {
   const { name, playlistID } = useRoute().params as RouteParams;
   const [dialogVisible, setDialogVisible] = useState(false);
   const [showDot, setShowDot] = useState(true);
+  const [attempts, setAttempts] = useState(0);
 
   const fetcher = async (url: string): Promise<Main> => {
     const response = await fetchRetry(fetch, {
@@ -74,6 +75,7 @@ export const PlaylistDetailScreen = () => {
   );
 
   const retry = useCallback(() => {
+    setAttempts(prev => prev + 1);
     HapticFeedback.trigger(
       HapticFeedbackTypes.effectDoubleClick,
     );
@@ -124,8 +126,10 @@ export const PlaylistDetailScreen = () => {
           < LottieAnimation
             animation="teapot"
             onPress={retry}
-            // @ts-expect-error
-            caption={data?.msg || error?.message}
+            caption={
+              // @ts-expect-error
+              `${data?.msg || error?.message}\nTap to retry\nAttempts: ${attempts}`
+            }
           />
         )}
       </BlurBackground>
