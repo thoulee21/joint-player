@@ -103,7 +103,9 @@ export const PlaylistDetailScreen = () => {
     await TrackPlayer.play();
   };
 
-  if (isLoading || data?.code !== 200) {
+  if (
+    isLoading || data?.code !== 200 || error
+  ) {
     return (
       <BlurBackground>
         <Appbar.Header style={styles.appbar} mode="medium">
@@ -123,7 +125,7 @@ export const PlaylistDetailScreen = () => {
             style={styles.loading}
           />
         ) : (
-          < LottieAnimation
+          <LottieAnimation
             animation="teapot"
             onPress={retry}
             caption={
@@ -150,18 +152,20 @@ export const PlaylistDetailScreen = () => {
               <Appbar.Action
                 icon="comment-text-multiple-outline"
                 onPress={() => {
-                  setShowDot(false);
                   //@ts-expect-error
                   navigation.push('Comments', {
                     commentThreadId: data.result.commentThreadId,
                   });
+                  setShowDot(false);
                 }}
               />
-              {showDot && (
-                <Badge style={styles.badge} size={18}>
-                  {data.result.commentCount.toLocaleString()}
-                </Badge>
-              )}
+              <Badge
+                visible={showDot}
+                style={styles.badge}
+                size={18}
+              >
+                {data.result.commentCount.toLocaleString()}
+              </Badge>
             </View>
           )}
           <Tooltip title="Open in NetEase Music">
@@ -297,7 +301,7 @@ export const PlaylistDetailScreen = () => {
           </Dialog.Actions>
         </Dialog>
       </Portal>
-    </Portal.Host >
+    </Portal.Host>
   );
 };
 
