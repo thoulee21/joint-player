@@ -43,7 +43,9 @@ export const BottomBar = ({ bottomSheetRef }:
                         album: track?.albumRaw,
                     });
                 }}
-                disabled={typeof track?.albumRaw === 'undefined'}
+                disabled={
+typeof track?.albumRaw === 'undefined' 
+|| !track?.album}
             />
             <Appbar.Action
                 icon="menu-open"
