@@ -9,11 +9,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurBackground } from '../components/BlurBackground';
 import { LottieAnimation } from '../components/LottieAnimation';
 import { PlaylistCover } from '../components/PlaylistCover';
+import { PlaylistDisplay } from '../components/PlaylistDisplayItem';
 import { UserAttrs } from '../components/UserAttrs';
 import { UserBackground, UserInfo } from '../components/UserHeader';
 import { useAppSelector } from '../hook';
 import { selectPlaylists, selectUser } from '../redux/slices';
-import { PlaylistDisplay } from './PlaylistDisplayItem';
 
 export const UserDetail = () => {
   const navigation = useNavigation();
