@@ -1,10 +1,10 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
-import { StyleSheet, useWindowDimensions, View } from 'react-native';
+import { StyleSheet, TouchableWithoutFeedback, useWindowDimensions, View } from 'react-native';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Caption, Card, Chip, useTheme } from 'react-native-paper';
 import { HotAlbum } from '../types/albumArtist';
 import { toReadableDate } from '../utils';
-
 export const Album = (
   { item }: { item: HotAlbum }
 ) => {
@@ -21,21 +21,41 @@ export const Album = (
       </Caption>
     ), [item.size]);
 
+  const geDetail = useCallback(() => {
+    HapticFeedback.trigger(
+      HapticFeedbackTypes.effectHeavyClick
+    );
+    navigation.navigate(
+      //@ts-expect-error
+      'AlbumDetail', { album: item }
+    );
+  }, [item, navigation]);
+
   return (
     <Card
       style={styles.album}
-      onPress={() => {
-        navigation.navigate(
-          //@ts-expect-error
-          'AlbumDetail',
-          { album: item }
-        );
-      }}
+      onPress={geDetail}
     >
-      <Card.Cover
-        style={[styles.albumPic, { width }]}
-        source={{ uri: item.picUrl }}
-      />
+      <TouchableWithoutFeedback
+        onPress={geDetail}
+        onLongPress={() => {
+          HapticFeedback.trigger(
+            HapticFeedbackTypes.effectDoubleClick
+          );
+          navigation.navigate(
+            //@ts-expect-error
+            'WebView', {
+            title: item.name,
+            url: item.picUrl
+          });
+        }}
+      >
+        <Card.Cover
+          style={[styles.albumPic, { width }]}
+          source={{ uri: item.picUrl }}
+        />
+      </TouchableWithoutFeedback>
+
       <Card.Title
         title={item.name}
         subtitle={toReadableDate(item.publishTime)}
@@ -46,6 +66,7 @@ export const Album = (
         }}
         right={renderSongCount}
       />
+
       <View style={[styles.chips, { width }]}>
         <Chip compact style={styles.chip}>
           {item.type}
