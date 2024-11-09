@@ -16,7 +16,7 @@ export const TracksHeader = ({ onPress, length }: {
             }]}
         >
             <Button
-                mode="contained"
+                compact
                 icon="play-circle"
                 onPress={() => {
                     HapticFeedback.trigger(
