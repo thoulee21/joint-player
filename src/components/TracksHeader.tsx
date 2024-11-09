@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { Button, List, useTheme } from 'react-native-paper';
+import { Button, Caption, List, useTheme } from 'react-native-paper';
 
 export const TracksHeader = ({ onPress, length }: {
     onPress: () => void; length: number;
@@ -16,7 +16,8 @@ export const TracksHeader = ({ onPress, length }: {
             }]}
         >
             <Button
-                icon="play-circle-outline"
+                mode="contained"
+                icon="play-circle"
                 onPress={() => {
                     HapticFeedback.trigger(
                         HapticFeedbackTypes.effectHeavyClick
@@ -27,7 +28,9 @@ export const TracksHeader = ({ onPress, length }: {
                 Play All
             </Button>
             <List.Subheader>
-                {length} song(s)
+                <Caption>
+                    {length} song(s)
+                </Caption>
             </List.Subheader>
         </View>
     );
