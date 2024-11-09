@@ -26,6 +26,9 @@ export const SearchPlaylist = () => {
     >
       <Searchbar
         placeholder="Search for playlist"
+        placeholderTextColor={appTheme.dark
+          ? appTheme.colors.onSurfaceDisabled
+          : appTheme.colors.backdrop}
         value={showKeyword}
         onChangeText={setShowKeyword}
         onSubmitEditing={search}
@@ -40,6 +43,12 @@ export const SearchPlaylist = () => {
             DrawerActions.toggleDrawer()
           );
         }}
+        blurOnSubmit
+        selectTextOnFocus
+        selectionColor={Color(
+          appTheme.colors.inversePrimary
+        ).fade(0.5).string()}
+        autoFocus
       />
 
       {keyword ? (
