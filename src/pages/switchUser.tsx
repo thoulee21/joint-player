@@ -76,6 +76,9 @@ export const SwitchUser = () => {
           ).fade(0.3).string(),
         }]}
         placeholder="Search for a user"
+        placeholderTextColor={appTheme.dark
+          ? appTheme.colors.onSurfaceDisabled
+          : appTheme.colors.backdrop}
         onChangeText={setShowQuery}
         value={showQuery}
         icon="arrow-left"
@@ -84,9 +87,9 @@ export const SwitchUser = () => {
         onSubmitEditing={search}
         selectTextOnFocus
         blurOnSubmit
-        selectionColor={
+        selectionColor={Color(
           appTheme.colors.inversePrimary
-        }
+        ).fade(0.5).string()}
         autoFocus
       />
 
