@@ -1,6 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
-import fetchRetry from 'fetch-retry';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import {
   Image,
   Linking,
@@ -25,6 +24,7 @@ import {
   Chip,
   Dialog,
   Divider,
+  IconButton,
   Portal,
   Surface,
   Text,
@@ -35,43 +35,58 @@ import TrackPlayer from 'react-native-track-player';
 import useSWR from 'swr';
 import { BlurBackground } from '../components/BlurBackground';
 import { LottieAnimation } from '../components/LottieAnimation';
-import { PlaylistTrack, raw2TrackType } from '../components/PlaylistTrack';
+import {
+  PlaylistTrack,
+  raw2TrackType,
+} from '../components/PlaylistTrack';
 import { TracksHeader } from '../components/TracksHeader';
-import { useAppDispatch } from '../hook';
-import { setQueueAsync } from '../redux/slices';
+import { useAppDispatch, useAppSelector } from '../hook';
+import {
+  addPlaylist,
+  removePlaylist,
+  selectPlaylists,
+  setQueueAsync,
+  type PlaylistType,
+} from '../redux/slices';
 import type { TrackType } from '../services/GetTracksService';
 import type { Main, Track } from '../types/playlistDetail';
-
-interface RouteParams {
-  playlistID: number;
-  name: string;
-}
+import { fetcher } from '../utils/retryFetcher';
 
 export const PlaylistDetailScreen = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const appTheme = useTheme();
 
-  const { name, playlistID } = useRoute().params as RouteParams;
+  const { name, playlistID } = useRoute().params as PlaylistType;
+  const playlists = useAppSelector(selectPlaylists);
+
   const [dialogVisible, setDialogVisible] = useState(false);
   const [showDot, setShowDot] = useState(true);
   const [attempts, setAttempts] = useState(0);
 
-  const fetcher = async (url: string): Promise<Main> => {
-    const response = await fetchRetry(fetch, {
-      retries: 1000000,
-      retryDelay: function (attempt: number) {
-        return Math.pow(2, attempt) * 1000; // 1000, 2000, 4000
-      },
-    })(url);
-    const data = await response.json();
-    return data;
-  };
+  const isInPlaylists = useMemo(() => (
+    playlists.some(
+      (pl) => pl.playlistID === playlistID
+    )
+  ), [playlistID, playlists]);
+
+  const togglePlist = useCallback(() => {
+    if (name && playlistID) {
+      HapticFeedback.trigger(
+        HapticFeedbackTypes.effectHeavyClick
+      );
+
+      if (isInPlaylists) {
+        dispatch(removePlaylist({ playlistID, name }));
+      } else {
+        dispatch(addPlaylist({ playlistID, name }));
+      }
+    }
+  }, [dispatch, isInPlaylists, name, playlistID]);
 
   const { data, mutate, isLoading, isValidating, error } = useSWR<Main>(
     `https://music.163.com/api/playlist/detail?id=${playlistID}`,
-    fetcher,
-    { revalidateOnFocus: false }
+    { fetcher: fetcher }
   );
 
   const retry = useCallback(() => {
@@ -147,6 +162,17 @@ export const PlaylistDetailScreen = () => {
             setDialogVisible(true);
           }} />
 
+          <Tooltip title="Open in NetEase Music">
+            <Appbar.Action
+              icon="open-in-new"
+              onPress={() => {
+                Linking.openURL(
+                  `orpheus://playlist/${playlistID}`
+                );
+              }}
+            />
+          </Tooltip>
+
           {data.result.commentCount !== 0 && (
             <View>
               <Appbar.Action
@@ -168,16 +194,14 @@ export const PlaylistDetailScreen = () => {
               </Badge>
             </View>
           )}
-          <Tooltip title="Open in NetEase Music">
-            <Appbar.Action
-              icon="open-in-new"
-              onPress={() => {
-                Linking.openURL(
-                  `orpheus://playlist/${playlistID}`
-                );
-              }}
-            />
-          </Tooltip>
+
+          <IconButton
+            icon={isInPlaylists
+              ? 'playlist-check' : 'playlist-plus'}
+            selected={isInPlaylists}
+            animated
+            onPress={togglePlist}
+          />
         </Appbar.Header>
 
         <View style={styles.header}>

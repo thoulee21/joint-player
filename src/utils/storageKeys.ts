@@ -3,4 +3,5 @@ export enum StorageKeys {
     BlurRadius = 'blurRadius',
     Favs = 'favs',
     User = 'user',
+    Playlists = 'playlists',
 }

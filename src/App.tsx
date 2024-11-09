@@ -1,15 +1,53 @@
 import * as Sentry from '@sentry/react-native';
 import React, { useEffect } from 'react';
+import { AppState, type AppStateStatus } from 'react-native';
 import {
   configureReanimatedLogger,
   ReanimatedLogLevel,
 } from 'react-native-reanimated';
 import TrackPlayer from 'react-native-track-player';
+import { SWRConfig, SWRConfiguration } from 'swr';
 import { AppContainer } from './components/AppContainer';
 import { RootStack } from './components/RootStack';
 import { useAppDispatch } from './hook/reduxHooks';
-import { initBlurRadius, initFavs, initUser } from './redux/slices';
+import {
+  initBlurRadius,
+  initFavs,
+  initPlaylists,
+  initUser,
+} from './redux/slices';
 import { PlaybackService } from './services/PlaybackService';
+import { requestInit } from './utils/requestInit';
+
+const swrConfig: SWRConfiguration = {
+  fetcher: (resource, init) =>
+    fetch(resource, { ...requestInit, ...init })
+      .then((res) => res.json()),
+  provider: () => new Map(),
+  isVisible: () => { return true; },
+  initFocus(callback) {
+    let appState = AppState.currentState;
+
+    const onAppStateChange = (nextAppState: AppStateStatus) => {
+      /* 如果正在从后台或非 active 模式恢复到 active 模式 */
+      if (
+        appState.match(
+          /inactive|background/
+        ) && nextAppState === 'active'
+      ) { callback(); }
+      appState = nextAppState;
+    };
+
+    // 订阅 app 状态更改事件
+    const subscription = AppState.addEventListener(
+      'change', onAppStateChange
+    );
+
+    return () => {
+      subscription.remove();
+    };
+  }
+};
 
 configureReanimatedLogger({
   level: ReanimatedLogLevel.error,
@@ -45,15 +83,16 @@ function App() {
       dispatch(initBlurRadius()),
       dispatch(initFavs()),
       dispatch(initUser()),
+      dispatch(initPlaylists()),
     ]);
-    // no dispatch in deps
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dispatch]);
 
   return (
-    <AppContainer>
-      <RootStack />
-    </AppContainer>
+    <SWRConfig value={swrConfig}>
+      <AppContainer>
+        <RootStack />
+      </AppContainer>
+    </SWRConfig>
   );
 }
 

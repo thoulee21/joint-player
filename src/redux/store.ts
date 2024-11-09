@@ -5,6 +5,7 @@ import {
     darkModeSlice,
     devModeSlice,
     favsSlice,
+    playlistsSlice,
     queueSlice,
     userSlice,
 } from './slices';
@@ -19,6 +20,7 @@ export const store = configureStore({
         queue: queueSlice.reducer,
         favs: favsSlice.reducer,
         user: userSlice.reducer,
+        playlists: playlistsSlice.reducer,
     },
     enhancers: (getDefaultEnhancers) => (
         getDefaultEnhancers().concat(sentryReduxEnhancer)
