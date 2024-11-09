@@ -63,7 +63,7 @@ export const PlaylistDetailScreen = () => {
   };
 
   const { data, mutate, isLoading, isValidating, error } = useSWR<Main>(
-    `https://music.163.com/api/playlist/detail?id=${playlistID}&limit=100`,
+    `https://music.163.com/api/playlist/detail?id=${playlistID}`,
     fetcher,
     { revalidateOnFocus: false }
   );
@@ -193,7 +193,7 @@ export const PlaylistDetailScreen = () => {
           </TouchableWithoutFeedback>
 
           <View style={styles.headerRight}>
-            <View style={styles.creator}>
+            <View style={styles.row}>
               <Tooltip title={data.result.creator.userId.toString()}>
                 <Chip
                   style={styles.creatorChip}
@@ -202,11 +202,18 @@ export const PlaylistDetailScreen = () => {
                       uri: data?.result.creator.avatarUrl
                     }} />
                   }
-
                 >
                   {data?.result.creator.nickname}
                 </Chip>
               </Tooltip>
+            </View>
+            <View style={styles.row}>
+              <Button icon="heart-outline" compact>
+                {data.result.subscribedCount.toLocaleString()}
+              </Button>
+              <Button icon="share" compact>
+                {data.result.shareCount.toLocaleString()}
+              </Button>
             </View>
 
             <TouchableOpacity onPress={() => {
@@ -226,7 +233,8 @@ export const PlaylistDetailScreen = () => {
           {data?.result.tags.map(tag => (
             <Chip
               key={tag}
-              icon="tag-outline"
+              icon="tag-text-outline"
+              mode="outlined"
               compact
               style={styles.tag}
             >{tag}</Chip>
@@ -269,7 +277,7 @@ export const PlaylistDetailScreen = () => {
           </Dialog.Actions>
         </Dialog>
       </Portal>
-    </Portal.Host>
+    </Portal.Host >
   );
 };
 
@@ -294,12 +302,13 @@ const styles = StyleSheet.create({
   creatorChip: {
     marginBottom: '5%',
   },
-  creator: {
-    flexDirection: 'row'
+  row: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   cover: {
-    width: 125,
-    height: 125,
+    width: 150,
+    height: 150,
     aspectRatio: 1,
   },
   header: {
@@ -310,6 +319,7 @@ const styles = StyleSheet.create({
   headerRight: {
     flex: 1,
     marginLeft: '3%',
+    alignItems: 'flex-start',
   },
   dialog: {
     maxHeight: '80%',
