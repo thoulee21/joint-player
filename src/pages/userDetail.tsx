@@ -1,54 +1,19 @@
 import { DrawerToggleButton } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
-import { FlashList, type ListRenderItemInfo } from '@shopify/flash-list';
+import { FlashList } from '@shopify/flash-list';
 import Color from 'color';
 import React, { useCallback, useMemo } from 'react';
 import { Linking, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Appbar, List, Portal, Text, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import useSWR from 'swr';
 import { BlurBackground } from '../components/BlurBackground';
 import { LottieAnimation } from '../components/LottieAnimation';
 import { PlaylistCover } from '../components/PlaylistCover';
-import { PlaylistItem } from '../components/SearchPlaylistItem';
 import { UserAttrs } from '../components/UserAttrs';
 import { UserBackground, UserInfo } from '../components/UserHeader';
 import { useAppSelector } from '../hook';
-import { selectPlaylists, selectUser, type PlaylistType } from '../redux/slices';
-import type { Main } from '../types/playlistDetail';
-import type { Playlist } from '../types/searchPlaylist';
-import { fetcher } from '../utils/retryFetcher';
-
-const PlaylistDisplay = (
-  props: ListRenderItemInfo<PlaylistType>
-) => {
-  const { playlistID } = props.item;
-
-  const { data, isLoading, error, mutate } = useSWR<Main>(
-    `https://music.163.com/api/playlist/detail?id=${playlistID}`,
-    { fetcher: fetcher }
-  );
-
-  if (isLoading) { return null; }
-
-  if (error || data?.code !== 200) {
-    return (
-      <List.Item
-        title="Error"
-        // @ts-expect-error
-        description={error?.message || data?.msg}
-        onPress={() => mutate()}
-      />
-    );
-  }
-
-  return (
-    <PlaylistItem
-      {...props}
-      item={data.result as unknown as Playlist}
-    />
-  );
-};
+import { selectPlaylists, selectUser } from '../redux/slices';
+import { PlaylistDisplay } from './PlaylistDisplayItem';
 
 export const UserDetail = () => {
   const navigation = useNavigation();
@@ -92,7 +57,9 @@ export const UserDetail = () => {
                   height: 56 + insets.top,
                 }}
               >
-                <DrawerToggleButton tintColor={appTheme.colors.onSurface} />
+                <DrawerToggleButton
+                  tintColor={appTheme.colors.onSurface}
+                />
                 <Appbar.Action
                   icon="open-in-app"
                   onPress={() => {
