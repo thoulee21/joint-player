@@ -50,7 +50,6 @@ import {
 } from '../redux/slices';
 import type { TrackType } from '../services/GetTracksService';
 import type { Main, Track } from '../types/playlistDetail';
-import { fetcher } from '../utils/retryFetcher';
 
 export const PlaylistDetailScreen = () => {
   const dispatch = useAppDispatch();
@@ -86,7 +85,6 @@ export const PlaylistDetailScreen = () => {
 
   const { data, mutate, isLoading, isValidating, error } = useSWR<Main>(
     `https://music.163.com/api/playlist/detail?id=${playlistID}`,
-    { fetcher: fetcher }
   );
 
   const retry = useCallback(() => {
