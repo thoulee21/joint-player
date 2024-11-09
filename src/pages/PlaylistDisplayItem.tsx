@@ -14,6 +14,11 @@ export const PlaylistDisplay = (
 
   const { data, isLoading, error, mutate } = useSWR<Main>(
     `https://music.163.com/api/playlist/detail?id=${playlistID}`,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false
+    }
   );
 
   if (isLoading) { return null; }

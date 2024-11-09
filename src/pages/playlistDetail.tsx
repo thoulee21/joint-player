@@ -85,6 +85,11 @@ export const PlaylistDetailScreen = () => {
 
   const { data, mutate, isLoading, isValidating, error } = useSWR<Main>(
     `https://music.163.com/api/playlist/detail?id=${playlistID}`,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false
+    }
   );
 
   const retry = useCallback(() => {
