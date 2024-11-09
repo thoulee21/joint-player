@@ -17,11 +17,12 @@ import {
   initUser,
 } from './redux/slices';
 import { PlaybackService } from './services/PlaybackService';
+import { asyncStorageProvider } from './utils/asyncStorageProvider';
 import { fetcher } from './utils/retryFetcher';
 
 const swrConfig: SWRConfiguration = {
   fetcher: fetcher,
-  provider: () => new Map(),
+  provider: asyncStorageProvider,
   isVisible: () => { return true; },
   initFocus(callback) {
     let appState = AppState.currentState;
