@@ -17,12 +17,10 @@ import {
   initUser,
 } from './redux/slices';
 import { PlaybackService } from './services/PlaybackService';
-import { requestInit } from './utils/requestInit';
+import { fetcher } from './utils/retryFetcher';
 
 const swrConfig: SWRConfiguration = {
-  fetcher: (resource, init) =>
-    fetch(resource, { ...requestInit, ...init })
-      .then((res) => res.json()),
+  fetcher: fetcher,
   provider: () => new Map(),
   isVisible: () => { return true; },
   initFocus(callback) {
