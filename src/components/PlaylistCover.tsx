@@ -1,32 +1,19 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
 import { List, Text, useTheme } from 'react-native-paper';
-import { useAppSelector } from '../hook';
-import { favs } from '../redux/slices';
 import type { ListLRProps } from '../types/paperListItem';
 
 export const PlaylistCover = ({
   artwork, length, description, name, onPress
 }: {
-  artwork?: string;
-  length?: number;
-  description?: string;
-  name?: string;
-  onPress?: () => void;
+  artwork: string;
+  length: number;
+  description: string;
+  name: string;
+  onPress: () => void;
 }) => {
   const navigation = useNavigation();
   const appTheme = useTheme();
-  const favorites = useAppSelector(favs);
-
-  artwork = artwork || favorites[0]?.artwork;
-  length = length || favorites.length;
-  description = description || `${favorites[0].title}\n${favorites[0].artist}`;
-  name = name || 'Favorites';
-  onPress = onPress || (() => {
-    navigation.navigate(
-      'Favorites' as never
-    );
-  });
 
   const renderFavImage = useCallback(
     (props: ListLRProps) => (

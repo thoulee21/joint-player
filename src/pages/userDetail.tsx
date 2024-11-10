@@ -13,7 +13,7 @@ import { PlaylistDisplay } from '../components/PlaylistDisplayItem';
 import { UserAttrs } from '../components/UserAttrs';
 import { UserBackground, UserInfo } from '../components/UserHeader';
 import { useAppSelector } from '../hook';
-import { selectPlaylists, selectUser } from '../redux/slices';
+import { favs, selectPlaylists, selectUser } from '../redux/slices';
 
 export const UserDetail = () => {
   const navigation = useNavigation();
@@ -24,6 +24,7 @@ export const UserDetail = () => {
 
   const user = useAppSelector(selectUser);
   const playlists = useAppSelector(selectPlaylists);
+  const favorites = useAppSelector(favs);
 
   const appbarBgColor = useMemo(() => {
     if (appTheme.dark) {
@@ -103,7 +104,17 @@ export const UserDetail = () => {
                 }}>
                   {playlists.length ? 'Playlists' : null}
                 </List.Subheader>
-                <PlaylistCover />
+                {favorites.length >= 1 && (
+                  <PlaylistCover
+                    artwork={favorites[0].artwork}
+                    description={`${favorites[0].title}\n${favorites[0].artist}`}
+                    length={favorites.length}
+                    name="Favorites"
+                    onPress={() => {
+                      navigation.navigate('Favorites' as never);
+                    }}
+                  />
+                )}
               </>
             }
           />
