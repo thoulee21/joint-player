@@ -44,9 +44,11 @@ export const SearchSongList = ({ keyword }: { keyword: string }) => {
     setSize((prev) => prev + 1);
   }, [setSize]);
 
-  const keyExtractor = useCallback(
-    (item: Song) => item.id.toString(), []
-  );
+  const keyExtractor = useCallback((
+    item: Song, index: number
+  ) => (
+    `${item.id}-${index}-${item.name}`
+  ), []);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
