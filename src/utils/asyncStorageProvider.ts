@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Sentry from '@sentry/react-native';
-import { NativeEventEmitter } from 'react-native';
+import { AppState, AppStateStatus, NativeEventEmitter } from 'react-native';
 import { Cache } from 'swr';
 import { StorageKeys } from './storageKeys';
 
@@ -18,9 +18,12 @@ class AsyncStorageProvider implements ExtendedCache {
   private reloadingKeys = new Set<string>();
   private accessOrder = new Map<string, number>(); // 记录访问顺序
   private listeners = new Map<string, (key: string) => void>(); // 保存监听器引用
+  private keysToDelete = new Set<string>(); // 待删除的键列表
 
   constructor() {
     this.loadCache();
+    this.setupAppStateListener();
+    this.setupPeriodicSave();
   }
 
   private async loadCache() {
@@ -61,12 +64,12 @@ class AsyncStorageProvider implements ExtendedCache {
             const value = this.cache.get(oldestKey);
             this.cache.delete(oldestKey);
             this.accessOrder.delete(oldestKey);
-            await AsyncStorage.removeItem(oldestKey);
             this.cacheSize -= this.getSizeInBytes(JSON.stringify(value));
+            await AsyncStorage.removeItem(oldestKey); // 实时删除操作
             // 在删除缓存数据后触发重新加载数据的逻辑
             this.handleCacheDeletion(oldestKey);
           } else {
-            // 如果 oldestKey 是用户数据，则跳过从AsyncStorage删除
+            // 如果 oldestKey 是用户数据，则跳过删除
             this.cache.delete(oldestKey);
             this.accessOrder.delete(oldestKey);
           }
@@ -122,27 +125,26 @@ class AsyncStorageProvider implements ExtendedCache {
       this.cache.set(key, value);
       this.accessOrder.set(key, Date.now()); // 更新访问时间
       this.cacheSize += size;
-      await AsyncStorage.setItem(key, stringValue);
 
-      await this.ensureCacheSize();
+      // 对关键数据立即写入 AsyncStorage
+      if (this.isCriticalKey(key)) {
+        await AsyncStorage.setItem(key, stringValue);
+      }
+
+      this.ensureCacheSize();
     } catch (error) {
       console.error('Failed to set cache item', error);
       Sentry.captureException(error);
     }
   }
 
-  async delete(key: string) {
-    try {
-      if (this.cache.has(key)) {
-        const value = this.cache.get(key);
-        this.cacheSize -= this.getSizeInBytes(JSON.stringify(value));
-        this.cache.delete(key);
-        this.accessOrder.delete(key);
-        await AsyncStorage.removeItem(key);
-      }
-    } catch (error) {
-      console.error('Failed to delete cache item', error);
-      Sentry.captureException(error);
+  delete(key: string) {
+    if (this.cache.has(key)) {
+      const value = this.cache.get(key);
+      this.cacheSize -= this.getSizeInBytes(JSON.stringify(value));
+      this.cache.delete(key);
+      this.accessOrder.delete(key);
+      this.keysToDelete.add(key); // 添加到待删除的键列表
     }
   }
 
@@ -163,6 +165,44 @@ class AsyncStorageProvider implements ExtendedCache {
     this.listeners.forEach((savedListener) => {
       this.eventEmitter.addListener('cacheDeleted', savedListener);
     });
+  }
+
+  private setupAppStateListener() {
+    const handleAppStateChange = async (nextAppState: AppStateStatus) => {
+      if (nextAppState === 'inactive' || nextAppState === 'background') {
+        await this.saveCacheToAsyncStorage();
+      }
+    };
+
+    AppState.addEventListener('change', handleAppStateChange);
+  }
+
+  private setupPeriodicSave() {
+    setInterval(() => {
+      this.saveCacheToAsyncStorage();
+    }, 60000); // 每分钟保存一次
+  }
+
+  private async saveCacheToAsyncStorage() {
+    try {
+      const entries = Array.from(this.cache.entries());
+      const multiSetPairs: [string, string][] = entries.map(([key, value]) => [key, JSON.stringify(value)]);
+      await AsyncStorage.multiSet(multiSetPairs);
+
+      // 批量删除待删除的键
+      const keysToDeleteArray = Array.from(this.keysToDelete);
+      await AsyncStorage.multiRemove(keysToDeleteArray);
+      this.keysToDelete.clear();
+    } catch (error) {
+      console.error('Failed to save cache to AsyncStorage', error);
+      Sentry.captureException(error);
+    }
+  }
+
+  private isCriticalKey(key: string): boolean {
+    // 判断是否为关键数据的逻辑
+    // 例如，用户数据可以被认为是关键数据
+    return Object.values(StorageKeys).includes(key as StorageKeys);
   }
 }
 
