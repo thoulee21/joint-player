@@ -8,6 +8,7 @@ import { StyleSheet } from 'react-native';
 import { Appbar, Icon, SegmentedButtons, useTheme } from 'react-native-paper';
 import packageJson from '../../package.json';
 import { BlurBackground } from '../components/BlurBackground';
+import { CacheIndicator } from '../components/CacheIndicator';
 import { DataItemType } from '../components/DataItem';
 import { DataList } from '../components/DataList';
 import { store } from '../redux/store';
@@ -128,6 +129,7 @@ export function AppDataScreen() {
             <Appbar.Header style={styles.transparent}>
                 <Appbar.BackAction onPress={navigation.goBack} />
                 <Appbar.Content title="App Data" />
+                <CacheIndicator />
             </Appbar.Header>
 
             <TopTab.Navigator
