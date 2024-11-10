@@ -18,7 +18,8 @@ export const PlaylistItem = ({ item }:
         <List.Image
           {...props}
           style={[props.style, {
-            borderRadius: appTheme.roundness
+            borderTopRightRadius: appTheme.roundness,
+            borderBottomRightRadius: appTheme.roundness,
           }]}
           variant="video"
           source={{ uri: item.coverImgUrl }}
@@ -34,10 +35,8 @@ export const PlaylistItem = ({ item }:
   return (
     <List.Item
       title={item.name}
-      description={
-        `${item.creator.nickname}\n${item.description || ''}`
-      }
-      descriptionNumberOfLines={2}
+      titleNumberOfLines={2}
+      description={item.description}
       left={renderImg}
       onPress={() => {
         //@ts-expect-error
