@@ -9,9 +9,7 @@ export const AlbumDescription = (
 
   const showDialog = useCallback(() => {
     if (description) {
-      if (description.length > 100) {
-        setDialogVisible(true);
-      }
+      setDialogVisible(true);
     }
   }, [description]);
 
@@ -26,7 +24,7 @@ export const AlbumDescription = (
       <View style={styles.root}>
         <TouchableOpacity onPress={showDialog}>
           <Text
-            style={styles.scrollView}
+            style={styles.desc}
             numberOfLines={2}
           >
             {description}
@@ -41,13 +39,11 @@ export const AlbumDescription = (
           style={styles.dialog}
         >
           <Dialog.Title>Album Description</Dialog.Title>
-          <Dialog.ScrollArea style={styles.smallPadding}>
-            <ScrollView
-              contentContainerStyle={styles.biggerPadding}
-            >
-              <Text selectable>{description}</Text>
-            </ScrollView>
-          </Dialog.ScrollArea>
+          <ScrollView
+            contentContainerStyle={styles.biggerPadding}
+          >
+            <Text selectable>{description}</Text>
+          </ScrollView>
           <Dialog.Actions>
             <Button onPress={hideDialog}>Close</Button>
           </Dialog.Actions>
@@ -61,14 +57,11 @@ const styles = StyleSheet.create({
   root: {
     height: 50,
   },
-  scrollView: {
+  desc: {
     marginHorizontal: '6%',
   },
   dialog: {
     maxHeight: '80%',
-  },
-  smallPadding: {
-    paddingHorizontal: 0,
   },
   biggerPadding: {
     paddingHorizontal: 24,
