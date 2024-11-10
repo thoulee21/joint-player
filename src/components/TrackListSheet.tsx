@@ -27,10 +27,12 @@ export function TrackListSheet({ bottomSheetRef }: {
   }, [dispatch]);
 
   useEffect(() => {
-    DeviceEventEmitter.addListener(
+    const sub = DeviceEventEmitter.addListener(
       'loadEnd',
       initQueue
     );
+
+    return () => { sub.remove(); };
   }, [initQueue]);
 
   const renderTrack = useCallback(({ item, index }:

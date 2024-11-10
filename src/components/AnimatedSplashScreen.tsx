@@ -28,7 +28,7 @@ export const AnimatedSplashScreen = ({ children }: PropsWithChildren) => {
     const opacity = useRef(new Animated.Value(1));
 
     useEffect(() => {
-        DeviceEventEmitter.addListener('loadEnd', () => {
+        const sub = DeviceEventEmitter.addListener('loadEnd', () => {
             setIsLoadEnd(true);
         });
 
@@ -36,6 +36,8 @@ export const AnimatedSplashScreen = ({ children }: PropsWithChildren) => {
             Appearance.getColorScheme() === 'dark'
                 ? 'light-content' : 'dark-content'
         );
+
+        return () => { sub.remove(); };
     }, []);
 
     useEffect(() => {

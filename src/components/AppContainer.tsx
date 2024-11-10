@@ -32,9 +32,11 @@ export function AppContainer({ children }: PropsWithChildren) {
   const { theme: colorTheme, updateTheme } = useMaterial3Theme();
 
   useEffect(() => {
-    DeviceEventEmitter.addListener('aniDone', () => {
+    const sub = DeviceEventEmitter.addListener('aniDone', () => {
       setIsAniDone(true);
     });
+
+    return () => { sub.remove(); };
   }, []);
 
   const MyLightTheme = useMemo(() => ({
