@@ -8,6 +8,7 @@ import {
   ImageBackground,
   StyleSheet,
   TouchableWithoutFeedback,
+  useWindowDimensions,
   View,
   type ImageStyle,
   type StyleProp,
@@ -116,6 +117,7 @@ export const UserBackground = ({
 }>) => {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
+  const window = useWindowDimensions();
   const appTheme = useTheme();
 
   const currentUser = useAppSelector(selectUser);
@@ -125,8 +127,12 @@ export const UserBackground = ({
 
   if (isLoading) {
     return (
-      <View style={styles.img}>
-        <ActivityIndicator style={styles.loading} />
+      <View style={[
+        styles.loading,
+        style, {
+          height: window.height * 0.3,
+        }]}>
+        <ActivityIndicator />
       </View>
     );
   }
@@ -172,7 +178,9 @@ export const UserBackground = ({
   );
 };
 
-export const UserHeader = ({ userId }: { userId?: number }) => {
+export const UserHeader = (
+  { userId }: { userId?: number }
+) => {
   return (
     <UserBackground userId={userId}>
       <UserInfo userId={userId} />
@@ -192,7 +200,9 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   loading: {
-    flex: 1,
+    alignContent: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
     alignSelf: 'center',
   },
   signature: {
