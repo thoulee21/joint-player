@@ -7,6 +7,7 @@ import {
 } from 'react-native-reanimated';
 import TrackPlayer from 'react-native-track-player';
 import { mutate, SWRConfig, SWRConfiguration } from 'swr';
+import NetInfo from '@react-native-community/netinfo';
 import { AppContainer } from './components/AppContainer';
 import { RootStack } from './components/RootStack';
 import { useAppDispatch } from './hook/reduxHooks';
@@ -53,7 +54,18 @@ const swrConfig: SWRConfiguration = {
     return () => {
       subscription.remove();
     };
-  }
+  },
+  initReconnect(callback) {
+    const unsubscribe = NetInfo.addEventListener(
+      state => {
+        if (state.isConnected) { callback(); }
+      }
+    );
+
+    return () => {
+      unsubscribe();
+    };
+  },
 };
 
 configureReanimatedLogger({
