@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
     createMaterialTopTabNavigator,
     MaterialTopTabBarProps,
@@ -13,6 +12,7 @@ import { DataItemType } from '../components/DataItem';
 import { DataList } from '../components/DataList';
 import { store } from '../redux/store';
 import { Storage } from '../utils';
+import { StorageKeys } from '../utils/storageKeys';
 
 const TopTab = createMaterialTopTabNavigator();
 
@@ -40,16 +40,14 @@ const StorageList = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const storedKeys = await AsyncStorage.getAllKeys();
-            const storageFetches = storedKeys.map(
-                async (localDataName) => {
+            const storageFetches = Object.values(StorageKeys)
+                .map(async (localDataName) => {
                     const data = await Storage.get(localDataName);
                     return {
                         name: localDataName,
                         data: data,
                     };
-                }
-            );
+                });
             const dataItems = await Promise.all(storageFetches);
             setLocalData(dataItems);
         };
