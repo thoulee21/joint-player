@@ -6,7 +6,7 @@ import {
   ReanimatedLogLevel,
 } from 'react-native-reanimated';
 import TrackPlayer from 'react-native-track-player';
-import { SWRConfig, SWRConfiguration } from 'swr';
+import { mutate, SWRConfig, SWRConfiguration } from 'swr';
 import { AppContainer } from './components/AppContainer';
 import { RootStack } from './components/RootStack';
 import { useAppDispatch } from './hook/reduxHooks';
@@ -22,18 +22,26 @@ import { fetcher } from './utils/retryFetcher';
 
 const swrConfig: SWRConfiguration = {
   fetcher: fetcher,
-  provider: asyncStorageProvider,
+  provider: () => {
+    const provider = asyncStorageProvider();
+    provider.onCacheDeleted((key: string) => {
+      // 处理缓存删除事件，自动重新加载数据
+      mutate(key);
+    });
+    return provider;
+  },
   isVisible: () => { return true; },
   initFocus(callback) {
     let appState = AppState.currentState;
 
     const onAppStateChange = (nextAppState: AppStateStatus) => {
-      /* 如果正在从后台或非 active 模式恢复到 active 模式 */
       if (
-        appState.match(
-          /inactive|background/
-        ) && nextAppState === 'active'
-      ) { callback(); }
+        /* 如果正在从后台或非 active 模式恢复到 active 模式 */
+        appState.match(/inactive|background/)
+        && nextAppState === 'active'
+      ) {
+        callback();
+      }
       appState = nextAppState;
     };
 
