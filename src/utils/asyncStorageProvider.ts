@@ -4,7 +4,7 @@ import { NativeEventEmitter } from 'react-native';
 import { Cache } from 'swr';
 import { StorageKeys } from './storageKeys';
 
-const MAX_CACHE_SIZE = 0.2 * 1024 * 1024; // 5MB
+const MAX_CACHE_SIZE = 5 * 1024 * 1024; // 5MB
 
 export interface ExtendedCache extends Cache<any> {
   onCacheDeleted(listener: (key: string) => void): void;
@@ -61,7 +61,6 @@ class AsyncStorageProvider implements ExtendedCache {
             const value = this.cache.get(oldestKey);
             this.cache.delete(oldestKey);
             this.accessOrder.delete(oldestKey);
-            console.debug('Removing oldest key:', oldestKey);
             await AsyncStorage.removeItem(oldestKey);
             this.cacheSize -= this.getSizeInBytes(JSON.stringify(value));
             // 在删除缓存数据后触发重新加载数据的逻辑
@@ -70,7 +69,6 @@ class AsyncStorageProvider implements ExtendedCache {
             // 如果 oldestKey 是用户数据，则跳过从AsyncStorage删除
             this.cache.delete(oldestKey);
             this.accessOrder.delete(oldestKey);
-            console.debug('Skipping oldest key:', oldestKey);
           }
         }
       }
