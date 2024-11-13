@@ -67,10 +67,10 @@
     "react-redux": "^9.1.2",
     "swr": "^2.2.5",
     "user-agents": "^1.1.357",
-    "uuid": "^11.0.2"
+    "uuid": "^11.0.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.25.8",
+    "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.25.8",
     "@babel/runtime": "7.25.7",
     "@react-native-community/eslint-config": "^3.2.0",
@@ -83,7 +83,7 @@
     "@types/react-native-video": "^5.0.20",
     "@types/user-agents": "^1.0.4",
     "@types/uuid": "^10.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.12.2",
+    "@typescript-eslint/eslint-plugin": "^8.13.0",
     "@typescript-eslint/parser": "^8.12.2",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "eslint": "8.53.0",
