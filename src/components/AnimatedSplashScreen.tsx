@@ -24,6 +24,7 @@ export const AnimatedSplashScreen = ({ children }: PropsWithChildren) => {
     const [isLoadEnd, setIsLoadEnd] = useState(false);
     const [isAniDone, setIsAniDone] = useState(false);
 
+    const lottieRef = useRef<LottieView>(null);
     const loadingProgress = useRef(new Animated.Value(0));
     const opacity = useRef(new Animated.Value(1));
 
@@ -90,6 +91,7 @@ export const AnimatedSplashScreen = ({ children }: PropsWithChildren) => {
                     { opacity: opacity.current },
                 ]}>
                     <AnimatedLottieView
+                        ref={lottieRef}
                         source={require('../assets/animations/welcome.json')}
                         progress={loadingProgress.current}
                         colorFilters={colorFilters}
