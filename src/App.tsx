@@ -1,3 +1,4 @@
+import NetInfo from '@react-native-community/netinfo';
 import * as Sentry from '@sentry/react-native';
 import React, { useEffect } from 'react';
 import { AppState, type AppStateStatus } from 'react-native';
@@ -7,7 +8,6 @@ import {
 } from 'react-native-reanimated';
 import TrackPlayer from 'react-native-track-player';
 import { mutate, SWRConfig, SWRConfiguration } from 'swr';
-import NetInfo from '@react-native-community/netinfo';
 import { AppContainer } from './components/AppContainer';
 import { RootStack } from './components/RootStack';
 import { useAppDispatch } from './hook/reduxHooks';
@@ -18,13 +18,13 @@ import {
   initUser,
 } from './redux/slices';
 import { PlaybackService } from './services/PlaybackService';
-import { asyncStorageProvider } from './utils/asyncStorageProvider';
+import { mmkvStorageProvider } from './utils/mmkvStorageProvider';
 import { fetcher } from './utils/retryFetcher';
 
 const swrConfig: SWRConfiguration = {
   fetcher: fetcher,
   provider: () => {
-    const provider = asyncStorageProvider();
+    const provider = mmkvStorageProvider();
     provider.onCacheDeleted((key: string) => {
       // 处理缓存删除事件，自动重新加载数据
       mutate(key);

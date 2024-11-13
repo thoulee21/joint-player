@@ -1,17 +1,18 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Sentry from '@sentry/react-native';
 import { AppState, AppStateStatus, NativeEventEmitter } from 'react-native';
+import { MMKV } from 'react-native-mmkv';
 import { Cache } from 'swr';
-import { StorageKeys } from './storageKeys';
 
-const MAX_CACHE_SIZE = 5 * 1024 * 1024; // 5MB
+const MAX_CACHE_SIZE = 6 * 1024 * 1024; // 6MB
+
+export const mmkvStorage = new MMKV({ id: 'app-cache' });
 
 export interface ExtendedCache extends Cache<any> {
   onCacheDeleted(listener: (key: string) => void): void;
   offCacheDeleted(listener: (key: string) => void): void;
 }
 
-class AsyncStorageProvider implements ExtendedCache {
+class MMKVStorageProvider implements ExtendedCache {
   private cache = new Map<string, any>();
   private cacheSize = 0;
   private eventEmitter = new NativeEventEmitter(); // 使用 NativeEventEmitter
@@ -28,8 +29,10 @@ class AsyncStorageProvider implements ExtendedCache {
 
   private async loadCache() {
     try {
-      const keys = await AsyncStorage.getAllKeys();
-      const stores = await AsyncStorage.multiGet(keys);
+      const keys = mmkvStorage.getAllKeys();
+      const stores = keys.map((key) => [
+        key, mmkvStorage.getString(key) as string
+      ]);
       stores.forEach(([key, value]) => {
         if (value) {
           const parsedValue = JSON.parse(value);
@@ -39,7 +42,6 @@ class AsyncStorageProvider implements ExtendedCache {
         }
       });
     } catch (error) {
-      console.error('Failed to load cache from AsyncStorage', error);
       Sentry.captureException(error);
     }
   }
@@ -48,11 +50,12 @@ class AsyncStorageProvider implements ExtendedCache {
     return new Blob([value]).size;
   }
 
-  private shouldRetainCache(key: string): boolean {
+  private shouldRetainCache(_: string): boolean {
     // 自定义逻辑判断缓存数据是否应该保留
     // 例如，根据数据的使用频率、重要性等
     // 这里简单示例为保留所有用户数据
-    return Object.values(StorageKeys).includes(key as StorageKeys);
+    // return Object.values(StorageKeys).includes(key as StorageKeys);
+    return false;
   }
 
   private async ensureCacheSize() {
@@ -64,8 +67,10 @@ class AsyncStorageProvider implements ExtendedCache {
             const value = this.cache.get(oldestKey);
             this.cache.delete(oldestKey);
             this.accessOrder.delete(oldestKey);
-            this.cacheSize -= this.getSizeInBytes(JSON.stringify(value));
-            await AsyncStorage.removeItem(oldestKey); // 实时删除操作
+            this.cacheSize -= this.getSizeInBytes(
+              JSON.stringify(value)
+            );
+            mmkvStorage.delete(oldestKey);
             // 在删除缓存数据后触发重新加载数据的逻辑
             this.handleCacheDeletion(oldestKey);
           } else {
@@ -76,7 +81,6 @@ class AsyncStorageProvider implements ExtendedCache {
         }
       }
     } catch (error) {
-      console.error('Failed to ensure cache size', error);
       Sentry.captureException(error);
     }
   }
@@ -119,21 +123,22 @@ class AsyncStorageProvider implements ExtendedCache {
 
       if (this.cache.has(key)) {
         const oldValue = this.cache.get(key);
-        this.cacheSize -= this.getSizeInBytes(JSON.stringify(oldValue));
+        this.cacheSize -= this.getSizeInBytes(
+          JSON.stringify(oldValue)
+        );
       }
 
       this.cache.set(key, value);
       this.accessOrder.set(key, Date.now()); // 更新访问时间
       this.cacheSize += size;
 
-      // 对关键数据立即写入 AsyncStorage
+      // 对关键数据立即写入 MMKV
       if (this.isCriticalKey(key)) {
-        await AsyncStorage.setItem(key, stringValue);
+        mmkvStorage.set(key, stringValue);
       }
 
       this.ensureCacheSize();
     } catch (error) {
-      console.error('Failed to set cache item', error);
       Sentry.captureException(error);
     }
   }
@@ -162,15 +167,18 @@ class AsyncStorageProvider implements ExtendedCache {
   offCacheDeleted(listener: (key: string) => void) {
     this.listeners.delete(listener.toString());
     this.eventEmitter.removeAllListeners('cacheDeleted');
-    this.listeners.forEach((savedListener) => {
-      this.eventEmitter.addListener('cacheDeleted', savedListener);
+    this.listeners.forEach((
+      savedListener) => {
+      this.eventEmitter.addListener(
+        'cacheDeleted', savedListener
+      );
     });
   }
 
   private setupAppStateListener() {
     const handleAppStateChange = async (nextAppState: AppStateStatus) => {
       if (nextAppState === 'inactive' || nextAppState === 'background') {
-        await this.saveCacheToAsyncStorage();
+        await this.saveCacheToMMKVStorage();
       }
     };
 
@@ -179,33 +187,41 @@ class AsyncStorageProvider implements ExtendedCache {
 
   private setupPeriodicSave() {
     setInterval(() => {
-      this.saveCacheToAsyncStorage();
+      this.saveCacheToMMKVStorage();
     }, 60000); // 每分钟保存一次
   }
 
-  private async saveCacheToAsyncStorage() {
+  private async saveCacheToMMKVStorage() {
     try {
       const entries = Array.from(this.cache.entries());
-      const multiSetPairs: [string, string][] = entries.map(([key, value]) => [key, JSON.stringify(value)]);
-      await AsyncStorage.multiSet(multiSetPairs);
+      const multiSetPairs: [string, string][] = entries.map(
+        ([key, value]) => [
+          key, JSON.stringify(value)
+        ]
+      );
+      multiSetPairs.forEach(([key, value]) => {
+        mmkvStorage.set(key, value);
+      });
 
       // 批量删除待删除的键
       const keysToDeleteArray = Array.from(this.keysToDelete);
-      await AsyncStorage.multiRemove(keysToDeleteArray);
+      keysToDeleteArray.forEach((key) => {
+        mmkvStorage.delete(key);
+      });
       this.keysToDelete.clear();
     } catch (error) {
-      console.error('Failed to save cache to AsyncStorage', error);
       Sentry.captureException(error);
     }
   }
 
-  private isCriticalKey(key: string): boolean {
+  private isCriticalKey(_: string): boolean {
     // 判断是否为关键数据的逻辑
     // 例如，用户数据可以被认为是关键数据
-    return Object.values(StorageKeys).includes(key as StorageKeys);
+    // return Object.values(StorageKeys).includes(key as StorageKeys);
+    return false;
   }
 }
 
-export const asyncStorageProvider = (): ExtendedCache => {
-  return new AsyncStorageProvider();
+export const mmkvStorageProvider = (): ExtendedCache => {
+  return new MMKVStorageProvider();
 };
