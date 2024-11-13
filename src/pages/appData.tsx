@@ -136,7 +136,6 @@ export function AppDataScreen() {
                 backBehavior="none"
                 screenOptions={{ lazy: true }}
                 tabBar={renderTapBar}
-                sceneContainerStyle={styles.transparent}
             >
                 <TopTab.Screen
                     name="ReduxState"
