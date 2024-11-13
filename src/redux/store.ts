@@ -1,5 +1,12 @@
-import { Action, ThunkAction, configureStore } from '@reduxjs/toolkit';
+import {
+    Action,
+    ThunkAction,
+    combineReducers,
+    configureStore,
+} from '@reduxjs/toolkit';
 import * as Sentry from '@sentry/react-native';
+import { persistReducer, persistStore } from 'redux-persist';
+import { reduxStorage } from '../utils/reduxPersistMMKV';
 import {
     blurRadiusSlice,
     darkModeSlice,
@@ -10,23 +17,35 @@ import {
     userSlice,
 } from './slices';
 
+const persistConfig = {
+    key: 'root',
+    storage: reduxStorage
+};
+
+const rootReducers = combineReducers({
+    darkMode: darkModeSlice.reducer,
+    blurRadius: blurRadiusSlice.reducer,
+    devMode: devModeSlice.reducer,
+    queue: queueSlice.reducer,
+    favs: favsSlice.reducer,
+    user: userSlice.reducer,
+    playlists: playlistsSlice.reducer,
+});
+
+const persistedReducer = persistReducer(persistConfig, rootReducers);
+
 const sentryReduxEnhancer = Sentry.createReduxEnhancer();
 
 export const store = configureStore({
-    reducer: {
-        darkMode: darkModeSlice.reducer,
-        blurRadius: blurRadiusSlice.reducer,
-        devMode: devModeSlice.reducer,
-        queue: queueSlice.reducer,
-        favs: favsSlice.reducer,
-        user: userSlice.reducer,
-        playlists: playlistsSlice.reducer,
-    },
+    reducer: persistedReducer,
     enhancers: (getDefaultEnhancers) => (
         getDefaultEnhancers().concat(sentryReduxEnhancer)
     ),
     middleware: (getDefaultMiddleware) => (
-        getDefaultMiddleware({ serializableCheck: false })
+        getDefaultMiddleware({
+            serializableCheck: false,
+            immutableCheck: false,
+        })
     ),
 });
 
@@ -38,3 +57,5 @@ export type AppThunk<ReturnType = void> = ThunkAction<
     unknown,
     Action<string>
 >;
+
+export const persister = persistStore(store);

@@ -1,22 +1,17 @@
 import NetInfo from '@react-native-community/netinfo';
 import * as Sentry from '@sentry/react-native';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { AppState, type AppStateStatus } from 'react-native';
 import {
   configureReanimatedLogger,
   ReanimatedLogLevel,
 } from 'react-native-reanimated';
 import TrackPlayer from 'react-native-track-player';
+import { PersistGate } from 'redux-persist/integration/react';
 import { mutate, SWRConfig, SWRConfiguration } from 'swr';
 import { AppContainer } from './components/AppContainer';
 import { RootStack } from './components/RootStack';
-import { useAppDispatch } from './hook/reduxHooks';
-import {
-  initBlurRadius,
-  initFavs,
-  initPlaylists,
-  initUser,
-} from './redux/slices';
+import { persister } from './redux/store';
 import { PlaybackService } from './services/PlaybackService';
 import { mmkvStorageProvider } from './utils/mmkvStorageProvider';
 import { fetcher } from './utils/retryFetcher';
@@ -95,23 +90,14 @@ Sentry.init({
 });
 
 function App() {
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    Promise.all([
-      dispatch(initBlurRadius()),
-      dispatch(initFavs()),
-      dispatch(initUser()),
-      dispatch(initPlaylists()),
-    ]);
-  }, [dispatch]);
-
   return (
-    <SWRConfig value={swrConfig}>
-      <AppContainer>
-        <RootStack />
-      </AppContainer>
-    </SWRConfig>
+    <PersistGate loading={null} persistor={persister}>
+      <SWRConfig value={swrConfig}>
+        <AppContainer>
+          <RootStack />
+        </AppContainer>
+      </SWRConfig>
+    </PersistGate>
   );
 }
 

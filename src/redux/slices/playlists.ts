@@ -1,5 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Storage } from '../../utils/storage';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { StorageKeys } from '../../utils/storageKeys';
 import { RootState } from '../store';
 
@@ -18,7 +17,6 @@ export const playlistsSlice = createSlice({
     reducers: {
         setPlaylists: (state, action: PayloadAction<PlaylistType[]>) => {
             state.value = action.payload;
-            Storage.set(StorageKeys.Playlists, action.payload);
         },
         addPlaylist: (state, action: PayloadAction<PlaylistType>) => {
             const existIndex = state.value.findIndex(
@@ -26,34 +24,18 @@ export const playlistsSlice = createSlice({
             );
             if (existIndex === -1) {
                 state.value.push(action.payload);
-                Storage.set(StorageKeys.Playlists, state.value);
             }
         },
         removePlaylist: (state, action: PayloadAction<PlaylistType>) => {
             state.value = state.value.filter(
                 (playlist) => playlist.playlistID !== action.payload.playlistID
             );
-            Storage.set(StorageKeys.Playlists, state.value);
         },
         clearPlaylists: (state) => {
             state.value = [];
-            Storage.set(StorageKeys.Playlists, [] as PlaylistType[]);
         },
     },
-    extraReducers: (builder) => {
-        builder.addCase(initPlaylists.fulfilled, (state, action) => {
-            state.value = action.payload;
-        });
-    },
 });
-
-export const initPlaylists = createAsyncThunk(
-    `${StorageKeys.Playlists}/initPlaylists`,
-    async () => {
-        const playlists = await Storage.get(StorageKeys.Playlists);
-        return playlists ?? initialState.value;
-    }
-);
 
 export const { addPlaylist, clearPlaylists, removePlaylist, setPlaylists } = playlistsSlice.actions;
 
