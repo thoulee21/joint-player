@@ -5,7 +5,7 @@ import { List } from 'react-native-paper';
 import { v4 as uuid } from 'uuid';
 import { name as appName } from '../../package.json';
 import { Storage } from '../utils';
-import { StorageKeys } from '../utils/storageKeys';
+import { storage } from '../utils/reduxPersistMMKV';
 
 export const ExportDataItem = () => {
     const [exporting, setExporting] = useState(false);
@@ -53,7 +53,7 @@ export const ExportDataItem = () => {
 
         const writeData = async () => {
             try {
-                const promises = Object.values(StorageKeys).map(async (localDataName) => {
+                const promises = Object.values(storage.getAllKeys()).map(async (localDataName) => {
                     const data = await Storage.get(localDataName);
                     return { [localDataName]: data };
                 });

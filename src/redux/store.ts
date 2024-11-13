@@ -19,17 +19,42 @@ import {
 
 const persistConfig = {
     key: 'root',
-    storage: reduxStorage
+    storage: reduxStorage,
+    blacklist: [
+        'darkMode',
+        'queue',
+    ]
 };
 
 const rootReducers = combineReducers({
-    darkMode: darkModeSlice.reducer,
-    blurRadius: blurRadiusSlice.reducer,
-    devMode: devModeSlice.reducer,
-    queue: queueSlice.reducer,
-    favs: favsSlice.reducer,
-    user: userSlice.reducer,
-    playlists: playlistsSlice.reducer,
+    darkMode: persistReducer({
+        ...persistConfig,
+        key: 'darkMode'
+    }, darkModeSlice.reducer),
+    blurRadius: persistReducer({
+        ...persistConfig,
+        key: 'blurRadius'
+    }, blurRadiusSlice.reducer),
+    devMode: persistReducer({
+        ...persistConfig,
+        key: 'devMode'
+    }, devModeSlice.reducer),
+    queue: persistReducer({
+        ...persistConfig,
+        key: 'queue'
+    }, queueSlice.reducer),
+    favs: persistReducer({
+        ...persistConfig,
+        key: 'favs'
+    }, favsSlice.reducer),
+    user: persistReducer({
+        ...persistConfig,
+        key: 'user'
+    }, userSlice.reducer),
+    playlists: persistReducer({
+        ...persistConfig,
+        key: 'playlists'
+    }, playlistsSlice.reducer),
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducers);

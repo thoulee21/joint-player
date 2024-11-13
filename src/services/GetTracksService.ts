@@ -27,8 +27,9 @@ export const getTracks = async (keyword?: string): Promise<Track[]> => {
     let songs: TrackData[] = [];
 
     if (!keyword) {
-      const storedFavs = await Storage.get(StorageKeys.Favs);
-      if (!storedFavs) {
+      const storedFavsRaw = await Storage.get(`persist:${StorageKeys.Favs}`);
+      const storedFavs = JSON.parse(storedFavsRaw.value);
+      if (!storedFavs.length) {
         const storedKeyword: string | null = await Storage.get(StorageKeys.Keyword);
         keyword = storedKeyword ? storedKeyword : 'One Republic';
       } else {

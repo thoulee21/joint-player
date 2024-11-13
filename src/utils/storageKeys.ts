@@ -1,7 +1,7 @@
 export enum StorageKeys {
-    Keyword = 'keyword',
+    Keyword = 'keyword',//isn't managed by redux
     BlurRadius = 'blurRadius',
-    Favs = 'favs',
+    Favs = 'favs',// is managed by redux and being directly get
     User = 'user',
     Playlists = 'playlists',
 }

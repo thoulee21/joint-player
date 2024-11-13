@@ -18,8 +18,8 @@ export const ClearAllDataItem = () => {
     />
   ), [appTheme.colors.error]);
 
-  const clearAndRestart = useCallback(async () => {
-    await Storage.clear();
+  const clearAndRestart = useCallback(() => {
+    Storage.clear();
     RNRestart.Restart();
   }, []);
 

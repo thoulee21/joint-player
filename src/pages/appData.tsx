@@ -8,12 +8,12 @@ import { StyleSheet } from 'react-native';
 import { Appbar, Icon, SegmentedButtons, useTheme } from 'react-native-paper';
 import packageJson from '../../package.json';
 import { BlurBackground } from '../components/BlurBackground';
-import { AsyncStorageIndicator } from '../components/CacheIndicator';
+import { MMKVStorageIndicator } from '../components/StorageIndicator';
 import { DataItemType } from '../components/DataItem';
 import { DataList } from '../components/DataList';
 import { store } from '../redux/store';
 import { Storage } from '../utils';
-import { StorageKeys } from '../utils/storageKeys';
+import { storage } from '../utils/reduxPersistMMKV';
 
 const TopTab = createMaterialTopTabNavigator();
 
@@ -41,7 +41,7 @@ const StorageList = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const storageFetches = Object.values(StorageKeys)
+            const storageFetches = storage.getAllKeys()
                 .map(async (localDataName) => {
                     const data = await Storage.get(localDataName);
                     return {
@@ -129,7 +129,7 @@ export function AppDataScreen() {
             <Appbar.Header style={styles.transparent}>
                 <Appbar.BackAction onPress={navigation.goBack} />
                 <Appbar.Content title="App Data" />
-                <AsyncStorageIndicator />
+                <MMKVStorageIndicator />
             </Appbar.Header>
 
             <TopTab.Navigator

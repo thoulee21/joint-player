@@ -24,7 +24,8 @@ export const ActionDrawerItems = ({ navigation }: {
   const appTheme = useTheme();
 
   const currentUser = useAppSelector(selectUser);
-  const isLoggedOut = currentUser === initialUser;
+  const isLoggedOut = currentUser.id === initialUser.id
+    && currentUser.username === initialUser.username;
 
   const renderLogoutIcon = useCallback(
     (props: any) => (
