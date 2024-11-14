@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
 import { StyleSheet } from 'react-native';
-import { Appbar, Divider, List, useTheme } from 'react-native-paper';
+import { Appbar, Divider, List, Tooltip, useTheme } from 'react-native-paper';
 import { AniGalleryItem } from '../components/AniGalleryItem';
 import { BlurBackground } from '../components/BlurBackground';
 import { ClearAllDataItem } from '../components/ClearAllDataItem';
@@ -28,6 +28,14 @@ export function DevScreen() {
       <Appbar.Header mode="large" style={styles.header}>
         <Appbar.BackAction onPress={navigation.goBack} />
         <Appbar.Content title="Developer Options" />
+
+        <Tooltip title="View Logs">
+          <Appbar.Action
+            icon="folder-eye-outline"
+            //@ts-expect-error
+            onPress={() => { navigation.push('Logcat' as never); }}
+          />
+        </Tooltip>
       </Appbar.Header>
 
       <ListWrapper bottomViewHeight={100}>

@@ -7,6 +7,7 @@ export * from './comments';
 export * from './dev';
 export * from './favs';
 export * from './issueReport';
+export * from './logcat';
 export * from './lyrics';
 export * from './mv';
 export * from './mvDetail';

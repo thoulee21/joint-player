@@ -13,6 +13,7 @@ import {
     Comments,
     DevScreen,
     IssueReport,
+    Logcat,
     LyricsScreen,
     MvDetail,
     MvPlayer,
@@ -21,7 +22,7 @@ import {
     Settings,
     SwitchUser,
     TestScreen,
-    WebViewScreen,
+    WebViewScreen
 } from '../pages';
 import { DrawerNavi } from './DrawerNavi';
 
@@ -49,9 +50,8 @@ export function RootStack() {
             <Stack.Screen name="AlbumDetail" component={AlbumDetail} />
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="PlaylistDetail" component={PlaylistDetailScreen} />
-            <Stack.Group
-                screenOptions={TransitionPresets.ModalPresentationIOS}
-            >
+            <Stack.Screen name="Logcat" component={Logcat} />
+            <Stack.Group screenOptions={TransitionPresets.ModalPresentationIOS}>
                 <Stack.Screen name="IssueReport" component={IssueReport} />
                 <Stack.Screen name="SwitchUser" component={SwitchUser} />
                 <Stack.Screen name="WebView" component={WebViewScreen} />
