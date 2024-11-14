@@ -2,9 +2,9 @@ import {
   createMaterialTopTabNavigator,
   MaterialTopTabBarProps,
 } from '@react-navigation/material-top-tabs';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
-import { LayoutAnimation, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Appbar, Icon, SegmentedButtons, useTheme } from 'react-native-paper';
 import { PackageData, ReduxState, StorageList } from '../components/AppDataScreens';
 import { BlurBackground } from '../components/BlurBackground';
@@ -28,7 +28,6 @@ const ActionBar = ({ routeIndex }: { routeIndex: number }) => {
 
 export function AppDataScreen() {
   const appTheme = useTheme();
-  const isFocused = useIsFocused();
   const [routeIndex, setRouteIndex] = useState(0);
 
   const renderTapBar = useCallback(({
@@ -106,11 +105,6 @@ export function AppDataScreen() {
         tabBar={renderTapBar}
         screenListeners={() => ({
           state: ({ data }) => {
-            if (isFocused) {
-              LayoutAnimation.configureNext(
-                LayoutAnimation.Presets.easeInEaseOut
-              );
-            }
             setRouteIndex(data.state.index);
           }
         })}
