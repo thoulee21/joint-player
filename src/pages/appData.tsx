@@ -3,12 +3,11 @@ import {
   MaterialTopTabBarProps,
 } from '@react-navigation/material-top-tabs';
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { LayoutAnimation, StyleSheet } from 'react-native';
 import { Appbar, Icon, SegmentedButtons, useTheme } from 'react-native-paper';
 import packageJson from '../../package.json';
 import { BlurBackground } from '../components/BlurBackground';
-import { DataItemType } from '../components/DataItem';
 import { DataList } from '../components/DataList';
 import { MMKVStorageIndicator } from '../components/StorageIndicator';
 import { store } from '../redux/store';
@@ -17,54 +16,52 @@ import { storage } from '../utils/reduxPersistMMKV';
 const TopTab = createMaterialTopTabNavigator();
 
 const PackageData = () => {
-  const packageData = Object.keys(packageJson).map((key) => ({
-    name: key,
-    data: (packageJson as Record<string, any>)[key],
-  }));
+  const packageData = useMemo(() => (
+    Object.keys(packageJson).map((
+      key
+    ) => ({
+      name: key,
+      data: (packageJson as Record<string, any>)[key],
+    }))
+  ), []);
 
   return <DataList dataItems={packageData} />;
 };
 
 const ReduxState = () => {
   const state: { [key: string]: any } = store.getState();
-  const stateList = Object.keys(state).map((key) => ({
-    name: key,
-    data: state[key].value || state[key],
-  }));
+
+  const stateList = useMemo(() => (
+    Object.keys(state).map((
+      key
+    ) => ({
+      name: key,
+      data: state[key].value || state[key],
+    }))
+  ), [state]);
 
   return <DataList dataItems={stateList} />;
 };
 
 const StorageList = () => {
-  const [localData, setLocalData] = useState<DataItemType[]>([]);
+  const dataItems = useMemo(() => (
+    storage.getAllKeys().map((
+      localDataName
+    ) => ({
+      name: localDataName,
+      data: JSON.parse(
+        storage.getString(localDataName) || ''
+      ),
+    }))
+  ), []);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const storageFetches = storage.getAllKeys()
-        .map((localDataName) => {
-          const data = JSON.parse(
-            storage.getString(localDataName) || ''
-          );
-          return {
-            name: localDataName,
-            data: data,
-          };
-        });
-      const dataItems = await Promise.all(storageFetches);
-      setLocalData(dataItems);
-    };
-
-    fetchData();
-  }, []);
-
-  return <DataList dataItems={localData} />;
+  return <DataList dataItems={dataItems} />;
 };
 
 export function AppDataScreen() {
   const navigation = useNavigation();
   const appTheme = useTheme();
-
-  const [currentRouteIndex, setCurrentRouteIndex] = useState(0);
+  const [routeIndex, setRouteIndex] = useState(0);
 
   const renderTapBar = useCallback(({
     state, navigation: topTabNavi, descriptors,
@@ -135,7 +132,7 @@ export function AppDataScreen() {
         <Appbar.BackAction onPress={navigation.goBack} />
         <Appbar.Content title="App Data" />
 
-        {currentRouteIndex === 1 && (
+        {routeIndex === 1 && (
           <MMKVStorageIndicator />
         )}
       </Appbar.Header>
@@ -148,7 +145,7 @@ export function AppDataScreen() {
             LayoutAnimation.configureNext(
               LayoutAnimation.Presets.easeInEaseOut
             );
-            setCurrentRouteIndex(data.state.index);
+            setRouteIndex(data.state.index);
           }
         })}
       >
