@@ -8,11 +8,10 @@ import { StyleSheet } from 'react-native';
 import { Appbar, Icon, SegmentedButtons, useTheme } from 'react-native-paper';
 import packageJson from '../../package.json';
 import { BlurBackground } from '../components/BlurBackground';
-import { MMKVStorageIndicator } from '../components/StorageIndicator';
 import { DataItemType } from '../components/DataItem';
 import { DataList } from '../components/DataList';
+import { MMKVStorageIndicator } from '../components/StorageIndicator';
 import { store } from '../redux/store';
-import { Storage } from '../utils';
 import { storage } from '../utils/reduxPersistMMKV';
 
 const TopTab = createMaterialTopTabNavigator();
@@ -42,8 +41,10 @@ const StorageList = () => {
     useEffect(() => {
         const fetchData = async () => {
             const storageFetches = storage.getAllKeys()
-                .map(async (localDataName) => {
-                    const data = await Storage.get(localDataName);
+                .map((localDataName) => {
+                    const data = JSON.parse(
+                        storage.getString(localDataName) || ''
+                    );
                     return {
                         name: localDataName,
                         data: data,
