@@ -7543,6 +7543,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"eslint-plugin-ft-flow@npm:^3.0.11":
+  version: 3.0.11
+  resolution: "eslint-plugin-ft-flow@npm:3.0.11"
+  dependencies:
+    lodash: "npm:^4.17.21"
+    string-natural-compare: "npm:^3.0.1"
+  peerDependencies:
+    eslint: ^8.56.0 || ^9.0.0
+    hermes-eslint: ">=0.15.0"
+  checksum: 10c0/025b3736d99d2831c6d493421fbfa880b0aeef9752d3b677972c7100e5ba424368525bc15b34604f02d18807bfa7b1bcaa2c3f37552381f2ce45283faa5989d5
+  languageName: node
+  linkType: hard
+
 "eslint-plugin-jest@npm:^26.5.3":
   version: 26.9.0
   resolution: "eslint-plugin-jest@npm:26.9.0"
@@ -10154,6 +10167,7 @@ __metadata:
     babel-plugin-transform-remove-console: "npm:^6.9.4"
     color: "npm:^4.2.3"
     eslint: "npm:8.53.0"
+    eslint-plugin-ft-flow: "npm:^3.0.11"
     eslint-plugin-jest: "npm:^28.9.0"
     expo: "npm:~51.0.37"
     expo-blur: "npm:~13.0.2"
