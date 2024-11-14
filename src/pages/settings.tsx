@@ -25,7 +25,7 @@ export function Settings() {
 
   return (
     <BlurBackground>
-      <Appbar.Header style={styles.header} mode="large">
+      <Appbar.Header style={styles.header}>
         <Appbar.BackAction onPress={navigation.goBack} />
         <Appbar.Content title="Settings" />
       </Appbar.Header>

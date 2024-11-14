@@ -55,7 +55,7 @@ export const IssueReport = () => {
 
     return (
         <BlurBackground>
-            <Appbar.Header style={styles.appbar} mode="large">
+            <Appbar.Header style={styles.appbar} mode="medium">
                 <Appbar.BackAction onPress={navigation.goBack} />
                 <Appbar.Content title="Report Issue" />
                 <Appbar.Action
