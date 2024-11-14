@@ -26,7 +26,6 @@ import useSWR from 'swr';
 import { useAppSelector, useDebounce } from '../hook';
 import { blurRadius, selectDevModeEnabled } from '../redux/slices';
 import { Main as MvMain } from '../types/mv';
-import { mvLog } from '../utils/logger';
 import { placeholderImg } from './TrackInfo';
 
 export const MvCover = ({ children }: PropsWithChildren) => {
@@ -48,7 +47,6 @@ export const MvCover = ({ children }: PropsWithChildren) => {
 
   const printMvData = useCallback(() => {
     if (devModeEnabled && data) {
-      mvLog.info(data.data);
       showDialog();
     }
   }, [data, devModeEnabled, showDialog]);
