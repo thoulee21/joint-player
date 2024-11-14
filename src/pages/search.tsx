@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Searchbar, useTheme } from 'react-native-paper';
@@ -8,44 +8,34 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurBackground } from '../components/BlurBackground';
 import { LottieAnimation } from '../components/LottieAnimation';
 import { SearchSongList } from '../components/SearchSongList';
-import { Storage } from '../utils/storage';
-import { StorageKeys } from '../utils/storageKeys';
+import { useAppDispatch, useAppSelector } from '../hook/reduxHooks';
+import { addSearchHistory, selectSearchHistory } from '../redux/slices/searchHistory';
 
 export const Search = () => {
+    const dispatch = useAppDispatch();
     const navigation = useNavigation();
     const appTheme = useTheme();
     const insets = useSafeAreaInsets();
 
     const [keyword, setKeyword] = useState('');
-    const [placeholder, setPlaceholder] = useState('');
     const [showQuery, setShowQuery] = useState('');
-
-    useEffect(() => {
-        const restoreInitKeyword = async () => {
-            const storedKeyword =
-                await Storage.get(StorageKeys.Keyword);
-            if (storedKeyword) {
-                setPlaceholder(storedKeyword);
-            }
-        };
-
-        restoreInitKeyword();
-    }, []);
+    const searchHistory = useAppSelector(selectSearchHistory);
 
     const searchSongs = useCallback(async () => {
+        const placeholder = searchHistory[searchHistory.length - 1];
         if (showQuery) {
-            Storage.set(StorageKeys.Keyword, showQuery);
+            dispatch(addSearchHistory(showQuery));
             setKeyword(showQuery);
         } else if (placeholder) {
             setShowQuery(placeholder);
             setKeyword(placeholder);
         }
-    }, [placeholder, showQuery]);
+    }, [dispatch, searchHistory, showQuery]);
 
     return (
         <BlurBackground style={{ paddingTop: insets.top }}>
             <Searchbar
-                placeholder={placeholder || 'Search for songs'}
+                placeholder={searchHistory[searchHistory.length - 1] || 'Search for songs'}
                 placeholderTextColor={appTheme.dark
                     ? appTheme.colors.onSurfaceDisabled
                     : appTheme.colors.backdrop}

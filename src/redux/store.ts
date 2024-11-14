@@ -15,6 +15,7 @@ import {
     playlistsSlice,
     queueSlice,
     userSlice,
+    searchHistorySlice,
 } from './slices';
 
 const persistConfig = {
@@ -55,6 +56,10 @@ const rootReducers = combineReducers({
         ...persistConfig,
         key: 'playlists'
     }, playlistsSlice.reducer),
+    searchHistory: persistReducer({
+        ...persistConfig,
+        key: 'searchHistory'
+    }, searchHistorySlice.reducer),
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducers);

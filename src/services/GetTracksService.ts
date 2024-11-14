@@ -6,7 +6,7 @@ import type { Track as TrackData } from '../types/playlist';
 import { Artist } from '../types/songDetail';
 import { fetchSearchResults } from '../utils/fetchSearchResults';
 import { fetchTrackDetails } from '../utils/fetchTrackDetails';
-import { Storage } from '../utils/storage';
+import { storage } from '../utils/reduxPersistMMKV';
 import { StorageKeys } from '../utils/storageKeys';
 
 export interface TrackType {
@@ -22,42 +22,43 @@ export interface TrackType {
   mvid: number;
 }
 
-export const getTracks = async (keyword?: string): Promise<Track[]> => {
+export const getTracks = async (keyword: string): Promise<Track[]> => {
   try {
     let songs: TrackData[] = [];
 
-    if (!keyword) {
-      const storedFavsRaw = await Storage.get(`persist:${StorageKeys.Favs}`);
-      const storedFavs = JSON.parse(storedFavsRaw.value);
-      if (!storedFavs.length) {
-        const storedKeyword: string | null = await Storage.get(StorageKeys.Keyword);
-        keyword = storedKeyword ? storedKeyword : 'One Republic';
-      } else {
-        const favs = storedFavs as TrackType[];
-        await TrackPlayer.add(favs);
-        return favs;
-      }
-    }
-    const data = await fetchSearchResults(keyword);
-    songs = data.songs;
+    const storedFavsRaw = JSON.parse(
+      storage.getString(`persist:${StorageKeys.Favs}`) || ''
+    );
+    const storedFavs = JSON.parse(storedFavsRaw.value);
 
-    const fetchedDataRaw = await Promise.all(
-      songs.map(async (track: TrackData) => {
-        return await fetchTrackDetails(track.id.toString());
-      }),
-    );
-    const fetchedData = fetchedDataRaw.filter(
-      (track): track is Track => track !== null
-    );
-    if (fetchedDataRaw.length !== fetchedData.length) {
-      ToastAndroid.show(
-        `Some tracks failed to fetch ${fetchedData.length}/${fetchedDataRaw.length}`,
-        ToastAndroid.SHORT
+    if (storedFavs.length) {
+      //if favs exist, add them to the queue
+      const favs = storedFavs as TrackType[];
+      await TrackPlayer.add(favs);
+      return favs;
+    } else {
+      //if no favs exist, fetch the search results
+      const data = await fetchSearchResults(keyword as string);
+      songs = data.songs;
+
+      const fetchedDataRaw = await Promise.all(
+        songs.map(async (track: TrackData) => {
+          return await fetchTrackDetails(track.id.toString());
+        }),
       );
-    }
+      const fetchedData = fetchedDataRaw.filter(
+        (track): track is Track => track !== null
+      );
+      if (fetchedDataRaw.length !== fetchedData.length) {
+        ToastAndroid.show(
+          `Some tracks failed to fetch ${fetchedData.length}/${fetchedDataRaw.length}`,
+          ToastAndroid.SHORT
+        );
+      }
 
-    await TrackPlayer.setQueue(fetchedData);
-    return fetchedData;
+      await TrackPlayer.setQueue(fetchedData);
+      return fetchedData;
+    }
   }
   catch (e) {
     Sentry.captureException(e);
