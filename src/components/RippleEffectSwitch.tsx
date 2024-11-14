@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { View } from 'react-native';
+import { Platform, View } from 'react-native';
 import HapticFeedback, {
   HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
@@ -30,10 +30,16 @@ export const RippleEffectSwitch = () => {
     dispatch(toggleRippleEffect());
   }, [dispatch]);
 
+  const effectName = Platform.select({
+    ios: 'Highlight Effect',
+    android: 'Ripple Effect',
+    default: 'Ripple Effect',
+  });
+
   return (
     <List.Item
-      title="Ripple Effect"
-      description="Enable to show ripple effect on touch"
+      title={effectName}
+      description={`Enable ${effectName.toLocaleLowerCase()} on touch`}
       left={renderRippleEffectIcon}
       right={renderSwitch}
       onPress={toggle}
