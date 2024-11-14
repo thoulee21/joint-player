@@ -15,14 +15,12 @@ export const Logcat = () => {
 
   const clearLogs = useCallback(async () => {
     try {
-      setIsLoaded(false);
-      await RNFS.write(
+      // Clear log file, but not delete it
+      await RNFS.writeFile(
         RNFS.DocumentDirectoryPath + '/log',
         '',
       );
       setLogContent('');
-
-      setIsLoaded(true);
     } catch (e) {
       rootLog.error(e);
     }
