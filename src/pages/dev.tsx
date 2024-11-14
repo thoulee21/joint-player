@@ -10,6 +10,7 @@ import { ListWrapper } from '../components/ListWrapper';
 import { RestartItem } from '../components/RestartItem';
 import { ViewAppDataItem } from '../components/ViewAppDataItem';
 import type { ListLRProps } from '../types/paperListItem';
+import { rootLog } from '../utils/logger';
 
 export function DevScreen() {
   const navigation = useNavigation();
@@ -32,8 +33,11 @@ export function DevScreen() {
         <Tooltip title="View Logs">
           <Appbar.Action
             icon="folder-eye-outline"
-            //@ts-expect-error
-            onPress={() => { navigation.push('Logcat' as never); }}
+            onPress={() => {
+              rootLog.info('Navigating to Logcat screen');
+              //@ts-expect-error
+              navigation.push('Logcat' as never);
+            }}
           />
         </Tooltip>
       </Appbar.Header>
