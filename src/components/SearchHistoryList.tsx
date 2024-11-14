@@ -1,3 +1,4 @@
+import Color from 'color';
 import React, { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Chip, IconButton, List, useTheme } from 'react-native-paper';
@@ -18,7 +19,13 @@ export const SearchHistoryList = ({ setKeyword }: {
     <Chip
       compact
       mode="outlined"
-      style={styles.chip}
+      style={[
+        styles.chip, {
+          backgroundColor: Color(
+            appTheme.colors.surface
+          ).fade(0.4).string(),
+        }
+      ]}
       key={`${index}-${item}`}
       onPress={() => {
         setKeyword(item);
@@ -26,7 +33,7 @@ export const SearchHistoryList = ({ setKeyword }: {
     >
       {item}
     </Chip>
-  ), [setKeyword]);
+  ), [appTheme.colors.surface, setKeyword]);
 
   return (
     <View style={styles.root}>
