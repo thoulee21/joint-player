@@ -27,6 +27,16 @@ export const ActionDrawerItems = ({ navigation }: {
   const isLoggedOut = currentUser.id === initialUser.id
     && currentUser.username === initialUser.username;
 
+  const renderSwitchUserIcon = useCallback(
+    (props: any) => (
+      <Icon
+        {...props}
+        source="account-switch-outline"
+        color={appTheme.colors.onSurface}
+      />
+    ), [appTheme.colors.onSurface]
+  );
+
   const renderLogoutIcon = useCallback(
     (props: any) => (
       <Icon
@@ -34,7 +44,8 @@ export const ActionDrawerItems = ({ navigation }: {
         source="logout"
         color={appTheme.colors.error}
       />
-    ), [appTheme.colors.error]);
+    ), [appTheme.colors.error]
+  );
 
   const logout = useCallback(() => {
     HapticFeedback.trigger(
@@ -74,7 +85,7 @@ export const ActionDrawerItems = ({ navigation }: {
       <Drawer.Section showDivider={false}>
         <Drawer.Item
           label="Switch User"
-          icon="account-switch-outline"
+          icon={renderSwitchUserIcon}
           onPress={() => {
             navigation.closeDrawer();
             navigation.navigate('SwitchUser');
