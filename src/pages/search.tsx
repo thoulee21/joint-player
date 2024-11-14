@@ -6,7 +6,7 @@ import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedbac
 import { Searchbar, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurBackground } from '../components/BlurBackground';
-import { LottieAnimation } from '../components/LottieAnimation';
+import { SearchHistoryList } from '../components/SearchHistoryList';
 import { SearchSongList } from '../components/SearchSongList';
 import { useAppDispatch, useAppSelector } from '../hook/reduxHooks';
 import { addSearchHistory, selectSearchHistory } from '../redux/slices/searchHistory';
@@ -69,10 +69,7 @@ export const Search = () => {
             {keyword ? (
                 <SearchSongList keyword={keyword} />
             ) : (
-                <LottieAnimation
-                    caption="Search for songs"
-                    animation="rocket"
-                />
+                <SearchHistoryList setKeyword={setKeyword} />
             )}
         </BlurBackground>
     );
