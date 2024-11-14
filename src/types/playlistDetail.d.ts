@@ -182,15 +182,15 @@ export interface Artist {
 }
 
 export enum SubType {
-  Remix = "Remix",
-  伴奏版 = "伴奏版",
-  录音室版 = "录音室版",
+  Remix = 'Remix',
+  伴奏版 = '伴奏版',
+  录音室版 = '录音室版',
 }
 
 export enum Type {
-  Ep = "EP",
-  Single = "Single",
-  专辑 = "专辑",
+  Ep = 'EP',
+  Single = 'Single',
+  专辑 = '专辑',
 }
 
 export interface Music {
@@ -206,6 +206,6 @@ export interface Music {
 }
 
 export enum Extension {
-  FLAC = "flac",
-  Mp3 = "mp3",
+  FLAC = 'flac',
+  Mp3 = 'mp3',
 }
