@@ -1,4 +1,7 @@
-import { BottomSheetFlatList, type BottomSheetModal } from '@gorhom/bottom-sheet';
+import {
+  BottomSheetFlatList,
+  type BottomSheetModal,
+} from '@gorhom/bottom-sheet';
 import React, { useCallback, useEffect } from 'react';
 import { DeviceEventEmitter, StyleSheet } from 'react-native';
 import { List } from 'react-native-paper';
@@ -6,6 +9,7 @@ import TrackPlayer from 'react-native-track-player';
 import { useAppDispatch, useAppSelector } from '../hook';
 import { queue, setQueue } from '../redux/slices';
 import { TrackType } from '../services/GetTracksService';
+import type { ListLRProps } from '../types/paperListItem';
 import { BottomSheetPaper } from './BottomSheetPaper';
 import { TrackItem } from './TrackItem';
 
@@ -18,6 +22,7 @@ export function TrackListSheet({ bottomSheetRef }: {
   const initQueue = useCallback(async () => {
     try {
       const playerQueue = await TrackPlayer.getQueue();
+
       if (playerQueue) {
         dispatch(
           setQueue(playerQueue as TrackType[])
@@ -27,12 +32,12 @@ export function TrackListSheet({ bottomSheetRef }: {
   }, [dispatch]);
 
   useEffect(() => {
-    const sub = DeviceEventEmitter.addListener(
+    const subscription = DeviceEventEmitter.addListener(
       'loadEnd',
       initQueue
     );
 
-    return () => { sub.remove(); };
+    return () => { subscription.remove(); };
   }, [initQueue]);
 
   const renderTrack = useCallback(({ item, index }:
@@ -43,9 +48,11 @@ export function TrackListSheet({ bottomSheetRef }: {
     );
   }, []);
 
-  const renderEmptyIcon = useCallback(() => (
-    <List.Icon icon="music-circle-outline" />
-  ), []);
+  const renderEmptyIcon = useCallback(
+    (props: ListLRProps) => (
+      <List.Icon {...props} icon="music-circle-outline" />
+    ), []
+  );
 
   const renderEmptyTrack = useCallback(() => {
     return (
