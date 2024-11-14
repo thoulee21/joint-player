@@ -190,7 +190,7 @@ export function CommentList(
         ref={commentsRef}
         sections={showData}
         keyExtractor={keyExtractor}
-        initialNumToRender={7}
+        initialNumToRender={5}
         fadingEdgeLength={50}
         refreshing={refreshing}
         onRefresh={onRefresh}
