@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { Alert, ScrollView, StyleSheet } from 'react-native';
 import RNFS from 'react-native-fs';
 import { ActivityIndicator, Appbar, Caption, useTheme } from 'react-native-paper';
+import { rootLog } from '../utils/logger';
 
 export const Logcat = () => {
   const navigation = useNavigation();
@@ -13,52 +14,55 @@ export const Logcat = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const clearLogs = useCallback(async () => {
-    setIsLoaded(false);
-    await RNFS.unlink(
-      RNFS.DocumentDirectoryPath + '/log'
-    );
-    setLogContent('');
+    try {
+      setIsLoaded(false);
+      await RNFS.write(
+        RNFS.DocumentDirectoryPath + '/log',
+        '',
+      );
+      setLogContent('');
 
-    setIsLoaded(true);
+      setIsLoaded(true);
+    } catch (e) {
+      rootLog.error(e);
+    }
   }, []);
 
-  const renderClearButton = useCallback(() => (
-    <Appbar.Action
-      icon="delete"
-      iconColor={appTheme.colors.error}
-      onPress={() => {
-        Alert.alert(
-          'Clear logs',
-          'Are you sure you want to clear logs?',
-          [
-            { text: 'Cancel', style: 'cancel' },
-            { text: 'OK', onPress: clearLogs },
-          ],
-          { cancelable: true }
-        );
-      }}
-    />
-  ), [appTheme.colors.error, clearLogs]);
-
-  const renderRefreshButton = useCallback((
+  const renderBtns = useCallback((
     { tintColor }: { tintColor?: string }
   ) => (
-    <Appbar.Action
-      icon="refresh"
-      iconColor={tintColor}
-      onPress={() => {
-        setIsLoaded(false);
-      }}
-    />
-  ), []);
+    <>
+      <Appbar.Action
+        icon="delete-forever-outline"
+        iconColor={appTheme.colors.error}
+        onPress={() => {
+          Alert.alert(
+            'Clear logs',
+            'Are you sure you want to clear logs?',
+            [
+              { text: 'Cancel', style: 'cancel' },
+              { text: 'OK', onPress: clearLogs },
+            ],
+            { cancelable: true }
+          );
+        }}
+      />
+      <Appbar.Action
+        icon="refresh"
+        iconColor={tintColor}
+        onPress={() => {
+          setIsLoaded(false);
+        }}
+      />
+    </>
+  ), [appTheme.colors.error, clearLogs]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
-      headerLeft: renderClearButton,
-      headerRight: renderRefreshButton,
+      headerRight: renderBtns,
     } as StackNavigationOptions);
-  }, [navigation, renderClearButton, renderRefreshButton]);
+  }, [navigation, renderBtns]);
 
   useEffect(() => {
     const readeLog = async () => {
@@ -69,10 +73,14 @@ export const Logcat = () => {
       setLogContent(log);
     };
 
-    if (!isLoaded) {
-      readeLog().then(() => {
-        setIsLoaded(true);
-      });
+    try {
+      if (!isLoaded) {
+        readeLog().then(() => {
+          setIsLoaded(true);
+        });
+      }
+    } catch (e) {
+      rootLog.error(e);
     }
   }, [isLoaded]);
 
@@ -83,7 +91,7 @@ export const Logcat = () => {
     >
       {isLoaded ? (
         <Caption selectable>
-          {logContent ?? 'No log content'}
+          {logContent || 'No log content'}
         </Caption>
       ) : (
         <ActivityIndicator
