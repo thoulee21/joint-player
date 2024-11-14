@@ -1,4 +1,5 @@
 import * as Sentry from '@sentry/react-native';
+import { InteractionManager } from 'react-native';
 import RNFS from 'react-native-fs';
 import {
   consoleTransport,
@@ -33,6 +34,8 @@ export const log = logger.createLogger({
       addBreadcrumb: Sentry.addBreadcrumb as never,
     },
   },
+  async: true,
+  asyncFunc: InteractionManager.runAfterInteractions,
 });
 
 export const rootLog = log.extend('root');
