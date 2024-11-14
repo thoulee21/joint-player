@@ -6,6 +6,7 @@ import RNRestart from 'react-native-restart';
 import { AboutItem } from '../components/AboutItem';
 import { BlurBackground } from '../components/BlurBackground';
 import { BlurRadiusSlider } from '../components/BlurRadiusSlider';
+import { CacheItem } from '../components/CacheItem';
 import { DevItem } from '../components/DevItem';
 import { ExportDataItem } from '../components/ExportDataItem';
 import { ImportDataItem } from '../components/ImportDataItem';
@@ -48,6 +49,7 @@ export function Settings() {
             setRestartBarVisible={setRestartBarVisible}
           />
         </List.Section>
+        <CacheItem />
 
         <DevItem />
         <AboutItem />
