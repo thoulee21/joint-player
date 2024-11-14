@@ -161,6 +161,13 @@ export const TrackInfo = () => {
                   ).fade(0.8).string(),
                 }
               ]}
+              onPress={() => {
+                ToastAndroid.showWithGravity(
+                  'This is a trial track, not the full version',
+                  ToastAndroid.SHORT,
+                  ToastAndroid.BOTTOM
+                );
+              }}
             >Trial</Badge>
           )}
         </View>
