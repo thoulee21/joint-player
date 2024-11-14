@@ -101,6 +101,7 @@ export function AppDataScreen() {
 
       <TopTab.Navigator
         backBehavior="none"
+        screenOptions={{ lazy: true }}
         tabBar={renderTapBar}
         screenListeners={() => ({
           state: ({ data }) => {
