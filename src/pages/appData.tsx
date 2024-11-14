@@ -12,8 +12,21 @@ import { MMKVStorageIndicator } from '../components/StorageIndicator';
 
 const TopTab = createMaterialTopTabNavigator();
 
-export function AppDataScreen() {
+const ActionBar = ({ routeIndex }: { routeIndex: number }) => {
   const navigation = useNavigation();
+  return (
+    <Appbar.Header style={styles.transparent}>
+      <Appbar.BackAction onPress={navigation.goBack} />
+      <Appbar.Content title="App Data" />
+
+      {routeIndex === 1 && (
+        <MMKVStorageIndicator />
+      )}
+    </Appbar.Header>
+  );
+};
+
+export function AppDataScreen() {
   const appTheme = useTheme();
   const [routeIndex, setRouteIndex] = useState(0);
 
@@ -39,6 +52,7 @@ export function AppDataScreen() {
         style={styles.tabBar}
         value={state.routeNames[state.index]}
         buttons={tabBarItems}
+        density="small"
         onValueChange={(value) => {
           topTabNavi.navigate(value);
         }}
@@ -47,6 +61,7 @@ export function AppDataScreen() {
           colors: {
             ...appTheme.colors,
             secondaryContainer: 'transparent',
+            onSurface: appTheme.colors.onSurfaceDisabled
           },
         }}
       />
@@ -82,14 +97,7 @@ export function AppDataScreen() {
 
   return (
     <BlurBackground>
-      <Appbar.Header style={styles.transparent}>
-        <Appbar.BackAction onPress={navigation.goBack} />
-        <Appbar.Content title="App Data" />
-
-        {routeIndex === 1 && (
-          <MMKVStorageIndicator />
-        )}
-      </Appbar.Header>
+      <ActionBar routeIndex={routeIndex} />
 
       <TopTab.Navigator
         backBehavior="none"
