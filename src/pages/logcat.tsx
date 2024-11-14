@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import type { StackNavigationOptions } from '@react-navigation/stack';
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
-import { Alert, ScrollView, StyleSheet } from 'react-native';
+import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 import RNFS from 'react-native-fs';
 import { ActivityIndicator, Appbar, Caption, useTheme } from 'react-native-paper';
 import { rootLog } from '../utils/logger';
@@ -31,7 +31,7 @@ export const Logcat = () => {
   const renderBtns = useCallback((
     { tintColor }: { tintColor?: string }
   ) => (
-    <>
+    <View style={styles.row}>
       <Appbar.Action
         icon="delete-forever-outline"
         iconColor={appTheme.colors.error}
@@ -54,7 +54,7 @@ export const Logcat = () => {
           setIsLoaded(false);
         }}
       />
-    </>
+    </View>
   ), [appTheme.colors.error, clearLogs]);
 
   useLayoutEffect(() => {
@@ -112,5 +112,8 @@ const styles = StyleSheet.create({
   },
   loading: {
     marginTop: '50%',
+  },
+  row: {
+    flexDirection: 'row',
   }
 });
