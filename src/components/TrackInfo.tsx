@@ -31,6 +31,7 @@ import useSWR from 'swr';
 import { useAppSelector } from '../hook';
 import { selectDevModeEnabled } from '../redux/slices';
 import { Main as LyricMain } from '../types/lyrics';
+import { playerLog } from '../utils/logger';
 import { ArtistNames } from './ArtistNames';
 import { FavToggle } from './FavToggle';
 
@@ -66,11 +67,7 @@ export const TrackInfo = () => {
       HapticFeedback.trigger(
         HapticFeedbackTypes.effectHeavyClick
       );
-      console.info(
-        JSON.stringify(
-          track, null, 2
-        )
-      );
+      playerLog.info(track);
       showDialog();
     }
   }, [devModeEnabled, showDialog, track]);
