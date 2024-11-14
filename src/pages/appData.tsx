@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { Appbar, Icon, SegmentedButtons, useTheme } from 'react-native-paper';
+import Animated, { Easing, FadeIn, FadeOut } from 'react-native-reanimated';
 import { PackageData, ReduxState, StorageList } from '../components/AppDataScreens';
 import { BlurBackground } from '../components/BlurBackground';
 import { MMKVStorageIndicator } from '../components/StorageIndicator';
@@ -20,9 +21,14 @@ const ActionBar = ({ routeIndex }: { routeIndex: number }) => {
       <Appbar.Content title="App Data" />
 
       {routeIndex === 1 && (
-        <MMKVStorageIndicator />
+        <Animated.View
+          entering={FadeIn.easing(Easing.inOut(Easing.quad))}
+          exiting={FadeOut.easing(Easing.inOut(Easing.quad))}
+        >
+          <MMKVStorageIndicator />
+        </Animated.View>
       )}
-    </Appbar.Header>
+    </Appbar.Header >
   );
 };
 
