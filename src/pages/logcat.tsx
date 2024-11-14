@@ -13,6 +13,18 @@ export const Logcat = () => {
   const [logContent, setLogContent] = useState('');
   const [isLoaded, setIsLoaded] = useState(false);
 
+  const createLogFile = async () => {
+     const logFilePath = RNFS.DocumentDirectoryPath + '/log';
+     const fileExists = await RNFS.exists(logFilePath);
+     if (!fileExists) {
+       await RNFS.writeFile(logFilePath, '');
+     }
+   };
+
+  useEffect(() => {
+      createLogFile();
+  }, []);
+
   const clearLogs = useCallback(async () => {
     try {
       // Clear log file, but not delete it
