@@ -4,13 +4,13 @@ import RNFS from 'react-native-fs';
 import { List } from 'react-native-paper';
 import { v4 as uuid } from 'uuid';
 import { name as appName } from '../../package.json';
-import { Storage } from '../utils';
+import type { ListLRProps } from '../types/paperListItem';
 import { storage } from '../utils/reduxPersistMMKV';
 
 export const ExportDataItem = () => {
     const [exporting, setExporting] = useState(false);
 
-    const ExportIcon = useCallback((props: any) => (
+    const ExportIcon = useCallback((props: ListLRProps) => (
         <List.Icon {...props} icon="database-export-outline" />
     ), []);
 
@@ -53,11 +53,13 @@ export const ExportDataItem = () => {
 
         const writeData = async () => {
             try {
-                const promises = Object.values(storage.getAllKeys()).map(async (localDataName) => {
-                    const data = await Storage.get(localDataName);
-                    return { [localDataName]: data };
-                });
-                const results = await Promise.all(promises);
+                const results = Object.values(storage.getAllKeys())
+                    .map((localDataName) => {
+                        const data = JSON.parse(
+                            storage.getString(localDataName) || ''
+                        );
+                        return { [localDataName]: data };
+                    });
                 localData = Object.assign({}, ...results);
                 await RNFS.writeFile(destPath, JSON.stringify(localData), 'utf8');
 

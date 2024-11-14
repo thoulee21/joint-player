@@ -9,12 +9,13 @@ import {
 import RNFS from 'react-native-fs';
 import HapticFeedback from 'react-native-haptic-feedback';
 import { List } from 'react-native-paper';
-import { Storage } from '../utils';
+import type { ListLRProps } from '../types/paperListItem';
+import { storage } from '../utils/reduxPersistMMKV';
 
 export const ImportDataItem = ({ setRestartBarVisible }: {
     setRestartBarVisible: (visible: boolean) => void
 }) => {
-    const ImportIcon = useCallback((props: any) => (
+    const ImportIcon = useCallback((props: ListLRProps) => (
         <List.Icon {...props} icon="database-import-outline" />
     ), []);
 
@@ -23,9 +24,13 @@ export const ImportDataItem = ({ setRestartBarVisible }: {
             const dataFromFile = await RNFS.readFile(path, 'utf8');
             const localData = JSON.parse(dataFromFile);
 
-            await Promise.all(Object.keys(localData).map(async (localDataName) => {
-                await Storage.set(localDataName, localData[localDataName]);
-            }));
+            Object.keys(localData)
+                .map((localDataName) => {
+                    storage.set(
+                        localDataName,
+                        JSON.stringify(localData[localDataName])
+                    );
+                });
 
             HapticFeedback.trigger('effectTick');
             setRestartBarVisible(true);
