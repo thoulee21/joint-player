@@ -5,8 +5,8 @@ import { StyleSheet } from 'react-native';
 import { Searchbar, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurBackground } from '../components/BlurBackground';
-import { LottieAnimation } from '../components/LottieAnimation';
 import { PlaylistSearch } from '../components/PlaylistSearch';
+import { SearchHistoryList } from '../components/SearchHistoryList';
 
 export const SearchPlaylist = () => {
   const navigation = useNavigation();
@@ -54,10 +54,7 @@ export const SearchPlaylist = () => {
       {keyword ? (
         <PlaylistSearch keyword={keyword} />
       ) : (
-        <LottieAnimation
-          animation="rocket"
-          caption="Get started by searching for a playlist"
-        />
+        <SearchHistoryList setKeyword={setKeyword} />
       )}
     </BlurBackground>
   );
