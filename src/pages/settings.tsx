@@ -11,6 +11,7 @@ import { DevItem } from '../components/DevItem';
 import { ExportDataItem } from '../components/ExportDataItem';
 import { ImportDataItem } from '../components/ImportDataItem';
 import { ListWrapper } from '../components/ListWrapper';
+import { RippleEffectSwitch } from '../components/RippleEffectSwitch';
 import { ThemeColorIndicator } from '../components/ThemeColorIndicator';
 
 export function Settings() {
@@ -38,6 +39,7 @@ export function Settings() {
         >
           <ThemeColorIndicator />
           <BlurRadiusSlider />
+          <RippleEffectSwitch />
         </List.Section>
 
         <List.Section

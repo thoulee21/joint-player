@@ -19,16 +19,18 @@ import {
 import { useActiveTrack } from 'react-native-track-player';
 import { useAppDispatch, useAppSelector } from '../hook/reduxHooks';
 import { useSetupPlayer } from '../hook/useSetupPlayer';
+import { selectRippleEffect } from '../redux/slices';
 import { selectDarkModeEnabled, setDarkMode } from '../redux/slices/darkMode';
 
 export function AppContainer({ children }: PropsWithChildren) {
   useSetupPlayer();
-
   const dispatch = useAppDispatch();
   const track = useActiveTrack();
 
-  const [isAniDone, setIsAniDone] = useState(false);
   const isDarkMode = useAppSelector(selectDarkModeEnabled);
+  const rippleEffectEnabled = useAppSelector(selectRippleEffect);
+
+  const [isAniDone, setIsAniDone] = useState(false);
   const { theme: colorTheme, updateTheme } = useMaterial3Theme();
 
   useEffect(() => {
@@ -91,7 +93,10 @@ export function AppContainer({ children }: PropsWithChildren) {
 
   return (
     <GestureHandlerRootView style={styles.rootView}>
-      <PaperProvider theme={isDarkMode ? MyDarkTheme : MyLightTheme}>
+      <PaperProvider
+        theme={isDarkMode ? MyDarkTheme : MyLightTheme}
+        settings={{ rippleEffectEnabled }}
+      >
         <NavigationContainer
           theme={isDarkMode ? NaviDarkTheme : NaviLightTheme}
         >

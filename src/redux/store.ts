@@ -14,8 +14,9 @@ import {
     favsSlice,
     playlistsSlice,
     queueSlice,
-    userSlice,
+    rippleEffectsSlice,
     searchHistorySlice,
+    userSlice,
 } from './slices';
 
 const persistConfig = {
@@ -60,6 +61,10 @@ const rootReducers = combineReducers({
         ...persistConfig,
         key: 'searchHistory'
     }, searchHistorySlice.reducer),
+    rippleEffect: persistReducer({
+        ...persistConfig,
+        key: 'rippleEffect'
+    }, rippleEffectsSlice.reducer),
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducers);
