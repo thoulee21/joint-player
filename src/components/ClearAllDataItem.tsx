@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Button, Dialog, List, Portal, Text, useTheme } from 'react-native-paper';
 import RNRestart from 'react-native-restart';
-import { Storage } from '../utils';
+import { storage } from '../utils/reduxPersistMMKV';
 
 export const ClearAllDataItem = () => {
   const appTheme = useTheme();
@@ -19,7 +19,7 @@ export const ClearAllDataItem = () => {
   ), [appTheme.colors.error]);
 
   const clearAndRestart = useCallback(() => {
-    Storage.clear();
+    storage.clearAll();
     RNRestart.Restart();
   }, []);
 
