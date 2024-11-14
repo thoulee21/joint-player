@@ -5,7 +5,7 @@ import { requestInit } from './requestInit';
 export const fetchSearchResults = async (keyword: string): Promise<any> => {
     const { Type, Limit, Offset, Total } = {
         Type: 1,
-        Limit: 20,
+        Limit: 10,
         Offset: 0,
         Total: true,
     };
