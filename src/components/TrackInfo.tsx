@@ -1,5 +1,6 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useNavigation } from '@react-navigation/native';
+import Color from 'color';
 import React, { useCallback, useMemo, useState } from 'react';
 import {
   Dimensions,
@@ -14,6 +15,7 @@ import HapticFeedback, {
   HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
 import {
+  Badge,
   Button,
   Dialog,
   Portal,
@@ -138,12 +140,30 @@ export const TrackInfo = () => {
           </TouchableWithoutFeedback>
         </Surface>
 
-        <Text
-          style={styles.titleText}
-          onPress={printTrackData}
-        >
-          {track?.title ?? 'No Track'}{isTrial ? ' (trial)' : ''}
-        </Text>
+        <View style={styles.titleView}>
+          <Text
+            style={styles.titleText}
+            onPress={printTrackData}
+            numberOfLines={1}
+          >
+            {track?.title ?? 'No Track'}
+          </Text>
+
+          {isTrial && (
+            <Badge
+              size={17}
+              style={[
+                styles.badge, {
+                  color: appTheme.colors.onSurfaceVariant,
+                  borderColor: appTheme.colors.outline,
+                  backgroundColor: Color(
+                    appTheme.colors.surface
+                  ).fade(0.8).string(),
+                }
+              ]}
+            >Trial</Badge>
+          )}
+        </View>
         <ArtistNames textStyle={styles.artistsText} />
       </View>
 
@@ -198,6 +218,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 30,
     textAlign: 'center',
+  },
+  badge: {
+    borderWidth: 0.5,
+    borderRadius: 3,
+    position: 'absolute',
+    right: -30,
+    bottom: 5,
+  },
+  titleView: {
+    maxWidth: '75%',
   },
   artistsText: {
     fontSize: 16,
