@@ -62,7 +62,7 @@ export const UserDetail = () => {
                   tintColor={appTheme.colors.onSurface}
                 />
                 <Appbar.Action
-                  icon="open-in-app"
+                  icon="open-in-new"
                   onPress={() => {
                     //@ts-expect-error
                     navigation.navigate('WebView' as never, {
