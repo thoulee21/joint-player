@@ -51,9 +51,9 @@ export function RootStack() {
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="PlaylistDetail" component={PlaylistDetailScreen} />
             <Stack.Screen name="Logcat" component={Logcat} />
+            <Stack.Screen name="SwitchUser" component={SwitchUser} />
             <Stack.Group screenOptions={TransitionPresets.ModalPresentationIOS}>
                 <Stack.Screen name="IssueReport" component={IssueReport} />
-                <Stack.Screen name="SwitchUser" component={SwitchUser} />
                 <Stack.Screen name="WebView" component={WebViewScreen} />
                 <Stack.Screen name="Search" component={Search} />
             </Stack.Group>
