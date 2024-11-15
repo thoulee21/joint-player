@@ -183,6 +183,7 @@ class MMKVStorageProvider implements ExtendedCache {
     const handleAppStateChange = async (nextAppState: AppStateStatus) => {
       if (nextAppState === 'inactive' || nextAppState === 'background') {
         await this.saveCacheToMMKVStorage();
+        rootLog.info('Cache saved to MMKV, app is in background');
       }
     };
 
@@ -196,7 +197,6 @@ class MMKVStorageProvider implements ExtendedCache {
   }
 
   private async saveCacheToMMKVStorage() {
-    rootLog.debug('Saving cache to MMKV storage');
     try {
       const entries = Array.from(this.cache.entries());
       const multiSetPairs: [string, string][] = entries.map(
