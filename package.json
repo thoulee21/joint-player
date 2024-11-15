@@ -17,6 +17,7 @@
     "create:update": "eas update --channel production --platform android --auto && npx sentry-expo-upload-sourcemaps dist"
   },
   "dependencies": {
+    "@codeherence/react-native-header": "^0.14.0",
     "@expo/fingerprint": "^0.11.2",
     "@expo/metro-config": "^0.19.2",
     "@gorhom/bottom-sheet": "^5.0.5",
