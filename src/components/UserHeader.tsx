@@ -1,6 +1,5 @@
 import {
-  DrawerActions,
-  useNavigation,
+  useNavigation
 } from '@react-navigation/native';
 import React, { type PropsWithChildren } from 'react';
 import {
@@ -64,8 +63,10 @@ export const UserInfo = ({ userId, style }: {
 
   const goUser = () => {
     HapticFeedback.trigger(HapticFeedbackTypes.effectClick);
-    navigation.navigate('UserDetail' as never);
-    navigation.dispatch(DrawerActions.closeDrawer());
+    //@ts-expect-error
+    navigation.navigate('DrawerNavi', {
+      screen: 'UserDetail',
+    });
   };
 
   const debugPrint = () => {

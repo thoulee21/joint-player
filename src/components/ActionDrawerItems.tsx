@@ -1,6 +1,3 @@
-import type {
-  DrawerNavigationHelpers,
-} from '@react-navigation/drawer/lib/typescript/src/types';
 import React, { useCallback } from 'react';
 import { Alert, ToastAndroid } from 'react-native';
 import HapticFeedback, {
@@ -18,7 +15,7 @@ import {
 } from '../redux/slices/user';
 
 export const ActionDrawerItems = ({ navigation }: {
-  navigation: DrawerNavigationHelpers
+  navigation: any
 }) => {
   const dispatch = useAppDispatch();
   const appTheme = useTheme();

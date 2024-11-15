@@ -1,8 +1,4 @@
 import {
-  DrawerDescriptorMap,
-  DrawerNavigationHelpers,
-} from '@react-navigation/drawer/lib/typescript/src/types';
-import {
   CommonActions,
   DrawerActions,
   DrawerNavigationState,
@@ -17,8 +13,8 @@ import { FavCount } from './DrawerRightItems';
 
 type Props = {
   state: DrawerNavigationState<ParamListBase>;
-  navigation: DrawerNavigationHelpers;
-  descriptors: DrawerDescriptorMap;
+  navigation: any;
+  descriptors: any;
 };
 
 /**
