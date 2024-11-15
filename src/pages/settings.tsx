@@ -1,10 +1,8 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { StyleSheet } from 'react-native';
-import { Appbar, List, Portal, Snackbar, useTheme } from 'react-native-paper';
+import { View } from 'react-native';
+import { List, Portal, Snackbar, useTheme } from 'react-native-paper';
 import RNRestart from 'react-native-restart';
 import { AboutItem } from '../components/AboutItem';
-import { BlurBackground } from '../components/BlurBackground';
 import { BlurRadiusSlider } from '../components/BlurRadiusSlider';
 import { CacheItem } from '../components/CacheItem';
 import { DevItem } from '../components/DevItem';
@@ -16,7 +14,6 @@ import { ThemeColorIndicator } from '../components/ThemeColorIndicator';
 
 export function Settings() {
   const appTheme = useTheme();
-  const navigation = useNavigation();
 
   const [
     restartBarVisible,
@@ -24,12 +21,7 @@ export function Settings() {
   ] = useState(false);
 
   return (
-    <BlurBackground>
-      <Appbar.Header style={styles.header}>
-        <Appbar.BackAction onPress={navigation.goBack} />
-        <Appbar.Content title="Settings" />
-      </Appbar.Header>
-
+    <View>
       <ListWrapper>
         <List.Section
           title="Appearance"
@@ -70,12 +62,6 @@ export function Settings() {
           Data imported successfully! Restart the app to apply changes.
         </Snackbar>
       </Portal>
-    </BlurBackground>
+    </View>
   );
 }
-
-const styles = StyleSheet.create({
-  header: {
-    backgroundColor: 'transparent',
-  },
-});
