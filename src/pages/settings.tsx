@@ -73,7 +73,9 @@ export function Settings() {
       <DevItem />
       <AboutItem />
 
-      <View style={{ height: window.height * 0.35 }} />
+      {__DEV__ && (
+        <View style={{ height: window.height * 0.35 }} />
+      )}
 
       <Portal>
         <Snackbar

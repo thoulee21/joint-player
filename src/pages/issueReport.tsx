@@ -123,8 +123,10 @@ export const IssueReport = () => {
         </View>
       </KeyboardAvoidingView>
 
+      {__DEV__ && (
+        <View style={{ height: window.height * 0.25 }} />
+      )}
       <PoweredBy caption="Powered by Sentry" />
-      <View style={{ height: window.height * 0.25 }} />
     </ScrollViewWithHeaders>
   );
 };
