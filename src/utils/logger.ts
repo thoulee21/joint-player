@@ -5,7 +5,6 @@ import {
   consoleTransport,
   fileAsyncTransport,
   logger,
-  mapConsoleTransport,
   sentryTransport,
 } from 'react-native-logs';
 
@@ -15,7 +14,6 @@ const transports = [
   fileAsyncTransport,
   sentryTransport,
   consoleTransport,
-  mapConsoleTransport,
 ];
 
 export const log = logger.createLogger({
