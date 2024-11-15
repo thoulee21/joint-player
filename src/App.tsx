@@ -67,6 +67,7 @@ Sentry.init({
     }),
     Sentry.reactNativeTracingIntegration(),
   ],
+  enabled: !__DEV__,
 });
 
 function App() {
