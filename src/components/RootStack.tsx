@@ -22,7 +22,8 @@ import {
     Settings,
     SwitchUser,
     TestScreen,
-    WebViewScreen
+    UserDetail,
+    WebViewScreen,
 } from '../pages';
 import { DrawerNavi } from './DrawerNavi';
 
@@ -52,6 +53,7 @@ export function RootStack() {
             <Stack.Screen name="PlaylistDetail" component={PlaylistDetailScreen} />
             <Stack.Screen name="Logcat" component={Logcat} />
             <Stack.Screen name="SwitchUser" component={SwitchUser} />
+            <Stack.Screen name="UserDetail" component={UserDetail} />
             <Stack.Group screenOptions={TransitionPresets.ModalPresentationIOS}>
                 <Stack.Screen name="IssueReport" component={IssueReport} />
                 <Stack.Screen name="WebView" component={WebViewScreen} />

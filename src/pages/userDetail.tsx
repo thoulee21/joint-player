@@ -1,4 +1,3 @@
-import { DrawerToggleButton } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import Color from 'color';
@@ -58,9 +57,7 @@ export const UserDetail = () => {
                   height: 56 + insets.top,
                 }}
               >
-                <DrawerToggleButton
-                  tintColor={appTheme.colors.onSurface}
-                />
+                <Appbar.BackAction onPress={navigation.goBack} />
                 <Appbar.Action
                   icon="open-in-new"
                   onPress={() => {

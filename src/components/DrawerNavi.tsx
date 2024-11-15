@@ -7,8 +7,7 @@ import { Icon } from 'react-native-paper';
 import {
     Favs,
     Player,
-    SearchPlaylist,
-    UserDetail,
+    SearchPlaylist
 } from '../pages';
 import { BlurBackground } from './BlurBackground';
 import { DrawerItemList } from './DrawerItemList';
@@ -55,10 +54,6 @@ export function DrawerNavi() {
             <Drawer.Screen name="SearchPlaylist" component={SearchPlaylist} options={{
                 title: 'Playlist',
                 drawerIcon: renderDrawerIcon('playlist-music'),
-            }} />
-            <Drawer.Screen name="UserDetail" component={UserDetail} options={{
-                title: 'Account',
-                drawerIcon: renderDrawerIcon('account'),
             }} />
         </Drawer.Navigator >
     );
