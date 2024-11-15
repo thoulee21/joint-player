@@ -10201,7 +10201,7 @@ __metadata:
     react-native-document-picker: "npm:^9.3.1"
     react-native-draggable-flatlist: "npm:^4.0.1"
     react-native-fs: "npm:^2.20.0"
-    react-native-gesture-handler: "npm:^2.20.2"
+    react-native-gesture-handler: "npm:^2.21.0"
     react-native-get-random-values: "npm:^1.11.0"
     react-native-haptic-feedback: "npm:^2.3.3"
     react-native-image-colors: "npm:^2.4.0"
@@ -10214,7 +10214,7 @@ __metadata:
     react-native-redash: "npm:^18.1.3"
     react-native-restart: "npm:^0.0.27"
     react-native-safe-area-context: "npm:^4.14.0"
-    react-native-screens: "npm:^4.0.0"
+    react-native-screens: "npm:^4.1.0"
     react-native-swipeable-item: "npm:^2.0.9"
     react-native-tab-view: "npm:4.0.1"
     react-native-track-player: "npm:^4.1.1"
@@ -10226,7 +10226,7 @@ __metadata:
     redux-persist: "npm:^6.0.0"
     swr: "npm:^2.2.5"
     typescript: "npm:5.6.3"
-    user-agents: "npm:^1.1.358"
+    user-agents: "npm:^1.1.359"
     uuid: "npm:^11.0.3"
   languageName: unknown
   linkType: soft
@@ -12728,7 +12728,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-gesture-handler@npm:^2.20.2":
+"react-native-gesture-handler@npm:^2.21.0":
   version: 2.21.0
   resolution: "react-native-gesture-handler@npm:2.21.0"
   dependencies:
@@ -12887,7 +12887,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-screens@npm:^4.0.0":
+"react-native-screens@npm:^4.1.0":
   version: 4.1.0
   resolution: "react-native-screens@npm:4.1.0"
   dependencies:
@@ -14948,12 +14948,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"user-agents@npm:^1.1.358":
-  version: 1.1.358
-  resolution: "user-agents@npm:1.1.358"
+"user-agents@npm:^1.1.359":
+  version: 1.1.359
+  resolution: "user-agents@npm:1.1.359"
   dependencies:
     lodash.clonedeep: "npm:^4.5.0"
-  checksum: 10c0/4edbdb3eb74692c63c1b59484cc6e17e7c647e2b84282d7276bb2b686578d8eeceb075ee371233a848b7711f89a061cb8ab228372aee5c9d0550980a93324054
+  checksum: 10c0/4ca73c38a2c5562a9cee23d24df2362628fbba57399a909c06185bb421dcf4d52db45c810e3b5068b7d3980e3dc9b28a068ff778d837bf5781ce2a988854c043
   languageName: node
   linkType: hard
 
