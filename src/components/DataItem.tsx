@@ -76,7 +76,7 @@ export const DataItem = ({ item }: { item: DataItemType }) => {
 
     return (
         <Card
-            mode="outlined"
+            mode="contained"
             style={styles.card}
         >
             <Card.Title
@@ -97,7 +97,6 @@ const styles = StyleSheet.create({
     card: {
         marginTop: 16,
         marginHorizontal: 16,
-        backgroundColor: 'transparent',
     },
     dataText: {
         marginHorizontal: 16,
