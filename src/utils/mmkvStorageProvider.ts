@@ -2,6 +2,7 @@ import * as Sentry from '@sentry/react-native';
 import { AppState, AppStateStatus, NativeEventEmitter } from 'react-native';
 import { MMKV } from 'react-native-mmkv';
 import { Cache } from 'swr';
+import { rootLog } from './logger';
 
 const MAX_CACHE_SIZE = 6 * 1024 * 1024; // 6MB
 
@@ -61,6 +62,7 @@ class MMKVStorageProvider implements ExtendedCache {
   private async ensureCacheSize() {
     try {
       while (this.cacheSize > MAX_CACHE_SIZE) {
+        rootLog.debug(`Cache size: ${this.cacheSize}`);
         const oldestKey = this.getLeastRecentlyUsedKey();
         if (oldestKey) {
           if (!this.shouldRetainCache(oldestKey)) {
@@ -73,10 +75,12 @@ class MMKVStorageProvider implements ExtendedCache {
             mmkvStorage.delete(oldestKey);
             // 在删除缓存数据后触发重新加载数据的逻辑
             this.handleCacheDeletion(oldestKey);
+            rootLog.info(`Cache deleted: ${oldestKey}`);
           } else {
-            // 如果 oldestKey 是用户数据，则跳过删除
+            // 如果 oldestKey 应该保存，则跳过删除
             this.cache.delete(oldestKey);
             this.accessOrder.delete(oldestKey);
+            rootLog.info(`Cache skipped: ${oldestKey}`);
           }
         }
       }
@@ -192,6 +196,7 @@ class MMKVStorageProvider implements ExtendedCache {
   }
 
   private async saveCacheToMMKVStorage() {
+    rootLog.debug('Saving cache to MMKV storage');
     try {
       const entries = Array.from(this.cache.entries());
       const multiSetPairs: [string, string][] = entries.map(
