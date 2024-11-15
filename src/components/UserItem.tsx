@@ -1,5 +1,5 @@
-import { DrawerActions, useNavigation } from '@react-navigation/native';
-import React, { useCallback } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import React, { useCallback, useMemo } from 'react';
 import { ToastAndroid } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Avatar, IconButton, List } from 'react-native-paper';
@@ -12,23 +12,21 @@ export const UserItem = ({ item }: { item: Userprofile }) => {
     const dispatch = useAppDispatch();
     const navigation = useNavigation();
 
-    const user = {
+    const user = useMemo(() => ({
         username: item.nickname,
         id: item.userId,
-    };
+    }), [item.nickname, item.userId]);
 
     const login = useCallback(async () => {
         dispatch(setUser(user));
 
         HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
-        ToastAndroid.show(`Logged in as ${item.nickname}`, ToastAndroid.LONG);
-
+        ToastAndroid.show(
+            `Logged in as ${item.nickname}`,
+            ToastAndroid.LONG
+        );
         navigation.goBack();
-        navigation.dispatch(DrawerActions.openDrawer());
-
-        // no dispatch needed here
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [item.nickname, navigation, user]);
+    }, [dispatch, item.nickname, navigation, user]);
 
     const renderAvatar = useCallback((props: ListLRProps) => (
         <Avatar.Image
