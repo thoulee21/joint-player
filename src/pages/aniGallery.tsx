@@ -1,11 +1,9 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { useNavigation } from '@react-navigation/native';
 import type LottieView from 'lottie-react-native';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { Appbar } from 'react-native-paper';
-import { BlurBackground } from '../components/BlurBackground';
 import { ANIMATIONS, LottieAnimation, type AniKeys } from '../components/LottieAnimation';
 import { upperFirst } from '../utils';
 
@@ -51,34 +49,31 @@ export const AniGallery = () => {
             />
         )), [renderAniPage]);
 
-    return (
-        <BlurBackground>
-            <Appbar.Header style={styles.transparent}>
-                <Appbar.BackAction onPress={navigation.goBack} />
-                <Appbar.Content title="Animation Gallery" />
-            </Appbar.Header>
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerShown: true,
+        });
+    }, [navigation]);
 
-            <BottomTab.Navigator
-                backBehavior="none"
-                tabBarPosition="bottom"
-                sceneContainerStyle={styles.transparent}
-                screenOptions={{
-                    tabBarStyle: styles.tabBarIndicator,
-                    tabBarIndicatorStyle: styles.tabBarIndicator,
-                }}
-            >
-                {AniPages}
-            </BottomTab.Navigator>
-        </BlurBackground>
+    return (
+        <BottomTab.Navigator
+            backBehavior="none"
+            tabBarPosition="bottom"
+            screenOptions={{
+                tabBarShowLabel: false,
+                tabBarShowIcon: false,
+                tabBarStyle: styles.tabBarIndicator,
+                tabBarIndicatorStyle: styles.tabBarIndicator,
+            }}
+        >
+            {AniPages}
+        </BottomTab.Navigator>
     );
 };
 
 const styles = StyleSheet.create({
-    transparent: {
-        backgroundColor: 'transparent',
-    },
     tabBarIndicator: {
-        height: 3,
+        height: 4,
         borderRadius: 10,
     },
 });
