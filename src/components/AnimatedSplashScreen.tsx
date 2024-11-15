@@ -14,9 +14,9 @@ import {
     StatusBar,
     StyleSheet,
 } from 'react-native';
+import { THEME_COLOR } from '../utils/constants';
 import { rootLog } from '../utils/logger';
 
-export const THEME_COLOR = '#2a8fcf';
 export const REMAINING_DURATION = 1000;
 
 const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
