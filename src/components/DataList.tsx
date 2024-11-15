@@ -1,4 +1,5 @@
-import React, { useCallback } from 'react';
+import { useScrollToTop } from '@react-navigation/native';
+import React, { useCallback, useRef } from 'react';
 import { FlatList, Platform, StyleSheet, View } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 import { DataItem, DataItemType } from './DataItem';
@@ -6,6 +7,9 @@ import { DataItem, DataItemType } from './DataItem';
 export const DataList = ({ dataItems }: {
     dataItems: DataItemType[]
 }) => {
+    const datalistRef = useRef<FlatList>(null);
+    useScrollToTop(datalistRef);
+
     const renderItem = useCallback(({ item }: {
         item: DataItemType
     }) => (
@@ -18,6 +22,7 @@ export const DataList = ({ dataItems }: {
 
     return (
         <FlatList
+            ref={datalistRef}
             data={dataItems}
             keyExtractor={keyExtractor}
             renderItem={renderItem}
