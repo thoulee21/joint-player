@@ -8,6 +8,8 @@ import {
   sentryTransport,
 } from 'react-native-logs';
 
+export const logFilePath = RNFS.DocumentDirectoryPath + '/log';
+
 const transports = [
   fileAsyncTransport,
   sentryTransport,
@@ -33,6 +35,8 @@ export const log = logger.createLogger({
       ...Sentry,
       addBreadcrumb: Sentry.addBreadcrumb as never,
     },
+    // to avoid too many sentry logs
+    errorLevels: 'error',
   },
   async: true,
   asyncFunc: InteractionManager.runAfterInteractions,

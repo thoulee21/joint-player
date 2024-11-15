@@ -1,6 +1,7 @@
 import NetInfo from '@react-native-community/netinfo';
 import * as Sentry from '@sentry/react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
+import RNFS from 'react-native-fs';
 import {
   configureReanimatedLogger,
   ReanimatedLogLevel,
@@ -13,6 +14,7 @@ import { RootStack } from './components/RootStack';
 import { persister } from './redux/store';
 import { PlaybackService } from './services/PlaybackService';
 import { initFocus } from './utils/initFocus';
+import { logFilePath } from './utils/logger';
 import { mmkvStorageProvider } from './utils/mmkvStorageProvider';
 import { fetcher } from './utils/retryFetcher';
 
@@ -68,6 +70,18 @@ Sentry.init({
 });
 
 function App() {
+  useEffect(() => {
+    const createLogFile = async () => {
+      const fileExists = await RNFS.exists(logFilePath);
+
+      if (!fileExists) {
+        await RNFS.writeFile(logFilePath, '');
+      }
+    };
+
+    createLogFile();
+  }, []);
+
   return (
     <PersistGate loading={null} persistor={persister}>
       <SWRConfig value={swrConfig}>

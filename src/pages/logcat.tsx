@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 import RNFS from 'react-native-fs';
 import { ActivityIndicator, Appbar, Caption, useTheme } from 'react-native-paper';
-import { rootLog } from '../utils/logger';
+import { logFilePath, rootLog } from '../utils/logger';
 
 export const Logcat = () => {
   const navigation = useNavigation();
@@ -13,25 +13,10 @@ export const Logcat = () => {
   const [logContent, setLogContent] = useState('');
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const createLogFile = async () => {
-     const logFilePath = RNFS.DocumentDirectoryPath + '/log';
-     const fileExists = await RNFS.exists(logFilePath);
-     if (!fileExists) {
-       await RNFS.writeFile(logFilePath, '');
-     }
-   };
-
-  useEffect(() => {
-      createLogFile();
-  }, []);
-
   const clearLogs = useCallback(async () => {
     try {
       // Clear log file, but not delete it
-      await RNFS.writeFile(
-        RNFS.DocumentDirectoryPath + '/log',
-        '',
-      );
+      await RNFS.writeFile(logFilePath, '');
       setLogContent('');
     } catch (e) {
       rootLog.error(e);
@@ -77,8 +62,7 @@ export const Logcat = () => {
   useEffect(() => {
     const readeLog = async () => {
       const log = await RNFS.readFile(
-        RNFS.DocumentDirectoryPath + '/log',
-        'utf8'
+        logFilePath, 'utf8'
       );
       setLogContent(log);
     };
