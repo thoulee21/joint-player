@@ -5,15 +5,15 @@ import {
   type ScrollLargeHeaderProps,
 } from '@codeherence/react-native-header';
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { type ReactNode } from 'react';
 import { StyleSheet } from 'react-native';
 import { Appbar, Text, useTheme } from 'react-native-paper';
 import { interpolateColor } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const HeaderComponent = ({
-  showNavBar, title
-}: ScrollHeaderProps & { title: string }
+  showNavBar, title, headerRight
+}: ScrollHeaderProps & { title: string, headerRight?: ReactNode }
 ) => {
   const navigation = useNavigation();
   const { top } = useSafeAreaInsets();
@@ -47,6 +47,7 @@ export const HeaderComponent = ({
           onPress={navigation.goBack}
         />
       }
+      headerRight={headerRight}
     />
   );
 };

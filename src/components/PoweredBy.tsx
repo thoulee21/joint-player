@@ -3,7 +3,9 @@ import { StyleSheet, useWindowDimensions } from 'react-native';
 import { Text, useTheme } from 'react-native-paper';
 import { LottieAnimation } from './LottieAnimation';
 
-export const PoweredBy = () => {
+export const PoweredBy = (
+  { caption }: { caption?: string }
+) => {
   const window = useWindowDimensions();
   const appTheme = useTheme();
 
@@ -20,7 +22,8 @@ export const PoweredBy = () => {
           color: appTheme.colors.outline
         }]}
       >
-        Powered by Netease Cloud Music API
+        {caption
+          || 'Powered by Netease Cloud Music API'}
       </Text>
     </LottieAnimation>
   );
