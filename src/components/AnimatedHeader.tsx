@@ -8,6 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Appbar, Text, useTheme } from 'react-native-paper';
+import { interpolateColor } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const HeaderComponent = ({
@@ -16,17 +17,29 @@ export const HeaderComponent = ({
 ) => {
   const navigation = useNavigation();
   const { top } = useSafeAreaInsets();
+  const appTheme = useTheme();
 
   return (
     <Header
       showNavBar={showNavBar}
       noBottomBorder
       headerCenter={
-        <Text variant="titleLarge">
-          {title}
-        </Text>
+        <Text
+          variant="titleLarge"
+          numberOfLines={1}
+        >{title}</Text>
       }
-      headerStyle={{ height: 64 + top }}
+      headerStyle={[styles.elevated, {
+        height: 64 + top,
+        backgroundColor: interpolateColor(
+          showNavBar.value,
+          [0, 1],
+          [
+            appTheme.colors.surface,
+            appTheme.colors.primary
+          ]
+        )
+      }]}
       headerCenterStyle={styles.headerTitle}
       headerLeftStyle={styles.smallHeaderLeft}
       headerLeft={
@@ -48,7 +61,6 @@ export const LargeHeaderComponent = ({
       <Appbar.Header
         mode="medium"
         statusBarHeight={0}
-        style={styles.largeHeader}
       >
         <Appbar.Content
           title={title}
@@ -66,11 +78,11 @@ const styles = StyleSheet.create({
     width: 'auto',
     paddingRight: 0,
   },
-  largeHeader: {
-    backgroundColor: 'transparent',
-  },
   headerTitle: {
     textAlign: 'left',
     justifyContent: 'flex-start',
   },
+  elevated: {
+    elevation: 5,
+  }
 });

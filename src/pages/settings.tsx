@@ -12,7 +12,6 @@ import {
   HeaderComponent,
   LargeHeaderComponent,
 } from '../components/AnimatedHeader';
-import { BlurBackground } from '../components/BlurBackground';
 import { BlurRadiusSlider } from '../components/BlurRadiusSlider';
 import { CacheItem } from '../components/CacheItem';
 import { DevItem } from '../components/DevItem';
@@ -43,56 +42,52 @@ export function Settings() {
   ), []);
 
   return (
-    <BlurBackground>
-      <ScrollViewWithHeaders
-        HeaderComponent={renderHeader}
-        LargeHeaderComponent={renderLargeHeader}
-        fadingEdgeLength={20}
-        disableAutoFixScroll
+    <ScrollViewWithHeaders
+      HeaderComponent={renderHeader}
+      LargeHeaderComponent={renderLargeHeader}
+      disableAutoFixScroll
+      overScrollMode="never"
+    >
+      <List.Section
+        title="Appearance"
+        titleStyle={{
+          color: appTheme.colors.secondary,
+        }}
       >
-        <List.Section
-          title="Appearance"
-          titleStyle={{
-            color: appTheme.colors.secondary,
+        <ThemeColorIndicator />
+        <BlurRadiusSlider />
+        <RippleEffectSwitch />
+      </List.Section>
+
+      <List.Section
+        title="Data Management"
+        titleStyle={{ color: appTheme.colors.secondary }}
+      >
+        <ExportDataItem />
+        <ImportDataItem
+          setRestartBarVisible={setRestartBarVisible}
+        />
+        <CacheItem />
+      </List.Section>
+
+      <DevItem />
+      <AboutItem />
+
+      <View style={{ height: window.height * 0.35 }} />
+
+      <Portal>
+        <Snackbar
+          visible={restartBarVisible}
+          onDismiss={() => setRestartBarVisible(false)}
+          onIconPress={() => setRestartBarVisible(false)}
+          action={{
+            label: 'Restart',
+            onPress: () => RNRestart.Restart(),
           }}
         >
-          <ThemeColorIndicator />
-          <BlurRadiusSlider />
-          <RippleEffectSwitch />
-        </List.Section>
-
-        <List.Section
-          title="Data Management"
-          titleStyle={{ color: appTheme.colors.secondary }}
-        >
-          <ExportDataItem />
-          <ImportDataItem
-            setRestartBarVisible={setRestartBarVisible}
-          />
-          <CacheItem />
-        </List.Section>
-
-        <DevItem />
-        <AboutItem />
-
-        <View style={{
-          height: window.height * 0.35
-        }} />
-
-        <Portal>
-          <Snackbar
-            visible={restartBarVisible}
-            onDismiss={() => setRestartBarVisible(false)}
-            onIconPress={() => setRestartBarVisible(false)}
-            action={{
-              label: 'Restart',
-              onPress: () => RNRestart.Restart(),
-            }}
-          >
-            Data imported successfully! Restart the app to apply changes.
-          </Snackbar>
-        </Portal>
-      </ScrollViewWithHeaders>
-    </BlurBackground>
+          Data imported successfully! Restart the app to apply changes.
+        </Snackbar>
+      </Portal>
+    </ScrollViewWithHeaders>
   );
 }
