@@ -14,6 +14,7 @@ import {
     StatusBar,
     StyleSheet,
 } from 'react-native';
+import { rootLog } from '../utils/logger';
 
 export const THEME_COLOR = '#2a8fcf';
 export const REMAINING_DURATION = 1000;
@@ -66,7 +67,10 @@ export const AnimatedSplashScreen = ({ children }: PropsWithChildren) => {
                     duration: 350,
                     easing: Easing.ease,
                     useNativeDriver: true,
-                }).start(() => setIsAniDone(true));
+                }).start(() => {
+                    setIsAniDone(true);
+                    rootLog.info('animation done, loading end');
+                });
             });
         }
     }, [loadingProgress, opacity, isLoadEnd]);
