@@ -41,14 +41,15 @@ export function DrawerNavi() {
     return (
         <Drawer.Navigator
             drawerContent={renderDrawerContent}
-            screenOptions={{ headerShown: false }}
+            screenOptions={{
+                headerShown: false,
+                lazy: false,
+            }}
         >
             <Drawer.Screen name="Player" component={Player} options={{
-                lazy: false,
                 drawerIcon: renderDrawerIcon('music-circle'),
             }} />
             <Drawer.Screen name="Favorites" component={Favs} options={{
-                lazy: false,
                 drawerIcon: renderDrawerIcon('heart'),
             }} />
             <Drawer.Screen name="SearchPlaylist" component={SearchPlaylist} options={{
@@ -57,7 +58,6 @@ export function DrawerNavi() {
             }} />
             <Drawer.Screen name="UserDetail" component={UserDetail} options={{
                 title: 'Account',
-                lazy: false,
                 drawerIcon: renderDrawerIcon('account'),
             }} />
         </Drawer.Navigator >
