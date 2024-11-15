@@ -1,15 +1,20 @@
+import { ScrollViewWithHeaders } from '@codeherence/react-native-header';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
-import { View } from 'react-native';
+import { useWindowDimensions, View } from 'react-native';
 import { List, Portal, Snackbar } from 'react-native-paper';
 import { AboutDialog } from '../components/AboutDialog';
+import {
+  AboutHeaderComponent,
+  AboutLargeHeaderComponent,
+} from '../components/AboutHeader';
 import { ContactMe } from '../components/ContactMe';
-import { ListWrapper } from '../components/ListWrapper';
 import { UpdateChecker } from '../components/UpdateChecker';
 import { VersionItem } from '../components/VersionItem';
 
 export function AboutScreen() {
   const navigation = useNavigation();
+  const window = useWindowDimensions();
 
   const [
     dialogVisible,
@@ -42,19 +47,27 @@ export function AboutScreen() {
   ), [devSnackbarVisible, navigation]);
 
   return (
-    <View>
-      <ListWrapper>
-        <VersionItem
-          showDevSnackbar={showDevSnackbar}
-        />
-        <UpdateChecker />
+    <ScrollViewWithHeaders
+      HeaderComponent={AboutHeaderComponent}
+      LargeHeaderComponent={AboutLargeHeaderComponent}
+      disableAutoFixScroll
+      scrollToOverflowEnabled={false}
+      overScrollMode="never"
+    >
+      <VersionItem
+        showDevSnackbar={showDevSnackbar}
+      />
+      <UpdateChecker />
 
-        <ContactMe />
-        <List.Item
-          title="About This App"
-          onPress={showDialog}
-        />
-      </ListWrapper>
+      <ContactMe />
+      <List.Item
+        title="About This App"
+        onPress={showDialog}
+      />
+
+      <View style={{
+        height: window.height * 0.5,
+      }} />
 
       <Portal>
         <AboutDialog
@@ -65,6 +78,6 @@ export function AboutScreen() {
       <Portal>
         <GoDevSnackbar />
       </Portal>
-    </View>
+    </ScrollViewWithHeaders>
   );
 }
