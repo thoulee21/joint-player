@@ -6,11 +6,13 @@ import HapticFeedback, {
   HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
 import { Appbar } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useActiveTrack } from 'react-native-track-player';
 
 export const BottomBar = ({ bottomSheetRef }:
   { bottomSheetRef: RefObject<BottomSheetModal> }
 ) => {
+  const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   const track = useActiveTrack();
 
@@ -18,6 +20,8 @@ export const BottomBar = ({ bottomSheetRef }:
     <Appbar.Header
       style={styles.bottomBar}
       mode="center-aligned"
+      statusBarHeight={0}
+      safeAreaInsets={{ ...insets, top: 0 }}
     >
       <Appbar.Action
         icon="video-outline"
