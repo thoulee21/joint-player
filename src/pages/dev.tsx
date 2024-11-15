@@ -10,7 +10,6 @@ import { ListWrapper } from '../components/ListWrapper';
 import { RestartItem } from '../components/RestartItem';
 import { ViewAppDataItem } from '../components/ViewAppDataItem';
 import type { ListLRProps } from '../types/paperListItem';
-import { rootLog } from '../utils/logger';
 
 export function DevScreen() {
   const navigation = useNavigation();
@@ -34,7 +33,6 @@ export function DevScreen() {
           <Appbar.Action
             icon="folder-eye-outline"
             onPress={() => {
-              rootLog.info('Navigating to Logcat screen');
               //@ts-expect-error
               navigation.push('Logcat' as never);
             }}
