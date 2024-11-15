@@ -2,13 +2,13 @@ import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import Color from 'color';
 import React, { useCallback, useMemo } from 'react';
-import { Linking, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
-import { Appbar, List, Portal, Text, useTheme } from 'react-native-paper';
+import { Linking, ScrollView, StyleSheet, View } from 'react-native';
+import { Appbar, List, Portal, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurBackground } from '../components/BlurBackground';
-import { LottieAnimation } from '../components/LottieAnimation';
 import { PlaylistCover } from '../components/PlaylistCover';
 import { PlaylistDisplay } from '../components/PlaylistDisplayItem';
+import { PoweredBy } from '../components/PoweredBy';
 import { UserAttrs } from '../components/UserAttrs';
 import { UserBackground, UserInfo } from '../components/UserHeader';
 import { useAppSelector } from '../hook';
@@ -16,10 +16,8 @@ import { favs, selectPlaylists, selectUser } from '../redux/slices';
 
 export const UserDetail = () => {
   const navigation = useNavigation();
-  const appTheme = useTheme();
-
   const insets = useSafeAreaInsets();
-  const window = useWindowDimensions();
+  const appTheme = useTheme();
 
   const user = useAppSelector(selectUser);
   const playlists = useAppSelector(selectPlaylists);
@@ -27,20 +25,17 @@ export const UserDetail = () => {
 
   const appbarBgColor = useMemo(() => {
     if (appTheme.dark) {
-      return Color(
-        appTheme.colors.surface
-      ).alpha(0.5).string();
+      return Color(appTheme.colors.surface)
+        .alpha(0.5).string();
     } else {
-      return Color(
-        appTheme.colors.surface
-      ).fade(0.5).string();
+      return Color(appTheme.colors.surface)
+        .fade(0.5).string();
     }
   }, [appTheme.colors.surface, appTheme.dark]);
 
-  const renderPlaylist = useCallback(
-    (props: any) => (
-      <PlaylistDisplay {...props} />
-    ), []);
+  const renderPlaylist = useCallback((props: any) => (
+    <PlaylistDisplay {...props} />
+  ), []);
 
   return (
     <Portal.Host>
@@ -116,21 +111,7 @@ export const UserDetail = () => {
             }
           />
 
-          <LottieAnimation
-            animation="rocket"
-            style={[styles.footer, {
-              height: window.height * 0.35,
-            }]}
-          >
-            <Text
-              variant="labelSmall"
-              style={[styles.footerTxt, {
-                color: appTheme.colors.outline
-              }]}
-            >
-              Powered by Netease Cloud Music API
-            </Text>
-          </LottieAnimation>
+          <PoweredBy />
         </ScrollView>
       </BlurBackground>
     </Portal.Host>
@@ -147,10 +128,4 @@ const styles = StyleSheet.create({
   attrs: {
     marginVertical: '3%',
   },
-  footer: {
-    justifyContent: 'flex-end',
-  },
-  footerTxt: {
-    textAlign: 'center',
-  }
 });
