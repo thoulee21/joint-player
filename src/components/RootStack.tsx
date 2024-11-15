@@ -49,7 +49,7 @@ export function RootStack() {
       <Stack.Screen name="AniGallery" component={AniGallery} />
       <Stack.Screen name="Test" component={TestScreen} />
       <Stack.Screen name="AlbumDetail" component={AlbumDetail} />
-      <Stack.Screen name="Settings" component={Settings} options={{ headerShown: true }} />
+      <Stack.Screen name="Settings" component={Settings} />
       <Stack.Screen name="PlaylistDetail" component={PlaylistDetailScreen} />
       <Stack.Screen name="Logcat" component={Logcat} />
       <Stack.Screen name="SwitchUser" component={SwitchUser} />

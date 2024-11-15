@@ -1,18 +1,28 @@
-import React, { useState } from 'react';
-import { View } from 'react-native';
+import {
+  ScrollViewWithHeaders,
+  type ScrollHeaderProps,
+  type ScrollLargeHeaderProps
+} from '@codeherence/react-native-header';
+import React, { useCallback, useState } from 'react';
+import { useWindowDimensions, View } from 'react-native';
 import { List, Portal, Snackbar, useTheme } from 'react-native-paper';
 import RNRestart from 'react-native-restart';
 import { AboutItem } from '../components/AboutItem';
+import {
+  HeaderComponent,
+  LargeHeaderComponent,
+} from '../components/AnimatedHeader';
+import { BlurBackground } from '../components/BlurBackground';
 import { BlurRadiusSlider } from '../components/BlurRadiusSlider';
 import { CacheItem } from '../components/CacheItem';
 import { DevItem } from '../components/DevItem';
 import { ExportDataItem } from '../components/ExportDataItem';
 import { ImportDataItem } from '../components/ImportDataItem';
-import { ListWrapper } from '../components/ListWrapper';
 import { RippleEffectSwitch } from '../components/RippleEffectSwitch';
 import { ThemeColorIndicator } from '../components/ThemeColorIndicator';
 
 export function Settings() {
+  const window = useWindowDimensions();
   const appTheme = useTheme();
 
   const [
@@ -20,9 +30,26 @@ export function Settings() {
     setRestartBarVisible,
   ] = useState(false);
 
+  const renderHeader = useCallback((
+    props: ScrollHeaderProps
+  ) => (
+    <HeaderComponent {...props} title="Settings" />
+  ), []);
+
+  const renderLargeHeader = useCallback((
+    props: ScrollLargeHeaderProps
+  ) => (
+    <LargeHeaderComponent {...props} title="Settings" />
+  ), []);
+
   return (
-    <View>
-      <ListWrapper>
+    <BlurBackground>
+      <ScrollViewWithHeaders
+        HeaderComponent={renderHeader}
+        LargeHeaderComponent={renderLargeHeader}
+        fadingEdgeLength={20}
+        disableAutoFixScroll
+      >
         <List.Section
           title="Appearance"
           titleStyle={{
@@ -42,26 +69,30 @@ export function Settings() {
           <ImportDataItem
             setRestartBarVisible={setRestartBarVisible}
           />
+          <CacheItem />
         </List.Section>
-        <CacheItem />
 
         <DevItem />
         <AboutItem />
-      </ListWrapper>
 
-      <Portal>
-        <Snackbar
-          visible={restartBarVisible}
-          onDismiss={() => setRestartBarVisible(false)}
-          onIconPress={() => setRestartBarVisible(false)}
-          action={{
-            label: 'Restart',
-            onPress: () => RNRestart.Restart(),
-          }}
-        >
-          Data imported successfully! Restart the app to apply changes.
-        </Snackbar>
-      </Portal>
-    </View>
+        <View style={{
+          height: window.height * 0.35
+        }} />
+
+        <Portal>
+          <Snackbar
+            visible={restartBarVisible}
+            onDismiss={() => setRestartBarVisible(false)}
+            onIconPress={() => setRestartBarVisible(false)}
+            action={{
+              label: 'Restart',
+              onPress: () => RNRestart.Restart(),
+            }}
+          >
+            Data imported successfully! Restart the app to apply changes.
+          </Snackbar>
+        </Portal>
+      </ScrollViewWithHeaders>
+    </BlurBackground>
   );
 }
