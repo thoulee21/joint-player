@@ -21,6 +21,7 @@ import { useAppDispatch, useAppSelector } from '../hook/reduxHooks';
 import { useSetupPlayer } from '../hook/useSetupPlayer';
 import { selectRippleEffect } from '../redux/slices';
 import { selectDarkModeEnabled, setDarkMode } from '../redux/slices/darkMode';
+import { rootLog } from '../utils/logger';
 
 export function AppContainer({ children }: PropsWithChildren) {
   useSetupPlayer();
@@ -68,6 +69,8 @@ export function AppContainer({ children }: PropsWithChildren) {
 
         const vibrant = Color(androidColors.vibrant);
         const average = Color(androidColors.average);
+        rootLog.info('vibrant color', vibrant.hex().toString());
+        rootLog.info('average color', average.hex().toString());
 
         dispatch(setDarkMode(average.isDark()));
         updateTheme(vibrant.hex().toString());
