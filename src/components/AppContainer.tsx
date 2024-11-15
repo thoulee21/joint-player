@@ -1,5 +1,6 @@
 import { useMaterial3Theme } from '@pchmn/expo-material3-theme';
 import {
+  DefaultTheme,
   NavigationContainer,
   DarkTheme as NavigationDarkTheme,
   DefaultTheme as NavigationDefaultTheme,
@@ -100,9 +101,10 @@ export function AppContainer({ children }: PropsWithChildren) {
         theme={isDarkMode ? MyDarkTheme : MyLightTheme}
         settings={{ rippleEffectEnabled }}
       >
-        <NavigationContainer
-          theme={isDarkMode ? NaviDarkTheme : NaviLightTheme}
-        >
+        <NavigationContainer theme={{
+          ...(isDarkMode ? NaviDarkTheme : NaviLightTheme),
+          fonts: DefaultTheme.fonts
+        }}>
           <StatusBar translucent />
           {children}
         </NavigationContainer>
