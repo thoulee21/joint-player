@@ -60,14 +60,14 @@ export const Logcat = () => {
   }, [navigation, renderBtns]);
 
   useEffect(() => {
-    const readeLog = async () => {
-      const log = await RNFS.readFile(
-        logFilePath, 'utf8'
-      );
-      setLogContent(log);
-    };
-
     try {
+      const readeLog = async () => {
+        const log = await RNFS.readFile(
+          logFilePath, 'utf8'
+        );
+        setLogContent(log);
+      };
+
       if (!isLoaded) {
         readeLog().then(() => {
           setIsLoaded(true);
