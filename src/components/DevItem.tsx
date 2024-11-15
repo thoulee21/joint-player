@@ -21,7 +21,7 @@ export const DevItem = () => {
         return (
             <List.Item
                 title="Developer Options"
-                description="Access developer settings."
+                description="Access developer settings"
                 left={CodeTags}
                 right={ChevronRight}
                 onPress={() => {
