@@ -91,7 +91,6 @@ const styles = StyleSheet.create({
   },
   album: {
     marginVertical: '1%',
-    marginLeft: '2.5%',
   },
   chips: {
     flexDirection: 'row',

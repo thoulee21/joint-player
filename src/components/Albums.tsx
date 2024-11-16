@@ -112,6 +112,8 @@ export function Albums({ artistID }: { artistID: number }) {
       absoluteHeader
       data={showData}
       numColumns={2}
+      columnWrapperStyle={styles.columnWrapper}
+      contentInset={insets}
       keyExtractor={keyExtractor}
       renderItem={renderItem}
       onEndReached={loadMore}
@@ -151,5 +153,8 @@ const styles = StyleSheet.create({
   },
   elevated: {
     elevation: 5,
+  },
+  columnWrapper: {
+    justifyContent: 'space-evenly',
   }
 });
