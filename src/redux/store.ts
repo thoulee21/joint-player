@@ -21,59 +21,29 @@ import {
     userSlice,
 } from './slices';
 
-const persistConfig = {
-    key: 'root',
+const createPersistConfig = (key: string) => ({
+    key,
     storage: reduxStorage,
     blacklist: [
         StateKeys.DarkMode,
         StateKeys.DimezisBlur,
     ]
-};
-
-const rootReducers = combineReducers({
-    darkMode: persistReducer({
-        ...persistConfig,
-        key: StateKeys.DarkMode
-    }, darkModeSlice.reducer),
-    blurRadius: persistReducer({
-        ...persistConfig,
-        key: StateKeys.BlurRadius
-    }, blurRadiusSlice.reducer),
-    devMode: persistReducer({
-        ...persistConfig,
-        key: StateKeys.DevMode
-    }, devModeSlice.reducer),
-    queue: persistReducer({
-        ...persistConfig,
-        key: StateKeys.Queue
-    }, queueSlice.reducer),
-    favs: persistReducer({
-        ...persistConfig,
-        key: StateKeys.Favs
-    }, favsSlice.reducer),
-    user: persistReducer({
-        ...persistConfig,
-        key: StateKeys.User
-    }, userSlice.reducer),
-    playlists: persistReducer({
-        ...persistConfig,
-        key: StateKeys.Playlists
-    }, playlistsSlice.reducer),
-    searchHistory: persistReducer({
-        ...persistConfig,
-        key: StateKeys.SearchHistory
-    }, searchHistorySlice.reducer),
-    rippleEffect: persistReducer({
-        ...persistConfig,
-        key: StateKeys.RippleEffect
-    }, rippleEffectsSlice.reducer),
-    dimezisBlur: persistReducer({
-        ...persistConfig,
-        key: StateKeys.DimezisBlur
-    }, dimezisBlurSlice.reducer),
 });
 
-const persistedReducer = persistReducer(persistConfig, rootReducers);
+const rootReducers = combineReducers({
+    darkMode: persistReducer(createPersistConfig(StateKeys.DarkMode), darkModeSlice.reducer),
+    blurRadius: persistReducer(createPersistConfig(StateKeys.BlurRadius), blurRadiusSlice.reducer),
+    devMode: persistReducer(createPersistConfig(StateKeys.DevMode), devModeSlice.reducer),
+    queue: persistReducer(createPersistConfig(StateKeys.Queue), queueSlice.reducer),
+    favs: persistReducer(createPersistConfig(StateKeys.Favs), favsSlice.reducer),
+    user: persistReducer(createPersistConfig(StateKeys.User), userSlice.reducer),
+    playlists: persistReducer(createPersistConfig(StateKeys.Playlists), playlistsSlice.reducer),
+    searchHistory: persistReducer(createPersistConfig(StateKeys.SearchHistory), searchHistorySlice.reducer),
+    rippleEffect: persistReducer(createPersistConfig(StateKeys.RippleEffect), rippleEffectsSlice.reducer),
+    dimezisBlur: persistReducer(createPersistConfig(StateKeys.DimezisBlur), dimezisBlurSlice.reducer),
+});
+
+const persistedReducer = persistReducer(createPersistConfig('root'), rootReducers);
 
 const sentryReduxEnhancer = Sentry.createReduxEnhancer();
 
