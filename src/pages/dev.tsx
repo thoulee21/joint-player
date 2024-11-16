@@ -128,9 +128,7 @@ export function DevScreen() {
       <RestartItem />
       <ClearAllDataItem />
 
-      {__DEV__ && (
-        <View style={{ height: height * 0.35 }} />
-      )}
+      <View style={{ height: height * 0.35 }} />
     </ScrollViewWithHeaders>
   );
 }

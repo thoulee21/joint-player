@@ -78,11 +78,9 @@ export function AboutScreen() {
         onPress={showDialog}
       />
 
-      {__DEV__ && (
-        <View style={{
-          height: window.height * 0.5,
-        }} />
-      )}
+      <View style={{
+        height: window.height * 0.5,
+      }} />
 
       <Portal>
         <AboutDialog
