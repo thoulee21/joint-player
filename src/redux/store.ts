@@ -25,6 +25,7 @@ const persistConfig = {
     storage: reduxStorage,
     blacklist: [
         'darkMode',
+        'dimezisBlur',
     ]
 };
 

@@ -16,6 +16,7 @@ import {
 } from '../components/AnimatedHeader';
 import { ClearAllDataItem } from '../components/ClearAllDataItem';
 import { DevSwitchItem } from '../components/DevSwitchItem';
+import { DimezisBlurSwitchItem } from '../components/DimezisBlurSwitchItem';
 import { LottieAnimation } from '../components/LottieAnimation';
 import { RestartItem } from '../components/RestartItem';
 import { ViewAppDataItem } from '../components/ViewAppDataItem';
@@ -114,17 +115,18 @@ export function DevScreen() {
             navigation.push('Logcat' as never);
           }}
         />
+        <List.Item
+          title="Experimental Test"
+          description="Test the experimental features"
+          left={renderTestIcon}
+          right={renderRightIcon}
+          onPress={() => {
+            navigation.navigate('Test' as never);
+          }}
+        />
       </List.Section>
 
-      <List.Item
-        title="Experimental Test"
-        description="Test the experimental features"
-        left={renderTestIcon}
-        right={renderRightIcon}
-        onPress={() => {
-          navigation.navigate('Test' as never);
-        }}
-      />
+      <DimezisBlurSwitchItem />
       <RestartItem />
       <ClearAllDataItem />
 
