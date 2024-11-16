@@ -1,11 +1,21 @@
+import {
+  FlatListWithHeaders,
+  LargeHeader,
+  ScalingView,
+  type ScrollHeaderProps,
+  type ScrollLargeHeaderProps,
+} from '@codeherence/react-native-header';
 import React, { useCallback, useMemo, useState } from 'react';
-import { FlatList, RefreshControl, StyleSheet } from 'react-native';
-import { ActivityIndicator, Text, useTheme } from 'react-native-paper';
+import { RefreshControl, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Chip, Text, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useSWRInfinite from 'swr/infinite';
 import { useDebounce } from '../hook';
 import { HotAlbum, Main } from '../types/albumArtist';
 import { Album } from './AlbumItem';
+import { HeaderComponent } from './AnimatedHeader';
+import { ArtistHeader } from './ArtistHeader';
+import { HeaderSurface } from './HeaderSurface';
 
 export function Albums({ artistID }: { artistID: number }) {
   const insets = useSafeAreaInsets();
@@ -47,6 +57,43 @@ export function Albums({ artistID }: { artistID: number }) {
     (item: HotAlbum) => item.id.toString(), []
   );
 
+  const renderHeader = useCallback((
+    props: ScrollHeaderProps
+  ) => (
+    <HeaderComponent
+      {...props}
+      title={data?.[0].artist.name || 'Artist'}
+      SurfaceComponent={HeaderSurface}
+      noBottomBorder
+      headerStyle={[
+        styles.elevated,
+        { height: 64 + insets.top }
+      ]}
+    />
+  ), [data, insets.top]);
+
+  const renderLargeHeader = useCallback((
+    { scrollY }: ScrollLargeHeaderProps
+  ) => (
+    <LargeHeader>
+      <ScalingView scrollY={scrollY}>
+        <ArtistHeader artist={data?.[0].artist} />
+
+        <View style={styles.chips}>
+          <Chip style={styles.chip} selected>Albums</Chip>
+          <View style={styles.attrs}>
+            <Chip icon="album" compact>
+              {data?.[0].artist.albumSize}
+            </Chip>
+            <Chip icon="music" compact>
+              {data?.[0].artist.musicSize}
+            </Chip>
+          </View>
+        </View>
+      </ScalingView>
+    </LargeHeader>
+  ), [data]);
+
   if (error) {
     return (
       <Text style={{
@@ -58,10 +105,13 @@ export function Albums({ artistID }: { artistID: number }) {
   }
 
   return (
-    <FlatList
+    <FlatListWithHeaders
+      LargeHeaderComponent={renderLargeHeader}
+      HeaderComponent={renderHeader}
+      disableAutoFixScroll
+      absoluteHeader
       data={showData}
       numColumns={2}
-      fadingEdgeLength={10}
       keyExtractor={keyExtractor}
       renderItem={renderItem}
       onEndReached={loadMore}
@@ -85,4 +135,21 @@ const styles = StyleSheet.create({
   moreLoading: {
     marginVertical: '2%',
   },
+  chips: {
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'space-between',
+  },
+  chip: {
+    marginVertical: '1%',
+  },
+  attrs: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '40%',
+    justifyContent: 'space-between',
+  },
+  elevated: {
+    elevation: 5,
+  }
 });

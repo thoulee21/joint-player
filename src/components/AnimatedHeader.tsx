@@ -6,10 +6,10 @@ import {
   type ScrollLargeHeaderProps,
 } from '@codeherence/react-native-header';
 import { useNavigation } from '@react-navigation/native';
+import Color from 'color';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Appbar, Text, useTheme } from 'react-native-paper';
-import { interpolateColor } from 'react-native-reanimated';
+import { Appbar, IconButton, Text, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const HeaderComponent = ({
@@ -23,7 +23,7 @@ export const HeaderComponent = ({
   return (
     <Header
       showNavBar={showNavBar}
-      noBottomBorder
+      initialBorderColor="transparent"
       headerCenter={
         <Text
           variant="titleLarge"
@@ -32,20 +32,16 @@ export const HeaderComponent = ({
       }
       headerStyle={[styles.elevated, {
         height: 64 + (!ignoreTopSafeArea ? top : 0),
-        backgroundColor: interpolateColor(
-          showNavBar.value,
-          [0, 1],
-          [
-            appTheme.colors.surface,
-            appTheme.colors.primary
-          ]
-        )
       }]}
       headerCenterStyle={styles.headerTitle}
       headerLeftStyle={styles.smallHeaderLeft}
       headerLeft={
-        <Appbar.BackAction
+        <IconButton
+          icon="arrow-left"
           onPress={navigation.goBack}
+          containerColor={Color(
+            appTheme.colors.surface
+          ).alpha(0.6).rgb().string()}
         />
       }
       ignoreTopSafeArea={ignoreTopSafeArea}

@@ -1,5 +1,6 @@
-import type {
-  SurfaceComponentProps
+import {
+  FadingView,
+  type SurfaceComponentProps
 } from '@codeherence/react-native-header';
 import { BlurView } from 'expo-blur';
 import React from 'react';
@@ -8,15 +9,23 @@ import { useTheme } from 'react-native-paper';
 import { useAppSelector } from '../hook';
 import { blurRadius } from '../redux/slices';
 
-export const HeaderSurface: React.FC<SurfaceComponentProps> = () => {
+export const HeaderSurface: React.FC<SurfaceComponentProps> = (
+  { showNavBar}
+) => {
   const blurRadiusValue = useAppSelector(blurRadius);
   const appTheme = useTheme();
 
   return (
-    <BlurView
+    <FadingView
       style={StyleSheet.absoluteFill}
-      tint={appTheme.dark ? 'dark' : 'light'}
-      intensity={blurRadiusValue}
-    />
+      opacity={showNavBar}
+    >
+      <BlurView
+        style={StyleSheet.absoluteFill}
+        tint={appTheme.dark ? 'dark' : 'light'}
+        intensity={blurRadiusValue}
+        // experimentalBlurMethod="dimezisBlurView"
+      />
+    </FadingView>
   );
 };

@@ -1,13 +1,19 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
-import { StyleSheet, TouchableWithoutFeedback, useWindowDimensions, View } from 'react-native';
-import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
+import {
+  StyleSheet,
+  TouchableWithoutFeedback,
+  useWindowDimensions,
+  View,
+} from 'react-native';
+import HapticFeedback, {
+  HapticFeedbackTypes
+} from 'react-native-haptic-feedback';
 import { Caption, Card, Chip, useTheme } from 'react-native-paper';
 import { HotAlbum } from '../types/albumArtist';
 import { toReadableDate } from '../utils';
-export const Album = (
-  { item }: { item: HotAlbum }
-) => {
+
+export const Album = ({ item }: { item: HotAlbum }) => {
   const navigation = useNavigation();
   const appTheme = useTheme();
 
@@ -84,7 +90,8 @@ const styles = StyleSheet.create({
     height: 200,
   },
   album: {
-    margin: '1%',
+    marginVertical: '1%',
+    marginLeft: '2.5%',
   },
   chips: {
     flexDirection: 'row',
