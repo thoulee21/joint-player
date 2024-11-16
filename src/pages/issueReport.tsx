@@ -5,7 +5,6 @@ import {
 } from '@codeherence/react-native-header';
 import { useNavigation } from '@react-navigation/native';
 import * as Sentry from '@sentry/react-native';
-import { UserFeedback } from '@sentry/react-native';
 import React, { useCallback, useState } from 'react';
 import {
   Keyboard,
@@ -41,17 +40,15 @@ export const IssueReport = () => {
   const sendable = issue && !emailHasErrors;
 
   const report = useCallback(() => {
-    const feedback: UserFeedback = {
+    Keyboard.dismiss();
+    Sentry.captureUserFeedback({
       event_id: Sentry.captureMessage('Report Issue'),
       name: currentUser.username,
       email: email,
       comments: issue,
-    };
+    });
 
-    Keyboard.dismiss();
     HapticFeedback.trigger(HapticFeedbackTypes.effectTick);
-    Sentry.captureUserFeedback(feedback);
-
     ToastAndroid.show('Issue reported', ToastAndroid.LONG);
     navigation.goBack();
   }, [currentUser.username, email, issue, navigation]);
@@ -86,22 +83,21 @@ export const IssueReport = () => {
       scrollToOverflowEnabled={false}
     >
       <KeyboardAvoidingView behavior="padding">
-        <TextInput
-          label="Issue Description"
-          multiline
-          numberOfLines={10}
-          autoFocus
-          value={issue}
-          onChangeText={setIssue}
-          placeholder="Please describe the issue you encountered"
-          maxLength={ISSUE_MAX_LENGTH}
-          right={
-            <TextInput.Affix
-              text={`${issue.length}/${ISSUE_MAX_LENGTH}`}
-            />
-          }
-          style={styles.inputField}
-        />
+        <View style={styles.inputField}>
+          <TextInput
+            label="Issue Description"
+            multiline
+            numberOfLines={10}
+            autoFocus
+            value={issue}
+            onChangeText={setIssue}
+            placeholder="Please describe the issue you encountered"
+            maxLength={ISSUE_MAX_LENGTH}
+          />
+          <HelperText type="info" visible style={styles.counterHelper}>
+            {issue.length} / {ISSUE_MAX_LENGTH}
+          </HelperText>
+        </View>
 
         <View style={styles.inputField}>
           <TextInput
@@ -113,10 +109,13 @@ export const IssueReport = () => {
             textContentType="emailAddress"
             autoComplete="email"
             error={emailHasErrors}
-            right={email && <TextInput.Icon
-              icon="close"
-              onPress={() => { setEmail(''); }}
-            />}
+            selectTextOnFocus
+            right={email && (
+              <TextInput.Icon
+                icon="close"
+                onPress={() => { setEmail(''); }}
+              />
+            )}
           />
           <HelperText type="error" visible={emailHasErrors}>
             Email address is invalid!
@@ -124,8 +123,10 @@ export const IssueReport = () => {
         </View>
       </KeyboardAvoidingView>
 
-      <PoweredBy caption="Powered by Sentry" />
       <View style={{ height: window.height * 0.25 }} />
+      <PoweredBy
+        caption={`Powered by Sentry ${Sentry.SDK_VERSION}`}
+      />
     </ScrollViewWithHeaders>
   );
 };
@@ -133,6 +134,8 @@ export const IssueReport = () => {
 const styles = StyleSheet.create({
   inputField: {
     marginHorizontal: 16,
-    marginVertical: 4,
   },
+  counterHelper: {
+    textAlign: 'right',
+  }
 });
