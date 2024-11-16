@@ -21,59 +21,35 @@ import {
   userSlice,
 } from './slices';
 
-const createPersistConfig = (key: string, blacklist: string[] = []) => ({
-  key,
-  storage: reduxStorage,
-  blacklist,
+const rootReducers = combineReducers({
+  darkMode: darkModeSlice.reducer,
+  blurRadius: blurRadiusSlice.reducer,
+  devMode: devModeSlice.reducer,
+  queue: queueSlice.reducer,
+  favs: favsSlice.reducer,
+  user: userSlice.reducer,
+  playlists: playlistsSlice.reducer,
+  searchHistory: searchHistorySlice.reducer,
+  rippleEffect: rippleEffectsSlice.reducer,
+  dimezisBlur: dimezisBlurSlice.reducer,
 });
 
-const rootReducers = combineReducers({
-  darkMode: persistReducer(
-    createPersistConfig(StateKeys.DarkMode, ['value']),
-    darkModeSlice.reducer
-  ),
-  blurRadius: persistReducer(
-    createPersistConfig(StateKeys.BlurRadius),
-    blurRadiusSlice.reducer
-  ),
-  devMode: persistReducer(
-    createPersistConfig(StateKeys.DevMode),
-    devModeSlice.reducer
-  ),
-  queue: persistReducer(
-    createPersistConfig(StateKeys.Queue),
-    queueSlice.reducer
-  ),
-  favs: persistReducer(
-    createPersistConfig(StateKeys.Favs),
-    favsSlice.reducer
-  ),
-  user: persistReducer(
-    createPersistConfig(StateKeys.User),
-    userSlice.reducer
-  ),
-  playlists: persistReducer(
-    createPersistConfig(StateKeys.Playlists),
-    playlistsSlice.reducer
-  ),
-  searchHistory: persistReducer(
-    createPersistConfig(StateKeys.SearchHistory),
-    searchHistorySlice.reducer
-  ),
-  rippleEffect: persistReducer(
-    createPersistConfig(StateKeys.RippleEffect),
-    rippleEffectsSlice.reducer
-  ),
-  dimezisBlur: persistReducer(
-    createPersistConfig(StateKeys.DimezisBlur, ['value']),
-    dimezisBlurSlice.reducer
-  ),
-});
+const persistedReducer = persistReducer(
+  {
+    key: 'root',
+    storage: reduxStorage,
+    blacklist: [
+      StateKeys.DarkMode,
+      StateKeys.DimezisBlur,
+    ],
+  },
+  rootReducers
+);
 
 const sentryReduxEnhancer = Sentry.createReduxEnhancer();
 
 export const store = configureStore({
-  reducer: rootReducers,
+  reducer: persistedReducer,
   enhancers: (getDefaultEnhancers) => (
     getDefaultEnhancers().concat(sentryReduxEnhancer)
   ),

@@ -6,8 +6,8 @@ import type { Track as TrackData } from '../types/playlist';
 import { Artist } from '../types/songDetail';
 import { fetchSearchResults } from '../utils/fetchSearchResults';
 import { fetchTrackDetails } from '../utils/fetchTrackDetails';
+import { rootLog } from '../utils/logger';
 import { storage } from '../utils/reduxPersistMMKV';
-import { StateKeys } from '../utils/storageKeys';
 
 export interface TrackType {
   id: string;
@@ -26,15 +26,16 @@ export const getTracks = async (keyword: string): Promise<Track[]> => {
   try {
     let songs: TrackData[] = [];
 
-    const storedQueueRaw = JSON.parse(
-      storage.getString(`persist:${StateKeys.Queue}`) || ''
+    const storedRoot = JSON.parse(
+      storage.getString('persist:root') || ''
     );
-    const storedQueue = JSON.parse(storedQueueRaw.value);
+    const storedQueue = JSON.parse(storedRoot.queue).value;
 
     if (storedQueue.length) {
       //if queue exist, add them to the queue
       const queue = storedQueue as TrackType[];
       await TrackPlayer.add(queue);
+      rootLog.info('Restored queue from storage');
       return queue;
     } else {
       //if queue isn't exist, fetch the search results
@@ -57,6 +58,7 @@ export const getTracks = async (keyword: string): Promise<Track[]> => {
       }
 
       await TrackPlayer.setQueue(fetchedData);
+      rootLog.info('Restored queue from search results', keyword);
       return fetchedData;
     }
   }
