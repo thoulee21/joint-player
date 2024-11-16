@@ -7,13 +7,15 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { useAppSelector } from '../hook';
-import { blurRadius } from '../redux/slices';
+import { blurRadius, selectDimezisBlur } from '../redux/slices';
 
 export const HeaderSurface: React.FC<SurfaceComponentProps> = (
-  { showNavBar}
+  { showNavBar }
 ) => {
-  const blurRadiusValue = useAppSelector(blurRadius);
   const appTheme = useTheme();
+
+  const blurRadiusValue = useAppSelector(blurRadius);
+  const experimentalBlur = useAppSelector(selectDimezisBlur);
 
   return (
     <FadingView
@@ -24,7 +26,9 @@ export const HeaderSurface: React.FC<SurfaceComponentProps> = (
         style={StyleSheet.absoluteFill}
         tint={appTheme.dark ? 'dark' : 'light'}
         intensity={blurRadiusValue}
-        // experimentalBlurMethod="dimezisBlurView"
+        experimentalBlurMethod={
+          experimentalBlur ? 'dimezisBlurView' : 'none'
+        }
       />
     </FadingView>
   );

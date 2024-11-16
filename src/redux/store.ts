@@ -11,6 +11,7 @@ import {
     blurRadiusSlice,
     darkModeSlice,
     devModeSlice,
+    dimezisBlurSlice,
     favsSlice,
     playlistsSlice,
     queueSlice,
@@ -65,6 +66,10 @@ const rootReducers = combineReducers({
         ...persistConfig,
         key: 'rippleEffect'
     }, rippleEffectsSlice.reducer),
+    dimezisBlur: persistReducer({
+        ...persistConfig,
+        key: 'dimezisBlur'
+    }, dimezisBlurSlice.reducer),
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducers);

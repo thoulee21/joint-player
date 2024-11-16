@@ -24,7 +24,7 @@ import { Button, Card, Dialog, Portal, Text, useTheme } from 'react-native-paper
 import { useActiveTrack } from 'react-native-track-player';
 import useSWR from 'swr';
 import { useAppSelector, useDebounce } from '../hook';
-import { blurRadius, selectDevModeEnabled } from '../redux/slices';
+import { blurRadius, selectDevModeEnabled, selectDimezisBlur } from '../redux/slices';
 import { Main as MvMain } from '../types/mv';
 import { placeholderImg } from './TrackInfo';
 
@@ -34,6 +34,7 @@ export const MvCover = ({ children }: PropsWithChildren) => {
 
   const devModeEnabled = useAppSelector(selectDevModeEnabled);
   const blurRadiusValue = useAppSelector(blurRadius);
+  const experimentalBlur = useAppSelector(selectDimezisBlur);
 
   const [visible, setVisible] = useState(false);
   const showDialog = useCallback(() => setVisible(true), []);
@@ -113,6 +114,9 @@ export const MvCover = ({ children }: PropsWithChildren) => {
             <BlurView
               tint={appTheme.dark ? 'dark' : 'light'}
               intensity={blurRadiusValue}
+              experimentalBlurMethod={
+                experimentalBlur ? 'dimezisBlurView' : 'none'
+              }
             >
               {children}
             </BlurView>
