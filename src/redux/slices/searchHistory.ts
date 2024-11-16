@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { StorageKeys } from '../../utils/storageKeys';
+import { StateKeys } from '../../utils/storageKeys';
 import { RootState } from '../store';
 
 const initialState = {
@@ -7,7 +7,7 @@ const initialState = {
 };
 
 export const searchHistorySlice = createSlice({
-  name: StorageKeys.SearchHistory,
+  name: StateKeys.SearchHistory,
   initialState,
   reducers: {
     setSearchHistory: (state, action: PayloadAction<string[]>) => {

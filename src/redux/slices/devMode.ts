@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { StateKeys } from '../../utils/storageKeys';
 import { RootState } from '../store';
 
 const initialState = {
@@ -6,7 +7,7 @@ const initialState = {
 };
 
 export const devModeSlice = createSlice({
-    name: 'devMode',
+    name: StateKeys.DevMode,
     // `createSlice` will infer the state type from the `initialState` argument
     initialState,
     reducers: {

@@ -1,7 +1,11 @@
-import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import {
+    PayloadAction,
+    createAsyncThunk,
+    createSlice,
+} from '@reduxjs/toolkit';
 import TrackPlayer from 'react-native-track-player';
 import { TrackType } from '../../services/GetTracksService';
-import { StorageKeys } from '../../utils/storageKeys';
+import { StateKeys } from '../../utils/storageKeys';
 import { RootState } from '../store';
 
 const initialState = {
@@ -9,7 +13,7 @@ const initialState = {
 };
 
 export const setQueueAsync = createAsyncThunk(
-    `${StorageKeys.Queue}/setQueueAsync`,
+    `${StateKeys.Queue}/setQueueAsync`,
     async (tracks: TrackType[], { dispatch }) => {
         await TrackPlayer.setQueue(tracks);
         dispatch(setQueue(tracks));
@@ -17,7 +21,7 @@ export const setQueueAsync = createAsyncThunk(
 );
 
 export const addToQueueAsync = createAsyncThunk(
-    `${StorageKeys.Queue}/addToQueueAsync`,
+    `${StateKeys.Queue}/addToQueueAsync`,
     async (track: TrackType, { getState, dispatch }) => {
         const state = getState() as RootState;
         const existIndex = state.queue.value.findIndex(
@@ -32,7 +36,7 @@ export const addToQueueAsync = createAsyncThunk(
 );
 
 export const removeFromQueueAsync = createAsyncThunk(
-    `${StorageKeys.Queue}/removeFromQueueAsync`,
+    `${StateKeys.Queue}/removeFromQueueAsync`,
     async (index: number, { dispatch }) => {
         await TrackPlayer.remove(index);
         dispatch(removeFromQueue(index));
@@ -40,7 +44,7 @@ export const removeFromQueueAsync = createAsyncThunk(
 );
 
 export const clearQueueAsync = createAsyncThunk(
-    `${StorageKeys.Queue}/clearQueueAsync`,
+    `${StateKeys.Queue}/clearQueueAsync`,
     async (_, { dispatch }) => {
         await TrackPlayer.reset();
         dispatch(clearQueue());
@@ -48,7 +52,7 @@ export const clearQueueAsync = createAsyncThunk(
 );
 
 export const clearAddOneAsync = createAsyncThunk(
-    `${StorageKeys.Queue}/clearAddOneAsync`,
+    `${StateKeys.Queue}/clearAddOneAsync`,
     async (track: TrackType, { dispatch }) => {
         TrackPlayer.setQueue([track]);
         dispatch(clearAddOne(track));
@@ -56,7 +60,7 @@ export const clearAddOneAsync = createAsyncThunk(
 );
 
 export const queueSlice = createSlice({
-    name: StorageKeys.Queue,
+    name: StateKeys.Queue,
     initialState,
     reducers: {
         setQueue: (state, action: PayloadAction<TrackType[]>) => {

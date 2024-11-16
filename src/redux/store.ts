@@ -7,6 +7,7 @@ import {
 import * as Sentry from '@sentry/react-native';
 import { persistReducer, persistStore } from 'redux-persist';
 import { reduxStorage } from '../utils/reduxPersistMMKV';
+import { StateKeys } from '../utils/storageKeys';
 import {
     blurRadiusSlice,
     darkModeSlice,
@@ -24,51 +25,51 @@ const persistConfig = {
     key: 'root',
     storage: reduxStorage,
     blacklist: [
-        'darkMode',
-        'dimezisBlur',
+        StateKeys.DarkMode,
+        StateKeys.DimezisBlur,
     ]
 };
 
 const rootReducers = combineReducers({
     darkMode: persistReducer({
         ...persistConfig,
-        key: 'darkMode'
+        key: StateKeys.DarkMode
     }, darkModeSlice.reducer),
     blurRadius: persistReducer({
         ...persistConfig,
-        key: 'blurRadius'
+        key: StateKeys.BlurRadius
     }, blurRadiusSlice.reducer),
     devMode: persistReducer({
         ...persistConfig,
-        key: 'devMode'
+        key: StateKeys.DevMode
     }, devModeSlice.reducer),
     queue: persistReducer({
         ...persistConfig,
-        key: 'queue'
+        key: StateKeys.Queue
     }, queueSlice.reducer),
     favs: persistReducer({
         ...persistConfig,
-        key: 'favs'
+        key: StateKeys.Favs
     }, favsSlice.reducer),
     user: persistReducer({
         ...persistConfig,
-        key: 'user'
+        key: StateKeys.User
     }, userSlice.reducer),
     playlists: persistReducer({
         ...persistConfig,
-        key: 'playlists'
+        key: StateKeys.Playlists
     }, playlistsSlice.reducer),
     searchHistory: persistReducer({
         ...persistConfig,
-        key: 'searchHistory'
+        key: StateKeys.SearchHistory
     }, searchHistorySlice.reducer),
     rippleEffect: persistReducer({
         ...persistConfig,
-        key: 'rippleEffect'
+        key: StateKeys.RippleEffect
     }, rippleEffectsSlice.reducer),
     dimezisBlur: persistReducer({
         ...persistConfig,
-        key: 'dimezisBlur'
+        key: StateKeys.DimezisBlur
     }, dimezisBlurSlice.reducer),
 });
 

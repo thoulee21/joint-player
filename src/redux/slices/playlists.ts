@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { StorageKeys } from '../../utils/storageKeys';
+import { StateKeys } from '../../utils/storageKeys';
 import { RootState } from '../store';
 
 export type PlaylistType = {
@@ -12,7 +12,7 @@ const initialState = {
 };
 
 export const playlistsSlice = createSlice({
-    name: StorageKeys.Playlists,
+    name: StateKeys.Playlists,
     initialState,
     reducers: {
         setPlaylists: (state, action: PayloadAction<PlaylistType[]>) => {

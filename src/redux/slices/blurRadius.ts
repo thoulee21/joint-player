@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { StorageKeys } from '../../utils/storageKeys';
+import { StateKeys } from '../../utils/storageKeys';
 import { RootState } from '../store';
 
 const initialState = {
@@ -7,7 +7,7 @@ const initialState = {
 };
 
 export const blurRadiusSlice = createSlice({
-    name: StorageKeys.BlurRadius,
+    name: StateKeys.BlurRadius,
     initialState,
     reducers: {
         // Use the PayloadAction type to declare the contents of `action.payload`

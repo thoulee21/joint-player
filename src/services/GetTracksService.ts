@@ -7,7 +7,7 @@ import { Artist } from '../types/songDetail';
 import { fetchSearchResults } from '../utils/fetchSearchResults';
 import { fetchTrackDetails } from '../utils/fetchTrackDetails';
 import { storage } from '../utils/reduxPersistMMKV';
-import { StorageKeys } from '../utils/storageKeys';
+import { StateKeys } from '../utils/storageKeys';
 
 export interface TrackType {
   id: string;
@@ -27,7 +27,7 @@ export const getTracks = async (keyword: string): Promise<Track[]> => {
     let songs: TrackData[] = [];
 
     const storedQueueRaw = JSON.parse(
-      storage.getString(`persist:${StorageKeys.Queue}`) || ''
+      storage.getString(`persist:${StateKeys.Queue}`) || ''
     );
     const storedQueue = JSON.parse(storedQueueRaw.value);
 

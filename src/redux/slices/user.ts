@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { StorageKeys } from '../../utils/storageKeys';
+import { StateKeys } from '../../utils/storageKeys';
 import { RootState } from '../store';
 
 export interface UserType {
@@ -8,12 +8,13 @@ export interface UserType {
 }
 
 export const initialState = {
+    //TODO: initial user shouldn't be a hardcoded value
     username: 'thouLee',
     id: 1492028517,
 };
 
 export const userSlice = createSlice({
-    name: StorageKeys.User,
+    name: StateKeys.User,
     initialState,
     reducers: {
         setUser: (state, action: PayloadAction<UserType>) => {

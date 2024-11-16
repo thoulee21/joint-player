@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TrackType } from '../../services/GetTracksService';
-import { StorageKeys } from '../../utils/storageKeys';
+import { StateKeys } from '../../utils/storageKeys';
 import { RootState } from '../store';
 
 const initialState = {
@@ -8,7 +8,7 @@ const initialState = {
 };
 
 export const favsSlice = createSlice({
-    name: StorageKeys.Favs,
+    name: StateKeys.Favs,
     initialState,
     reducers: {
         setFavs: (state, action: PayloadAction<TrackType[]>) => {

@@ -3,7 +3,7 @@ import TrackPlayer from 'react-native-track-player';
 import { getTracks } from '../services/GetTracksService';
 import { SetupService } from '../services/SetupService';
 import { storage } from '../utils/reduxPersistMMKV';
-import { StorageKeys } from '../utils/storageKeys';
+import { StateKeys } from '../utils/storageKeys';
 
 /**
  * 自定义 hook 用于设置播放器。
@@ -25,7 +25,7 @@ export function useSetupPlayer() {
 
       if (queue.length <= 0) {
         const searchHistoryRaw = storage.getString(
-          `persist:${StorageKeys.SearchHistory}`
+          `persist:${StateKeys.SearchHistory}`
         );
         const searchHistory = JSON.parse(
           JSON.parse(searchHistoryRaw || '').value

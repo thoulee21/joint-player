@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { StateKeys } from '../../utils/storageKeys';
 import { RootState } from '../store';
 
 const initialState = {
@@ -6,7 +7,7 @@ const initialState = {
 };
 
 export const dimezisBlurSlice = createSlice({
-  name: 'dimezisBlur',
+  name: StateKeys.DimezisBlur,
   initialState,
   reducers: {
     toggleDimezisBlur: (state) => {
