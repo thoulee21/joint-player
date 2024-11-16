@@ -70,15 +70,10 @@ const rootReducers = combineReducers({
   ),
 });
 
-const persistedReducer = persistReducer(
-  createPersistConfig('root'),
-  rootReducers
-);
-
 const sentryReduxEnhancer = Sentry.createReduxEnhancer();
 
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: rootReducers,
   enhancers: (getDefaultEnhancers) => (
     getDefaultEnhancers().concat(sentryReduxEnhancer)
   ),
