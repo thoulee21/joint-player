@@ -15,7 +15,7 @@ import { useDebounce } from '../hook';
 import { HotAlbum } from '../types/albumArtist';
 import { Main, Song } from '../types/albumDetail';
 import { songToTrack } from '../utils';
-import { DraggableItem } from './DraggableSongItem';
+import { SwipeableItemWrapper } from './SwipeableItemWrapper';
 import { LottieAnimation } from './LottieAnimation';
 import { AddToQueueButton } from './QuickActions';
 import { SongItem } from './SongItem';
@@ -81,7 +81,7 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
         delay={index * 100}
         useNativeDriver
       >
-        <DraggableItem
+        <SwipeableItemWrapper
           item={songItem}
           itemRefs={itemRefs}
           renderUnderlayLeft={renderUnderlayLeft}
@@ -91,7 +91,7 @@ export function AlbumContent({ album }: { album: HotAlbum }) {
             item={songItem}
             showIndex
           />
-        </DraggableItem>
+        </SwipeableItemWrapper>
       </Animatable.View>
     );
   }, [renderUnderlayLeft, showData.length]);
