@@ -1,19 +1,20 @@
 import {
   Header,
   ScalingView,
+  type HeaderProps,
   type ScrollHeaderProps,
   type ScrollLargeHeaderProps,
 } from '@codeherence/react-native-header';
 import { useNavigation } from '@react-navigation/native';
-import React, { type ReactNode } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Appbar, Text, useTheme } from 'react-native-paper';
 import { interpolateColor } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const HeaderComponent = ({
-  showNavBar, title, headerRight
-}: ScrollHeaderProps & { title: string, headerRight?: ReactNode }
+  showNavBar, title, ignoreTopSafeArea, ...rst
+}: ScrollHeaderProps & { title: string } & HeaderProps
 ) => {
   const navigation = useNavigation();
   const { top } = useSafeAreaInsets();
@@ -30,7 +31,7 @@ export const HeaderComponent = ({
         >{title}</Text>
       }
       headerStyle={[styles.elevated, {
-        height: 64 + top,
+        height: 64 + (!ignoreTopSafeArea ? top : 0),
         backgroundColor: interpolateColor(
           showNavBar.value,
           [0, 1],
@@ -47,7 +48,8 @@ export const HeaderComponent = ({
           onPress={navigation.goBack}
         />
       }
-      headerRight={headerRight}
+      ignoreTopSafeArea={ignoreTopSafeArea}
+      {...rst}
     />
   );
 };

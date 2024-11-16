@@ -18,9 +18,9 @@ import {
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Appbar, HelperText, TextInput, useTheme } from 'react-native-paper';
 import { HeaderComponent, LargeHeaderComponent } from '../components/AnimatedHeader';
+import { PoweredBy } from '../components/PoweredBy';
 import { useAppSelector } from '../hook';
 import { selectUser } from '../redux/slices';
-import { PoweredBy } from '../components/PoweredBy';
 
 const ISSUE_MAX_LENGTH = 200;
 
@@ -66,6 +66,7 @@ export const IssueReport = () => {
     <HeaderComponent
       {...props}
       title="Report Issue"
+      ignoreTopSafeArea
       headerRight={
         <Appbar.Action
           icon={sendable ? 'send' : 'send-outline'}
