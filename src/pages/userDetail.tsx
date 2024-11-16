@@ -7,6 +7,7 @@ import {
 } from '@codeherence/react-native-header';
 import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
+import Color from 'color';
 import React, { useCallback } from 'react';
 import { Linking, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Appbar, List, Portal, Text, useTheme } from 'react-native-paper';
@@ -55,6 +56,9 @@ export const UserDetail = () => {
           <View style={styles.row}>
             <Appbar.BackAction
               onPress={navigation.goBack}
+              containerColor={Color(
+                appTheme.colors.surface
+              ).alpha(0.6).rgb().string()}
             />
             <Appbar.Action
               icon="open-in-new"
@@ -70,6 +74,9 @@ export const UserDetail = () => {
                   `https://music.163.com/user/home?id=${user.id}`
                 );
               }}
+              containerColor={Color(
+                appTheme.colors.surface
+              ).alpha(0.6).rgb().string()}
             />
           </View>
         }
@@ -79,12 +86,15 @@ export const UserDetail = () => {
             onPress={() => {
               navigation.navigate('Settings' as never);
             }}
+            containerColor={Color(
+              appTheme.colors.surface
+            ).alpha(0.6).rgb().string()}
           />
         }
         SurfaceComponent={HeaderSurface}
       />
     </Portal>
-  ), [insets.top, navigation, user.id, user.username]);
+  ), [appTheme, insets.top, navigation, user]);
 
   const renderLargeHeader = useCallback((
     { scrollY }: ScrollLargeHeaderProps
