@@ -1,42 +1,33 @@
-import { useNavigation, useRoute } from '@react-navigation/native';
-import React, { useCallback, useMemo, useState } from 'react';
 import {
-  FlatList,
-  Image,
-  Linking,
-  ScrollView,
-  Share,
-  StyleSheet,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View
-} from 'react-native';
-import HapticFeedback, {
-  HapticFeedbackTypes
-} from 'react-native-haptic-feedback';
+  FlatListWithHeaders,
+  ScalingView,
+  type ScrollHeaderProps,
+  type ScrollLargeHeaderProps,
+} from '@codeherence/react-native-header';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import Color from 'color';
+import React, { useCallback, useMemo, useState } from 'react';
+import { Linking, StyleSheet, View } from 'react-native';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import {
   ActivityIndicator,
   Appbar,
   Badge,
-  Button,
-  Chip,
-  Dialog,
   Divider,
   IconButton,
   Portal,
-  Surface,
-  Text,
   Tooltip,
   useTheme
 } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import TrackPlayer from 'react-native-track-player';
 import useSWR from 'swr';
+import { HeaderComponent } from '../components/AnimatedHeader';
 import { BlurBackground } from '../components/BlurBackground';
+import { HeaderSurface } from '../components/HeaderSurface';
 import { LottieAnimation } from '../components/LottieAnimation';
-import {
-  PlaylistTrack,
-  raw2TrackType,
-} from '../components/PlaylistTrack';
+import { PlaylistDetailLargeHeader } from '../components/PlaylistDetailLargeHeader';
+import { PlaylistTrack, raw2TrackType } from '../components/PlaylistTrack';
 import { TracksHeader } from '../components/TracksHeader';
 import { useAppDispatch, useAppSelector } from '../hook';
 import {
@@ -52,19 +43,19 @@ import type { Main, Track } from '../types/playlistDetail';
 export const PlaylistDetailScreen = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
   const appTheme = useTheme();
 
   const { name, playlistID } = useRoute().params as PlaylistType;
   const playlists = useAppSelector(selectPlaylists);
 
-  const [dialogVisible, setDialogVisible] = useState(false);
   const [showDot, setShowDot] = useState(true);
   const [attempts, setAttempts] = useState(0);
 
   const isInPlaylists = useMemo(() => (
-    playlists.some(
-      (pl) => pl.playlistID === playlistID
-    )
+    playlists.some((pl) => (
+      pl.playlistID === playlistID
+    ))
   ), [playlistID, playlists]);
 
   const togglePlist = useCallback(() => {
@@ -108,7 +99,7 @@ export const PlaylistDetailScreen = () => {
     (item: Track) => item.id.toString(), []
   );
 
-  const playAll = async () => {
+  const playAll = useCallback(async () => {
     const tracksData = data?.result.tracks.map(
       raw => raw2TrackType(raw)
     );
@@ -117,11 +108,85 @@ export const PlaylistDetailScreen = () => {
       setQueueAsync(tracksData as TrackType[])
     );
     await TrackPlayer.play();
-  };
+  }, [data, dispatch]);
 
-  if (
-    isLoading || data?.code !== 200 || error
-  ) {
+  const renderHeader = useCallback((
+    props: ScrollHeaderProps
+  ) => {
+    return (
+      <HeaderComponent
+        {...props}
+        title={name}
+        noBottomBorder
+        SurfaceComponent={HeaderSurface}
+        headerStyle={{ height: 56 + insets.top }}
+        headerLeft={
+          <Tooltip title="Open in NetEase Music">
+            <Appbar.Action
+              icon="open-in-new"
+              containerColor={Color(
+                appTheme.colors.surface
+              ).alpha(0.6).rgb().string()}
+              onPress={() => Linking.openURL(
+                `orpheus://playlist/${playlistID}`
+              )} />
+          </Tooltip>
+        }
+        headerRight={
+          <>
+            {data?.result.commentCount !== 0 && (
+              <View>
+                <Appbar.Action
+                  icon="comment-text-multiple-outline"
+                  containerColor={Color(
+                    appTheme.colors.surface
+                  ).alpha(0.6).rgb().string()}
+                  onPress={() => {
+                    //@ts-expect-error
+                    navigation.push('Comments', {
+                      commentThreadId: data?.result.commentThreadId,
+                    });
+                    setShowDot(false);
+                  }} />
+                <Badge
+                  visible={showDot}
+                  style={styles.badge}
+                  size={18}
+                >
+                  {data?.result.commentCount.toLocaleString()}
+                </Badge>
+              </View>
+            )}
+
+            <IconButton
+              icon={isInPlaylists
+                ? 'playlist-check' : 'playlist-plus'}
+              selected={isInPlaylists}
+              containerColor={Color(
+                appTheme.colors.surface
+              ).alpha(0.6).rgb().string()}
+              animated
+              onPress={togglePlist}
+            />
+          </>
+        }
+        headerRightStyle={styles.actions} />
+    );
+  }, [appTheme, data, insets, isInPlaylists, name, navigation, playlistID, showDot, togglePlist]);
+
+  const renderLargeHeader = useCallback((
+    { scrollY }: ScrollLargeHeaderProps
+  ) => (
+    <ScalingView scrollY={scrollY}>
+      <PlaylistDetailLargeHeader playlistID={playlistID} />
+      <TracksHeader
+        length={data?.result.trackCount || 0}
+        onPress={playAll}
+      />
+    </ScalingView>
+  ), [data, playAll, playlistID]);
+
+  if (isLoading || data?.code !== 200 || error) {
     return (
       <BlurBackground>
         <Appbar.Header style={styles.appbar} mode="medium">
@@ -157,143 +222,11 @@ export const PlaylistDetailScreen = () => {
   return (
     <Portal.Host>
       <BlurBackground>
-        <Appbar.Header style={styles.appbar} mode="medium">
-          <Appbar.BackAction onPress={navigation.goBack} />
-          <Appbar.Content title={name} onPress={() => {
-            setDialogVisible(true);
-          }} />
-
-          <Tooltip title="Open in NetEase Music">
-            <Appbar.Action
-              icon="open-in-new"
-              onPress={() => {
-                Linking.openURL(
-                  `orpheus://playlist/${playlistID}`
-                );
-              }}
-            />
-          </Tooltip>
-
-          {data.result.commentCount !== 0 && (
-            <View>
-              <Appbar.Action
-                icon="comment-text-multiple-outline"
-                onPress={() => {
-                  //@ts-expect-error
-                  navigation.push('Comments', {
-                    commentThreadId: data.result.commentThreadId,
-                  });
-                  setShowDot(false);
-                }}
-              />
-              <Badge
-                visible={showDot}
-                style={styles.badge}
-                size={18}
-              >
-                {data.result.commentCount.toLocaleString()}
-              </Badge>
-            </View>
-          )}
-
-          <IconButton
-            icon={isInPlaylists
-              ? 'playlist-check' : 'playlist-plus'}
-            selected={isInPlaylists}
-            animated
-            onPress={togglePlist}
-          />
-        </Appbar.Header>
-
-        <View style={styles.header}>
-          <TouchableWithoutFeedback
-            onLongPress={() => {
-              HapticFeedback.trigger(
-                HapticFeedbackTypes.effectDoubleClick,
-              );
-              //@ts-expect-error
-              navigation.push('WebView', {
-                title: data?.result.name,
-                url: data?.result.coverImgUrl,
-              });
-            }}
-          >
-            <Surface
-              elevation={5}
-              style={[styles.cover, {
-                borderRadius: appTheme.roundness,
-              }]}
-            >
-              <Image
-                style={[styles.cover, {
-                  borderRadius: appTheme.roundness,
-                }]}
-                source={{ uri: data?.result.coverImgUrl }}
-              />
-            </Surface>
-          </TouchableWithoutFeedback>
-
-          <View style={styles.headerRight}>
-            <Tooltip
-              title={data.result.creator.signature || 'No Signature'}
-            >
-              <Chip avatar={
-                <Image source={{
-                  uri: data?.result.creator.avatarUrl
-                }} />
-              }>
-                {data?.result.creator.nickname}
-              </Chip>
-            </Tooltip>
-
-            <View style={styles.row}>
-              <Button icon="heart-outline" compact>
-                {data.result.subscribedCount.toLocaleString()}
-              </Button>
-              <Button icon="share-outline" compact onPress={() => {
-                Share.share({
-                  title: data.result.name,
-                  message: `Check out ${data.result.name} on NetEase Music!\nhttps://music.163.com/#/playlist?id=${playlistID}`,
-                  url: `https://music.163.com/#/playlist?id=${playlistID}`,
-                }, {
-                  dialogTitle: 'Share Playlist',
-                  tintColor: appTheme.colors.primary,
-                  subject: data.result.name,
-                });
-              }}>
-                {data.result.shareCount.toLocaleString()}
-              </Button>
-            </View>
-
-            <TouchableOpacity onPress={() => {
-              if (data.result.description) {
-                setDialogVisible(true);
-              }
-            }}>
-              <Text numberOfLines={4}>
-                {data?.result.description
-                  || `${data.result.name}\nNo Description :(`}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <View style={styles.tags}>
-          {data?.result.tags.map(tag => (
-            <Chip
-              key={tag}
-              icon="tag-text-outline"
-              mode="outlined"
-              style={styles.tag}
-            >{tag}</Chip>
-          ))}
-        </View>
-
-        <TracksHeader
-          length={data.result.trackCount}
-          onPress={playAll}
-        />
-        <FlatList
+        <FlatListWithHeaders
+          LargeHeaderComponent={renderLargeHeader}
+          HeaderComponent={renderHeader}
+          disableAutoFixScroll
+          absoluteHeader
           data={data.result.tracks}
           keyExtractor={keyExtractor}
           renderItem={renderItem}
@@ -302,28 +235,6 @@ export const PlaylistDetailScreen = () => {
           scrollToOverflowEnabled={false}
         />
       </BlurBackground>
-
-      <Portal>
-        <Dialog
-          visible={dialogVisible}
-          style={styles.dialog}
-          onDismiss={() => setDialogVisible(false)}
-        >
-          <Dialog.Title>{data.result.name}</Dialog.Title>
-          <ScrollView style={styles.biggerPadding}>
-            <Text selectable>
-              {data.result.description}
-            </Text>
-          </ScrollView>
-          <Dialog.Actions>
-            <Button onPress={() => {
-              setDialogVisible(false);
-            }}>
-              Close
-            </Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
     </Portal.Host>
   );
 };
@@ -335,42 +246,13 @@ const styles = StyleSheet.create({
   loading: {
     marginTop: '50%',
   },
-  tags: {
-    marginHorizontal: '2%',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  tag: {
-    margin: '1%',
-  },
-  row: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  cover: {
-    width: 150,
-    height: 150,
-    aspectRatio: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    paddingHorizontal: '3.5%',
-    paddingBottom: '2%',
-  },
-  headerRight: {
-    flex: 1,
-    marginLeft: '3%',
-    alignItems: 'flex-start',
-  },
-  dialog: {
-    maxHeight: '80%',
-  },
-  biggerPadding: {
-    paddingHorizontal: 24,
-  },
   badge: {
     position: 'absolute',
     top: 4,
     right: 0,
   },
+  actions: {
+    width: 'auto',
+    flexDirection: 'row',
+  }
 });

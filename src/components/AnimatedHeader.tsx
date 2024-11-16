@@ -8,12 +8,12 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Appbar, IconButton, Text, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export const HeaderComponent = ({
-  showNavBar, title, ignoreTopSafeArea, ...rst
+  showNavBar, title, ignoreTopSafeArea, headerLeft, ...rst
 }: ScrollHeaderProps & { title: string } & HeaderProps
 ) => {
   const navigation = useNavigation();
@@ -24,6 +24,7 @@ export const HeaderComponent = ({
     <Header
       showNavBar={showNavBar}
       initialBorderColor="transparent"
+      borderColor={appTheme.colors.outlineVariant}
       headerCenter={
         <Text
           variant="titleLarge"
@@ -36,13 +37,16 @@ export const HeaderComponent = ({
       headerCenterStyle={styles.headerTitle}
       headerLeftStyle={styles.smallHeaderLeft}
       headerLeft={
-        <IconButton
-          icon="arrow-left"
-          onPress={navigation.goBack}
-          containerColor={Color(
-            appTheme.colors.surface
-          ).alpha(0.6).rgb().string()}
-        />
+        <View style={styles.row}>
+          <IconButton
+            icon="arrow-left"
+            onPress={navigation.goBack}
+            containerColor={Color(
+              appTheme.colors.surface
+            ).alpha(0.6).rgb().string()}
+          />
+          {headerLeft}
+        </View>
       }
       ignoreTopSafeArea={ignoreTopSafeArea}
       {...rst}
@@ -83,5 +87,8 @@ const styles = StyleSheet.create({
   },
   elevated: {
     elevation: 5,
+  },
+  row: {
+    flexDirection: 'row',
   }
 });
