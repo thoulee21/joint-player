@@ -28,20 +28,50 @@ const createPersistConfig = (key: string, blacklist: string[] = []) => ({
 });
 
 const rootReducers = combineReducers({
-  darkMode: persistReducer(createPersistConfig(StateKeys.DarkMode), darkModeSlice.reducer),
-  blurRadius: persistReducer(createPersistConfig(StateKeys.BlurRadius), blurRadiusSlice.reducer),
-  devMode: persistReducer(createPersistConfig(StateKeys.DevMode), devModeSlice.reducer),
-  queue: persistReducer(createPersistConfig(StateKeys.Queue), queueSlice.reducer),
-  favs: persistReducer(createPersistConfig(StateKeys.Favs), favsSlice.reducer),
-  user: persistReducer(createPersistConfig(StateKeys.User), userSlice.reducer),
-  playlists: persistReducer(createPersistConfig(StateKeys.Playlists), playlistsSlice.reducer),
-  searchHistory: persistReducer(createPersistConfig(StateKeys.SearchHistory), searchHistorySlice.reducer),
-  rippleEffect: persistReducer(createPersistConfig(StateKeys.RippleEffect), rippleEffectsSlice.reducer),
-  dimezisBlur: persistReducer(createPersistConfig(StateKeys.DimezisBlur), dimezisBlurSlice.reducer),
+  darkMode: persistReducer(
+    createPersistConfig(StateKeys.DarkMode, ['value']),
+    darkModeSlice.reducer
+  ),
+  blurRadius: persistReducer(
+    createPersistConfig(StateKeys.BlurRadius),
+    blurRadiusSlice.reducer
+  ),
+  devMode: persistReducer(
+    createPersistConfig(StateKeys.DevMode),
+    devModeSlice.reducer
+  ),
+  queue: persistReducer(
+    createPersistConfig(StateKeys.Queue),
+    queueSlice.reducer
+  ),
+  favs: persistReducer(
+    createPersistConfig(StateKeys.Favs),
+    favsSlice.reducer
+  ),
+  user: persistReducer(
+    createPersistConfig(StateKeys.User),
+    userSlice.reducer
+  ),
+  playlists: persistReducer(
+    createPersistConfig(StateKeys.Playlists),
+    playlistsSlice.reducer
+  ),
+  searchHistory: persistReducer(
+    createPersistConfig(StateKeys.SearchHistory),
+    searchHistorySlice.reducer
+  ),
+  rippleEffect: persistReducer(
+    createPersistConfig(StateKeys.RippleEffect),
+    rippleEffectsSlice.reducer
+  ),
+  dimezisBlur: persistReducer(
+    createPersistConfig(StateKeys.DimezisBlur, ['value']),
+    dimezisBlurSlice.reducer
+  ),
 });
 
 const persistedReducer = persistReducer(
-  createPersistConfig('root', [StateKeys.DarkMode, StateKeys.DimezisBlur]),
+  createPersistConfig('root'),
   rootReducers
 );
 
