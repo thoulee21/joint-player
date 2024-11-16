@@ -3,17 +3,16 @@ import {
   ScalingView,
   ScrollViewWithHeaders,
   type ScrollHeaderProps,
-  type ScrollLargeHeaderProps,
-  type SurfaceComponentProps
+  type ScrollLargeHeaderProps
 } from '@codeherence/react-native-header';
 import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
-import { BlurView } from 'expo-blur';
 import React, { useCallback } from 'react';
 import { Linking, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Appbar, List, Portal, Text, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurBackground } from '../components/BlurBackground';
+import { HeaderSurface } from '../components/HeaderSurface';
 import { PlaylistCover } from '../components/PlaylistCover';
 import { PlaylistDisplay } from '../components/PlaylistDisplayItem';
 import { PoweredBy } from '../components/PoweredBy';
@@ -21,17 +20,6 @@ import { UserAttrs } from '../components/UserAttrs';
 import { UserBackground, UserInfo } from '../components/UserHeader';
 import { useAppSelector } from '../hook';
 import { favs, selectPlaylists, selectUser } from '../redux/slices';
-
-const HeaderSurface: React.FC<SurfaceComponentProps> = () => {
-  const appTheme = useTheme();
-  return (
-    <BlurView
-      style={StyleSheet.absoluteFill}
-      tint={appTheme.dark ? 'dark' : 'light'}
-      intensity={100}
-    />
-  );
-};
 
 export const UserDetail = () => {
   const navigation = useNavigation();
