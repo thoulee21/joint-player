@@ -1,6 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import TrackPlayer from 'react-native-track-player';
 import { TrackType } from '../../services/GetTracksService';
+import { StorageKeys } from '../../utils/storageKeys';
 import { RootState } from '../store';
 
 const initialState = {
@@ -8,7 +9,7 @@ const initialState = {
 };
 
 export const setQueueAsync = createAsyncThunk(
-    'queue/setQueueAsync',
+    `${StorageKeys.Queue}/setQueueAsync`,
     async (tracks: TrackType[], { dispatch }) => {
         await TrackPlayer.setQueue(tracks);
         dispatch(setQueue(tracks));
@@ -16,7 +17,7 @@ export const setQueueAsync = createAsyncThunk(
 );
 
 export const addToQueueAsync = createAsyncThunk(
-    'queue/addToQueueAsync',
+    `${StorageKeys.Queue}/addToQueueAsync`,
     async (track: TrackType, { getState, dispatch }) => {
         const state = getState() as RootState;
         const existIndex = state.queue.value.findIndex(
@@ -31,7 +32,7 @@ export const addToQueueAsync = createAsyncThunk(
 );
 
 export const removeFromQueueAsync = createAsyncThunk(
-    'queue/removeFromQueueAsync',
+    `${StorageKeys.Queue}/removeFromQueueAsync`,
     async (index: number, { dispatch }) => {
         await TrackPlayer.remove(index);
         dispatch(removeFromQueue(index));
@@ -39,7 +40,7 @@ export const removeFromQueueAsync = createAsyncThunk(
 );
 
 export const clearQueueAsync = createAsyncThunk(
-    'queue/clearQueueAsync',
+    `${StorageKeys.Queue}/clearQueueAsync`,
     async (_, { dispatch }) => {
         await TrackPlayer.reset();
         dispatch(clearQueue());
@@ -47,7 +48,7 @@ export const clearQueueAsync = createAsyncThunk(
 );
 
 export const clearAddOneAsync = createAsyncThunk(
-    'queue/clearAddOneAsync',
+    `${StorageKeys.Queue}/clearAddOneAsync`,
     async (track: TrackType, { dispatch }) => {
         TrackPlayer.setQueue([track]);
         dispatch(clearAddOne(track));
@@ -55,7 +56,7 @@ export const clearAddOneAsync = createAsyncThunk(
 );
 
 export const queueSlice = createSlice({
-    name: 'queue',
+    name: StorageKeys.Queue,
     initialState,
     reducers: {
         setQueue: (state, action: PayloadAction<TrackType[]>) => {

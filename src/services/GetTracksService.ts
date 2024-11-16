@@ -26,18 +26,18 @@ export const getTracks = async (keyword: string): Promise<Track[]> => {
   try {
     let songs: TrackData[] = [];
 
-    const storedFavsRaw = JSON.parse(
-      storage.getString(`persist:${StorageKeys.Favs}`) || ''
+    const storedQueueRaw = JSON.parse(
+      storage.getString(`persist:${StorageKeys.Queue}`) || ''
     );
-    const storedFavs = JSON.parse(storedFavsRaw.value);
+    const storedQueue = JSON.parse(storedQueueRaw.value);
 
-    if (storedFavs.length) {
-      //if favs exist, add them to the queue
-      const favs = storedFavs as TrackType[];
-      await TrackPlayer.add(favs);
-      return favs;
+    if (storedQueue.length) {
+      //if queue exist, add them to the queue
+      const queue = storedQueue as TrackType[];
+      await TrackPlayer.add(queue);
+      return queue;
     } else {
-      //if no favs exist, fetch the search results
+      //if queue isn't exist, fetch the search results
       const data = await fetchSearchResults(keyword as string);
       songs = data.songs;
 

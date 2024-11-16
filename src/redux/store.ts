@@ -25,7 +25,6 @@ const persistConfig = {
     storage: reduxStorage,
     blacklist: [
         'darkMode',
-        'queue',
     ]
 };
 
