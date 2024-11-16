@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
 import { List, Text, useTheme } from 'react-native-paper';
 import type { ListLRProps } from '../types/paperListItem';
@@ -12,7 +11,6 @@ export const PlaylistCover = ({
   name: string;
   onPress: () => void;
 }) => {
-  const navigation = useNavigation();
   const appTheme = useTheme();
 
   const renderFavImage = useCallback(
@@ -46,11 +44,7 @@ export const PlaylistCover = ({
       title={name || 'Favorites'}
       description={description}
       descriptionNumberOfLines={2}
-      onPress={onPress || (() => {
-        navigation.navigate(
-          'Favorites' as never
-        );
-      })}
+      onPress={onPress}
       left={renderFavImage}
       right={renderCount}
     />

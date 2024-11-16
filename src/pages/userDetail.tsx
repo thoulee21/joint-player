@@ -146,7 +146,10 @@ export const UserDetail = () => {
                     length={favorites.length}
                     name="Favorites"
                     onPress={() => {
-                      navigation.navigate('Favorites' as never);
+                      //@ts-expect-error
+                      navigation.navigate('DrawerNavi', {
+                        screen: 'Favorites',
+                      });
                     }}
                   />
                 )}
