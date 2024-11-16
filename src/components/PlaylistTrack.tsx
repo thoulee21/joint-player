@@ -1,12 +1,9 @@
 import React, { useCallback, useMemo, useRef } from 'react';
-import type {
-  RenderItemParams,
-} from 'react-native-draggable-flatlist';
 import { useTheme } from 'react-native-paper';
 import type { TrackType } from '../services/GetTracksService';
 import type { SongAlbum } from '../types/albumDetail';
 import type { Track } from '../types/playlistDetail';
-import { DraggableItem } from './DraggableSongItem';
+import { SwipeableItemWrapper } from './SwipeableItemWrapper';
 import { AddToQueueButton } from './QuickActions';
 import { SongItem } from './SongItem';
 import { SwipeableUnderlay } from './SwipeableUnderlay';
@@ -24,16 +21,12 @@ export const raw2TrackType = (track: Track): TrackType => ({
   mvid: track.mvid,
 });
 
-export const PlaylistTrack = ({
-  item, getIndex, isActive,
-}: RenderItemParams<Track>
-) => {
+export const PlaylistTrack = ({ item, index }: {
+  item: Track, index: number
+}) => {
   const appTheme = useTheme();
   const itemRefs = useRef(new Map());
 
-  const index = useMemo(
-    () => getIndex() || 0, [getIndex]
-  );
   const track = useMemo(
     () => raw2TrackType(item), [item]
   );
@@ -48,7 +41,7 @@ export const PlaylistTrack = ({
   ), [appTheme]);
 
   return (
-    <DraggableItem
+    <SwipeableItemWrapper
       item={track}
       itemRefs={itemRefs}
       renderUnderlayLeft={renderUnderlayLeft}
@@ -57,8 +50,7 @@ export const PlaylistTrack = ({
         item={track}
         index={index}
         showAlbum
-        isActive={isActive}
       />
-    </DraggableItem>
+    </SwipeableItemWrapper>
   );
 };

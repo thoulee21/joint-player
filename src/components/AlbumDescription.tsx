@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { Button, Dialog, Portal, Text } from 'react-native-paper';
 
 export const AlbumDescription = (
@@ -21,16 +21,14 @@ export const AlbumDescription = (
 
   return (
     <>
-      <View style={styles.root}>
-        <TouchableOpacity onPress={showDialog}>
-          <Text
-            style={styles.desc}
-            numberOfLines={2}
-          >
-            {description}
-          </Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity onPress={showDialog}>
+        <Text
+          style={styles.desc}
+          numberOfLines={3}
+        >
+          {description}
+        </Text>
+      </TouchableOpacity>
 
       <Portal>
         <Dialog
@@ -54,9 +52,6 @@ export const AlbumDescription = (
 };
 
 const styles = StyleSheet.create({
-  root: {
-    height: 50,
-  },
   desc: {
     marginHorizontal: '6%',
   },

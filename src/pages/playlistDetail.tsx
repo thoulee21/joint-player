@@ -1,6 +1,7 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useCallback, useMemo, useState } from 'react';
 import {
+  FlatList,
   Image,
   Linking,
   ScrollView,
@@ -10,9 +11,6 @@ import {
   TouchableWithoutFeedback,
   View
 } from 'react-native';
-import DraggableFlatList, {
-  type RenderItemParams
-} from 'react-native-draggable-flatlist';
 import HapticFeedback, {
   HapticFeedbackTypes
 } from 'react-native-haptic-feedback';
@@ -101,9 +99,9 @@ export const PlaylistDetailScreen = () => {
   }, [mutate]);
 
   const renderItem = useCallback((
-    props: RenderItemParams<Track>
+    { item, index }: { item: Track, index: number }
   ) => (
-    <PlaylistTrack {...props} />
+    <PlaylistTrack item={item} index={index} />
   ), []);
 
   const keyExtractor = useCallback(
@@ -295,15 +293,13 @@ export const PlaylistDetailScreen = () => {
           length={data.result.trackCount}
           onPress={playAll}
         />
-        <DraggableFlatList
+        <FlatList
           data={data.result.tracks}
           keyExtractor={keyExtractor}
           renderItem={renderItem}
-          containerStyle={[styles.container, {
-            backgroundColor: appTheme.colors.surface,
-          }]}
-          activationDistance={20}
           ItemSeparatorComponent={Divider}
+          overScrollMode="never"
+          scrollToOverflowEnabled={false}
         />
       </BlurBackground>
 
@@ -333,9 +329,6 @@ export const PlaylistDetailScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   appbar: {
     backgroundColor: 'transparent'
   },
