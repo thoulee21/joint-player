@@ -1,6 +1,6 @@
 import { ScrollViewWithHeaders } from '@codeherence/react-native-header';
-import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useEffect, useState } from 'react';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import React, { useCallback, useState } from 'react';
 import { StatusBar, useWindowDimensions, View } from 'react-native';
 import { List, Portal, Snackbar, useTheme } from 'react-native-paper';
 import { AboutDialog } from '../components/AboutDialog';
@@ -33,7 +33,7 @@ export function AboutScreen() {
   const showDevSnackbar = () => setDevSnackbarVisible(true);
   const hideDevSnackbar = () => setDevSnackbarVisible(false);
 
-  useEffect(() => {
+  useFocusEffect(() => {
     rootLog.debug('AboutScreen mounted');
     StatusBar.setBarStyle('light-content');
 
@@ -42,7 +42,7 @@ export function AboutScreen() {
         appTheme.dark ? 'light-content' : 'dark-content'
       );
     };
-  }, [appTheme.dark]);
+  });
 
   const GoDevSnackbar = useCallback(() => (
     <Snackbar
