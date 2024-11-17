@@ -5,7 +5,7 @@ import {
 } from '@reduxjs/toolkit';
 import TrackPlayer from 'react-native-track-player';
 import { TrackType } from '../../services/GetTracksService';
-import { StateKeys } from '../../utils/storageKeys';
+import { StateKeys } from '../../utils/stateKeys';
 import { RootState } from '../store';
 
 const initialState = {

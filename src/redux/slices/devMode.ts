@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { StateKeys } from '../../utils/storageKeys';
+import { StateKeys } from '../../utils/stateKeys';
 import { RootState } from '../store';
 
 const initialState = {

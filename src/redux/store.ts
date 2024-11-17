@@ -7,7 +7,7 @@ import {
 import * as Sentry from '@sentry/react-native';
 import { persistReducer, persistStore } from 'redux-persist';
 import { reduxStorage } from '../utils/reduxPersistMMKV';
-import { StateKeys } from '../utils/storageKeys';
+import { StateKeys } from '../utils/stateKeys';
 import {
   blurRadiusSlice,
   darkModeSlice,

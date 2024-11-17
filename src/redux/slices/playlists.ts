@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { StateKeys } from '../../utils/storageKeys';
+import { StateKeys } from '../../utils/stateKeys';
 import { RootState } from '../store';
 
 export type PlaylistType = {
