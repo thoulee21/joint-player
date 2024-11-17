@@ -30,7 +30,7 @@ export const TrackInfoBar = ({
     return (
         <List.Item
             title={track?.title}
-            titleStyle={{ color: titleColor }}
+            titleStyle={titleColor && { color: titleColor }}
             description={<ArtistNames />}
             style={[styles.bar, style]}
             left={renderAvatar}
