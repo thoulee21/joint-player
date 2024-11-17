@@ -21,10 +21,10 @@ import {
   Search,
   Settings,
   SwitchUser,
-  TestScreen,
   UserDetail,
   WebViewScreen,
 } from '../pages';
+import TestScreen from '../pages/test';
 import { DrawerNavi } from './DrawerNavi';
 
 const Stack = createStackNavigator();
