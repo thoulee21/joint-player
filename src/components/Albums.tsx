@@ -1,10 +1,12 @@
 import {
+  FadingView,
   FlatListWithHeaders,
-  type ScrollHeaderProps
+  type ScrollHeaderProps,
+  type SurfaceComponentProps
 } from '@codeherence/react-native-header';
 import React, { useCallback, useMemo, useState } from 'react';
 import { RefreshControl, StyleSheet, View } from 'react-native';
-import { ActivityIndicator, Chip, Text, useTheme } from 'react-native-paper';
+import { ActivityIndicator, Chip, Portal, Text, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useSWRInfinite from 'swr/infinite';
 import { useDebounce } from '../hook';
@@ -54,17 +56,38 @@ export function Albums({ artistID }: { artistID: number }) {
     (item: HotAlbum) => item.id.toString(), []
   );
 
+  const renderSurface = useCallback((
+    { showNavBar }: SurfaceComponentProps
+  ) => (
+    <FadingView
+      opacity={showNavBar}
+      style={StyleSheet.absoluteFill}
+    >
+      <View style={[
+        StyleSheet.absoluteFill,
+        { backgroundColor: appTheme.colors.background }
+      ]} />
+    </FadingView>
+  ), [appTheme.colors.background]);
+
   const renderHeader = useCallback((
     props: ScrollHeaderProps
   ) => (
-    <HeaderComponent
-      {...props}
-      title={data?.[0].artist.name || 'Artist'}
-    />
-  ), [data]);
+    <Portal>
+      <HeaderComponent
+        {...props}
+        title={data?.[0].artist.name || 'Artist'}
+        headerLeftFadesIn
+        SurfaceComponent={renderSurface}
+      />
+    </Portal>
+  ), [data, renderSurface]);
 
   const renderLargeHeader = useCallback(() => (
-    <View style={styles.header}>
+    <View style={[
+      styles.header,
+      { paddingTop: insets.top }
+    ]}>
       <ArtistHeader artist={data?.[0].artist} />
 
       <View style={styles.chips}>
@@ -79,7 +102,7 @@ export function Albums({ artistID }: { artistID: number }) {
         </View>
       </View>
     </View>
-  ), [data]);
+  ), [data, insets.top]);
 
   if (error) {
     return (
@@ -92,29 +115,31 @@ export function Albums({ artistID }: { artistID: number }) {
   }
 
   return (
-    <FlatListWithHeaders
-      LargeHeaderComponent={renderLargeHeader}
-      HeaderComponent={renderHeader}
-      data={showData}
-      numColumns={2}
-      columnWrapperStyle={styles.columnWrapper}
-      contentInset={insets}
-      keyExtractor={keyExtractor}
-      renderItem={renderItem}
-      onEndReached={loadMore}
-      ListFooterComponent={renderLoading}
-      refreshing={refreshing}
-      onRefresh={onRefresh}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          progressViewOffset={insets.top}
-          colors={[appTheme.colors.primary]}
-          progressBackgroundColor={appTheme.colors.surface}
-        />
-      }
-    />
+    <Portal.Host>
+      <FlatListWithHeaders
+        LargeHeaderComponent={renderLargeHeader}
+        HeaderComponent={renderHeader}
+        data={showData}
+        numColumns={2}
+        columnWrapperStyle={styles.columnWrapper}
+        contentInset={insets}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
+        onEndReached={loadMore}
+        ListFooterComponent={renderLoading}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            progressViewOffset={insets.top}
+            colors={[appTheme.colors.primary]}
+            progressBackgroundColor={appTheme.colors.surface}
+          />
+        }
+      />
+    </Portal.Host>
   );
 }
 

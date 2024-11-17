@@ -51,8 +51,7 @@ const styles = StyleSheet.create({
   albumHeaderTitle: {
     flexDirection: 'row',
     alignItems: 'baseline',
-    marginLeft: '3%',
-    marginBottom: '3%',
+    margin: '3%',
   },
   artistAlias: {
     marginLeft: '1%',
