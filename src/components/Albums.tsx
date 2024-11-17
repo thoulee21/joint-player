@@ -59,14 +59,15 @@ export function Albums({ artistID }: { artistID: number }) {
   ) => (
     <Header
       {...props}
-      noBottomBorder
+      initialBorderColor="transparent"
+      borderColor={appTheme.colors.outlineVariant}
       headerCenter={
         <Text style={styles.chip}>
           {data?.[0].artist.name}
         </Text>
       }
     />
-  ), [data]);
+  ), [appTheme.colors.outlineVariant, data]);
 
   const renderLargeHeader = useCallback(() => (
     <View style={styles.header}>
