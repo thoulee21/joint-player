@@ -1,7 +1,6 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
-import { BlurView } from 'expo-blur';
 import React, {
   PropsWithChildren,
   useCallback,
@@ -9,8 +8,6 @@ import React, {
   useState,
 } from 'react';
 import {
-  Dimensions,
-  ImageBackground,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -24,8 +21,9 @@ import { Button, Card, Dialog, Portal, Text, useTheme } from 'react-native-paper
 import { useActiveTrack } from 'react-native-track-player';
 import useSWR from 'swr';
 import { useAppSelector, useDebounce } from '../hook';
-import { blurRadius, selectDevModeEnabled, selectDimezisBlur } from '../redux/slices';
+import { blurRadius, selectDevModeEnabled } from '../redux/slices';
 import { Main as MvMain } from '../types/mv';
+import { ImageBlur, ImageBlurView } from './ImageBlur';
 import { placeholderImg } from './TrackInfo';
 
 export const MvCover = ({ children }: PropsWithChildren) => {
@@ -34,13 +32,11 @@ export const MvCover = ({ children }: PropsWithChildren) => {
 
   const devModeEnabled = useAppSelector(selectDevModeEnabled);
   const blurRadiusValue = useAppSelector(blurRadius);
-  const experimentalBlur = useAppSelector(selectDimezisBlur);
 
   const [visible, setVisible] = useState(false);
   const showDialog = useCallback(() => setVisible(true), []);
   const hideDialog = useCallback(() => setVisible(false), []);
 
-  const { height: windowsHeight } = Dimensions.get('window');
   const track = useActiveTrack();
   const { data } = useSWR<MvMain>(
     `http://music.163.com/api/mv/detail?id=${track?.mvid}`
@@ -104,24 +100,20 @@ export const MvCover = ({ children }: PropsWithChildren) => {
         onPress={printMvData}
         onLongPress={viewMvPic}
       >
-        <ImageBackground
-          source={{ uri: data?.data.cover || placeholderImg }}
-        >
-          <View style={[
-            styles.cover,
-            { height: windowsHeight / 3 }
-          ]}>
-            <BlurView
-              tint={appTheme.dark ? 'dark' : 'light'}
-              intensity={blurRadiusValue}
-              experimentalBlurMethod={
-                experimentalBlur ? 'dimezisBlurView' : 'none'
-              }
-            >
-              {children}
-            </BlurView>
-          </View>
-        </ImageBackground>
+        <ImageBlur
+          src={data?.data.cover || placeholderImg}
+          aspectRatio="landscape"
+          resizeMode="cover"
+          blurChildren={
+            <View style={styles.cover}>
+              <ImageBlurView
+                blurProps={{ blurRadius: blurRadiusValue }}
+              >
+                {children}
+              </ImageBlurView>
+            </View>
+          }
+        />
       </Card>
 
       <Portal>
@@ -150,10 +142,10 @@ export const MvCover = ({ children }: PropsWithChildren) => {
             <Button
               icon="content-copy"
               onPress={copyMvData}
-            >
-              Copy
-            </Button>
-            <Button onPress={hideDialog}>Close</Button>
+            >Copy</Button>
+            <Button
+              onPress={hideDialog}
+            >Close</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
@@ -163,6 +155,7 @@ export const MvCover = ({ children }: PropsWithChildren) => {
 
 const styles = StyleSheet.create({
   cover: {
+    flex: 1,
     justifyContent: 'flex-end',
   },
   square: {
