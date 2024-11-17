@@ -45,8 +45,6 @@ export function Settings() {
     <ScrollViewWithHeaders
       HeaderComponent={renderHeader}
       LargeHeaderComponent={renderLargeHeader}
-      disableAutoFixScroll
-      overScrollMode="never"
     >
       <List.Section
         title="Appearance"

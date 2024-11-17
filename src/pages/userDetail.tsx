@@ -118,7 +118,6 @@ export const UserDetail = () => {
           LargeHeaderComponent={renderLargeHeader}
           overScrollMode="never"
           scrollToOverflowEnabled={false}
-          disableAutoFixScroll
           style={styles.root}
           contentInset={{ top: 0 }}
         >

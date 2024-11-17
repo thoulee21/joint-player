@@ -63,7 +63,6 @@ export function AboutScreen() {
     <ScrollViewWithHeaders
       HeaderComponent={AboutHeaderComponent}
       LargeHeaderComponent={AboutLargeHeaderComponent}
-      disableAutoFixScroll
       scrollToOverflowEnabled={false}
       overScrollMode="never"
     >

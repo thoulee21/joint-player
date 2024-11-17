@@ -225,14 +225,11 @@ export const PlaylistDetailScreen = () => {
         <FlatListWithHeaders
           LargeHeaderComponent={renderLargeHeader}
           HeaderComponent={renderHeader}
-          disableAutoFixScroll
           absoluteHeader
           data={data.result.tracks}
           keyExtractor={keyExtractor}
           renderItem={renderItem}
           ItemSeparatorComponent={Divider}
-          overScrollMode="never"
-          scrollToOverflowEnabled={false}
         />
       </BlurBackground>
     </Portal.Host>
