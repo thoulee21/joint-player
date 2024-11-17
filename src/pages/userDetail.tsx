@@ -1,19 +1,17 @@
 import {
+  FadingView,
   Header,
-  ScalingView,
   ScrollViewWithHeaders,
   type ScrollHeaderProps,
-  type ScrollLargeHeaderProps
+  type SurfaceComponentProps
 } from '@codeherence/react-native-header';
 import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
-import Color from 'color';
 import React, { useCallback } from 'react';
 import { Linking, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Appbar, List, Portal, Text, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BlurBackground } from '../components/BlurBackground';
-import { HeaderSurface } from '../components/HeaderSurface';
+import { ImageBlurView } from '../components/ImageBlur';
 import { PlaylistCover } from '../components/PlaylistCover';
 import { PlaylistDisplay } from '../components/PlaylistDisplayItem';
 import { PoweredBy } from '../components/PoweredBy';
@@ -36,127 +34,124 @@ export const UserDetail = () => {
     <PlaylistDisplay {...props} />
   ), []);
 
+  const renderSurface = useCallback((
+    { showNavBar }: SurfaceComponentProps
+  ) => (
+    <FadingView
+      opacity={showNavBar}
+      style={StyleSheet.absoluteFill}
+    >
+      <View style={[
+        StyleSheet.absoluteFill,
+        { backgroundColor: appTheme.colors.background }
+      ]} />
+    </FadingView>
+  ), [appTheme.colors.background]);
+
   const renderHeader = useCallback((
-    { showNavBar }: ScrollHeaderProps
+    props: ScrollHeaderProps
   ) => (
     <Portal>
       <Header
-        showNavBar={showNavBar}
-        noBottomBorder
-        headerCenter={
-          <Text
-            variant="titleLarge"
-            numberOfLines={1}
-          >{user.username}</Text>
-        }
-        headerStyle={{ height: 64 + insets.top }}
-        headerCenterStyle={styles.headerTitle}
-        headerLeftStyle={styles.smallHeaderLeft}
-        headerLeft={
-          <View style={styles.row}>
-            <Appbar.BackAction
-              onPress={navigation.goBack}
-              containerColor={Color(
-                appTheme.colors.surface
-              ).alpha(0.6).rgb().string()}
-            />
-            <Appbar.Action
-              icon="open-in-new"
-              onPress={() => {
-                //@ts-expect-error
-                navigation.navigate('WebView' as never, {
-                  title: 'User Detail',
-                  url: `https://music.163.com/user/home?id=${user.id}`,
-                });
-              }}
-              onLongPress={() => {
-                Linking.openURL(
-                  `https://music.163.com/user/home?id=${user.id}`
-                );
-              }}
-              containerColor={Color(
-                appTheme.colors.surface
-              ).alpha(0.6).rgb().string()}
-            />
-          </View>
-        }
-        headerRight={
-          <Appbar.Action
-            icon="cog-outline"
-            onPress={() => {
-              navigation.navigate('Settings' as never);
-            }}
-            containerColor={Color(
-              appTheme.colors.surface
-            ).alpha(0.6).rgb().string()}
-          />
-        }
-        SurfaceComponent={HeaderSurface}
+        {...props}
+        headerCenter={<Text>{user.username}</Text>}
+        initialBorderColor="transparent"
+        borderColor={appTheme.colors.outlineVariant}
+        SurfaceComponent={renderSurface}
       />
     </Portal>
-  ), [appTheme, insets.top, navigation, user]);
+  ), [appTheme.colors.outlineVariant, renderSurface, user.username]);
 
-  const renderLargeHeader = useCallback((
-    { scrollY }: ScrollLargeHeaderProps
-  ) => (
-    <ScalingView scrollY={scrollY}>
-      <UserBackground>
-        <UserInfo />
-      </UserBackground>
-    </ScalingView>
-  ), []);
+  const renderLargeHeader = useCallback(() => (
+    <UserBackground>
+      <ImageBlurView
+        style={[
+          styles.row,
+          { paddingTop: insets.top, }
+        ]}
+      >
+        <View style={styles.row}>
+          <Appbar.BackAction
+            onPress={navigation.goBack}
+          />
+          <Appbar.Action
+            icon="open-in-new"
+            onPress={() => {
+              //@ts-expect-error
+              navigation.navigate('WebView' as never, {
+                title: 'User Detail',
+                url: `https://music.163.com/user/home?id=${user.id}`,
+              });
+            }}
+            onLongPress={() => {
+              Linking.openURL(
+                `https://music.163.com/user/home?id=${user.id}`
+              );
+            }}
+          />
+        </View>
+        <Appbar.Action
+          icon="cog-outline"
+          onPress={() => {
+            navigation.navigate('Settings' as never);
+          }}
+        />
+      </ImageBlurView>
+
+      <UserInfo style={styles.avatar} />
+    </UserBackground>
+  ), [insets.top, navigation, user.id]);
 
   return (
     <Portal.Host>
-      <BlurBackground>
-        <ScrollViewWithHeaders
-          absoluteHeader
-          largeHeaderContainerStyle={{
-            height: height * 0.35,
-          }}
-          HeaderComponent={renderHeader}
-          LargeHeaderComponent={renderLargeHeader}
-          overScrollMode="never"
-          scrollToOverflowEnabled={false}
-          style={styles.root}
-          contentInset={{ top: 0 }}
-        >
-          <View style={styles.attrs}>
-            <UserAttrs />
-          </View>
+      <ScrollViewWithHeaders
+        // absoluteHeader
+        largeHeaderContainerStyle={{
+          height: height * 0.35,
+        }}
+        HeaderComponent={renderHeader}
+        LargeHeaderComponent={renderLargeHeader}
+        overScrollMode="never"
+        scrollToOverflowEnabled={false}
+        style={styles.root}
+        contentInset={{ top: 0 }}
+      >
+        <View style={styles.attrs}>
+          <UserAttrs />
+        </View>
 
-          <FlashList
-            data={playlists}
-            renderItem={renderPlaylist}
-            estimatedItemSize={92}
-            ListHeaderComponent={
-              <>
-                <List.Subheader style={{
-                  color: appTheme.colors.secondary
-                }}>
-                  {playlists.length ? 'Playlists' : null}
-                </List.Subheader>
-                {favorites.length >= 1 && (
-                  <PlaylistCover
-                    artwork={favorites[0].artwork}
-                    description={`${favorites[0].title}\n${favorites[0].artist}`}
-                    length={favorites.length}
-                    name="Favorites"
-                    onPress={() => {
-                      //@ts-expect-error
-                      navigation.navigate('DrawerNavi', {
-                        screen: 'Favorites',
-                      });
-                    }}
-                  />
-                )}
-              </>
-            }
-          />
+        <FlashList
+          data={playlists}
+          renderItem={renderPlaylist}
+          estimatedItemSize={92}
+          ListHeaderComponent={
+            <>
+              <List.Subheader style={{
+                color: appTheme.colors.secondary
+              }}>
+                {playlists.length ? 'Playlists' : null}
+              </List.Subheader>
 
-          <PoweredBy />
-        </ScrollViewWithHeaders>
-      </BlurBackground>
+              {favorites.length >= 1 && (
+                <PlaylistCover
+                  artwork={favorites[0].artwork}
+                  description={`${favorites[0].title}\n${favorites[0].artist}`}
+                  length={favorites.length}
+                  name="Favorites"
+                  onPress={() => {
+                    //@ts-expect-error
+                    navigation.navigate('DrawerNavi', {
+                      screen: 'Favorites',
+                    });
+                  }}
+                />
+              )}
+            </>
+          }
+        />
+
+        <PoweredBy />
+      </ScrollViewWithHeaders>
     </Portal.Host>
   );
 };
@@ -181,5 +176,9 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  avatar: {
+    marginTop: '25%',
   }
 });

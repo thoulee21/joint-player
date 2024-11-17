@@ -4,9 +4,7 @@ import {
 import React, { type PropsWithChildren } from 'react';
 import {
   Alert,
-  ImageBackground,
   StyleSheet,
-  TouchableWithoutFeedback,
   useWindowDimensions,
   View,
   type ImageStyle,
@@ -33,6 +31,7 @@ import {
   selectUser,
 } from '../redux/slices';
 import { Main } from '../types/userDetail';
+import { ImageBlur } from './ImageBlur';
 import { placeholderImg } from './TrackInfo';
 
 export const UserInfo = ({ userId, style }: {
@@ -114,7 +113,6 @@ export const UserBackground = ({
 }: PropsWithChildren<{
   userId?: number, style?: StyleProp<ImageStyle>
 }>) => {
-  const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const window = useWindowDimensions();
   const appTheme = useTheme();
@@ -147,50 +145,18 @@ export const UserBackground = ({
     );
   }
 
-  const viewBackground = () => {
-    HapticFeedback.trigger(
-      HapticFeedbackTypes.effectDoubleClick
-    );
-    if (data) {
-      //@ts-expect-error
-      navigation.push('WebView', {
-        url: data?.profile.backgroundUrl,
-        title: 'User Background',
-      });
-    }
-  };
-
   return (
-    <TouchableWithoutFeedback
-      onLongPress={viewBackground}
-    >
-      <ImageBackground
-        imageStyle={[styles.img, style]}
-        source={{
-          uri: data?.profile.backgroundUrl ||
-            placeholderImg,
-        }}
-      >
-        {children}
-      </ImageBackground>
-    </TouchableWithoutFeedback>
-  );
-};
-
-export const UserHeader = (
-  { userId }: { userId?: number }
-) => {
-  return (
-    <UserBackground userId={userId}>
-      <UserInfo userId={userId} />
-    </UserBackground>
+    <ImageBlur
+      aspectRatio="landscape"
+      src={data?.profile.backgroundUrl ||
+        placeholderImg}
+      resizeMode="cover"
+      blurChildren={children}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  img: {
-    height: '75%',
-  },
   avatar: {
     borderRadius: 50,
   },
