@@ -16,7 +16,6 @@ import {
 } from '../components/AnimatedHeader';
 import { ClearAllDataItem } from '../components/ClearAllDataItem';
 import { DevSwitchItem } from '../components/DevSwitchItem';
-import { DimezisBlurSwitchItem } from '../components/DimezisBlurSwitchItem';
 import { LottieAnimation } from '../components/LottieAnimation';
 import { RestartItem } from '../components/RestartItem';
 import { ViewAppDataItem } from '../components/ViewAppDataItem';
@@ -126,7 +125,6 @@ export function DevScreen() {
         />
       </List.Section>
 
-      <DimezisBlurSwitchItem />
       <RestartItem />
       <ClearAllDataItem />
 

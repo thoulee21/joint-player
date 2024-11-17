@@ -12,7 +12,6 @@ import {
   blurRadiusSlice,
   darkModeSlice,
   devModeSlice,
-  dimezisBlurSlice,
   favsSlice,
   playlistsSlice,
   queueSlice,
@@ -31,7 +30,6 @@ const rootReducers = combineReducers({
   playlists: playlistsSlice.reducer,
   searchHistory: searchHistorySlice.reducer,
   rippleEffect: rippleEffectsSlice.reducer,
-  dimezisBlur: dimezisBlurSlice.reducer,
 });
 
 const persistedReducer = persistReducer(
@@ -40,7 +38,6 @@ const persistedReducer = persistReducer(
     storage: reduxStorage,
     blacklist: [
       StateKeys.DarkMode,
-      StateKeys.DimezisBlur,
     ],
   },
   rootReducers
