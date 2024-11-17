@@ -10,7 +10,7 @@ export const FavCount = () => {
   return (
     <Text
       variant="labelLarge"
-      style={{ color: appTheme.colors.outline }}
+      style={{ color: appTheme.colors.onSurfaceVariant }}
     >
       {favorites.length}
     </Text>

@@ -54,7 +54,9 @@ export const CommentItem = memo((
       >
         <Button
           icon={liked ? 'thumb-up' : 'thumb-up-outline'}
-          textColor={!liked ? appTheme.colors.outline : undefined}
+          textColor={!liked
+            ? appTheme.colors.onSurfaceVariant
+            : undefined}
           compact
           onPress={() => {
             HapticFeedback.trigger(
@@ -81,7 +83,7 @@ export const CommentItem = memo((
         </Button>
         <Button
           icon="share-outline"
-          textColor={appTheme.colors.outline}
+          textColor={appTheme.colors.onSurfaceVariant}
           compact
           onPress={() => {
             Share.share({ message: item.content });

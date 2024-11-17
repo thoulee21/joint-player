@@ -31,11 +31,11 @@ export const PlaylistCover = ({
       <Text
         {...props}
         variant="titleLarge"
-        style={{ color: appTheme.colors.outline }}
+        style={{ color: appTheme.colors.onSurfaceVariant }}
       >
         {length}
       </Text>
-    ), [appTheme.colors.outline, length]);
+    ), [appTheme.colors.onSurfaceVariant, length]);
 
   if (!length) { return null; }
 
