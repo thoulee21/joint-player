@@ -6,7 +6,6 @@ import {
   type ScrollLargeHeaderProps,
 } from '@codeherence/react-native-header';
 import { useNavigation } from '@react-navigation/native';
-import Color from 'color';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Appbar, IconButton, Text, useTheme } from 'react-native-paper';
@@ -41,13 +40,11 @@ export const HeaderComponent = ({
           <IconButton
             icon="arrow-left"
             onPress={navigation.goBack}
-            containerColor={Color(
-              appTheme.colors.surface
-            ).alpha(0.6).rgb().string()}
           />
           {headerLeft}
         </View>
       }
+      headerRightStyle={styles.smallHeaderRight}
       ignoreTopSafeArea={ignoreTopSafeArea}
       {...rst}
     />
@@ -80,6 +77,10 @@ const styles = StyleSheet.create({
   smallHeaderLeft: {
     width: 'auto',
     paddingRight: 0,
+  },
+  smallHeaderRight: {
+    width: 'auto',
+    paddingLeft: 0,
   },
   headerTitle: {
     textAlign: 'left',

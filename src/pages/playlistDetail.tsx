@@ -5,26 +5,15 @@ import {
   type ScrollLargeHeaderProps,
 } from '@codeherence/react-native-header';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import Color from 'color';
 import React, { useCallback, useMemo, useState } from 'react';
-import { Linking, StyleSheet, View } from 'react-native';
+import { Linking, StatusBar, StyleSheet } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import {
-  ActivityIndicator,
-  Appbar,
-  Badge,
-  Divider,
-  IconButton,
-  Portal,
-  Tooltip,
-  useTheme
-} from 'react-native-paper';
+import { ActivityIndicator, Appbar, Divider, IconButton, Menu, Portal, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import TrackPlayer from 'react-native-track-player';
 import useSWR from 'swr';
 import { HeaderComponent } from '../components/AnimatedHeader';
 import { BlurBackground } from '../components/BlurBackground';
-import { HeaderSurface } from '../components/HeaderSurface';
 import { LottieAnimation } from '../components/LottieAnimation';
 import { PlaylistDetailLargeHeader } from '../components/PlaylistDetailLargeHeader';
 import { PlaylistTrack, raw2TrackType } from '../components/PlaylistTrack';
@@ -49,8 +38,8 @@ export const PlaylistDetailScreen = () => {
   const { name, playlistID } = useRoute().params as PlaylistType;
   const playlists = useAppSelector(selectPlaylists);
 
-  const [showDot, setShowDot] = useState(true);
   const [attempts, setAttempts] = useState(0);
+  const [menuVisible, setMenuVisible] = useState(false);
 
   const isInPlaylists = useMemo(() => (
     playlists.some((pl) => (
@@ -118,73 +107,70 @@ export const PlaylistDetailScreen = () => {
         {...props}
         title={name}
         noBottomBorder
-        SurfaceComponent={HeaderSurface}
-        headerStyle={{ height: 56 + insets.top }}
-        headerLeft={
-          <Tooltip title="Open in NetEase Music">
-            <Appbar.Action
-              icon="open-in-new"
-              containerColor={Color(
-                appTheme.colors.surface
-              ).alpha(0.6).rgb().string()}
-              onPress={() => Linking.openURL(
-                `orpheus://playlist/${playlistID}`
-              )} />
-          </Tooltip>
-        }
+        headerStyle={{
+          height: 56 + insets.top,
+          backgroundColor: appTheme.colors.surfaceVariant,
+        }}
         headerRight={
-          <>
-            {data?.result.commentCount !== 0 && (
-              <View>
-                <Appbar.Action
-                  icon="comment-text-multiple-outline"
-                  containerColor={Color(
-                    appTheme.colors.surface
-                  ).alpha(0.6).rgb().string()}
-                  onPress={() => {
-                    //@ts-expect-error
-                    navigation.push('Comments', {
-                      commentThreadId: data?.result.commentThreadId,
-                    });
-                    setShowDot(false);
-                  }} />
-                <Badge
-                  visible={showDot}
-                  style={styles.badge}
-                  size={18}
-                >
-                  {data?.result.commentCount.toLocaleString()}
-                </Badge>
-              </View>
-            )}
-
-            <IconButton
-              icon={isInPlaylists
-                ? 'playlist-check' : 'playlist-plus'}
-              selected={isInPlaylists}
-              containerColor={Color(
-                appTheme.colors.surface
-              ).alpha(0.6).rgb().string()}
-              animated
-              onPress={togglePlist}
-            />
-          </>
+          <IconButton
+            icon={isInPlaylists
+              ? 'playlist-check' : 'playlist-plus'}
+            selected={isInPlaylists}
+            animated
+            onPress={togglePlist}
+          />
         }
-        headerRightStyle={styles.actions} />
+      />
     );
-  }, [appTheme, data, insets, isInPlaylists, name, navigation, playlistID, showDot, togglePlist]);
+  }, [appTheme.colors.surfaceVariant, insets.top, isInPlaylists, name, togglePlist]);
 
   const renderLargeHeader = useCallback((
     { scrollY }: ScrollLargeHeaderProps
   ) => (
-    <ScalingView scrollY={scrollY}>
+    <ScalingView
+      scrollY={scrollY}
+      style={{ backgroundColor: appTheme.colors.surfaceVariant }}
+    >
       <PlaylistDetailLargeHeader playlistID={playlistID} />
       <TracksHeader
         length={data?.result.trackCount || 0}
         onPress={playAll}
+        right={
+          <Menu
+            visible={menuVisible}
+            onDismiss={() => { setMenuVisible(false); }}
+            statusBarHeight={StatusBar.currentHeight}
+            anchor={
+              <IconButton
+                icon="dots-vertical"
+                size={18}
+                onPress={() => { setMenuVisible(true); }}
+              />
+            }
+          >
+            <Menu.Item
+              title="Open in App"
+              leadingIcon="open-in-new"
+              onPress={() => Linking.openURL(
+                `orpheus://playlist/${playlistID}`
+              )}
+            />
+            <Menu.Item
+              title="Comments"
+              leadingIcon="comment-text-multiple-outline"
+              disabled={data?.result.commentCount === 0}
+              onPress={() => {
+                //@ts-expect-error
+                navigation.push('Comments', {
+                  commentThreadId: data?.result.commentThreadId,
+                });
+              }}
+            />
+          </Menu>
+        }
       />
     </ScalingView>
-  ), [data, playAll, playlistID]);
+  ), [appTheme, data, menuVisible, navigation, playAll, playlistID]);
 
   if (isLoading || data?.code !== 200 || error) {
     return (
@@ -221,17 +207,16 @@ export const PlaylistDetailScreen = () => {
 
   return (
     <Portal.Host>
-      <BlurBackground>
-        <FlatListWithHeaders
-          LargeHeaderComponent={renderLargeHeader}
-          HeaderComponent={renderHeader}
-          absoluteHeader
-          data={data.result.tracks}
-          keyExtractor={keyExtractor}
-          renderItem={renderItem}
-          ItemSeparatorComponent={Divider}
-        />
-      </BlurBackground>
+      <FlatListWithHeaders
+        LargeHeaderComponent={renderLargeHeader}
+        HeaderComponent={renderHeader}
+        overScrollMode="never"
+        scrollToOverflowEnabled={false}
+        data={data.result.tracks}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
+        ItemSeparatorComponent={Divider}
+      />
     </Portal.Host>
   );
 };
@@ -242,14 +227,5 @@ const styles = StyleSheet.create({
   },
   loading: {
     marginTop: '50%',
-  },
-  badge: {
-    position: 'absolute',
-    top: 4,
-    right: 0,
-  },
-  actions: {
-    width: 'auto',
-    flexDirection: 'row',
   }
 });
