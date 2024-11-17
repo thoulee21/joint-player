@@ -1,42 +1,39 @@
-import { BlurView } from 'expo-blur';
 import React, { PropsWithChildren } from 'react';
-import { ImageBackground, StyleSheet, ViewStyle, type StyleProp } from 'react-native';
-import { useTheme } from 'react-native-paper';
+import {
+  ImageBackground,
+  StyleSheet,
+  ViewStyle,
+  type StyleProp,
+} from 'react-native';
 import { useActiveTrack } from 'react-native-track-player';
 import { useAppSelector } from '../hook';
 import { blurRadius } from '../redux/slices';
 import { placeholderImg } from './TrackInfo';
 
 export const BlurBackground = ({
-    children, style, onLoadEnd,
+  children, style, onLoadEnd,
 }: PropsWithChildren<{
-    style?: StyleProp<ViewStyle>,
-    onLoadEnd?: () => void,
+  style?: StyleProp<ViewStyle>,
+  onLoadEnd?: () => void,
 }>) => {
-    const appTheme = useTheme();
-    const blurRadiusValue = useAppSelector(blurRadius);
-    const track = useActiveTrack();
+  const blurRadiusValue = useAppSelector(blurRadius);
+  const track = useActiveTrack();
 
-    return (
-        <ImageBackground
-            style={styles.root}
-            source={{ uri: track?.artwork || placeholderImg }}
-            blurRadius={blurRadiusValue}
-            onLoadEnd={onLoadEnd}
-        >
-            <BlurView
-                style={[styles.root, style]}
-                tint={appTheme.dark ? 'dark' : 'light'}
-            >
-                {children}
-            </BlurView>
-        </ImageBackground>
-    );
+  return (
+    <ImageBackground
+      style={[styles.root, style]}
+      source={{ uri: track?.artwork || placeholderImg }}
+      blurRadius={blurRadiusValue}
+      onLoadEnd={onLoadEnd}
+    >
+      {children}
+    </ImageBackground>
+  );
 };
 
 const styles = StyleSheet.create({
-    root: {
-        flex: 1,
-        display: 'flex',
-    },
+  root: {
+    flex: 1,
+    display: 'flex',
+  },
 });
