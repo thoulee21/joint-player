@@ -12,6 +12,7 @@ import useSWR from 'swr';
 import { useAppSelector } from '../hook';
 import { selectDevModeEnabled } from '../redux/slices';
 import { Main as MvMain } from '../types/mv';
+import { rootLog } from '../utils/logger';
 import { ImageBlur, ImageBlurView } from './ImageBlur';
 import { placeholderImg } from './TrackInfo';
 
@@ -51,24 +52,19 @@ export const MvCover = ({ children }: PropsWithChildren) => {
 
   const handleStatusBarStyle = useCallback(async () => {
     const colors = await ImageColors.getColors(
-      data?.data.cover || placeholderImg
+      data?.data?.cover || placeholderImg
     );
+    rootLog.debug('MvCover colors', colors);
     setImgColor(Color((colors as AndroidImageColors).average));
-
-    StatusBar.setBarStyle(
-      imgColor?.isDark() ? 'light-content' : 'dark-content'
-    );
-  }, [data, imgColor]);
+  }, [data?.data?.cover]);
 
   useEffect(() => {
-    if (data) {
-      handleStatusBarStyle();
+    handleStatusBarStyle();
 
-      return StatusBar.setBarStyle(
-        appTheme.dark ? 'light-content' : 'dark-content'
-      );
-    }
-  }, [appTheme.dark, data, handleStatusBarStyle]);
+    return StatusBar.setBarStyle(
+      appTheme.dark ? 'light-content' : 'dark-content'
+    );
+  }, [appTheme.dark, handleStatusBarStyle]);
 
   const viewMvPic = useCallback(() => {
     HapticFeedback.trigger(
@@ -85,6 +81,9 @@ export const MvCover = ({ children }: PropsWithChildren) => {
 
   return (
     <MvContext.Provider value={{ imgColor }}>
+      <StatusBar barStyle={
+        imgColor?.isDark() ? 'light-content' : 'dark-content'
+      } />
       <Card
         style={styles.square}
         onPress={printMvData}
