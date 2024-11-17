@@ -1,9 +1,7 @@
 import {
   FlatListWithHeaders,
-  LargeHeader,
-  ScalingView,
-  type ScrollHeaderProps,
-  type ScrollLargeHeaderProps,
+  Header,
+  type ScrollHeaderProps
 } from '@codeherence/react-native-header';
 import React, { useCallback, useMemo, useState } from 'react';
 import { RefreshControl, StyleSheet, View } from 'react-native';
@@ -13,9 +11,7 @@ import useSWRInfinite from 'swr/infinite';
 import { useDebounce } from '../hook';
 import { HotAlbum, Main } from '../types/albumArtist';
 import { Album } from './AlbumItem';
-import { HeaderComponent } from './AnimatedHeader';
 import { ArtistHeader } from './ArtistHeader';
-import { HeaderSurface } from './HeaderSurface';
 
 export function Albums({ artistID }: { artistID: number }) {
   const insets = useSafeAreaInsets();
@@ -24,9 +20,8 @@ export function Albums({ artistID }: { artistID: number }) {
 
   const {
     data, error, isLoading, setSize, size, mutate
-  } = useSWRInfinite<Main>(
-    (index) =>
-      `http://music.163.com/api/artist/albums/${artistID}?offset=${index * 10}&limit=10&total=true`,
+  } = useSWRInfinite<Main>((index) =>
+    `http://music.163.com/api/artist/albums/${artistID}?offset=${index * 10}&limit=10&total=true`,
   );
 
   const loadMore = useDebounce(() => setSize(size + 1));
@@ -44,8 +39,10 @@ export function Albums({ artistID }: { artistID: number }) {
   ), []);
 
   const renderLoading = useCallback(() => {
-    if (!isLoading && !error && data && data[data.length - 1].more) {
-      return <ActivityIndicator style={styles.moreLoading} />;
+    if (
+      !isLoading && !error && data && data[data.length - 1].more
+    ) {
+      return <ActivityIndicator style={styles.loading} />;
     }
   }, [isLoading, error, data]);
 
@@ -60,38 +57,33 @@ export function Albums({ artistID }: { artistID: number }) {
   const renderHeader = useCallback((
     props: ScrollHeaderProps
   ) => (
-    <HeaderComponent
+    <Header
       {...props}
-      title={data?.[0].artist.name || 'Artist'}
-      SurfaceComponent={HeaderSurface}
       noBottomBorder
-      headerStyle={[
-        styles.elevated,
-        { height: 64 + insets.top }
-      ]}
+      headerCenter={
+        <Text style={styles.chip}>
+          {data?.[0].artist.name}
+        </Text>
+      }
     />
-  ), [data, insets.top]);
+  ), [data]);
 
-  const renderLargeHeader = useCallback((
-    { scrollY }: ScrollLargeHeaderProps
-  ) => (
-    <LargeHeader>
-      <ScalingView scrollY={scrollY}>
-        <ArtistHeader artist={data?.[0].artist} />
+  const renderLargeHeader = useCallback(() => (
+    <View style={styles.header}>
+      <ArtistHeader artist={data?.[0].artist} />
 
-        <View style={styles.chips}>
-          <Chip style={styles.chip} selected>Albums</Chip>
-          <View style={styles.attrs}>
-            <Chip icon="album" compact>
-              {data?.[0].artist.albumSize}
-            </Chip>
-            <Chip icon="music" compact>
-              {data?.[0].artist.musicSize}
-            </Chip>
-          </View>
+      <View style={styles.chips}>
+        <Chip style={styles.chip} selected>Albums</Chip>
+        <View style={styles.attrs}>
+          <Chip icon="album" compact>
+            {data?.[0].artist.albumSize}
+          </Chip>
+          <Chip icon="music" compact>
+            {data?.[0].artist.musicSize}
+          </Chip>
         </View>
-      </ScalingView>
-    </LargeHeader>
+      </View>
+    </View>
   ), [data]);
 
   if (error) {
@@ -108,8 +100,6 @@ export function Albums({ artistID }: { artistID: number }) {
     <FlatListWithHeaders
       LargeHeaderComponent={renderLargeHeader}
       HeaderComponent={renderHeader}
-      disableAutoFixScroll
-      absoluteHeader
       data={showData}
       numColumns={2}
       columnWrapperStyle={styles.columnWrapper}
@@ -134,7 +124,10 @@ export function Albums({ artistID }: { artistID: number }) {
 }
 
 const styles = StyleSheet.create({
-  moreLoading: {
+  header: {
+    marginHorizontal: '2.5%',
+  },
+  loading: {
     marginVertical: '2%',
   },
   chips: {
@@ -148,11 +141,8 @@ const styles = StyleSheet.create({
   attrs: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '40%',
+    width: '37%',
     justifyContent: 'space-between',
-  },
-  elevated: {
-    elevation: 5,
   },
   columnWrapper: {
     justifyContent: 'space-evenly',

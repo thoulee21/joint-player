@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Appbar, Text, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
 import { Albums } from '../components/Albums';
@@ -50,9 +50,9 @@ export function Artist() {
   }
 
   return (
-    <BlurBackground style={styles.container}>
+    <View style={styles.container}>
       <Albums artistID={artist.id} />
-    </BlurBackground>
+    </View>
   );
 }
 
