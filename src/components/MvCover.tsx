@@ -1,39 +1,31 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
-import React, {
-  PropsWithChildren,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
-import {
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  ToastAndroid,
-  View,
-} from 'react-native';
+import React, { createContext, PropsWithChildren, useCallback, useEffect, useState } from 'react';
+import { ScrollView, StatusBar, StyleSheet, ToastAndroid, View } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import ImageColors from 'react-native-image-colors';
 import { type AndroidImageColors } from 'react-native-image-colors/build/types';
 import { Button, Card, Dialog, Portal, Text, useTheme } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
 import useSWR from 'swr';
-import { useAppSelector, useDebounce } from '../hook';
-import { blurRadius, selectDevModeEnabled } from '../redux/slices';
+import { useAppSelector } from '../hook';
+import { selectDevModeEnabled } from '../redux/slices';
 import { Main as MvMain } from '../types/mv';
 import { ImageBlur, ImageBlurView } from './ImageBlur';
 import { placeholderImg } from './TrackInfo';
+
+const MvContext = createContext<{ imgColor?: Color } | null>(null);
+export const useMvContext = () => React.useContext(MvContext);
 
 export const MvCover = ({ children }: PropsWithChildren) => {
   const navigation = useNavigation();
   const appTheme = useTheme();
 
   const devModeEnabled = useAppSelector(selectDevModeEnabled);
-  const blurRadiusValue = useAppSelector(blurRadius);
-
   const [visible, setVisible] = useState(false);
+  const [imgColor, setImgColor] = useState<Color>();
+
   const showDialog = useCallback(() => setVisible(true), []);
   const hideDialog = useCallback(() => setVisible(false), []);
 
@@ -43,9 +35,7 @@ export const MvCover = ({ children }: PropsWithChildren) => {
   );
 
   const printMvData = useCallback(() => {
-    if (devModeEnabled && data) {
-      showDialog();
-    }
+    if (devModeEnabled && data) { showDialog(); }
   }, [data, devModeEnabled, showDialog]);
 
   const copyMvData = useCallback(() => {
@@ -59,26 +49,26 @@ export const MvCover = ({ children }: PropsWithChildren) => {
     );
   }, [data]);
 
-  const handleStatusBarStyle = useDebounce(async () => {
-    const colors = await ImageColors.getColors(data?.data.cover || placeholderImg);
-    const imgColor = Color((colors as AndroidImageColors).average);
+  const handleStatusBarStyle = useCallback(async () => {
+    const colors = await ImageColors.getColors(
+      data?.data.cover || placeholderImg
+    );
+    setImgColor(Color((colors as AndroidImageColors).average));
 
     StatusBar.setBarStyle(
-      imgColor.isDark() ? 'light-content' : 'dark-content'
+      imgColor?.isDark() ? 'light-content' : 'dark-content'
     );
-  });
-
-  const restoreStatusBarStyle = useDebounce(() => {
-    StatusBar.setBarStyle(
-      appTheme.dark ? 'light-content' : 'dark-content'
-    );
-  });
+  }, [data, imgColor]);
 
   useEffect(() => {
-    handleStatusBarStyle();
+    if (data) {
+      handleStatusBarStyle();
 
-    return restoreStatusBarStyle;
-  }, [handleStatusBarStyle, restoreStatusBarStyle]);
+      return StatusBar.setBarStyle(
+        appTheme.dark ? 'light-content' : 'dark-content'
+      );
+    }
+  }, [appTheme.dark, data, handleStatusBarStyle]);
 
   const viewMvPic = useCallback(() => {
     HapticFeedback.trigger(
@@ -94,7 +84,7 @@ export const MvCover = ({ children }: PropsWithChildren) => {
   }, [data, navigation]);
 
   return (
-    <>
+    <MvContext.Provider value={{ imgColor }}>
       <Card
         style={styles.square}
         onPress={printMvData}
@@ -106,9 +96,7 @@ export const MvCover = ({ children }: PropsWithChildren) => {
           resizeMode="cover"
           blurChildren={
             <View style={styles.cover}>
-              <ImageBlurView
-                blurProps={{ blurRadius: blurRadiusValue }}
-              >
+              <ImageBlurView>
                 {children}
               </ImageBlurView>
             </View>
@@ -149,7 +137,7 @@ export const MvCover = ({ children }: PropsWithChildren) => {
           </Dialog.Actions>
         </Dialog>
       </Portal>
-    </>
+    </MvContext.Provider>
   );
 };
 

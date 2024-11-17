@@ -7,11 +7,14 @@ import { ArtistNames } from './ArtistNames';
 
 const placeholderImg = 'https://picsum.photos/100';
 
-export const TrackInfoBar = ({ style, right }: {
+export const TrackInfoBar = ({
+    style, right, titleColor
+}: {
     style?: StyleProp<ViewStyle>;
-    right?: ({ color, style }: {
-        color: string, style?: Style
-    }) => React.ReactNode;
+    right?: (
+        { color, style }: { color: string, style?: Style }
+    ) => React.ReactNode;
+    titleColor?: string;
 }) => {
     const track = useActiveTrack();
     const avatarImg = track?.artwork || placeholderImg;
@@ -27,6 +30,7 @@ export const TrackInfoBar = ({ style, right }: {
     return (
         <List.Item
             title={track?.title}
+            titleStyle={{ color: titleColor }}
             description={<ArtistNames />}
             style={[styles.bar, style]}
             left={renderAvatar}
