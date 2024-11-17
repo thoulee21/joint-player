@@ -1,11 +1,11 @@
 import React from 'react';
 import { LottieAnimation } from '../components/LottieAnimation';
 
-export const TestScreen = () => {
-    return (
-       <LottieAnimation
-            animation="teapot"
-            caption="Test Screen"
-        />
-    );
-};
+export default function Test() {
+  return (
+    <LottieAnimation
+      animation="sushi"
+      caption="Test Page"
+    />
+  );
+}
