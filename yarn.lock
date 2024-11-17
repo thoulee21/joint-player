@@ -7934,15 +7934,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-blur@npm:~13.0.2":
-  version: 13.0.2
-  resolution: "expo-blur@npm:13.0.2"
-  peerDependencies:
-    expo: "*"
-  checksum: 10c0/1217af89cd8bc760440ba97999a74e6669dbb00349868c85630a9a6b337afbe2ac011357ed48aade5862dac533f4a96c8cde8a6b1a607beb3952a4dd9fb692f2
-  languageName: node
-  linkType: hard
-
 "expo-constants@npm:~16.0.0":
   version: 16.0.2
   resolution: "expo-constants@npm:16.0.2"
@@ -10203,7 +10194,6 @@ __metadata:
     eslint-plugin-ft-flow: "npm:^3.0.11"
     eslint-plugin-jest: "npm:^28.9.0"
     expo: "npm:~51.0.37"
-    expo-blur: "npm:~13.0.2"
     expo-local-authentication: "npm:~14.0.1"
     expo-screen-orientation: "npm:~7.0.5"
     expo-updates: "npm:~0.25.27"
