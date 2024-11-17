@@ -1,6 +1,5 @@
 import {
   FlatListWithHeaders,
-  Header,
   type ScrollHeaderProps
 } from '@codeherence/react-native-header';
 import React, { useCallback, useMemo, useState } from 'react';
@@ -11,6 +10,7 @@ import useSWRInfinite from 'swr/infinite';
 import { useDebounce } from '../hook';
 import { HotAlbum, Main } from '../types/albumArtist';
 import { Album } from './AlbumItem';
+import { HeaderComponent } from './AnimatedHeader';
 import { ArtistHeader } from './ArtistHeader';
 
 export function Albums({ artistID }: { artistID: number }) {
@@ -57,17 +57,11 @@ export function Albums({ artistID }: { artistID: number }) {
   const renderHeader = useCallback((
     props: ScrollHeaderProps
   ) => (
-    <Header
+    <HeaderComponent
       {...props}
-      initialBorderColor="transparent"
-      borderColor={appTheme.colors.outlineVariant}
-      headerCenter={
-        <Text style={styles.chip}>
-          {data?.[0].artist.name}
-        </Text>
-      }
+      title={data?.[0].artist.name || 'Artist'}
     />
-  ), [appTheme.colors.outlineVariant, data]);
+  ), [data]);
 
   const renderLargeHeader = useCallback(() => (
     <View style={styles.header}>
