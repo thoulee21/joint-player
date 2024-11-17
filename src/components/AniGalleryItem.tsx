@@ -17,7 +17,7 @@ export const AniGalleryItem = () => {
     return (
         <List.Item
             title="Animation Gallery"
-            description="View all animations used in the app"
+            description="View lottie animations in gallery mode"
             left={renderAniIcon}
             right={renderRightIcon}
             //@ts-expect-error
