@@ -109,7 +109,6 @@ export const PlaylistDetailScreen = () => {
         noBottomBorder
         headerStyle={{
           height: 56 + insets.top,
-          backgroundColor: appTheme.colors.surfaceVariant,
         }}
         headerRight={
           <IconButton
@@ -122,7 +121,7 @@ export const PlaylistDetailScreen = () => {
         }
       />
     );
-  }, [appTheme.colors.surfaceVariant, insets.top, isInPlaylists, name, togglePlist]);
+  }, [insets.top, isInPlaylists, name, togglePlist]);
 
   const renderLargeHeader = useCallback((
     { scrollY }: ScrollLargeHeaderProps
@@ -216,6 +215,9 @@ export const PlaylistDetailScreen = () => {
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         ItemSeparatorComponent={Divider}
+        containerStyle={{
+          backgroundColor: appTheme.colors.surfaceVariant,
+        }}
       />
     </Portal.Host>
   );
