@@ -10232,7 +10232,7 @@ __metadata:
     redux-persist: "npm:^6.0.0"
     swr: "npm:^2.2.5"
     typescript: "npm:5.6.3"
-    user-agents: "npm:^1.1.359"
+    user-agents: "npm:^1.1.362"
     uuid: "npm:^11.0.3"
   languageName: unknown
   linkType: soft
@@ -14963,12 +14963,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"user-agents@npm:^1.1.359":
-  version: 1.1.359
-  resolution: "user-agents@npm:1.1.359"
+"user-agents@npm:^1.1.362":
+  version: 1.1.362
+  resolution: "user-agents@npm:1.1.362"
   dependencies:
     lodash.clonedeep: "npm:^4.5.0"
-  checksum: 10c0/4ca73c38a2c5562a9cee23d24df2362628fbba57399a909c06185bb421dcf4d52db45c810e3b5068b7d3980e3dc9b28a068ff778d837bf5781ce2a988854c043
+  checksum: 10c0/7f783ba2b3803122d213ee6c3b8227843c58e19d5ecb062aa3c3f7ef08b05c1e65250c04c540add290645d6b19cd107cb639d2c6972a5a3e9d9376dbac48eab8
   languageName: node
   linkType: hard
 
