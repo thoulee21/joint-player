@@ -10213,7 +10213,7 @@ __metadata:
     react-native-image-colors: "npm:^2.4.0"
     react-native-logs: "npm:^5.3.0"
     react-native-media-console: "npm:^2.2.4"
-    react-native-mmkv: "npm:2.12.2"
+    react-native-mmkv: "npm:3.1.0"
     react-native-pager-view: "npm:^6.5.0"
     react-native-paper: "npm:^5.12.5"
     react-native-reanimated: "npm:^3.16.1"
@@ -12798,13 +12798,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-mmkv@npm:2.12.2":
-  version: 2.12.2
-  resolution: "react-native-mmkv@npm:2.12.2"
+"react-native-mmkv@npm:3.1.0":
+  version: 3.1.0
+  resolution: "react-native-mmkv@npm:3.1.0"
   peerDependencies:
     react: "*"
-    react-native: ">=0.71.0"
-  checksum: 10c0/751b92d60b3526c9bbeac652b840c048b7f1cc4f48179f4e24a45cf14bdcdd08bfc7f3c65fb50c686cae41356ac0d15a21e6da034e2f0907459036dacb67fcbd
+    react-native: "*"
+  checksum: 10c0/baaa1d2c76cc7bb697476d27cd0e62a3619d33644511a919fd681140de5ed790e479487435e905ff50ea14cfc8cb4702f933158c2a3fafce2833e9f030be69fb
   languageName: node
   linkType: hard
 
