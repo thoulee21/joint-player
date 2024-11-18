@@ -9097,12 +9097,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"install-expo-modules@npm:^0.10.0":
-  version: 0.10.2
-  resolution: "install-expo-modules@npm:0.10.2"
+"install-expo-modules@npm:^0.11.1":
+  version: 0.11.1
+  resolution: "install-expo-modules@npm:0.11.1"
   bin:
     install-expo-modules: build/index.js
-  checksum: 10c0/fec222c5ab4ac8b9f4188719d1c213e118c95cf566377c7f6318559a9ec9dffdd92662b0d3bf7bb5dd77b8112c50dc4e8c4d36a347e0752a7d17867459789936
+  checksum: 10c0/c5f471fb8d2f305c91c27121f4d412ad4b798c23889c2da851fc8082d66b66721eff16bae345c2b391b953d5ebc32c18416aadecc81a409f582311415565479f
   languageName: node
   linkType: hard
 
@@ -10197,7 +10197,7 @@ __metadata:
     expo-local-authentication: "npm:~14.0.1"
     expo-screen-orientation: "npm:~7.0.5"
     expo-updates: "npm:~0.25.27"
-    install-expo-modules: "npm:^0.10.0"
+    install-expo-modules: "npm:^0.11.1"
     jest: "npm:^29.7.0"
     lottie-react-native: "npm:^7.1.0"
     prettier: "npm:^3.3.3"
