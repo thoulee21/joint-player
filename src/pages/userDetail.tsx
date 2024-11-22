@@ -73,11 +73,11 @@ export const UserDetail = () => {
         <View style={styles.row}>
           <Appbar.BackAction
             onPress={navigation.goBack}
-            color='white'
+            color="white"
           />
           <Appbar.Action
             icon="open-in-new"
-            color='white'
+            color="white"
             onPress={() => {
               //@ts-expect-error
               navigation.navigate('WebView' as never, {
@@ -94,7 +94,7 @@ export const UserDetail = () => {
         </View>
         <Appbar.Action
           icon="cog-outline"
-          color='white'
+          color="white"
           onPress={() => {
             navigation.navigate('Settings' as never);
           }}
