@@ -1,15 +1,40 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { Image, ScrollView, Share, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
-import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { Appbar, Button, Chip, Dialog, Portal, Surface, Text, useTheme } from 'react-native-paper';
+import {
+  Image,
+  ScrollView,
+  Share,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
+import HapticFeedback, {
+  HapticFeedbackTypes,
+} from 'react-native-haptic-feedback';
+import {
+  Appbar,
+  Button,
+  Chip,
+  Dialog,
+  Portal,
+  Surface,
+  Text,
+  useTheme,
+} from 'react-native-paper';
 import useSWR from 'swr';
 import type { Main } from '../types/playlistDetail';
 
 export const PlaylistDetailLargeHeader = (
   { playlistID }: { playlistID: number }
 ) => {
+  const navigation = useNavigation();
   const appTheme = useTheme();
-  const [dialogVisible, setDialogVisible] = useState(false);
+
+  const [
+    dialogVisible,
+    setDialogVisible,
+  ] = useState(false);
 
   const { data } = useSWR<Main>(
     `https://music.163.com/api/playlist/detail?id=${playlistID}`,
