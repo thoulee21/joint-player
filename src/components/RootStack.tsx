@@ -13,6 +13,7 @@ import {
   AniGallery,
   AppDataScreen,
   Artist,
+  ChangeLog,
   Comments,
   DevScreen,
   IssueReport,
@@ -21,6 +22,7 @@ import {
   MvDetail,
   MvPlayer,
   PlaylistDetailScreen,
+  ReleaseTags,
   Search,
   Settings,
   SwitchUser,
@@ -71,6 +73,11 @@ export function RootStack() {
         <Stack.Screen name="SwitchUser" component={SwitchUser} />
         <Stack.Screen name="UserDetail" component={UserDetail} />
         <Stack.Screen name="IssueReport" component={IssueReport} />
+        <Stack.Screen name="ChangeLog" component={ChangeLog} options={{ headerShown: true }} />
+        <Stack.Screen name="ReleaseTags" component={ReleaseTags} options={{
+          headerShown: true,
+          title: 'Release Tags',
+        }} />
 
         <Stack.Group screenOptions={TransitionPresets.ModalPresentationIOS}>
           <Stack.Screen name="WebView" component={WebViewScreen} />

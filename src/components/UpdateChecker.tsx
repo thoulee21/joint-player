@@ -1,6 +1,6 @@
 import * as Updates from 'expo-updates';
 import React, { useCallback } from 'react';
-import { Alert, Linking, ToastAndroid } from 'react-native';
+import { Alert, DeviceEventEmitter, ToastAndroid } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { ActivityIndicator, List, useTheme } from 'react-native-paper';
 import RNRestart from 'react-native-restart';
@@ -9,6 +9,7 @@ import packageData from '../../package.json';
 import { useAppSelector } from '../hook';
 import { selectDevModeEnabled } from '../redux/slices';
 import type { Main } from '../types/latestRelease';
+import { rootLog } from '../utils/logger';
 
 export const UpdateChecker = () => {
   const appTheme = useTheme();
@@ -17,7 +18,7 @@ export const UpdateChecker = () => {
   const userRepo = packageData.homepage.split('/').slice(-2).join('/');
   const { data } = useSWR<Main>(`https://api.github.com/repos/${userRepo}/releases/latest`);
   const latestRelease = data?.tag_name;
-  const isLatest = latestRelease === packageData.version;
+  const isLatest = latestRelease === `v${packageData.version}`;
 
   const {
     currentlyRunning,
@@ -94,18 +95,10 @@ export const UpdateChecker = () => {
 
   const handleUpdatePress = isLatest ?
     isUpdatePending ? performUpdateAlert : checkForUpdate
-    : () => Alert.alert(
-      'New version available',
-      `Your version: ${packageData.version}\nLatest version: ${latestRelease}`,
-      [
-        { text: 'Cancel' },
-        {
-          text: 'OK', onPress: () => {
-            Linking.openURL(data?.assets_url || 'https://github.com');
-          }
-        }
-      ]
-    );
+    : () => {
+      DeviceEventEmitter.emit('newReleaseAvailable');
+      rootLog.debug('New release available:', latestRelease);
+    };
 
   const description = isDownloading
     ? 'Downloading update...'
