@@ -11,7 +11,6 @@ import {
   KeyboardAvoidingView,
   StyleSheet,
   ToastAndroid,
-  useWindowDimensions,
   View,
 } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
@@ -25,7 +24,6 @@ const ISSUE_MAX_LENGTH = 200;
 
 export const IssueReport = () => {
   const navigation = useNavigation();
-  const window = useWindowDimensions();
   const appTheme = useTheme();
   const currentUser = useAppSelector(selectUser);
 
@@ -122,7 +120,6 @@ export const IssueReport = () => {
         </View>
       </KeyboardAvoidingView>
 
-      <View style={{ height: window.height * 0.25 }} />
       <PoweredBy
         caption={`Powered by Sentry ${Sentry.SDK_VERSION}`}
       />
