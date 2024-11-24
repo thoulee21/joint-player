@@ -67,7 +67,7 @@ export function RootStack() {
         <Stack.Screen name="AlbumDetail" component={AlbumDetail} />
         <Stack.Screen name="Settings" component={Settings} />
         <Stack.Screen name="PlaylistDetail" component={PlaylistDetailScreen} />
-        <Stack.Screen name="Logcat" component={Logcat} />
+        <Stack.Screen name="Logcat" component={Logcat} options={{ headerShown: true }} />
         <Stack.Screen name="SwitchUser" component={SwitchUser} />
         <Stack.Screen name="UserDetail" component={UserDetail} />
         <Stack.Screen name="IssueReport" component={IssueReport} />

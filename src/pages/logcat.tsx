@@ -1,8 +1,29 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useEffect, useState } from 'react';
-import { Alert, ScrollView, StatusBar, StyleSheet, ToastAndroid } from 'react-native';
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from 'react';
+import {
+  Alert,
+  Animated,
+  RefreshControl,
+  StyleSheet,
+  ToastAndroid,
+  View,
+  type NativeSyntheticEvent,
+  type TextInputChangeEventData
+} from 'react-native';
 import RNFS from 'react-native-fs';
-import { ActivityIndicator, Appbar, Caption, Icon, Menu, useTheme } from 'react-native-paper';
+import {
+  ActivityIndicator,
+  Caption,
+  Icon,
+  IconButton,
+  useTheme
+} from 'react-native-paper';
 import { v7 as uuid } from 'uuid';
 import packageData from '../../package.json';
 import { logFilePath, rootLog } from '../utils/logger';
@@ -11,9 +32,9 @@ export const Logcat = () => {
   const navigation = useNavigation();
   const appTheme = useTheme();
 
-  const [menuVisible, setMenuVisible] = useState(false);
-  const [logContent, setLogContent] = useState('');
   const [isLoaded, setIsLoaded] = useState(false);
+  const [logContent, setLogContent] = useState('');
+  const [keyword, setKeyword] = useState('');
 
   const clearLogs = useCallback(async () => {
     try {
@@ -24,6 +45,67 @@ export const Logcat = () => {
       rootLog.error(e);
     }
   }, []);
+
+  const renderDeleteIcon = useCallback(
+    (props: any) => (
+      <Icon
+        {...props}
+        source="delete-forever-outline"
+        color={appTheme.colors.error}
+      />
+    ), [appTheme.colors.error]
+  );
+
+  const renderHeaderRight = useCallback(() => (
+    <View style={styles.row}>
+      <IconButton
+        icon="content-save-outline"
+        disabled={!logContent}
+        onPress={async () => {
+          const savePath = `${RNFS.DownloadDirectoryPath
+            }/${packageData.name}_${uuid().slice(0, 8)}.log`;
+
+          await RNFS.writeFile(savePath, logContent);
+          ToastAndroid.showWithGravity(
+            `Logs saved successfully to ${RNFS.DownloadDirectoryPath}`,
+            ToastAndroid.SHORT,
+            ToastAndroid.CENTER
+          );
+        }}
+      />
+      <IconButton
+        icon={renderDeleteIcon}
+        onPress={() => {
+          Alert.alert(
+            'Clear logs',
+            'Are you sure you want to clear logs?',
+            [
+              { text: 'Cancel', style: 'cancel' },
+              { text: 'OK', onPress: clearLogs },
+            ],
+          );
+        }}
+      />
+    </View>
+  ), [clearLogs, logContent, renderDeleteIcon]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: renderHeaderRight,
+      headerSearchBarOptions: {
+        placeholder: 'Search log',
+        onChangeText(
+          e: NativeSyntheticEvent<TextInputChangeEventData>
+        ) {
+          const text = e.nativeEvent.text;
+          setKeyword(text);
+        },
+        onClose: () => {
+          setKeyword('');
+        },
+      }
+    });
+  }, [navigation, renderHeaderRight]);
 
   useEffect(() => {
     try {
@@ -39,93 +121,57 @@ export const Logcat = () => {
           setIsLoaded(true);
         });
       }
-    } catch (e) {
-      rootLog.error(e);
-    }
+    } catch (e) { rootLog.error(e); }
   }, [isLoaded]);
 
-  const renderDeleteIcon = useCallback(
-    (props: any) => (
-      <Icon
-        {...props}
-        source="delete-forever-outline"
-        color={appTheme.colors.error}
+  const renderEmpty = useCallback(() => (
+    isLoaded ? (
+      <Caption>No logs found</Caption>
+    ) : (
+      <ActivityIndicator
+        style={styles.loading}
+        size="large"
       />
-    ), [appTheme.colors.error]
-  );
+    )
+  ), [isLoaded]);
+
+  const logLines = useMemo(() => (
+    logContent.split('\n')
+      .filter((line) => {
+        if (!keyword) {
+          return Boolean(line);
+        } else {
+          return line.includes(keyword);
+        }
+      })
+  ), [keyword, logContent]);
+
+  const renderLogLine = useCallback((
+    { item }: { item: string }
+  ) => (
+    <Caption>{item}</Caption>
+  ), []);
 
   return (
-    <>
-      <Appbar.Header>
-        <Appbar.BackAction onPress={navigation.goBack} />
-        <Appbar.Action
-          icon="refresh"
-          onPress={() => { setIsLoaded(false); }}
+    <Animated.FlatList
+      data={logLines}
+      style={styles.root}
+      contentContainerStyle={styles.content}
+      renderItem={renderLogLine}
+      onRefresh={() => { setIsLoaded(false); }}
+      refreshing={!isLoaded}
+      initialNumToRender={33}
+      refreshControl={
+        <RefreshControl
+          refreshing={!isLoaded}
+          onRefresh={() => { setIsLoaded(false); }}
+          colors={[appTheme.colors.primary]}
+          progressBackgroundColor={appTheme.colors.elevation.level2}
         />
-        <Appbar.Content title="Logcat" />
-
-        <Menu
-          visible={menuVisible}
-          onDismiss={() => { setMenuVisible(false); }}
-          statusBarHeight={StatusBar.currentHeight}
-          anchor={
-            <Appbar.Action
-              icon="dots-vertical"
-              onPress={() => { setMenuVisible(true); }}
-            />
-          }
-        >
-          <Menu.Item
-            title="Save logs"
-            leadingIcon="content-save-outline"
-            disabled={!logContent}
-            onPress={async () => {
-              setMenuVisible(false);
-              const savePath = `${RNFS.DownloadDirectoryPath}/${packageData.name}_${uuid().slice(0, 8)}.log`;
-              await RNFS.writeFile(savePath, logContent);
-
-              ToastAndroid.showWithGravity(
-                `Logs saved successfully to ${RNFS.DownloadDirectoryPath}`,
-                ToastAndroid.SHORT,
-                ToastAndroid.CENTER
-              );
-            }}
-          />
-          <Menu.Item
-            title="Clear logs"
-            leadingIcon={renderDeleteIcon}
-            disabled={!logContent}
-            onPress={() => {
-              setMenuVisible(false);
-              Alert.alert(
-                'Clear logs',
-                'Are you sure you want to clear logs?',
-                [
-                  { text: 'Cancel', style: 'cancel' },
-                  { text: 'OK', onPress: clearLogs },
-                ],
-              );
-            }}
-          />
-        </Menu>
-      </Appbar.Header>
-
-      <ScrollView
-        style={styles.root}
-        contentContainerStyle={styles.content}
-      >
-        {isLoaded ? (
-          <Caption selectable>
-            {logContent || 'No log content'}
-          </Caption>
-        ) : (
-          <ActivityIndicator
-            size="large"
-            style={styles.loading}
-          />
-        )}
-      </ScrollView>
-    </>
+      }
+      ListEmptyComponent={renderEmpty}
+      persistentScrollbar
+    />
   );
 };
 
@@ -139,4 +185,7 @@ const styles = StyleSheet.create({
   loading: {
     marginTop: '50%',
   },
+  row: {
+    flexDirection: 'row',
+  }
 });
