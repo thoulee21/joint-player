@@ -1,10 +1,8 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { useNavigation } from '@react-navigation/native';
 import type LottieView from 'lottie-react-native';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { Appbar } from 'react-native-paper';
 import { ANIMATIONS, LottieAnimation, type AniKeys } from '../components/LottieAnimation';
 import { upperFirst } from '../utils';
 
@@ -34,8 +32,6 @@ const AniPage = ({ name }: { name: AniKeys }) => {
 };
 
 export const AniGallery = () => {
-  const navigation = useNavigation();
-
   const renderAniPage = useCallback((name: AniKeys) => {
     return () => <AniPage name={name} />;
   }, []);
@@ -52,10 +48,6 @@ export const AniGallery = () => {
 
   return (
     <>
-      <Appbar.Header>
-        <Appbar.BackAction onPress={navigation.goBack} />
-        <Appbar.Content title="Lottie Animation Gallery" />
-      </Appbar.Header>
       <BottomTab.Navigator
         backBehavior="none"
         tabBarPosition="bottom"

@@ -6,7 +6,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import type { LocalAuthenticationResult } from 'expo-local-authentication';
 import * as LocalAuthentication from 'expo-local-authentication';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { useWindowDimensions, View } from 'react-native';
 import { Divider, List, useTheme } from 'react-native-paper';
 import { AniGalleryItem } from '../components/AniGalleryItem';
@@ -30,8 +30,16 @@ export function DevScreen() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [authResult, setAuthResult] = useState<LocalAuthenticationResult>();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const init = async () => {
+      navigation.setOptions({
+        headerShown: true,
+        headerTitle: 'Developer Options',
+        headerStyle: {
+          backgroundColor: appTheme.colors.background,
+        },
+      });
+
       const hasHardware = await LocalAuthentication.hasHardwareAsync();
       rootLog.debug('hasHardware', hasHardware);
 
@@ -56,9 +64,10 @@ export function DevScreen() {
     if (!isLoaded) {
       init().then(() => {
         setIsLoaded(true);
+        navigation.setOptions({ headerShown: false });
       });
     }
-  }, [isLoaded, navigation]);
+  }, [appTheme.colors.background, isLoaded, navigation]);
 
   const renderTestIcon = useCallback((props: ListLRProps) => (
     <List.Icon icon="test-tube" {...props} />

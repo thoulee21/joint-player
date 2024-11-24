@@ -63,7 +63,6 @@ export const IssueReport = () => {
     <HeaderComponent
       {...props}
       title="Report Issue"
-      ignoreTopSafeArea
       headerRight={
         <Appbar.Action
           icon={sendable ? 'send' : 'send-outline'}

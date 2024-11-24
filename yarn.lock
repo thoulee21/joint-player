@@ -3925,6 +3925,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@react-native-masked-view/masked-view@npm:0.3.1":
+  version: 0.3.1
+  resolution: "@react-native-masked-view/masked-view@npm:0.3.1"
+  peerDependencies:
+    react: ">=16"
+    react-native: ">=0.57"
+  checksum: 10c0/e8823e69caa4f916546de528faa9beb69d25311adecaeb37a5a3e2871141754e895d1b5faa01bc0ca07b4d4b676d940191917803da53208b1be8fef857e5b502
+  languageName: node
+  linkType: hard
+
 "@react-native-media-console/reanimated@npm:^2.2.4":
   version: 2.2.4
   resolution: "@react-native-media-console/reanimated@npm:2.2.4"
@@ -8852,6 +8862,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"hermes-eslint@npm:^0.25.1":
+  version: 0.25.1
+  resolution: "hermes-eslint@npm:0.25.1"
+  dependencies:
+    esrecurse: "npm:^4.3.0"
+    hermes-estree: "npm:0.25.1"
+    hermes-parser: "npm:0.25.1"
+  checksum: 10c0/dc90999159524fbda113be2c075a4882a74f6957a694f1cf640a4c7dbf0f052d77aedf292a0d736a657cda921ac4d9e5d1576ef4b6e82b17a9ff95060caead8b
+  languageName: node
+  linkType: hard
+
 "hermes-estree@npm:0.19.1":
   version: 0.19.1
   resolution: "hermes-estree@npm:0.19.1"
@@ -8870,6 +8891,13 @@ __metadata:
   version: 0.23.1
   resolution: "hermes-estree@npm:0.23.1"
   checksum: 10c0/59ca9f3980419fcf511a172f0ee9960d86c8ba44ea8bc13d3bd0b6208e9540db1a0a9e46b0e797151f11b0e8e33b2bf850907aef4a5c9ac42c53809cefefc405
+  languageName: node
+  linkType: hard
+
+"hermes-estree@npm:0.25.1":
+  version: 0.25.1
+  resolution: "hermes-estree@npm:0.25.1"
+  checksum: 10c0/48be3b2fa37a0cbc77a112a89096fa212f25d06de92781b163d67853d210a8a5c3784fac23d7d48335058f7ed283115c87b4332c2a2abaaccc76d0ead1a282ac
   languageName: node
   linkType: hard
 
@@ -8897,6 +8925,15 @@ __metadata:
   dependencies:
     hermes-estree: "npm:0.23.1"
   checksum: 10c0/56907e6136d2297543922dd9f8ee27378ef010c11dc1e0b4a0866faab2c527613b0edcda5e1ebc0daa0ca1ae6528734dfc479e18267aabe4dce0c7198217fd97
+  languageName: node
+  linkType: hard
+
+"hermes-parser@npm:0.25.1":
+  version: 0.25.1
+  resolution: "hermes-parser@npm:0.25.1"
+  dependencies:
+    hermes-estree: "npm:0.25.1"
+  checksum: 10c0/3abaa4c6f1bcc25273f267297a89a4904963ea29af19b8e4f6eabe04f1c2c7e9abd7bfc4730ddb1d58f2ea04b6fee74053d8bddb5656ec6ebf6c79cc8d14202c
   languageName: node
   linkType: hard
 
@@ -10181,6 +10218,7 @@ __metadata:
     "@react-native-community/eslint-config": "npm:^3.2.0"
     "@react-native-community/netinfo": "npm:^11.4.1"
     "@react-native-community/slider": "npm:^4.5.5"
+    "@react-native-masked-view/masked-view": "npm:0.3.1"
     "@react-native-media-console/reanimated": "npm:^2.2.4"
     "@react-native/babel-preset": "npm:^0.75.4"
     "@react-native/eslint-config": "npm:^0.75.4"
@@ -10209,6 +10247,7 @@ __metadata:
     expo-local-authentication: "npm:~14.0.1"
     expo-screen-orientation: "npm:~7.0.5"
     expo-updates: "npm:~0.25.27"
+    hermes-eslint: "npm:^0.25.1"
     install-expo-modules: "npm:^0.11.2"
     jest: "npm:^29.7.0"
     lottie-react-native: "npm:^7.1.0"
@@ -10241,6 +10280,7 @@ __metadata:
     react-native-video: "npm:6.8.0"
     react-native-webview: "npm:^13.12.4"
     react-redux: "npm:^9.1.2"
+    redux: "npm:^5.0.1"
     redux-persist: "npm:^6.0.0"
     swr: "npm:^2.2.5"
     typescript: "npm:5.6.3"
