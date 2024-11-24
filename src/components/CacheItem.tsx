@@ -51,7 +51,7 @@ export const CacheItem = () => {
 
   return (
     <List.Item
-      title="Cache"
+      title="Clear Cache"
       description={formatDataSize(cacheSize)}
       left={renderCacheIcon}
       onPress={clearCache}
