@@ -10219,16 +10219,16 @@ __metadata:
     react-native-document-picker: "npm:^9.3.1"
     react-native-draggable-flatlist: "npm:^4.0.1"
     react-native-fs: "npm:^2.20.0"
-    react-native-gesture-handler: "npm:^2.21.0"
+    react-native-gesture-handler: "npm:^2.21.2"
     react-native-get-random-values: "npm:^1.11.0"
     react-native-haptic-feedback: "npm:^2.3.3"
     react-native-image-colors: "npm:^2.4.0"
     react-native-logs: "npm:^5.3.0"
     react-native-media-console: "npm:^2.2.4"
     react-native-mmkv: "npm:2.12.2"
-    react-native-pager-view: "npm:^6.5.0"
+    react-native-pager-view: "npm:^6.5.1"
     react-native-paper: "npm:^5.12.5"
-    react-native-reanimated: "npm:^3.16.1"
+    react-native-reanimated: "npm:^3.16.2"
     react-native-redash: "npm:^18.1.3"
     react-native-restart: "npm:^0.0.27"
     react-native-safe-area-context: "npm:^4.14.0"
@@ -10239,7 +10239,7 @@ __metadata:
     react-native-vector-icons: "npm:^10.2.0"
     react-native-version: "npm:^4.0.0"
     react-native-video: "npm:6.8.0"
-    react-native-webview: "npm:^13.12.3"
+    react-native-webview: "npm:^13.12.4"
     react-redux: "npm:^9.1.2"
     redux-persist: "npm:^6.0.0"
     swr: "npm:^2.2.5"
@@ -12746,9 +12746,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-gesture-handler@npm:^2.21.0":
-  version: 2.21.0
-  resolution: "react-native-gesture-handler@npm:2.21.0"
+"react-native-gesture-handler@npm:^2.21.2":
+  version: 2.21.2
+  resolution: "react-native-gesture-handler@npm:2.21.2"
   dependencies:
     "@egjs/hammerjs": "npm:^2.0.17"
     hoist-non-react-statics: "npm:^3.3.0"
@@ -12757,7 +12757,7 @@ __metadata:
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/6981d5f856c6ac0e4e60ce718ce4c32282100153a88a152d08c7a4ad0eba55f9ba1a3b631a48771ab705629afd0480a412dd5ed25d383b89271d142e617d78aa
+  checksum: 10c0/4eca796efe9e55f312f332c07eee76adf0b29971945b72856d375f7e9a6f21a7ef5363d707b71d030c5ebccc0a3cf085713ee0365c14bc538f2f918a87986e36
   languageName: node
   linkType: hard
 
@@ -12820,13 +12820,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-pager-view@npm:^6.5.0":
-  version: 6.5.0
-  resolution: "react-native-pager-view@npm:6.5.0"
+"react-native-pager-view@npm:^6.5.1":
+  version: 6.5.1
+  resolution: "react-native-pager-view@npm:6.5.1"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/43f5d9814904fcc0f40b5250e6f98c1ae8148e7b7fac4a9b129ec067095ff396c6b120950873c5e5e440b1493143ac2c88e2171a4fb7b472cc7e20084ebcf319
+  checksum: 10c0/2c6a1cdd30151252f7ee31ce039246c59308ddd4ff6d4dbf44b0d64387338e51cfc432a68795cd80f2f7a1c77617c259462de48c2f4cd24d98805290d70ec02f
   languageName: node
   linkType: hard
 
@@ -12846,9 +12846,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-reanimated@npm:^3.16.1":
-  version: 3.16.1
-  resolution: "react-native-reanimated@npm:3.16.1"
+"react-native-reanimated@npm:^3.16.2":
+  version: 3.16.2
+  resolution: "react-native-reanimated@npm:3.16.2"
   dependencies:
     "@babel/plugin-transform-arrow-functions": "npm:^7.0.0-0"
     "@babel/plugin-transform-class-properties": "npm:^7.0.0-0"
@@ -12865,7 +12865,7 @@ __metadata:
     "@babel/core": ^7.0.0-0
     react: "*"
     react-native: "*"
-  checksum: 10c0/18202fce7e96d7cd0dbab2f8938ddf89efa6687e5f17c43ba6548de5563efb270b7b8d7507598be706d5d53224bb12fcfcd70150d15ca5d9fd46cb2c54751d59
+  checksum: 10c0/640790d87683812e964a342016bdfda956d698bfdd289ef6cc0b214b0f62ac34da788f8795a29fe51bcc49b0002bd32fa2074ab79b63640cafb48d99473d36ca
   languageName: node
   linkType: hard
 
@@ -13009,16 +13009,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-webview@npm:^13.12.3":
-  version: 13.12.3
-  resolution: "react-native-webview@npm:13.12.3"
+"react-native-webview@npm:^13.12.4":
+  version: 13.12.4
+  resolution: "react-native-webview@npm:13.12.4"
   dependencies:
     escape-string-regexp: "npm:^4.0.0"
     invariant: "npm:2.2.4"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/3649d144a69f632953eb545f92c18aac22758dbb4e046a94946925e2307fdf02cfe6053b255e3250e7ddbd98c6d616d5c1289087e3ae81d1833d3a6a75bee3e1
+  checksum: 10c0/f38b77137a162c8006269806293f15b3446ad9c7c809dcf35713c5de183907b953595573c5373976fbffa2456a877d7a3190fef1619ed2f383255e0405162441
   languageName: node
   linkType: hard
 
