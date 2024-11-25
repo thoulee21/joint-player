@@ -8111,14 +8111,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-local-authentication@npm:~14.0.1":
-  version: 14.0.1
-  resolution: "expo-local-authentication@npm:14.0.1"
+"expo-local-authentication@npm:~15.0.1":
+  version: 15.0.1
+  resolution: "expo-local-authentication@npm:15.0.1"
   dependencies:
     invariant: "npm:^2.2.4"
   peerDependencies:
     expo: "*"
-  checksum: 10c0/0726f0b34e160efe016643af5171d92ccc04d1a26fc5f01d23580f552cb4032c382b36edbac9247deebc6f6678127e52a1ef2400ea1b132fb01abe1fba9bde6e
+  checksum: 10c0/0327ffc42fc2f4d17b65b9a5d78045f549426a329ab0c812e01da985551c2899c2183a475f58e7047130d402570b48151aeb858a2d36164e26bfb067072ac2c0
   languageName: node
   linkType: hard
 
@@ -10351,7 +10351,7 @@ __metadata:
     eslint-plugin-ft-flow: "npm:^3.0.11"
     eslint-plugin-jest: "npm:^28.9.0"
     expo: "npm:~51.0.39"
-    expo-local-authentication: "npm:~14.0.1"
+    expo-local-authentication: "npm:~15.0.1"
     expo-screen-orientation: "npm:~7.0.5"
     expo-updates: "npm:~0.25.27"
     hermes-eslint: "npm:^0.25.1"
