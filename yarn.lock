@@ -8160,12 +8160,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expo-screen-orientation@npm:~7.0.5":
-  version: 7.0.5
-  resolution: "expo-screen-orientation@npm:7.0.5"
+"expo-screen-orientation@npm:~8.0.0":
+  version: 8.0.0
+  resolution: "expo-screen-orientation@npm:8.0.0"
   peerDependencies:
     expo: "*"
-  checksum: 10c0/888a06fa519d9943ce77e8602de59d2ff40133feb1ff393473d83bce1c5e752a4ee15802bfe835834c21d0ce7dafa21e5a3b256a81aae2f3be2310d886cc0a97
+    react-native: "*"
+  checksum: 10c0/2e326e22ccfff9e4ab4517da17e2a48a7c88485ae1180643085ef5898d4c3d7caf2a334f53cc2f802caa50522e0a549b7f26b81c0a38cddc32a5223475e4acaa
   languageName: node
   linkType: hard
 
@@ -10352,7 +10353,7 @@ __metadata:
     eslint-plugin-jest: "npm:^28.9.0"
     expo: "npm:~51.0.39"
     expo-local-authentication: "npm:~14.0.1"
-    expo-screen-orientation: "npm:~7.0.5"
+    expo-screen-orientation: "npm:~8.0.0"
     expo-updates: "npm:~0.25.27"
     hermes-eslint: "npm:^0.25.1"
     install-expo-modules: "npm:^0.11.2"
