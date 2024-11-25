@@ -1,9 +1,9 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useState } from 'react';
 import { Animated, RefreshControl, StyleSheet, ToastAndroid } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { ActivityIndicator, List, useTheme } from 'react-native-paper';
+import { ActivityIndicator, IconButton, List, useTheme } from 'react-native-paper';
 import useSWR from 'swr';
 import packageData from '../../package.json';
 import type { ListLRProps } from '../types/paperListItem';
@@ -19,6 +19,20 @@ export const ReleaseTags = () => {
   } = useSWR<Main[]>(`https://api.github.com/repos/${userRepo}/tags`);
 
   const [refreshing, setRefreshing] = useState(false);
+
+  const renderHeaderRight = useCallback((props: any) => (
+    <IconButton
+      {...props}
+      icon="refresh"
+      onPress={() => mutate()}
+    />
+  ), [mutate]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: renderHeaderRight
+    });
+  }, [navigation, renderHeaderRight]);
 
   const renderReleaseTagIcon = useCallback((
     props: ListLRProps
@@ -40,7 +54,7 @@ export const ReleaseTags = () => {
         title={item.name}
         left={renderReleaseTagIcon}
         right={renderRight}
-        description={item.commit.sha.slice(0, 7)}
+        description={item.commit.sha.slice(0, 15)}
         onPress={() => {
           //@ts-expect-error
           navigation.push(
