@@ -2,7 +2,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useCallback, useLayoutEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Markdown from 'react-native-marked';
-import { ActivityIndicator, IconButton, useTheme } from 'react-native-paper';
+import { IconButton, Tooltip, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useSWR from 'swr';
 import packageData from '../../package.json';
@@ -26,6 +26,7 @@ export const ChangeLog = () => {
     <View style={styles.row}>
       <IconButton
         icon="open-in-app"
+        loading={isLoading}
         onPress={() => {
           // @ts-expect-error
           navigation.navigate('WebView', {
@@ -34,13 +35,15 @@ export const ChangeLog = () => {
           });
         }}
       />
-      <IconButton
-        icon="tag-outline"
-        onPress={() => {
-          // @ts-expect-error
-          navigation.push('ReleaseTags');
-        }}
-      />
+      <Tooltip title="Release tags">
+        <IconButton
+          icon="tag-outline"
+          onPress={() => {
+            // @ts-expect-error
+            navigation.push('ReleaseTags');
+          }}
+        />
+      </Tooltip>
       {error && (
         <IconButton
           icon="refresh"
@@ -53,24 +56,17 @@ export const ChangeLog = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: data?.tag_name || 'Changelog',
+      title: showVersion,
       headerRight: renderRight,
     });
-  }, [data?.tag_name, navigation, renderRight]);
-
-  const renderEmpty = useCallback(() => (
-    isLoading && (
-      <ActivityIndicator
-        animating
-        size="large"
-        style={styles.loading}
-      />
-    )
-  ), [isLoading]);
+  }, [data, navigation, renderRight, showVersion]);
 
   return (
     <Markdown
-      value={data?.body || error?.message || 'No changelog found'}
+      value={data?.body
+        || error?.message
+        || (isLoading && 'Loading...')
+        || 'No changelog found'}
       flatListProps={{
         contentContainerStyle: [styles.md, {
           backgroundColor: appTheme.colors.surface,
@@ -79,7 +75,6 @@ export const ChangeLog = () => {
         overScrollMode: 'never',
         scrollToOverflowEnabled: false,
         contentInset: insets,
-        ListEmptyComponent: renderEmpty,
       }}
       theme={{
         colors: {
