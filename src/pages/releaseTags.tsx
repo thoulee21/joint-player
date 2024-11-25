@@ -1,11 +1,9 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback } from 'react';
-import { Animated, StyleSheet, ToastAndroid } from 'react-native';
-import HapticFeedback, {
-  HapticFeedbackTypes
-} from 'react-native-haptic-feedback';
-import { ActivityIndicator, List } from 'react-native-paper';
+import React, { useCallback, useState } from 'react';
+import { Animated, RefreshControl, StyleSheet, ToastAndroid } from 'react-native';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
+import { ActivityIndicator, List, useTheme } from 'react-native-paper';
 import useSWR from 'swr';
 import packageData from '../../package.json';
 import type { ListLRProps } from '../types/paperListItem';
@@ -13,10 +11,14 @@ import type { Main } from '../types/releaseTags';
 
 export const ReleaseTags = () => {
   const navigation = useNavigation();
+  const appTheme = useTheme();
+
   const userRepo = packageData.homepage.split('/').slice(-2).join('/');
   const {
     data, error, isLoading, mutate
   } = useSWR<Main[]>(`https://api.github.com/repos/${userRepo}/tags`);
+
+  const [refreshing, setRefreshing] = useState(false);
 
   const renderReleaseTagIcon = useCallback((
     props: ListLRProps
@@ -40,8 +42,8 @@ export const ReleaseTags = () => {
         right={renderRight}
         description={item.commit.sha.slice(0, 7)}
         onPress={() => {
-          navigation.navigate(
-            //@ts-expect-error
+          //@ts-expect-error
+          navigation.push(
             'ChangeLog',
             { version: item.name }
           );
@@ -57,6 +59,12 @@ export const ReleaseTags = () => {
       />
     );
   }, [navigation, renderReleaseTagIcon, renderRight]);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await mutate();
+    setRefreshing(false);
+  }, [mutate]);
 
   if (error) {
     return (
@@ -74,6 +82,16 @@ export const ReleaseTags = () => {
       keyExtractor={(item) => item.node_id}
       renderItem={renderTag}
       initialNumToRender={12}
+      refreshing={refreshing}
+      onRefresh={onRefresh}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          colors={[appTheme.colors.primary]}
+          progressBackgroundColor={appTheme.colors.surface}
+        />
+      }
       ListEmptyComponent={isLoading ? (
         <ActivityIndicator
           size="large"
