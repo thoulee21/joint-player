@@ -2,7 +2,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useCallback, useLayoutEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Markdown from 'react-native-marked';
-import { IconButton, useTheme } from 'react-native-paper';
+import { ActivityIndicator, IconButton, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useSWR from 'swr';
 import packageData from '../../package.json';
@@ -35,23 +35,42 @@ export const ChangeLog = () => {
         }}
       />
       <IconButton
-        icon="refresh"
-        loading={isLoading}
-        onPress={() => mutate()}
+        icon="tag-outline"
+        onPress={() => {
+          // @ts-expect-error
+          navigation.push('ReleaseTags');
+        }}
       />
+      {error && (
+        <IconButton
+          icon="refresh"
+          loading={isLoading}
+          onPress={() => mutate()}
+        />
+      )}
     </View>
-  ), [data?.html_url, data?.tag_name, isLoading, mutate, navigation]);
+  ), [data, error, isLoading, mutate, navigation]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: `Changelog: ${data?.tag_name || 'Loading...'}`,
+      title: data?.tag_name || 'Changelog',
       headerRight: renderRight,
     });
   }, [data?.tag_name, navigation, renderRight]);
 
+  const renderEmpty = useCallback(() => (
+    isLoading && (
+      <ActivityIndicator
+        animating
+        size="large"
+        style={styles.loading}
+      />
+    )
+  ), [isLoading]);
+
   return (
     <Markdown
-      value={data?.body || error?.message || 'Loading...'}
+      value={data?.body || error?.message || 'No changelog found'}
       flatListProps={{
         contentContainerStyle: [styles.md, {
           backgroundColor: appTheme.colors.surface,
@@ -60,6 +79,7 @@ export const ChangeLog = () => {
         overScrollMode: 'never',
         scrollToOverflowEnabled: false,
         contentInset: insets,
+        ListEmptyComponent: renderEmpty,
       }}
       theme={{
         colors: {
@@ -83,5 +103,8 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
+  },
+  loading: {
+    marginTop: '50%',
   }
 });
