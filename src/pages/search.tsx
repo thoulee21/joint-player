@@ -12,72 +12,80 @@ import { useAppDispatch, useAppSelector } from '../hook/reduxHooks';
 import { addSearchHistory, selectSearchHistory } from '../redux/slices/searchHistory';
 
 export const Search = () => {
-    const dispatch = useAppDispatch();
-    const navigation = useNavigation();
-    const appTheme = useTheme();
-    const insets = useSafeAreaInsets();
+  const dispatch = useAppDispatch();
+  const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
+  const appTheme = useTheme();
 
-    const [keyword, setKeyword] = useState('');
-    const [showQuery, setShowQuery] = useState('');
-    const searchHistory = useAppSelector(selectSearchHistory);
+  const [keyword, setKeyword] = useState('');
+  const [showQuery, setShowQuery] = useState('');
 
-    const searchSongs = useCallback(async () => {
-        const placeholder = searchHistory[searchHistory.length - 1];
-        if (showQuery) {
-            dispatch(addSearchHistory(showQuery));
-            setKeyword(showQuery);
-        } else if (placeholder) {
-            setShowQuery(placeholder);
-            setKeyword(placeholder);
-        }
-    }, [dispatch, searchHistory, showQuery]);
+  const searchHistory = useAppSelector(selectSearchHistory);
+  const [placeholder, setPlaceholder] = useState(
+    searchHistory[searchHistory.length - 1]
+  );
 
-    return (
-        <BlurBackground style={{ paddingTop: insets.top }}>
-            <Searchbar
-                placeholder={searchHistory[searchHistory.length - 1] || 'Search for songs'}
-                placeholderTextColor={appTheme.dark
-                    ? appTheme.colors.onSurfaceDisabled
-                    : appTheme.colors.backdrop}
-                style={[styles.searchbar, {
-                    backgroundColor: Color(
-                        appTheme.colors.secondaryContainer
-                    ).fade(0.3).string(),
-                }]}
-                inputStyle={{ color: appTheme.colors.onSurface }}
-                onChangeText={setShowQuery}
-                value={showQuery}
-                onSubmitEditing={searchSongs}
-                icon="arrow-left"
-                iconColor={appTheme.colors.onSurface}
-                onIconPress={navigation.goBack}
-                traileringIcon="magnify"
-                onTraileringIconPress={() => {
-                    HapticFeedback.trigger(
-                        HapticFeedbackTypes.effectHeavyClick
-                    );
-                    searchSongs();
-                }}
-                blurOnSubmit
-                selectTextOnFocus
-                selectionColor={Color(
-                    appTheme.colors.inversePrimary
-                ).fade(0.5).string()}
-                autoFocus
-            />
+  const searchSongs = useCallback(async () => {
+    if (showQuery) {
+      dispatch(addSearchHistory(showQuery));
+      setKeyword(showQuery);
+      setPlaceholder(showQuery);
+    } else if (placeholder) {
+      setShowQuery(placeholder);
+      setKeyword(placeholder);
+    }
+  }, [dispatch, placeholder, showQuery]);
 
-            {keyword ? (
-                <SearchSongList keyword={keyword} />
-            ) : (
-                <SearchHistoryList setKeyword={setKeyword} />
-            )}
-        </BlurBackground>
-    );
+  return (
+    <BlurBackground style={{ paddingTop: insets.top }}>
+      <Searchbar
+        placeholder={placeholder || 'Search for songs'}
+        placeholderTextColor={appTheme.dark
+          ? appTheme.colors.onSurfaceDisabled
+          : appTheme.colors.backdrop}
+        style={[styles.searchbar, {
+          backgroundColor: Color(
+            appTheme.colors.secondaryContainer
+          ).fade(0.3).string(),
+        }]}
+        inputStyle={{ color: appTheme.colors.onSurface }}
+        onChangeText={setShowQuery}
+        value={showQuery}
+        onSubmitEditing={searchSongs}
+        icon="arrow-left"
+        iconColor={appTheme.colors.onSurface}
+        onIconPress={navigation.goBack}
+        traileringIcon="magnify"
+        onTraileringIconPress={() => {
+          HapticFeedback.trigger(
+            HapticFeedbackTypes.effectHeavyClick
+          );
+          searchSongs();
+        }}
+        onClearIconPress={() => {
+          setShowQuery('');
+          setKeyword('');
+        }}
+        blurOnSubmit
+        selectTextOnFocus
+        selectionColor={Color(
+          appTheme.colors.inversePrimary
+        ).fade(0.5).string()}
+        autoFocus
+      />
+
+      {keyword ? (
+        <SearchSongList keyword={keyword} />
+      ) : (
+        <SearchHistoryList setKeyword={setShowQuery} />
+      )}
+    </BlurBackground>
+  );
 };
 
 const styles = StyleSheet.create({
-    searchbar: {
-        marginVertical: '1%',
-        marginHorizontal: '4%',
-    },
+  searchbar: {
+    marginVertical: '1%',
+    marginHorizontal: '4%',
+  },
 });
