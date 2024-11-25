@@ -176,7 +176,8 @@ export function AboutScreen() {
             <Button icon="download"
               onPress={() => {
                 Linking.openURL(
-                  data?.assets[0].browser_download_url || 'https://github.com'
+                  `https://proxy.v2gh.com/${data?.assets[0].browser_download_url}`
+                  || packageData.homepage
                 );
               }}
             >
