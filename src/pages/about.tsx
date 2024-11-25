@@ -109,11 +109,11 @@ export function AboutScreen() {
         right={renderRight}
         onPress={() => {
           // @ts-expect-error
-          navigation.navigate('ChangeLog');
+          navigation.push('ChangeLog');
         }}
         onLongPress={() => {
           // @ts-expect-error
-          navigation.navigate('ReleaseTags');
+          navigation.push('ReleaseTags');
         }}
       />
       <List.Item
