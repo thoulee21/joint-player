@@ -15,7 +15,7 @@ import { Album } from './AlbumItem';
 import { HeaderComponent } from './AnimatedHeader';
 import { ArtistHeader } from './ArtistHeader';
 
-export function Albums({ artistID }: { artistID: number }) {
+export function ArtistContent({ artistID }: { artistID: number }) {
   const insets = useSafeAreaInsets();
   const appTheme = useTheme();
   const [refreshing, setRefreshing] = useState(false);

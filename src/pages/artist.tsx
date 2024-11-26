@@ -3,7 +3,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Appbar, Text, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
-import { Albums } from '../components/Albums';
+import { ArtistContent } from '../components/ArtistContent';
 import { BlurBackground } from '../components/BlurBackground';
 import { LottieAnimation } from '../components/LottieAnimation';
 import { Artist as ArtistType, Main } from '../types/albumArtist';
@@ -51,7 +51,7 @@ export function Artist() {
 
   return (
     <View style={styles.container}>
-      <Albums artistID={artist.id} />
+      <ArtistContent artistID={artist.id} />
     </View>
   );
 }
