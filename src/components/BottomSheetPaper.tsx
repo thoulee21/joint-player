@@ -46,7 +46,6 @@ export const BottomSheetPaper = forwardRef<
         }}
         enableDynamicSizing={false}
         snapPoints={['35%', '90%', '100%']}
-        bottomInset={insets.bottom}
         topInset={insets.top}
         enablePanDownToClose
         android_keyboardInputMode="adjustResize"
