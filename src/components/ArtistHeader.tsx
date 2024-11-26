@@ -23,16 +23,18 @@ export const ArtistHeader = ({ artist }: { artist?: Artist }) => {
   }, [artist, navigation]);
 
   return (
-    <View style={[styles.albumHeader]}>
-      <View style={styles.albumHeaderTitle}>
+    <View style={[styles.header]}>
+      <View style={styles.artistName}>
         <Text variant="headlineSmall">
           {artist?.name}
         </Text>
-        <Text style={[styles.artistAlias, {
-          color: appTheme.dark
-            ? appTheme.colors.onSurfaceDisabled
-            : appTheme.colors.backdrop,
-        }]}>
+        <Text
+          style={[styles.artistAlias, {
+            color: appTheme.dark
+              ? appTheme.colors.onSurfaceDisabled
+              : appTheme.colors.backdrop,
+          }]}
+        >
           {artist?.alias.join(', ')}
         </Text>
       </View>
@@ -45,15 +47,16 @@ export const ArtistHeader = ({ artist }: { artist?: Artist }) => {
 };
 
 const styles = StyleSheet.create({
-  albumHeader: {
-    marginBottom: '1%',
+  header: {
+    marginVertical: '1%',
   },
-  albumHeaderTitle: {
+  artistName: {
     flexDirection: 'row',
     alignItems: 'baseline',
     margin: '3%',
+    flexWrap: 'wrap',
   },
   artistAlias: {
-    marginLeft: '1%',
+    marginHorizontal: '1.5%',
   },
 });
