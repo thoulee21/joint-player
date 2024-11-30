@@ -4,7 +4,12 @@ import { Alert, Animated, StyleSheet, View } from 'react-native';
 import HapticFeedback, {
   HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
-import { Chip, IconButton, List, useTheme } from 'react-native-paper';
+import {
+  Chip,
+  IconButton,
+  List,
+  useTheme,
+} from 'react-native-paper';
 import { useAppDispatch, useAppSelector } from '../hook';
 import {
   clearSearchHistory,
@@ -12,8 +17,11 @@ import {
   selectSearchHistory,
 } from '../redux/slices';
 
-export const SearchHistoryList = ({ setKeyword }: {
-  setKeyword: (keyword: string) => void
+export const SearchHistoryList = ({
+  setKeyword, onPressHistory
+}: {
+  setKeyword: (keyword: string) => void,
+  onPressHistory: () => void
 }) => {
   const dispatch = useAppDispatch();
   const appTheme = useTheme();
@@ -31,7 +39,13 @@ export const SearchHistoryList = ({ setKeyword }: {
             .fade(0.4).toString(),
       }]}
       key={`${index}-${item}`}
-      onPress={() => { setKeyword(item); }}
+      onPress={() => {
+        HapticFeedback.trigger(
+          HapticFeedbackTypes.effectHeavyClick
+        );
+        setKeyword(item);
+        onPressHistory();
+      }}
       onLongPress={() => {
         HapticFeedback.trigger(
           HapticFeedbackTypes.effectHeavyClick
@@ -52,7 +66,7 @@ export const SearchHistoryList = ({ setKeyword }: {
         );
       }}
     >{item}</Chip>
-  ), [appTheme.colors.surface, dispatch, setKeyword]);
+  ), [appTheme, dispatch, onPressHistory, setKeyword]);
 
   if (searchHistory.length > 0) {
     return (
