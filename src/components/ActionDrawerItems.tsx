@@ -1,13 +1,26 @@
-import React, { useCallback } from 'react';
-import { Alert, ToastAndroid } from 'react-native';
+import React, {
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
+import { ToastAndroid } from 'react-native';
 import HapticFeedback, {
   HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
-import { Drawer, Icon, useTheme } from 'react-native-paper';
+import {
+  Button,
+  Dialog,
+  Drawer,
+  Icon,
+  Portal,
+  Text,
+  useTheme,
+} from 'react-native-paper';
 import {
   useAppDispatch,
   useAppSelector,
 } from '../hook/reduxHooks';
+import { selectDevModeEnabled } from '../redux/slices';
 import {
   initialState as initialUser,
   resetUser,
@@ -21,8 +34,17 @@ export const ActionDrawerItems = ({ navigation }: {
   const appTheme = useTheme();
 
   const currentUser = useAppSelector(selectUser);
-  const isLoggedOut = currentUser.id === initialUser.id
-    && currentUser.username === initialUser.username;
+  const isDev = useAppSelector(selectDevModeEnabled);
+
+  const [
+    isDialogVisible,
+    setIsDialogVisible,
+  ] = useState(false);
+
+  const isLoggedOut = useMemo(() => (
+    currentUser.id === initialUser.id
+    && currentUser.username === initialUser.username
+  ), [currentUser]);
 
   const renderSwitchUserIcon = useCallback(
     (props: any) => (
@@ -45,29 +67,18 @@ export const ActionDrawerItems = ({ navigation }: {
   );
 
   const logout = useCallback(() => {
-    HapticFeedback.trigger(
-      HapticFeedbackTypes.notificationWarning
-    );
-    Alert.alert(
-      'Logout',
-      'Are you sure to logout?', [
-      { text: 'Cancel', style: 'cancel' }, {
-        text: 'OK',
-        onPress: () => {
-          dispatch(resetUser());
-          navigation.closeDrawer();
-          ToastAndroid.show(
-            'User logged out',
-            ToastAndroid.SHORT
-          );
-        }
-      }]
+    dispatch(resetUser());
+    navigation.closeDrawer();
+
+    ToastAndroid.show(
+      'User logged out',
+      ToastAndroid.SHORT
     );
   }, [dispatch, navigation]);
 
   return (
     <>
-      {__DEV__ && (
+      {isDev && (
         <Drawer.Section>
           <Drawer.Item
             label="Test"
@@ -89,11 +100,44 @@ export const ActionDrawerItems = ({ navigation }: {
           }}
         />
         {!isLoggedOut && (
-          <Drawer.Item
-            label="Logout"
-            icon={renderLogoutIcon}
-            onPress={logout}
-          />
+          <>
+            <Drawer.Item
+              label="Logout"
+              icon={renderLogoutIcon}
+              onPress={() => {
+                HapticFeedback.trigger(
+                  HapticFeedbackTypes.notificationWarning
+                );
+                setIsDialogVisible(true);
+              }}
+            />
+            <Portal>
+              <Dialog
+                visible={isDialogVisible}
+                onDismiss={() => {
+                  setIsDialogVisible(false);
+                }}
+              >
+                <Dialog.Icon icon="logout" size={40} />
+                <Dialog.Title>Logout</Dialog.Title>
+                <Dialog.Content>
+                  <Text>Are you sure to logout?</Text>
+                </Dialog.Content>
+                <Dialog.Actions>
+                  <Button
+                    textColor={appTheme.colors.outline}
+                    onPress={() => {
+                      setIsDialogVisible(false);
+                    }}
+                  >Cancel</Button>
+                  <Button
+                    textColor={appTheme.colors.error}
+                    onPress={logout}
+                  >OK</Button>
+                </Dialog.Actions>
+              </Dialog>
+            </Portal>
+          </>
         )}
       </Drawer.Section>
     </>
