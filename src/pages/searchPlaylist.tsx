@@ -1,7 +1,8 @@
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import Color from 'color';
-import React, { useCallback, useState } from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useCallback, useRef, useState } from 'react';
+import { StyleSheet, ToastAndroid } from 'react-native';
+import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Searchbar, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurBackground } from '../components/BlurBackground';
@@ -12,6 +13,7 @@ export const SearchPlaylist = () => {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const appTheme = useTheme();
+  const searchRef = useRef(null);
 
   const [keyword, setKeyword] = useState('');
   const [showKeyword, setShowKeyword] = useState('');
@@ -21,10 +23,9 @@ export const SearchPlaylist = () => {
   }, [showKeyword]);
 
   return (
-    <BlurBackground
-      style={{ paddingTop: insets.top }}
-    >
+    <BlurBackground style={{ paddingTop: insets.top }}>
       <Searchbar
+        ref={searchRef}
         placeholder="Search for playlist"
         placeholderTextColor={appTheme.dark
           ? appTheme.colors.onSurfaceDisabled
@@ -43,6 +44,26 @@ export const SearchPlaylist = () => {
             DrawerActions.toggleDrawer()
           );
         }}
+        traileringIcon="magnify"
+        onTraileringIconPress={() => {
+          HapticFeedback.trigger(
+            HapticFeedbackTypes.effectHeavyClick
+          );
+          if (showKeyword) {
+            search();
+          } else {
+            //@ts-expect-error
+            searchRef.current?.focus();
+            ToastAndroid.show(
+              'Please enter a keyword',
+              ToastAndroid.SHORT
+            );
+          }
+        }}
+        onClearIconPress={() => {
+          setShowKeyword('');
+          setKeyword('');
+        }}
         blurOnSubmit
         selectTextOnFocus
         selectionColor={Color(
@@ -54,7 +75,13 @@ export const SearchPlaylist = () => {
       {keyword ? (
         <PlaylistSearch keyword={keyword} />
       ) : (
-        <SearchHistoryList setKeyword={setKeyword} />
+        <SearchHistoryList
+          setKeyword={setShowKeyword}
+          onPressHistory={() => {
+            //@ts-expect-error
+            searchRef.current?.focus();
+          }}
+        />
       )}
     </BlurBackground>
   );
@@ -62,6 +89,7 @@ export const SearchPlaylist = () => {
 
 const styles = StyleSheet.create({
   searchbar: {
-    margin: '2%',
+    marginTop: '2%',
+    marginHorizontal: '4%',
   },
 });
