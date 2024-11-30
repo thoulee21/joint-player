@@ -151,10 +151,16 @@ export const PlaylistDetailLargeHeader = (
               {data?.result.description}
             </Text>
           </ScrollView>
+
           <Dialog.Actions>
-            <Button onPress={() => {
-              setDialogVisible(false);
-            }}>Close</Button>
+            <Button
+              textColor={appTheme.colors.outline}
+              onPress={() => {
+                setDialogVisible(false);
+              }}
+            >
+              Close
+            </Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>

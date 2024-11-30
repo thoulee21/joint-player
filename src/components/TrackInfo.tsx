@@ -187,6 +187,7 @@ export const TrackInfo = () => {
               </Text>
             </ScrollView>
           </Dialog.ScrollArea>
+
           <Dialog.Actions>
             <Button
               icon="content-copy"
@@ -194,7 +195,10 @@ export const TrackInfo = () => {
             >
               Copy
             </Button>
-            <Button onPress={hideDialog}>
+            <Button
+              textColor={appTheme.colors.outline}
+              onPress={hideDialog}
+            >
               Close
             </Button>
           </Dialog.Actions>

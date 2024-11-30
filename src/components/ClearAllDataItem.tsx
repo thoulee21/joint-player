@@ -36,19 +36,32 @@ export const ClearAllDataItem = () => {
         left={DeleteForeverIcon}
         onPress={clearAllData}
       />
+
       <Portal>
         <Dialog visible={visible} onDismiss={hideDialog}>
+          <Dialog.Icon
+            icon="alert"
+            color={appTheme.colors.error}
+            size={40}
+          />
           <Dialog.Title>Clear All Data</Dialog.Title>
           <Dialog.Content>
             <Text>
               Are you sure you want to clear all data?
             </Text>
           </Dialog.Content>
+
           <Dialog.Actions>
-            <Button onPress={hideDialog}>
+            <Button
+              textColor={appTheme.colors.outline}
+              onPress={hideDialog}
+            >
               Cancel
             </Button>
-            <Button onPress={clearAndRestart}>
+            <Button
+              textColor={appTheme.colors.error}
+              onPress={clearAndRestart}
+            >
               OK
             </Button>
           </Dialog.Actions>

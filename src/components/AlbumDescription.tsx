@@ -1,11 +1,15 @@
 import React, { useCallback, useState } from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
-import { Button, Dialog, Portal, Text } from 'react-native-paper';
+import { Button, Dialog, Portal, Text, useTheme } from 'react-native-paper';
 
 export const AlbumDescription = (
   { description }: { description?: string }
 ) => {
-  const [dialogVisible, setDialogVisible] = useState(false);
+  const appTheme = useTheme();
+  const [
+    dialogVisible,
+    setDialogVisible,
+  ] = useState(false);
 
   const showDialog = useCallback(() => {
     if (description) {
@@ -43,7 +47,10 @@ export const AlbumDescription = (
             <Text selectable>{description}</Text>
           </ScrollView>
           <Dialog.Actions>
-            <Button onPress={hideDialog}>Close</Button>
+            <Button
+              textColor={appTheme.colors.outline}
+              onPress={hideDialog}
+            >Close</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>

@@ -131,17 +131,20 @@ export function AboutScreen() {
           visible={dialogVisible}
         />
       </Portal>
+
       <Portal>
         <GoDevSnackbar />
       </Portal>
+
       <Portal>
         <Dialog
           visible={newReleaseDialogVisible}
           onDismiss={() => setNewReleaseDialogVisible(false)}
           style={styles.dialog}
         >
-          <Dialog.Icon icon="cloud-download" size={48} />
+          <Dialog.Icon icon="cloud-download" size={40} />
           <Dialog.Title>New Release {latestRelease}</Dialog.Title>
+
           <Dialog.ScrollArea style={styles.smallPadding}>
             <Markdown
               value={data?.body || ''}
@@ -166,14 +169,19 @@ export function AboutScreen() {
               }}
             />
           </Dialog.ScrollArea>
+
           <Dialog.Actions>
-            <Button onPress={() => {
-              setNewReleaseDialogVisible(false);
-            }}>
+            <Button
+              textColor={appTheme.colors.outline}
+              onPress={() => {
+                setNewReleaseDialogVisible(false);
+              }}
+            >
               Not now
             </Button>
 
-            <Button icon="download"
+            <Button
+              icon="download"
               onPress={() => {
                 Linking.openURL(
                   `https://proxy.v2gh.com/${data?.assets[0].browser_download_url}`

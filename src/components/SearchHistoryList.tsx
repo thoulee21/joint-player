@@ -69,7 +69,7 @@ export const SearchHistoryList = ({
           visible={dialogVisible}
           onDismiss={() => setDialogVisible(false)}
         >
-          <Dialog.Icon icon="information-outline" size={40} />
+          <Dialog.Icon icon="information" size={40} />
           <Dialog.Title>Clear Search History</Dialog.Title>
           <Dialog.Content>
             <Text>

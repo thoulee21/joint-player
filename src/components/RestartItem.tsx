@@ -36,11 +36,16 @@ export const RestartItem = () => {
           visible={dialogVisible}
           onDismiss={() => setDialogVisible(false)}
         >
-          <Dialog.Icon icon="alert" size={40} />
+          <Dialog.Icon
+            icon="alert"
+            color={appTheme.colors.error}
+            size={40}
+          />
           <Dialog.Title>Restart App</Dialog.Title>
           <Dialog.Content>
             <Text>Are you sure you want to restart the app?</Text>
           </Dialog.Content>
+
           <Dialog.Actions>
             <Button
               textColor={appTheme.colors.outline}

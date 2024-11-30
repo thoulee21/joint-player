@@ -131,6 +131,7 @@ export const MvCover = ({ children }: PropsWithChildren) => {
               onPress={copyMvData}
             >Copy</Button>
             <Button
+              textColor={appTheme.colors.outline}
               onPress={hideDialog}
             >Close</Button>
           </Dialog.Actions>
