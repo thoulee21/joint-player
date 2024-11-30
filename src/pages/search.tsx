@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Searchbar, useTheme } from 'react-native-paper';
@@ -16,6 +16,7 @@ export const Search = () => {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const appTheme = useTheme();
+  const searchRef = useRef(null);
 
   const [keyword, setKeyword] = useState('');
   const [showQuery, setShowQuery] = useState('');
@@ -39,6 +40,7 @@ export const Search = () => {
   return (
     <BlurBackground style={{ paddingTop: insets.top }}>
       <Searchbar
+        ref={searchRef}
         placeholder={placeholder || 'Search for songs'}
         placeholderTextColor={appTheme.dark
           ? appTheme.colors.onSurfaceDisabled
@@ -77,7 +79,13 @@ export const Search = () => {
       {keyword ? (
         <SearchSongList keyword={keyword} />
       ) : (
-        <SearchHistoryList setKeyword={setShowQuery} />
+        <SearchHistoryList
+          setKeyword={setShowQuery}
+          onPressHistory={() => {
+            //@ts-expect-error
+            searchRef.current?.focus();
+          }}
+        />
       )}
     </BlurBackground>
   );
@@ -85,7 +93,6 @@ export const Search = () => {
 
 const styles = StyleSheet.create({
   searchbar: {
-    marginVertical: '1%',
     marginHorizontal: '4%',
   },
 });
