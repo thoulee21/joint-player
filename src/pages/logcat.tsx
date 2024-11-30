@@ -7,7 +7,6 @@ import React, {
   useState,
 } from 'react';
 import {
-  Alert,
   Animated,
   RefreshControl,
   StyleSheet,
@@ -17,11 +16,17 @@ import {
   type TextInputChangeEventData
 } from 'react-native';
 import RNFS from 'react-native-fs';
+import HapticFeedback, {
+  HapticFeedbackTypes
+} from 'react-native-haptic-feedback';
 import {
   ActivityIndicator,
+  Button,
   Caption,
-  Icon,
+  Dialog,
   IconButton,
+  Portal,
+  Text,
   useTheme
 } from 'react-native-paper';
 import { v7 as uuid } from 'uuid';
@@ -33,6 +38,7 @@ export const Logcat = () => {
   const appTheme = useTheme();
 
   const [isLoaded, setIsLoaded] = useState(false);
+  const [dialogVisible, setDialogVisible] = useState(false);
   const [logContent, setLogContent] = useState('');
   const [keyword, setKeyword] = useState('');
 
@@ -45,16 +51,6 @@ export const Logcat = () => {
       rootLog.error(e);
     }
   }, []);
-
-  const renderDeleteIcon = useCallback(
-    (props: any) => (
-      <Icon
-        {...props}
-        source="delete-forever-outline"
-        color={appTheme.colors.error}
-      />
-    ), [appTheme.colors.error]
-  );
 
   const renderHeaderRight = useCallback(() => (
     <View style={styles.row}>
@@ -74,20 +70,18 @@ export const Logcat = () => {
         }}
       />
       <IconButton
-        icon={renderDeleteIcon}
+        icon="delete-forever-outline"
+        iconColor={appTheme.colors.error}
+        disabled={!logContent}
         onPress={() => {
-          Alert.alert(
-            'Clear logs',
-            'Are you sure you want to clear logs?',
-            [
-              { text: 'Cancel', style: 'cancel' },
-              { text: 'OK', onPress: clearLogs },
-            ],
+          HapticFeedback.trigger(
+            HapticFeedbackTypes.notificationWarning
           );
+          setDialogVisible(true);
         }}
       />
     </View>
-  ), [clearLogs, logContent, renderDeleteIcon]);
+  ), [appTheme.colors.error, logContent]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -136,7 +130,8 @@ export const Logcat = () => {
   ), [isLoaded]);
 
   const logLines = useMemo(() => (
-    logContent.split('\n')
+    logContent
+      .split('\n')
       .filter((line) => {
         if (!keyword) {
           return Boolean(line);
@@ -153,25 +148,56 @@ export const Logcat = () => {
   ), []);
 
   return (
-    <Animated.FlatList
-      data={logLines}
-      style={styles.root}
-      contentContainerStyle={styles.content}
-      renderItem={renderLogLine}
-      onRefresh={() => { setIsLoaded(false); }}
-      refreshing={!isLoaded}
-      initialNumToRender={33}
-      refreshControl={
-        <RefreshControl
-          refreshing={!isLoaded}
-          onRefresh={() => { setIsLoaded(false); }}
-          colors={[appTheme.colors.primary]}
-          progressBackgroundColor={appTheme.colors.elevation.level2}
-        />
-      }
-      ListEmptyComponent={renderEmpty}
-      persistentScrollbar
-    />
+    <>
+      <Animated.FlatList
+        data={logLines}
+        style={styles.root}
+        contentContainerStyle={styles.content}
+        renderItem={renderLogLine}
+        onRefresh={() => { setIsLoaded(false); }}
+        refreshing={!isLoaded}
+        initialNumToRender={33}
+        refreshControl={
+          <RefreshControl
+            refreshing={!isLoaded}
+            onRefresh={() => { setIsLoaded(false); }}
+            colors={[appTheme.colors.primary]}
+            progressBackgroundColor={appTheme.colors.elevation.level2}
+          />
+        }
+        ListEmptyComponent={renderEmpty}
+        persistentScrollbar
+      />
+
+      <Portal>
+        <Dialog
+          visible={dialogVisible}
+          onDismiss={() => setDialogVisible(false)}
+        >
+          <Dialog.Icon icon="alert" size={40} />
+          <Dialog.Title>Clear logs</Dialog.Title>
+          <Dialog.Content>
+            <Text>
+              Are you sure you want to clear logs?
+            </Text>
+          </Dialog.Content>
+
+          <Dialog.Actions>
+            <Button
+              textColor={appTheme.colors.outline}
+              onPress={() => setDialogVisible(false)}
+            >Cancel</Button>
+            <Button
+              textColor={appTheme.colors.error}
+              onPress={() => {
+                clearLogs();
+                setDialogVisible(false);
+              }}
+            >OK</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+    </>
   );
 };
 
