@@ -1,21 +1,20 @@
-import Color from 'color';
-import React, { useCallback } from 'react';
-import { Alert, Animated, StyleSheet, View } from 'react-native';
-import HapticFeedback, {
-  HapticFeedbackTypes,
-} from 'react-native-haptic-feedback';
+import React, { useState } from 'react';
+import { Animated, StyleSheet, View } from 'react-native';
 import {
-  Chip,
+  Button,
+  Dialog,
   IconButton,
   List,
-  useTheme,
+  Portal,
+  Text,
+  useTheme
 } from 'react-native-paper';
 import { useAppDispatch, useAppSelector } from '../hook';
 import {
   clearSearchHistory,
-  removeSearchHistory,
-  selectSearchHistory,
+  selectSearchHistory
 } from '../redux/slices';
+import { HistoryItem } from './HistoryItem';
 
 export const SearchHistoryList = ({
   setKeyword, onPressHistory
@@ -25,76 +24,76 @@ export const SearchHistoryList = ({
 }) => {
   const dispatch = useAppDispatch();
   const appTheme = useTheme();
+
   const searchHistory = useAppSelector(selectSearchHistory);
+  const [dialogVisible, setDialogVisible] = useState(false);
 
-  const renderItem = useCallback((
-    item: string, index: number
-  ) => (
-    <Chip
-      compact
-      mode="outlined"
-      style={[styles.chip, {
-        backgroundColor:
-          Color(appTheme.colors.surface)
-            .fade(0.4).toString(),
-      }]}
-      key={`${index}-${item}`}
-      onPress={() => {
-        HapticFeedback.trigger(
-          HapticFeedbackTypes.effectHeavyClick
-        );
-        setKeyword(item);
-        onPressHistory();
-      }}
-      onLongPress={() => {
-        HapticFeedback.trigger(
-          HapticFeedbackTypes.effectHeavyClick
-        );
-        Alert.alert(
-          'Remove search history',
-          'Do you want to remove this search history?',
-          [
-            { text: 'Cancel', style: 'cancel' },
-            {
-              text: 'OK', onPress: () => {
-                dispatch(
-                  removeSearchHistory(item)
-                );
-              },
-            },
-          ]
-        );
-      }}
-    >{item}</Chip>
-  ), [appTheme, dispatch, onPressHistory, setKeyword]);
+  return (
+    <>
+      {searchHistory.length > 0 && (
+        <View style={styles.root}>
+          <View style={styles.header}>
+            <List.Subheader
+              style={{ color: appTheme.colors.secondary }}
+            >
+              Search History
+            </List.Subheader>
 
-  if (searchHistory.length > 0) {
-    return (
-      <View style={styles.root}>
-        <View style={styles.header}>
-          <List.Subheader
-            style={{ color: appTheme.colors.secondary }}
-          >
-            Search History
-          </List.Subheader>
-
-          <IconButton
-            icon="delete-sweep-outline"
-            disabled={searchHistory.length === 0}
-            onPress={() => {
-              dispatch(clearSearchHistory());
-            }}
-          />
-        </View>
-
-        <Animated.ScrollView>
-          <View style={styles.list}>
-            {searchHistory.map(renderItem)}
+            <IconButton
+              icon="delete-sweep-outline"
+              disabled={searchHistory.length === 0}
+              onPress={() => setDialogVisible(true)}
+            />
           </View>
-        </Animated.ScrollView>
-      </View>
-    );
-  }
+
+          <Animated.ScrollView>
+            <View style={styles.list}>
+              {searchHistory.map((
+                item: string, index: number
+              ) => (
+                <React.Fragment key={`${index}-${item}`}>
+                  <HistoryItem
+                    item={item}
+                    setKeyword={setKeyword}
+                    onPressHistory={onPressHistory}
+                  />
+                </React.Fragment>
+              ))}
+            </View>
+          </Animated.ScrollView>
+        </View>
+      )}
+
+      <Portal>
+        <Dialog
+          visible={dialogVisible}
+          onDismiss={() => setDialogVisible(false)}
+        >
+          <Dialog.Icon icon="information-outline" size={40} />
+          <Dialog.Title>Clear Search History</Dialog.Title>
+          <Dialog.Content>
+            <Text>
+              Do you want to clear all search history?
+            </Text>
+          </Dialog.Content>
+
+          <Dialog.Actions>
+            <Button
+              textColor={appTheme.colors.outline}
+              onPress={() => setDialogVisible(false)}
+            >Cancel</Button>
+            <Button
+              textColor={appTheme.colors.error}
+              onPress={() => {
+                setDialogVisible(false);
+                dispatch(clearSearchHistory());
+              }}
+            >OK</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+    </>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -109,8 +108,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     flexWrap: 'wrap',
     flexDirection: 'row',
-  },
-  chip: {
-    margin: 3,
   },
 });
