@@ -1,6 +1,6 @@
 import { FlashList } from '@shopify/flash-list';
 import React, { useCallback, useMemo, useState } from 'react';
-import { Dimensions, RefreshControl, StyleSheet, View } from 'react-native';
+import { RefreshControl, StyleSheet, useWindowDimensions, View } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import { ActivityIndicator, Text, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
@@ -8,30 +8,30 @@ import type { Main, Song } from '../types/searchSongs';
 import { LottieAnimation } from './LottieAnimation';
 import { SearchSongItem } from './SearchSongItem';
 
-const Type = 1;
-const itemsPerPage = 15;
+const TYPE = 1;
+const ITEMS_PER_PAGE = 15;
 
 export const SearchSongList = ({ keyword }: { keyword: string }) => {
   const appTheme = useTheme();
-  const window = Dimensions.get('window');
+  const window = useWindowDimensions();
   const [refreshing, setRefreshing] = useState(false);
 
   const {
     data, error, isLoading, mutate, setSize,
   } = useSWRInfinite<Main>((index) => {
-    const Offset = index * itemsPerPage;
-    const Limit = itemsPerPage;
+    const offset = index * ITEMS_PER_PAGE;
+    const limit = ITEMS_PER_PAGE;
     return (
-      `https://music.163.com/api/search/get/web?csrf_token=hlpretag=&hlposttag=&s=${keyword}&type=${Type}&offset=${Offset}&total=true&limit=${Limit}`
+      `https://music.163.com/api/search/get/web?csrf_token=hlpretag=&hlposttag=&s=${keyword}&type=${TYPE}&offset=${offset}&total=true&limit=${limit}`
     );
   });
 
   const showData = useMemo(() => {
-    const notFound = data?.map(
-      (item) => item.result.songCount
-    ).reduce(
-      (a, b) => a + b, 0
-    ) === 0;
+    const notFound = data
+      ?.map((item) => item.result.songCount)
+      .reduce((prev, current) => (
+        prev + current
+      ), 0) === 0;
 
     if (!notFound) {
       return data?.flatMap(
@@ -54,9 +54,7 @@ export const SearchSongList = ({ keyword }: { keyword: string }) => {
     setRefreshing(true);
     await mutate();
     setRefreshing(false);
-    // no mutate
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [mutate]);
 
   const renderItem = useCallback((
     props: { index: number, item: Song }
@@ -76,9 +74,17 @@ export const SearchSongList = ({ keyword }: { keyword: string }) => {
       height: window.height / 1.4,
       width: window.width,
     }}>
-      {isLoading
-        ? <ActivityIndicator size="large" style={styles.loading} />
-        : <LottieAnimation caption="No songs found" animation="teapot" />}
+      {isLoading ? (
+        <ActivityIndicator
+          size="large"
+          style={styles.loading}
+        />
+      ) : (
+        <LottieAnimation
+          caption="No songs found"
+          animation="teapot"
+        />
+      )}
     </View>
   ), [isLoading, window]);
 
@@ -111,10 +117,12 @@ export const SearchSongList = ({ keyword }: { keyword: string }) => {
           />
         }
         ListFooterComponent={
-          hasMore && showData.length
-            ? <ActivityIndicator
+          hasMore && showData.length ? (
+            <ActivityIndicator
               style={styles.footerLoading}
-            /> : null}
+            />
+          ) : null
+        }
       />
     ) : (
       <LottieAnimation
