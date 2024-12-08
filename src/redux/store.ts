@@ -18,6 +18,7 @@ import {
   rippleEffectsSlice,
   searchHistorySlice,
   userSlice,
+  repeatModeSlice,
 } from './slices';
 
 const rootReducers = combineReducers({
@@ -30,6 +31,7 @@ const rootReducers = combineReducers({
   playlists: playlistsSlice.reducer,
   searchHistory: searchHistorySlice.reducer,
   rippleEffect: rippleEffectsSlice.reducer,
+  repeatMode: repeatModeSlice.reducer,
 });
 
 const persistedReducer = persistReducer(

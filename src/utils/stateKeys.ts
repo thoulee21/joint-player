@@ -8,4 +8,5 @@ export enum StateKeys {
     Playlists = 'playlists',
     SearchHistory = 'searchHistory', // is managed by redux and being directly get
     RippleEffect = 'rippleEffect',
+    RepeatMode = 'repeatMode', // is managed by redux and being directly get
 }

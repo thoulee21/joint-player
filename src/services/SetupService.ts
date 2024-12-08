@@ -1,10 +1,9 @@
 import TrackPlayer, {
   AppKilledPlaybackBehavior,
-  Capability,
-  RepeatMode,
+  Capability
 } from 'react-native-track-player';
+import { storage } from '../utils/reduxPersistMMKV';
 
-export const DefaultRepeatMode = RepeatMode.Queue;
 export const DefaultAudioServiceBehaviour =
   AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification;
 
@@ -19,7 +18,7 @@ const setupPlayer = async (
     try {
       await TrackPlayer.setupPlayer(options);
     } catch (error) {
-      return (error as Error & {code?: string}).code;
+      return (error as Error & { code?: string }).code;
     }
   };
   while ((await setup()) === 'android_cannot_setup_player_in_background') {
@@ -52,5 +51,13 @@ export const SetupService = async () => {
     ],
     progressUpdateEventInterval: 2,
   });
-  await TrackPlayer.setRepeatMode(DefaultRepeatMode);
+
+  const storedRoot = JSON.parse(
+    storage.getString('persist:root') || ''
+  );
+  const storedRepeatMode = JSON.parse(
+    storedRoot.repeatMode
+  ).value;
+
+  await TrackPlayer.setRepeatMode(storedRepeatMode);
 };
