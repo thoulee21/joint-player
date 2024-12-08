@@ -1,22 +1,36 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import React, { useMemo } from 'react';
-import { Linking, StyleSheet, ToastAndroid, View } from 'react-native';
+import {
+  Linking,
+  StyleSheet,
+  ToastAndroid,
+  View,
+  type StyleProp,
+  type ViewStyle,
+} from 'react-native';
 import HapticFeedback, {
   HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
-import { ActivityIndicator, Chip, Text, useTheme } from 'react-native-paper';
+import { Chip, Text, useTheme } from 'react-native-paper';
 import useSWR from 'swr';
 import { useAppSelector } from '../hook/reduxHooks';
 import { selectUser } from '../redux/slices/user';
 import type { Main } from '../types/userDetail';
 import { toReadableDate } from '../utils/toReadableDate';
 
-export const UserAttrs = () => {
+export const UserAttrs = ({ style }: {
+  style?: StyleProp<ViewStyle>
+}) => {
   const appTheme = useTheme();
   const user = useAppSelector(selectUser);
 
   const { data, error, isLoading, isValidating } = useSWR<Main>(
-    `https://music.163.com/api/v1/user/detail/${user.id}`
+    `https://music.163.com/api/v1/user/detail/${user.id}`,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false
+    }
   );
 
   const unlimited = useMemo(() => (
@@ -25,10 +39,14 @@ export const UserAttrs = () => {
 
   if (isLoading || isValidating) {
     return (
-      <ActivityIndicator
-        size="large"
-        style={styles.loading}
-      />
+      <View style={style}>
+        <Text style={[
+          styles.loading,
+          { color: appTheme.colors.outline }
+        ]}>
+          Loading...
+        </Text>
+      </View>
     );
   }
 
@@ -44,7 +62,7 @@ export const UserAttrs = () => {
   }
 
   return (
-    <View style={styles.attrRow}>
+    <View style={[styles.attrRow, style]}>
       {unlimited?.gender && (
         <Chip icon="account" compact style={styles.attr} key="gender">
           {data?.profile.gender === 1 ? 'Male' : 'Female'}
@@ -114,6 +132,7 @@ const styles = StyleSheet.create({
   },
   loading: {
     marginTop: '7%',
+    textAlign: 'center',
   },
   errTxt: {
     textAlign: 'center',

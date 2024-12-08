@@ -19,6 +19,7 @@ import { UserAttrs } from '../components/UserAttrs';
 import { UserBackground, UserInfo } from '../components/UserHeader';
 import { useAppSelector } from '../hook';
 import { favs, selectPlaylists, selectUser } from '../redux/slices';
+import { BlurBackground } from '../components/BlurBackground';
 
 export const UserDetail = () => {
   const navigation = useNavigation();
@@ -105,56 +106,56 @@ export const UserDetail = () => {
     </UserBackground>
   ), [insets.top, navigation, user.id]);
 
+  const renderListHeader = useCallback(() => (
+    <>
+      <UserAttrs style={[
+        styles.attrs, {
+          marginTop: height * 0.1,
+        }
+      ]} />
+      <List.Subheader style={{
+        color: appTheme.colors.secondary
+      }}>
+        {playlists.length ? 'Playlists' : null}
+      </List.Subheader>
+
+      {favorites.length >= 1 && (
+        <PlaylistCover
+          artwork={favorites[0].artwork}
+          description={`${favorites[0].title}\n${favorites[0].artist}`}
+          length={favorites.length}
+          name="Favorites"
+          onPress={() => {
+            //@ts-expect-error
+            navigation.navigate('DrawerNavi', {
+              screen: 'Favorites',
+            });
+          }}
+        />
+      )}
+    </>
+  ), [appTheme.colors.secondary, favorites, height, navigation, playlists.length]);
+
   return (
     <Portal.Host>
-      <ScrollViewWithHeaders
-        // absoluteHeader
-        largeHeaderContainerStyle={{
-          height: height * 0.35,
-        }}
-        HeaderComponent={renderHeader}
-        LargeHeaderComponent={renderLargeHeader}
-        overScrollMode="never"
-        scrollToOverflowEnabled={false}
-        style={styles.root}
-        contentInset={{ top: 0 }}
-      >
-        <View style={styles.attrs}>
-          <UserAttrs />
-        </View>
-
-        <FlashList
-          data={playlists}
-          renderItem={renderPlaylist}
-          estimatedItemSize={92}
-          ListHeaderComponent={
-            <>
-              <List.Subheader style={{
-                color: appTheme.colors.secondary
-              }}>
-                {playlists.length ? 'Playlists' : null}
-              </List.Subheader>
-
-              {favorites.length >= 1 && (
-                <PlaylistCover
-                  artwork={favorites[0].artwork}
-                  description={`${favorites[0].title}\n${favorites[0].artist}`}
-                  length={favorites.length}
-                  name="Favorites"
-                  onPress={() => {
-                    //@ts-expect-error
-                    navigation.navigate('DrawerNavi', {
-                      screen: 'Favorites',
-                    });
-                  }}
-                />
-              )}
-            </>
-          }
-        />
-
-        <PoweredBy />
-      </ScrollViewWithHeaders>
+      <BlurBackground>
+        <ScrollViewWithHeaders
+          HeaderComponent={renderHeader}
+          LargeHeaderComponent={renderLargeHeader}
+          overScrollMode="never"
+          scrollToOverflowEnabled={false}
+          style={styles.root}
+          contentInset={insets}
+        >
+          <FlashList
+            data={playlists}
+            renderItem={renderPlaylist}
+            estimatedItemSize={92}
+            ListHeaderComponent={renderListHeader}
+          />
+          <PoweredBy />
+        </ScrollViewWithHeaders>
+      </BlurBackground>
     </Portal.Host>
   );
 };
@@ -163,19 +164,8 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
   },
-  background: {
-    height: '80%',
-  },
   attrs: {
-    marginVertical: '3%',
-  },
-  smallHeaderLeft: {
-    width: 'auto',
-    paddingRight: 0,
-  },
-  headerTitle: {
-    textAlign: 'left',
-    justifyContent: 'flex-start',
+    marginBottom: '3%',
   },
   row: {
     flexDirection: 'row',
