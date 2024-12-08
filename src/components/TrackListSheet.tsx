@@ -1,13 +1,18 @@
 import {
   BottomSheetFlashList,
+  BottomSheetFooter,
+  type BottomSheetFooterProps,
   type BottomSheetModal
 } from '@gorhom/bottom-sheet';
 import React, { useCallback, useEffect } from 'react';
-import { DeviceEventEmitter, StyleSheet } from 'react-native';
-import { List } from 'react-native-paper';
+import { DeviceEventEmitter, StyleSheet, View } from 'react-native';
+import HapticFeedback, {
+  HapticFeedbackTypes,
+} from 'react-native-haptic-feedback';
+import { FAB, List, Tooltip } from 'react-native-paper';
 import TrackPlayer from 'react-native-track-player';
 import { useAppDispatch, useAppSelector } from '../hook';
-import { queue, setQueue } from '../redux/slices';
+import { queue, setQueue, setQueueAsync } from '../redux/slices';
 import { TrackType } from '../services/GetTracksService';
 import type { ListLRProps } from '../types/paperListItem';
 import { BottomSheetPaper } from './BottomSheetPaper';
@@ -69,8 +74,33 @@ export function TrackListSheet({ bottomSheetRef }: {
     (item: TrackType) => item.id.toString(), []
   );
 
+  const renderFooter = useCallback((props: BottomSheetFooterProps) => (
+    <BottomSheetFooter {...props}>
+      <View style={styles.footer}>
+        <Tooltip title="Shuffle queue">
+          <FAB
+            icon="shuffle"
+            visible={tracks.length >= 2}
+            variant="surface"
+            onPress={() => {
+              HapticFeedback.trigger(HapticFeedbackTypes.effectClick);
+
+              const shuffledQueue = [...tracks].sort(() => (
+                0.5 - Math.random()
+              ));
+              dispatch(setQueueAsync(shuffledQueue));
+            }}
+          />
+        </Tooltip>
+      </View>
+    </BottomSheetFooter>
+  ), [tracks, dispatch]);
+
   return (
-    <BottomSheetPaper ref={bottomSheetRef}>
+    <BottomSheetPaper
+      ref={bottomSheetRef}
+      footer={renderFooter}
+    >
       <BottomSheetFlashList
         showsVerticalScrollIndicator={false}
         keyExtractor={keyExtractor}
@@ -86,5 +116,11 @@ export function TrackListSheet({ bottomSheetRef }: {
 const styles = StyleSheet.create({
   noTrack: {
     marginHorizontal: '4%',
+  },
+  footer: {
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'flex-end',
+    margin: '4%',
   }
 });
