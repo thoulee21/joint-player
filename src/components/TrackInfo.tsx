@@ -3,13 +3,13 @@ import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
 import React, { useCallback, useMemo, useState } from 'react';
 import {
-  Dimensions,
   ImageBackground,
   ScrollView,
   StyleSheet,
   ToastAndroid,
   TouchableWithoutFeedback,
-  View,
+  useWindowDimensions,
+  View
 } from 'react-native';
 import HapticFeedback, {
   HapticFeedbackTypes,
@@ -39,7 +39,7 @@ export const placeholderImg = 'https://picsum.photos/800';
 export const TrackInfo = () => {
   const navigation = useNavigation();
   const appTheme = useTheme();
-  const window = Dimensions.get('window');
+  const window = useWindowDimensions();
 
   const [visible, setVisible] = useState(false);
   const showDialog = useCallback(() => setVisible(true), []);
