@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
 import React, { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Avatar, IconButton, Searchbar, Tooltip, useTheme } from 'react-native-paper';
@@ -16,6 +17,7 @@ import type { Main as UserMain } from '../types/userDetail';
 export const SwitchUser = () => {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
+  const { t } = useTranslation();
   const appTheme = useTheme();
 
   const currentUser = useAppSelector(selectUser);
@@ -41,7 +43,7 @@ export const SwitchUser = () => {
             }}
           />
         )}
-        <Tooltip title={data?.profile.nickname || 'No username'}>
+        <Tooltip title={data?.profile.nickname || t('switchUser.noUsername')}>
           <TouchableWithoutFeedback
             onPress={() => {
               HapticFeedback.trigger(
@@ -59,7 +61,7 @@ export const SwitchUser = () => {
         </Tooltip>
       </View>
     );
-  }, [data, error, isAvatarLoading, navigation, showQuery]);
+  }, [data?.profile.avatarUrl, data?.profile.nickname, error, isAvatarLoading, navigation, showQuery, t]);
 
   const search = useCallback(() => {
     if (showQuery && searchQuery !== showQuery) {
@@ -75,7 +77,7 @@ export const SwitchUser = () => {
             appTheme.colors.secondaryContainer
           ).fade(0.3).string(),
         }]}
-        placeholder="Search for a user"
+        placeholder={t('switchUser.placeholder')}
         placeholderTextColor={appTheme.dark
           ? appTheme.colors.onSurfaceDisabled
           : appTheme.colors.backdrop}
@@ -95,10 +97,12 @@ export const SwitchUser = () => {
 
       {searchQuery
         ? <UserList searchQuery={searchQuery} />
-        : <LottieAnimation
-          caption="Login to use your custom settings"
-          animation="rocket"
-        />}
+        : (
+          <LottieAnimation
+            caption={t('switchUser.caption')}
+            animation="rocket"
+          />
+        )}
     </BlurBackground>
   );
 };

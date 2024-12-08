@@ -1,6 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
 import React, { useCallback, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Searchbar, useTheme } from 'react-native-paper';
@@ -14,6 +15,7 @@ import { addSearchHistory, selectSearchHistory } from '../redux/slices/searchHis
 export const Search = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const appTheme = useTheme();
   const searchRef = useRef(null);
@@ -41,7 +43,7 @@ export const Search = () => {
     <BlurBackground style={{ paddingTop: insets.top }}>
       <Searchbar
         ref={searchRef}
-        placeholder={placeholder || 'Search for songs'}
+        placeholder={placeholder || t('search.placeholder')}
         placeholderTextColor={appTheme.dark
           ? appTheme.colors.onSurfaceDisabled
           : appTheme.colors.backdrop}

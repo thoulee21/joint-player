@@ -1,6 +1,7 @@
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import Color from 'color';
 import React, { useCallback, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, ToastAndroid } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Searchbar, useTheme } from 'react-native-paper';
@@ -11,6 +12,7 @@ import { SearchHistoryList } from '../components/SearchHistoryList';
 
 export const SearchPlaylist = () => {
   const navigation = useNavigation();
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const appTheme = useTheme();
   const searchRef = useRef(null);
@@ -26,7 +28,7 @@ export const SearchPlaylist = () => {
     <BlurBackground style={{ paddingTop: insets.top }}>
       <Searchbar
         ref={searchRef}
-        placeholder="Search for playlist"
+        placeholder={t('searchPlaylist.placeholder')}
         placeholderTextColor={appTheme.dark
           ? appTheme.colors.onSurfaceDisabled
           : appTheme.colors.backdrop}
@@ -55,7 +57,7 @@ export const SearchPlaylist = () => {
             //@ts-expect-error
             searchRef.current?.focus();
             ToastAndroid.show(
-              'Please enter a keyword',
+              t('searchPlaylist.enterKeyword'),
               ToastAndroid.SHORT
             );
           }

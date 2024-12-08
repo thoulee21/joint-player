@@ -1,5 +1,6 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useCallback, useLayoutEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import Markdown from 'react-native-marked';
 import { IconButton, Tooltip, useTheme } from 'react-native-paper';
@@ -11,6 +12,7 @@ import type { Main } from '../types/latestRelease';
 export const ChangeLog = () => {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
+  const { t } = useTranslation();
   const appTheme = useTheme();
 
   const params = useRoute().params as { version?: string };
@@ -31,11 +33,11 @@ export const ChangeLog = () => {
           // @ts-expect-error
           navigation.navigate('WebView', {
             url: data?.html_url || packageData.homepage,
-            title: data?.tag_name || 'Changelog',
+            title: data?.tag_name || t('about.changelog.title'),
           });
         }}
       />
-      <Tooltip title="Release tags">
+      <Tooltip title={t('changeLog.appbar.releaseTags')}>
         <IconButton
           icon="tag-outline"
           onPress={() => {
@@ -52,7 +54,7 @@ export const ChangeLog = () => {
         />
       )}
     </View>
-  ), [data, error, isLoading, mutate, navigation]);
+  ), [data?.html_url, data?.tag_name, error, isLoading, mutate, navigation, t]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -66,7 +68,7 @@ export const ChangeLog = () => {
       value={data?.body
         || error?.message
         || (isLoading && 'Loading...')
-        || 'No changelog found'}
+        || t('changeLog.notFound')}
       flatListProps={{
         contentContainerStyle: [styles.md, {
           backgroundColor: appTheme.colors.surface,

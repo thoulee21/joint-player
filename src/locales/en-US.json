@@ -106,5 +106,28 @@
       "title": "Failed to load lyrics"
     },
     "notFound": "No lyrics found"
+  },
+  "search": {
+    "placeholder": "Search for songs"
+  },
+  "searchPlaylist": {
+    "placeholder": "Search for playlist",
+    "enterKeyword": "Please enter a keyword"
+  },
+  "switchUser": {
+    "placeholder": "Search for a user",
+    "noUsername": "No username",
+    "caption": "Login to use your custom settings"
+  },
+  "webview": {
+    "appbar": {
+      "openInBrowser": "Open in Browser"
+    }
+  },
+  "changeLog": {
+    "appbar": {
+      "releaseTags": "Release tags"
+    },
+    "notFound": "No changelog found"
   }
 }

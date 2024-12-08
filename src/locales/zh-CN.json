@@ -106,5 +106,28 @@
     "cellular": {
       "toast": "在蜂窝数据上播放MV可能会消耗大量数据"
     }
+  },
+  "changeLog": {
+    "appbar": {
+      "releaseTags": "发布标签"
+    },
+    "notFound": "未找到更改日志"
+  },
+  "searchPlaylist": {
+    "placeholder": "搜索播放列表",
+    "enterKeyword": "请输入关键字"
+  },
+  "switchUser": {
+    "noUsername": "没有用户名",
+    "placeholder": "搜索用户",
+    "caption": "登录以使用您的自定义设置"
+  },
+  "webview": {
+    "appbar": {
+      "openInBrowser": "在浏览器中打开"
+    }
+  },
+  "search": {
+    "placeholder": "搜索歌曲"
   }
 }
