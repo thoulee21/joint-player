@@ -10,6 +10,7 @@ import { TrackInfoBar } from '../components/TrackInfoBar';
 import { TrackMenu } from '../components/TrackMenu';
 import { Main as LyricMain } from '../types/lyrics';
 import { CommentsMenu } from './CommentsMenu';
+import { DownloadMenu } from './DownloadMenu';
 import { MvMenu } from './MvMenu';
 
 export const TranslateContext = createContext<{
@@ -52,6 +53,7 @@ export const LyricsContainer = ({ children }: PropsWithChildren) => {
       <TrackMenu>
         <MvMenu />
         <CommentsMenu />
+        <DownloadMenu />
       </TrackMenu>
     </View>
   ), [TranslateToggle]);

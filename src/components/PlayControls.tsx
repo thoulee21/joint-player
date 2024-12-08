@@ -3,11 +3,12 @@ import React, { useCallback, useEffect } from 'react';
 import { StyleSheet, ToastAndroid, View } from 'react-native';
 import TrackPlayer, { usePlaybackState } from 'react-native-track-player';
 import { BackwardButton } from './BackwardButton';
+import { DownloadMenu } from './DownloadMenu';
 import { ForwardButton } from './ForwardButton';
+import { MvMenu } from './MvMenu';
 import { PlayButton } from './PlayPauseButton';
 import { RepeatModeSwitch } from './RepeatModeSwitch';
 import { TrackMenu } from './TrackMenu';
-import { MvMenu } from './MvMenu';
 
 export function PlayControls() {
   const { netInfo } = useNetInfoInstance();
@@ -42,6 +43,7 @@ export function PlayControls() {
         <ForwardButton />
         <TrackMenu>
           <MvMenu />
+          <DownloadMenu />
         </TrackMenu>
       </View>
     </View>
