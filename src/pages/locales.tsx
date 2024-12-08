@@ -1,5 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useLayoutEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import { Button, RadioButton } from 'react-native-paper';
 import { useAppDispatch, useAppSelector } from '../hook';
@@ -8,6 +9,7 @@ import { selectLocale, setLocale, type Languages } from '../redux/slices';
 export const LocalesScreen = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
+  const { t } = useTranslation();
 
   const locale = useAppSelector(selectLocale);
   const [lng, setLng] = useState(locale);
@@ -26,10 +28,10 @@ export const LocalesScreen = () => {
           navigation.goBack();
         }}
       >
-        Save
+        {t('locales.save')}
       </Button>
     );
-  }, [dispatch, lng, navigation]);
+  }, [dispatch, lng, navigation, t]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -45,7 +47,7 @@ export const LocalesScreen = () => {
       value={lng}
     >
       <RadioButton.Item
-        label="System default"
+        label={t('locales.system')}
         value="locale"
         position="leading"
         labelStyle={styles.label}

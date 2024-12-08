@@ -89,5 +89,9 @@
     "error": {
       "caption": "稍后尝试刷新"
     }
+  },
+  "locales": {
+    "save": "保存",
+    "system": "系统默认值"
   }
 }

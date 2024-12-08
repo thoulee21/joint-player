@@ -89,5 +89,9 @@
     "error": {
       "caption": "Try to refresh later"
     }
+  },
+  "locales": {
+    "system": "System default",
+    "save": "Save"
   }
 }
