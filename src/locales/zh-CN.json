@@ -21,6 +21,49 @@
         "label": "跳转"
       },
       "caption": "开发人员选项已启用！"
+    },
+    "version": {
+      "title": "版本"
+    },
+    "update": {
+      "alert": {
+        "available": {
+          "title": "可用更新信息"
+        },
+        "current": {
+          "title": "当前更新信息"
+        }
+      },
+      "dialog": {
+        "actions": {
+          "cancel": "取消",
+          "update": "更新"
+        },
+        "ask": "您想现在更新吗？",
+        "caption": "在｛｛date｝｝创建的新更新可用。",
+        "title": "更新可用"
+      },
+      "listItem": {
+        "description": {
+          "lastCheck": "上次检查时间：",
+          "never": "从未",
+          "isDownloading": "正在下载更新。。。",
+          "isChecking": "正在检查更新。。。",
+          "isUpdatePending": "更新正在等待中。。。"
+        },
+        "title": "检查更新"
+      },
+      "toast": {
+        "check": {
+          "error": {
+            "msg": "检查更新时出错"
+          },
+          "notAvaliable": {
+            "msg": "没有可用更新"
+          }
+        },
+        "error": "更新应用程序时出错："
+      }
     }
   },
   "releaseTags": {

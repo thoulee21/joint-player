@@ -21,6 +21,49 @@
           "download": "Download"
         }
       }
+    },
+    "version": {
+      "title": "Version"
+    },
+    "update": {
+      "alert": {
+        "available": {
+          "title": "Available update info"
+        },
+        "current": {
+          "title": "Current update info"
+        }
+      },
+      "toast": {
+        "error": "Error updating app:",
+        "check": {
+          "notAvaliable": {
+            "msg": "No updates available"
+          },
+          "error": {
+            "msg": "Error checking for updates"
+          }
+        }
+      },
+      "listItem": {
+        "description": {
+          "isDownloading": "Downloading update...",
+          "isUpdatePending": "Update is pending...",
+          "isChecking": "Checking for updates...",
+          "lastCheck": "Last checked: ",
+          "never": "Never"
+        },
+        "title": "Check for updates"
+      },
+      "dialog": {
+        "title": "Update available",
+        "actions": {
+          "cancel": "Cancel",
+          "update": "Update"
+        },
+        "caption": "New update created at {{date}} is available.\n",
+        "ask": "Do you want to update now?"
+      }
     }
   },
   "releaseTags": {

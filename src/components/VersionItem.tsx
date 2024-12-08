@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Platform } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { List } from 'react-native-paper';
@@ -13,6 +14,8 @@ export const VersionItem = ({ showDevSnackbar }: {
     showDevSnackbar: () => void
 }) => {
     const dispatch = useAppDispatch();
+    const { t } = useTranslation();
+
     const devModeEnabled = useAppSelector(selectDevModeEnabled);
     const [hitCount, setHitCount] = useState(0);
 
@@ -38,7 +41,7 @@ export const VersionItem = ({ showDevSnackbar }: {
 
     return (
         <List.Item
-            title="Version"
+            title={t('about.version.title')}
             description={versionText}
             left={renderPlatformIcon}
             onPress={handleDevMode}

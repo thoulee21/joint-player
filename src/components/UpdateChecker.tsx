@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Alert,
   DeviceEventEmitter,
@@ -35,6 +36,8 @@ const USER_REPO = packageData.homepage
 
 export const UpdateChecker = () => {
   const appTheme = useTheme();
+  const { t } = useTranslation();
+
   const isDev = useAppSelector(selectDevModeEnabled);
   const [
     dialogVisible,
@@ -69,21 +72,21 @@ export const UpdateChecker = () => {
 
       if (availableUpdate) {
         Alert.alert(
-          'Available update info',
+          t('about.update.alert.available.title'),
           JSON.stringify(
             availableUpdate, null, 2
           )
         );
       } else {
         Alert.alert(
-          'Current update info',
+          t('about.update.alert.current.title'),
           JSON.stringify(
             currentlyRunning, null, 2
           )
         );
       }
     }
-  }, [availableUpdate, currentlyRunning, isDev]);
+  }, [availableUpdate, currentlyRunning, isDev, t]);
 
   const fetchUpdateAndRestart = async () => {
     try {
@@ -92,7 +95,7 @@ export const UpdateChecker = () => {
     } catch (err) {
       rootLog.error(err);
       ToastAndroid.show(
-        `Error updating app: ${JSON.stringify(err)}`,
+        t('about.update.toast.error') + JSON.stringify(err),
         ToastAndroid.LONG
       );
     }
@@ -106,14 +109,14 @@ export const UpdateChecker = () => {
         showUpdateDialog();
       } else {
         ToastAndroid.show(
-          'No updates available',
+          t('about.update.toast.check.notAvaliable.msg'),
           ToastAndroid.SHORT
         );
       }
     } catch (err) {
       rootLog.error(err);
       ToastAndroid.show(
-        'Error checking for updates',
+        t('about.update.toast.check.error.msg'),
         ToastAndroid.SHORT
       );
     }
@@ -123,16 +126,15 @@ export const UpdateChecker = () => {
     isUpdatePending ? showUpdateDialog : checkForUpdate
   ) : () => {
     DeviceEventEmitter.emit('newReleaseAvailable');
-    rootLog.debug('New release available:', latestRelease);
   };
 
   const description = isDownloading
-    ? 'Downloading update...'
+    ? t('about.update.listItem.description.isDownloading')
     : isUpdatePending
-      ? 'Update is pending...'
+      ? t('about.update.listItem.description.isUpdatePending')
       : isChecking
-        ? 'Checking for updates...'
-        : `Last checked: ${lastCheck?.toLocaleString() || 'Never'}`;
+        ? t('about.update.listItem.description.isChecking')
+        : t('about.update.listItem.description.lastCheck') + lastCheck?.toLocaleString() || t('about.update.listItem.description.never');
 
   const renderUpdateIcon = useCallback((props: any) => {
     const updateIcon = isUpdatePending
@@ -158,7 +160,7 @@ export const UpdateChecker = () => {
   return (
     <>
       <List.Item
-        title="Check for updates"
+        title={t('about.update.listItem.title')}
         description={description}
         onPress={handleUpdatePress}
         onLongPress={showCurrent}
@@ -173,20 +175,24 @@ export const UpdateChecker = () => {
           onDismiss={() => setDialogVisible(false)}
         >
           <Dialog.Icon icon="information" size={40} />
-          <Dialog.Title>Update available</Dialog.Title>
+          <Dialog.Title>{t('about.update.dialog.title')}</Dialog.Title>
           <Dialog.Content>
             <Text>
               {availableUpdate?.createdAt
-                && `New update created at ${availableUpdate?.createdAt.toLocaleString()} is available.\n`}
-              Do you want to update now?
-            </Text>
+                && t(
+                  'about.update.dialog.caption',
+                  { date: availableUpdate.createdAt.toLocaleString() }
+                )}
+              {t('about.update.dialog.ask')} </Text>
           </Dialog.Content>
 
           <Dialog.Actions>
             <Button
               textColor={appTheme.colors.outline}
               onPress={() => setDialogVisible(false)}
-            >Cancel</Button>
+            >
+              {t('about.update.dialog.actions.cancel')}
+            </Button>
 
             <Button
               onPress={
@@ -194,7 +200,9 @@ export const UpdateChecker = () => {
                   ? () => RNRestart.Restart()
                   : fetchUpdateAndRestart
               }
-            >Update</Button>
+            >
+              {t('about.update.dialog.actions.update')}
+            </Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
