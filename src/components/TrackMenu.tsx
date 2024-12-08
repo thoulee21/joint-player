@@ -1,17 +1,32 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  type PropsWithChildren,
+} from 'react';
 import { StatusBar } from 'react-native';
 import HapticFeedback, {
   HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
 import { IconButton, Menu } from 'react-native-paper';
-import { CommentsMenu } from './CommentsMenu';
-import { MvMenu } from './MvMenu';
 
-export function TrackMenu(props: any) {
+const MenuContext = createContext<{
+  onPostPressed: () => void;
+  navigation: any;
+}>({
+  onPostPressed: () => { },
+  navigation: null,
+});
+
+export const useMenuContext = () => {
+  return useContext(MenuContext);
+};
+
+export function TrackMenu(props: PropsWithChildren) {
   const navigation = useNavigation();
-
   const [visible, setVisible] = useState(false);
+
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
 
@@ -35,14 +50,12 @@ export function TrackMenu(props: any) {
         />
       }
     >
-      <MvMenu
-        onPostPressed={closeMenu}
-        navigation={navigation}
-      />
-      <CommentsMenu
-        onPostPressed={closeMenu}
-        navigation={navigation}
-      />
+      <MenuContext.Provider value={{
+        onPostPressed: closeMenu,
+        navigation
+      }}>
+        {props.children}
+      </MenuContext.Provider>
     </Menu>
   );
 }

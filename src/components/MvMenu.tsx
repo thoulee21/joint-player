@@ -1,11 +1,11 @@
 import React from 'react';
 import { Menu } from 'react-native-paper';
 import { useActiveTrack } from 'react-native-track-player';
+import { useMenuContext } from './TrackMenu';
 
-export function MvMenu({ onPostPressed, navigation }:
-  { onPostPressed: () => void, navigation: any }
-) {
+export function MvMenu() {
   const track = useActiveTrack();
+  const { onPostPressed, navigation } = useMenuContext();
 
   const disabled =
     track?.mvid === 0
@@ -16,8 +16,8 @@ export function MvMenu({ onPostPressed, navigation }:
       title="Music Video"
       leadingIcon="video-outline"
       disabled={disabled}
-      onPress={async () => {
-        navigation.navigate('MvDetail');
+      onPress={() => {
+        navigation.navigate('MvDetail' as never);
         onPostPressed();
       }}
     />

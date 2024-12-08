@@ -9,6 +9,8 @@ import { BlurBackground } from '../components/BlurBackground';
 import { TrackInfoBar } from '../components/TrackInfoBar';
 import { TrackMenu } from '../components/TrackMenu';
 import { Main as LyricMain } from '../types/lyrics';
+import { CommentsMenu } from './CommentsMenu';
+import { MvMenu } from './MvMenu';
 
 export const TranslateContext = createContext<{
   translated: boolean;
@@ -44,10 +46,13 @@ export const LyricsContainer = ({ children }: PropsWithChildren) => {
     />
   ), [translated, lyric, toggleTranslate]);
 
-  const RightButtons = useCallback(() => (
+  const renderRightButtons = useCallback(() => (
     <View style={styles.row}>
       <TranslateToggle />
-      <TrackMenu />
+      <TrackMenu>
+        <MvMenu />
+        <CommentsMenu />
+      </TrackMenu>
     </View>
   ), [TranslateToggle]);
 
@@ -61,7 +66,7 @@ export const LyricsContainer = ({ children }: PropsWithChildren) => {
           { paddingTop: insets.top }
         ]}>
         <TrackInfoBar
-          right={RightButtons}
+          right={renderRightButtons}
         />
         {children}
       </BlurBackground>

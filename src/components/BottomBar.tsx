@@ -8,6 +8,7 @@ import HapticFeedback, {
 import { Appbar } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useActiveTrack } from 'react-native-track-player';
+import { CommentsButton } from './CommentsButton';
 
 export const BottomBar = ({ bottomSheetRef }:
   { bottomSheetRef: RefObject<BottomSheetModal> }
@@ -23,18 +24,7 @@ export const BottomBar = ({ bottomSheetRef }:
       statusBarHeight={0}
       safeAreaInsets={{ ...insets, top: 0 }}
     >
-      <Appbar.Action
-        icon="video-outline"
-        disabled={track?.mvid === 0
-          || typeof track?.mvid === 'undefined'}
-        onPress={() => {
-          HapticFeedback.trigger(
-            HapticFeedbackTypes.effectHeavyClick
-          );
-          // @ts-ignore
-          navigation.push('MvDetail');
-        }}
-      />
+      <CommentsButton />
       <Appbar.Content
         title={track?.album || 'No Album'}
         titleStyle={styles.bottomTitle}
