@@ -105,6 +105,7 @@ export function TrackListSheet({ bottomSheetRef }: {
         showsVerticalScrollIndicator={false}
         keyExtractor={keyExtractor}
         data={tracks}
+        fadingEdgeLength={30}
         ListEmptyComponent={renderEmptyTrack}
         estimatedItemSize={96}
         renderItem={renderTrack}
