@@ -1,20 +1,29 @@
 import {
   BottomSheetBackdrop,
   type BottomSheetBackdropProps,
+  type BottomSheetFooterProps,
   BottomSheetModal,
   BottomSheetModalProvider,
   useBottomSheetSpringConfigs
 } from '@gorhom/bottom-sheet';
-import React, { forwardRef, PropsWithChildren, useCallback } from 'react';
+import React, {
+  forwardRef,
+  PropsWithChildren,
+  useCallback,
+} from 'react';
 import { useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Handle from './AniSheetHandle';
 
 export const BottomSheetPaper = forwardRef<
-  BottomSheetModal, PropsWithChildren
->((
-  { children }, ref
-) => {
+  BottomSheetModal,
+  PropsWithChildren<{
+    footer?: (props: BottomSheetFooterProps) => React.ReactNode
+  }>
+>(({
+  children,
+  footer
+}, ref) => {
   const appTheme = useTheme();
   const insets = useSafeAreaInsets();
 
@@ -56,6 +65,7 @@ export const BottomSheetPaper = forwardRef<
         backgroundStyle={{
           backgroundColor: appTheme.colors.surface,
         }}
+        footerComponent={footer}
       >
         {children}
       </BottomSheetModal>
