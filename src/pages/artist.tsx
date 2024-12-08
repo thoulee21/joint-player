@@ -1,5 +1,6 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { ActivityIndicator, Appbar, Text, useTheme } from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
@@ -11,6 +12,7 @@ import { Artist as ArtistType, Main } from '../types/albumArtist';
 export function Artist() {
   const appTheme = useTheme();
   const navigation = useNavigation();
+  const { t } = useTranslation();
 
   const { artist } = (useRoute().params as { artist: ArtistType });
   const { data, error, mutate } = useSWRInfinite<Main>((index) =>
@@ -28,7 +30,7 @@ export function Artist() {
 
         <LottieAnimation
           animation="breathe"
-          caption="Try to refresh later"
+          caption={t('artist.error.caption')}
         >
           <Text style={[
             styles.error,

@@ -1,6 +1,7 @@
 import Clipboard from '@react-native-clipboard/clipboard';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useLayoutEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Animated, RefreshControl, StyleSheet, ToastAndroid } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { ActivityIndicator, IconButton, List, useTheme } from 'react-native-paper';
@@ -12,6 +13,7 @@ import type { Main } from '../types/releaseTags';
 export const ReleaseTags = () => {
   const navigation = useNavigation();
   const appTheme = useTheme();
+  const { t } = useTranslation();
 
   const userRepo = packageData.homepage.split('/').slice(-2).join('/');
   const {
@@ -66,13 +68,13 @@ export const ReleaseTags = () => {
           HapticFeedback.trigger(HapticFeedbackTypes.effectTick);
           Clipboard.setString(item.commit.sha);
           ToastAndroid.show(
-            'SHA copied to clipboard',
+            t('releaseTags.list.copy.toast'),
             ToastAndroid.SHORT
           );
         }}
       />
     );
-  }, [navigation, renderReleaseTagIcon, renderRight]);
+  }, [navigation, renderReleaseTagIcon, renderRight, t]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -83,7 +85,7 @@ export const ReleaseTags = () => {
   if (error) {
     return (
       <List.Item
-        title="Error fetching data"
+        title={t('releaseTags.list.error.title')}
         description={error.message}
         onPress={() => mutate()}
       />
@@ -113,8 +115,8 @@ export const ReleaseTags = () => {
         />
       ) : (
         <List.Item
-          title="No data"
-          description="No data available"
+          title={t('releaseTags.list.empty.title')}
+          description={t('releaseTags.list.empty.description')}
         />
       )}
     />

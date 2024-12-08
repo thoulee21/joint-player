@@ -22,5 +22,29 @@
         }
       }
     }
+  },
+  "releaseTags": {
+    "list": {
+      "copy": {
+        "toast": "SHA copied to clipboard"
+      },
+      "error": {
+        "title": "Error fetching data"
+      },
+      "empty": {
+        "title": "No data",
+        "description": "No data available"
+      }
+    }
+  },
+  "stack": {
+    "aniGallery": "Animation Gallery",
+    "releaseTags": "Release Tags",
+    "locales": "Change Language"
+  },
+  "artist": {
+    "error": {
+      "caption": "Try to refresh later"
+    }
   }
 }

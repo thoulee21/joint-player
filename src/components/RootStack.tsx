@@ -5,6 +5,7 @@ import {
   createStackNavigator
 } from '@react-navigation/stack';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import {
@@ -47,6 +48,8 @@ const screenOptions: StackNavigationOptions = {
 
 export function RootStack() {
   const appTheme = useTheme();
+  const { t } = useTranslation();
+
   return (
     <View style={[styles.rootView, {
       // to avoid white flash when switching between screens
@@ -64,7 +67,7 @@ export function RootStack() {
         <Stack.Screen name="AppData" component={AppDataScreen} options={{ headerShown: true }} />
         <Stack.Screen name="AniGallery" component={AniGallery} options={{
           headerShown: true,
-          title: 'Animation Gallery',
+          title: t('stack.aniGallery'),
         }} />
         <Stack.Screen name="Test" component={TestScreen} options={{ headerShown: true }} />
         <Stack.Screen name="AlbumDetail" component={AlbumDetail} />
@@ -77,11 +80,11 @@ export function RootStack() {
         <Stack.Screen name="ChangeLog" component={ChangeLog} options={{ headerShown: true }} />
         <Stack.Screen name="ReleaseTags" component={ReleaseTags} options={{
           headerShown: true,
-          title: 'Release Tags',
+          title: t('stack.releaseTags'),
         }} />
         <Stack.Screen name="Locales" component={LocalesScreen} options={{
           headerShown: true,
-          title: 'Change Language',
+          title: t('stack.locales'),
         }} />
 
         <Stack.Group screenOptions={TransitionPresets.ModalPresentationIOS}>

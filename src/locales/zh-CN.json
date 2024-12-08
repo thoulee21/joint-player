@@ -22,5 +22,29 @@
       },
       "caption": "开发人员选项已启用！"
     }
+  },
+  "releaseTags": {
+    "list": {
+      "copy": {
+        "toast": "SHA已复制到剪贴板"
+      },
+      "empty": {
+        "description": "无可用数据",
+        "title": "无数据"
+      },
+      "error": {
+        "title": "获取数据时出错"
+      }
+    }
+  },
+  "stack": {
+    "aniGallery": "动画画廊",
+    "releaseTags": "发布标签",
+    "locales": "更改语言"
+  },
+  "artist": {
+    "error": {
+      "caption": "稍后尝试刷新"
+    }
   }
 }
