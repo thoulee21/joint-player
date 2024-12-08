@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import { ActivityIndicator, List, useTheme } from 'react-native-paper';
 import { useActiveTrack, useProgress } from 'react-native-track-player';
@@ -14,6 +15,7 @@ import { Main as LyricMain } from '../types/lyrics';
 const OFFSET = 1000;
 
 function LyricsContent() {
+  const { t } = useTranslation();
   const appTheme = useTheme();
   const { translated } = useContext(TranslateContext);
 
@@ -29,10 +31,10 @@ function LyricsContent() {
     return (
       <LottieAnimation
         animation="breathe"
-        caption="Try again later"
+        caption={t('mvDetail.error')}
       >
         <List.Item
-          title="Failed to load lyrics"
+          title={t('lyrics.error.title')}
           titleStyle={[
             styles.center,
             { color: appTheme.colors.error },
@@ -58,7 +60,7 @@ function LyricsContent() {
     return (
       <LottieAnimation
         animation="teapot"
-        caption="No lyrics found"
+        caption={t('lyrics.notFound')}
       />
     );
   }

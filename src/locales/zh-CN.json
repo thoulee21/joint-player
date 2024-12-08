@@ -93,5 +93,18 @@
   "locales": {
     "save": "保存",
     "system": "系统默认值"
+  },
+  "lyrics": {
+    "notFound": "未找到歌词",
+    "error": {
+      "title": "无法加载歌词"
+    }
+  },
+  "mvDetail": {
+    "error": "请稍后再试",
+    "notFound": "没有可用的MV",
+    "cellular": {
+      "toast": "在蜂窝数据上播放MV可能会消耗大量数据"
+    }
   }
 }

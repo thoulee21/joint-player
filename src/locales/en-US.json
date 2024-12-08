@@ -93,5 +93,18 @@
   "locales": {
     "system": "System default",
     "save": "Save"
+  },
+  "mvDetail": {
+    "cellular": {
+      "toast": "Playing MV on cellular data may consume a lot of data"
+    },
+    "error": "Try again later",
+    "notFound": "No MV available"
+  },
+  "lyrics": {
+    "error": {
+      "title": "Failed to load lyrics"
+    },
+    "notFound": "No lyrics found"
   }
 }

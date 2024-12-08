@@ -1,6 +1,7 @@
 import { NetInfoStateType, useNetInfoInstance } from '@react-native-community/netinfo';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet, ToastAndroid, View } from 'react-native';
 import HapticFeedBack, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { ActivityIndicator, Appbar, Button, Portal, Text, useTheme } from 'react-native-paper';
@@ -56,6 +57,7 @@ export function MvDetail() {
   const navigation = useNavigation();
   const { netInfo } = useNetInfoInstance();
   const appTheme = useTheme();
+  const { t } = useTranslation();
 
   const track = useActiveTrack();
   const imgColor = useMvContext()?.imgColor;
@@ -84,7 +86,7 @@ export function MvDetail() {
 
     if (netInfo.type === NetInfoStateType.cellular) {
       ToastAndroid.show(
-        'Playing MV on cellular data may consume a lot of data',
+        t('mvDetail.cellular.toast'),
         ToastAndroid.LONG
       );
     }
@@ -114,7 +116,7 @@ export function MvDetail() {
         <MvAppbar />
         <LottieAnimation
           animation="breathe"
-          caption="Try again later"
+          caption={t('mvDetail.error')}
         >
           <Text style={[
             styles.center,
@@ -133,7 +135,7 @@ export function MvDetail() {
         <MvAppbar />
         <LottieAnimation
           animation="teapot"
-          caption="No MV available"
+          caption={t('mvDetail.notFound')}
         />
       </BlurBackground>
     );
