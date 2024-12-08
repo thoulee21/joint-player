@@ -3,6 +3,7 @@ import {
   type ScrollHeaderProps,
   type ScrollLargeHeaderProps
 } from '@codeherence/react-native-header';
+import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
 import { useWindowDimensions, View } from 'react-native';
 import { List, Portal, Snackbar, useTheme } from 'react-native-paper';
@@ -19,8 +20,10 @@ import { ExportDataItem } from '../components/ExportDataItem';
 import { ImportDataItem } from '../components/ImportDataItem';
 import { RippleEffectSwitch } from '../components/RippleEffectSwitch';
 import { ThemeColorIndicator } from '../components/ThemeColorIndicator';
+import type { ListLRProps } from '../types/paperListItem';
 
 export function Settings() {
+  const navigation = useNavigation();
   const window = useWindowDimensions();
   const appTheme = useTheme();
 
@@ -41,6 +44,18 @@ export function Settings() {
     <LargeHeaderComponent {...props} title="Settings" />
   ), []);
 
+  const renderLanguageIcon = useCallback((
+    props: ListLRProps
+  ) => (
+    <List.Icon {...props} icon="translate" />
+  ), []);
+
+  const renderRightIcon = useCallback((
+    props: ListLRProps
+  ) => (
+    <List.Icon {...props} icon="chevron-right" />
+  ), []);
+
   return (
     <ScrollViewWithHeaders
       HeaderComponent={renderHeader}
@@ -53,6 +68,15 @@ export function Settings() {
         }}
       >
         <ThemeColorIndicator />
+        <List.Item
+          title="Languages"
+          description="Change the app language"
+          left={renderLanguageIcon}
+          right={renderRightIcon}
+          onPress={() => {
+            navigation.navigate('Locales' as never);
+          }}
+        />
         <BlurRadiusSlider />
         <RippleEffectSwitch />
       </List.Section>

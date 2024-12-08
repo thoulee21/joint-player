@@ -17,6 +17,7 @@ import {
   Comments,
   DevScreen,
   IssueReport,
+  LocalesScreen,
   Logcat,
   LyricsScreen,
   MvDetail,
@@ -77,6 +78,10 @@ export function RootStack() {
         <Stack.Screen name="ReleaseTags" component={ReleaseTags} options={{
           headerShown: true,
           title: 'Release Tags',
+        }} />
+        <Stack.Screen name="Locales" component={LocalesScreen} options={{
+          headerShown: true,
+          title: 'Change Language',
         }} />
 
         <Stack.Group screenOptions={TransitionPresets.ModalPresentationIOS}>

@@ -1,0 +1,26 @@
+{
+  "about": {
+    "aboutList": {
+      "title": "关于此应用程序"
+    },
+    "changelog": {
+      "description": "查看发行说明",
+      "title": "变更日志"
+    },
+    "dialog": {
+      "release": {
+        "actions": {
+          "cancel": "不是现在",
+          "download": "下载"
+        },
+        "title": "新版本"
+      }
+    },
+    "snackBar": {
+      "action": {
+        "label": "跳转"
+      },
+      "caption": "开发人员选项已启用！"
+    }
+  }
+}

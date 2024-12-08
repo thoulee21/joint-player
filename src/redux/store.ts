@@ -13,12 +13,13 @@ import {
   darkModeSlice,
   devModeSlice,
   favsSlice,
+  localeSlice,
   playlistsSlice,
   queueSlice,
+  repeatModeSlice,
   rippleEffectsSlice,
   searchHistorySlice,
   userSlice,
-  repeatModeSlice,
 } from './slices';
 
 const rootReducers = combineReducers({
@@ -32,6 +33,7 @@ const rootReducers = combineReducers({
   searchHistory: searchHistorySlice.reducer,
   rippleEffect: rippleEffectsSlice.reducer,
   repeatMode: repeatModeSlice.reducer,
+  locale: localeSlice.reducer,
 });
 
 const persistedReducer = persistReducer(

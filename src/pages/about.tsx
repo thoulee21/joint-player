@@ -1,9 +1,24 @@
 import { ScrollViewWithHeaders } from '@codeherence/react-native-header';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { DeviceEventEmitter, Linking, StatusBar, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import {
+  DeviceEventEmitter,
+  Linking,
+  StatusBar,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+} from 'react-native';
 import Markdown from 'react-native-marked';
-import { Button, Dialog, List, Portal, Snackbar, useTheme } from 'react-native-paper';
+import {
+  Button,
+  Dialog,
+  List,
+  Portal,
+  Snackbar,
+  useTheme,
+} from 'react-native-paper';
 import useSWR from 'swr';
 import packageData from '../../package.json';
 import { AboutDialog } from '../components/AboutDialog';
@@ -21,6 +36,7 @@ export function AboutScreen() {
   const navigation = useNavigation();
   const window = useWindowDimensions();
   const appTheme = useTheme();
+  const { t } = useTranslation();
 
   const userRepo = packageData.homepage.split('/').slice(-2).join('/');
   const { data } = useSWR<Main>(`https://api.github.com/repos/${userRepo}/releases/latest`);
@@ -81,14 +97,13 @@ export function AboutScreen() {
       onDismiss={hideDevSnackbar}
       onIconPress={hideDevSnackbar}
       action={{
-        label: 'Jump',
+        label: t('about.snackBar.action.label'),
         //@ts-expect-error
         onPress: () => navigation.push('Dev'),
       }}
     >
-      Developer options enabled!
-    </Snackbar>
-  ), [devSnackbarVisible, navigation]);
+      {t('about.snackBar.caption')} </Snackbar>
+  ), [devSnackbarVisible, navigation, t]);
 
   return (
     <ScrollViewWithHeaders
@@ -104,8 +119,8 @@ export function AboutScreen() {
 
       <ContactMe />
       <List.Item
-        title="Changelog"
-        description="View release notes"
+        title={t('about.changelog.title')}
+        description={t('about.changelog.description')}
         right={renderRight}
         onPress={() => {
           // @ts-expect-error
@@ -117,7 +132,7 @@ export function AboutScreen() {
         }}
       />
       <List.Item
-        title="About This App"
+        title={t('about.aboutList.title')}
         onPress={showDialog}
       />
 
@@ -143,7 +158,9 @@ export function AboutScreen() {
           style={styles.dialog}
         >
           <Dialog.Icon icon="cloud-download" size={40} />
-          <Dialog.Title>New Release {latestRelease}</Dialog.Title>
+          <Dialog.Title>
+            {t('about.dialog.release.title')} {latestRelease}
+          </Dialog.Title>
 
           <Dialog.ScrollArea style={styles.smallPadding}>
             <Markdown
@@ -177,7 +194,7 @@ export function AboutScreen() {
                 setNewReleaseDialogVisible(false);
               }}
             >
-              Not now
+              {t('about.dialog.release.actions.cancel')}
             </Button>
 
             <Button
@@ -189,7 +206,7 @@ export function AboutScreen() {
                 );
               }}
             >
-              Download
+              {t('about.dialog.release.actions.download')}
             </Button>
           </Dialog.Actions>
         </Dialog>

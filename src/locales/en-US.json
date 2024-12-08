@@ -1,0 +1,26 @@
+{
+  "about": {
+    "snackBar": {
+      "action": {
+        "label": "Jump"
+      },
+      "caption": "Developer options enabled!"
+    },
+    "changelog": {
+      "title": "Changelog",
+      "description": "View release notes"
+    },
+    "aboutList": {
+      "title": "About This App"
+    },
+    "dialog": {
+      "release": {
+        "title": "New Release",
+        "actions": {
+          "cancel": "Not now",
+          "download": "Download"
+        }
+      }
+    }
+  }
+}
