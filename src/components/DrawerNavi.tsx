@@ -32,8 +32,8 @@ export function DrawerNavi() {
     <BlurBackground>
       <UserBackground>
         <UserInfo />
-        <DrawerItemList {...props} />
       </UserBackground>
+      <DrawerItemList {...props} />
     </BlurBackground>
   ), []);
 

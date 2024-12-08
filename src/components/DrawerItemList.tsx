@@ -6,7 +6,11 @@ import {
 } from '@react-navigation/native';
 import Color from 'color';
 import React, { useCallback } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import {
+  FlatList,
+  useWindowDimensions,
+  View
+} from 'react-native';
 import { Drawer, useTheme } from 'react-native-paper';
 import { ActionDrawerItems } from './ActionDrawerItems';
 import { FavCount } from './DrawerRightItems';
@@ -20,10 +24,15 @@ type Props = {
 /**
  * Component that renders the navigation list in the drawer.
  */
-function DrawerItems({ state, navigation, descriptors }: Props) {
+export function DrawerItemList({
+  state, navigation, descriptors
+}: Props) {
   const appTheme = useTheme();
+  const { height } = useWindowDimensions();
 
-  const renderDrawerItem = useCallback(({ item, index }: {
+  const renderDrawerItem = useCallback(({
+    item, index
+  }: {
     item: any, index: number
   }) => {
     const focused = index === state.index;
@@ -101,24 +110,16 @@ function DrawerItems({ state, navigation, descriptors }: Props) {
       renderItem={renderDrawerItem}
       keyExtractor={keyExtractor}
       extraData={state.index}
+      style={{ marginTop: height * 0.1 }}
+      fadingEdgeLength={30}
+      ListFooterComponent={
+        <>
+          <ActionDrawerItems
+            navigation={navigation}
+          />
+          <View style={{ height: height * 0.2 }} />
+        </>
+      }
     />
   );
 }
-
-export function DrawerItemList(props: Props) {
-  return (
-    <View style={styles.drawerList}>
-      <Drawer.Section>
-        <DrawerItems {...props} />
-      </Drawer.Section>
-
-      <ActionDrawerItems {...props} />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  drawerList: {
-    marginTop: 10,
-  },
-});
