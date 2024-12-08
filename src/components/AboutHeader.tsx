@@ -45,7 +45,7 @@ export const AboutHeaderComponent = (
           variant="titleLarge"
           style={styles.white}
         >
-          About
+          {packageData.displayName}
         </Text>
       }
       headerStyle={{
