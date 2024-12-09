@@ -2,8 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import Color from 'color';
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
-import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
+import { StyleSheet, View } from 'react-native';
 import { Avatar, IconButton, Searchbar, Tooltip, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import useSWR from 'swr';
@@ -43,26 +42,20 @@ export const SwitchUser = () => {
             }}
           />
         )}
-        <Tooltip title={data?.profile.nickname || t('switchUser.noUsername')}>
-          <TouchableWithoutFeedback
-            onPress={() => {
-              HapticFeedback.trigger(
-                HapticFeedbackTypes.effectHeavyClick
-              );
-              //@ts-expect-error
-              navigation.navigate('DrawerNavi', { screen: 'UserDetail' });
-            }}
-          >
-            <Avatar.Image
-              {...props}
-              size={40}
-              source={{ uri: data?.profile.avatarUrl }}
-            />
-          </TouchableWithoutFeedback>
+
+        <Tooltip
+          title={data?.profile.nickname
+            || t('switchUser.noUsername')}
+        >
+          <Avatar.Image
+            {...props}
+            size={40}
+            source={{ uri: data?.profile.avatarUrl }}
+          />
         </Tooltip>
       </View>
     );
-  }, [data?.profile.avatarUrl, data?.profile.nickname, error, isAvatarLoading, navigation, showQuery, t]);
+  }, [data, error, isAvatarLoading, showQuery, t]);
 
   const search = useCallback(() => {
     if (showQuery && searchQuery !== showQuery) {
