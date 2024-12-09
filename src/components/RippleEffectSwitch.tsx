@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Platform, View } from 'react-native';
 import HapticFeedback, {
   HapticFeedbackTypes,
@@ -10,6 +11,7 @@ import { ListLRProps } from '../types/paperListItem';
 
 export const RippleEffectSwitch = () => {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const rippleEffectEnabled = useAppSelector(selectRippleEffect);
 
   const renderRippleEffectIcon = useCallback(
@@ -31,15 +33,18 @@ export const RippleEffectSwitch = () => {
   }, [dispatch]);
 
   const effectName = Platform.select({
-    ios: 'Highlight Effect',
-    android: 'Ripple Effect',
-    default: 'Ripple Effect',
+    ios: t('settings.appearance.rippleEffect.ios'),
+    android: t('settings.appearance.rippleEffect.android'),
+    default: t('settings.appearance.rippleEffect.android'),
   });
 
   return (
     <List.Item
       title={effectName}
-      description={`Enable ${effectName.toLocaleLowerCase()} on touch`}
+      description={t(
+        'settings.appearance.rippleEffect.description',
+        { effect: effectName.toLocaleLowerCase() }
+      )}
       left={renderRippleEffectIcon}
       right={renderSwitch}
       onPress={toggle}

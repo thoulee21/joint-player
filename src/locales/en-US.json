@@ -145,6 +145,11 @@
       },
       "blurRadius": {
         "title": "Blur Radius"
+      },
+      "rippleEffect": {
+        "ios": "Highlight Effect",
+        "android": "Ripple Effect",
+        "description": "Enable {{effect}} on touch"
       }
     },
     "data": {

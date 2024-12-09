@@ -145,6 +145,11 @@
       },
       "blurRadius": {
         "title": "模糊半径"
+      },
+      "rippleEffect": {
+        "android": "涟漪效应",
+        "description": "触摸时启用{{effect}}",
+        "ios": "高亮效果"
       }
     },
     "data": {
