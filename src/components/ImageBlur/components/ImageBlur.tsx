@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
-import { Image, View } from 'react-native';
+import { Image, View, type StyleProp, type ViewStyle } from 'react-native';
 
-import { type AspectRatio, baseAspectRatio } from '../constants/sizes';
+import { baseAspectRatio, type AspectRatio } from '../constants/sizes';
 import { ImageBlurProvider } from '../contexts/ImageBlurContext';
 import { getImageSource } from '../utils/image';
 
@@ -17,7 +17,8 @@ type ImageBlurContainerSize = {
 export type ImageBlurRadius = number;
 
 export type ImageBlurProps = {
-  aspectRatio: AspectRatio;
+  aspectRatio?: AspectRatio;
+  style?: StyleProp<ViewStyle>;
   blurChildren: ImageBlurShapeProps['children'];
   children?: React.ReactNode;
   resizeMode?: ImageBlurShapeProps['resizeMode'];
@@ -26,6 +27,7 @@ export type ImageBlurProps = {
 
 const ImageBlur = ({
   aspectRatio,
+  style,
   blurChildren,
   children,
   resizeMode = 'contain',
@@ -48,12 +50,13 @@ const ImageBlur = ({
       }}
       style={[
         styles.container,
-        {
+        aspectRatio && {
           aspectRatio:
             typeof aspectRatio === 'number'
               ? aspectRatio
               : baseAspectRatio[aspectRatio],
         },
+        style,
       ]}
     >
       <Image
