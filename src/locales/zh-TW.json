@@ -64,6 +64,19 @@
         },
         "error": "更新應用程式時出錯："
       }
+    },
+    "contact": {
+      "email": {
+        "title": "電子郵件"
+      },
+      "section": "聯繫開發者",
+      "homepage": {
+        "title": "主頁"
+      },
+      "issueReport": {
+        "description": "報告問題或發送反饋",
+        "title": "報告問題"
+      }
     }
   },
   "releaseTags": {
@@ -157,10 +170,88 @@
         "snackbar": {
           "caption": "數據導入成功！重新啟動應用程式以應用更改。",
           "label": "重新啟動"
-        }
+        },
+        "description": "從 JSON 文件導入數據",
+        "toast": {
+          "failed": "導入失敗：",
+          "readFailed": "無法讀取文件："
+        },
+        "title": "導入數據"
       },
-      "title": "數據管理"
+      "title": "數據管理",
+      "export": {
+        "description": "將應用程式數據導出到 JSON 文件",
+        "permission": {
+          "buttons": {
+            "neutral": "稍後再問我"
+          },
+          "message": "此應用程式需要訪問您的存儲才能導出數據",
+          "toast": {
+            "denied": "存儲權限被拒絕"
+          },
+          "title": "需要存儲權限"
+        },
+        "title": "導出數據",
+        "toast": "已導出至："
+      },
+      "cache": {
+        "title": "清除緩存",
+        "toast": "緩存已清除"
+      }
     },
-    "title": "設置"
+    "title": "設置",
+    "about": {
+      "description": "查看應用程式信息",
+      "title": "關於"
+    },
+    "dev": {
+      "description": "訪問開發人員設置",
+      "title": "開發人員選項"
+    }
+  },
+  "drawer": {
+    "account": {
+      "logout": {
+        "dialog": {
+          "ask": "您確定要註銷嗎？",
+          "ok": "好的"
+        },
+        "label": "註銷",
+        "toast": "用戶已註銷"
+      }
+    },
+    "item": {
+      "switchAccount": {
+        "label": "切換帳戶"
+      },
+      "account": {
+        "title": "賬戶"
+      },
+      "player": {
+        "title": "主頁"
+      },
+      "favs": {
+        "title": "收藏"
+      },
+      "playlist": {
+        "title": "歌單"
+      }
+    }
+  },
+  "issueReport": {
+    "inputs": {
+      "description": {
+        "label": "問題描述",
+        "placeholder": "請簡要描述您遇到的問題"
+      },
+      "email": {
+        "invalid": "電子郵件地址無效！",
+        "placeholder": "請輸入您的電子郵件地址",
+        "label": "電子郵件（可選）"
+      }
+    },
+    "toast": {
+      "success": "問題已提交"
+    }
   }
 }
