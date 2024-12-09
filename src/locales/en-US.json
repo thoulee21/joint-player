@@ -142,6 +142,9 @@
         "toast": {
           "copied": "Color copied to clipboard"
         }
+      },
+      "blurRadius": {
+        "title": "Blur Radius"
       }
     },
     "data": {

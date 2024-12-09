@@ -142,6 +142,9 @@
         "toast": {
           "copied": "颜色复制到剪贴板"
         }
+      },
+      "blurRadius": {
+        "title": "模糊半径"
       }
     },
     "data": {
