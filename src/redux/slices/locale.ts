@@ -4,7 +4,7 @@ import { getLocales } from 'react-native-localize';
 import { StateKeys } from '../../utils/stateKeys';
 import { RootState } from '../store';
 
-export type Languages = 'en-US' | 'zh-CN' | 'locale'
+export type Languages = 'locale' | 'en-US' | 'zh-CN' | 'zh-TW';
 
 const initialState = {
   value: 'locale',
