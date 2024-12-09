@@ -237,5 +237,21 @@
         "title": "Playlists"
       }
     }
+  },
+  "issueReport": {
+    "toast": {
+      "success": "Issue reported"
+    },
+    "inputs": {
+      "description": {
+        "label": "Issue Description",
+        "placeholder": "Please describe the issue you encountered"
+      },
+      "email": {
+        "label": "Email (Optional)",
+        "placeholder": "Please enter your email address",
+        "invalid": "Email address is invalid!"
+      }
+    }
   }
 }

@@ -237,5 +237,21 @@
         "title": "歌单"
       }
     }
+  },
+  "issueReport": {
+    "inputs": {
+      "description": {
+        "label": "问题描述",
+        "placeholder": "请简要描述您遇到的问题"
+      },
+      "email": {
+        "invalid": "电子邮件地址无效！",
+        "placeholder": "请输入您的电子邮件地址",
+        "label": "电子邮件（可选）"
+      }
+    },
+    "toast": {
+      "success": "问题已提交"
+    }
   }
 }

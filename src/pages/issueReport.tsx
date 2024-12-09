@@ -6,6 +6,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import * as Sentry from '@sentry/react-native';
 import React, { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -13,9 +14,19 @@ import {
   ToastAndroid,
   View,
 } from 'react-native';
-import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { Appbar, HelperText, TextInput, useTheme } from 'react-native-paper';
-import { HeaderComponent, LargeHeaderComponent } from '../components/AnimatedHeader';
+import HapticFeedback, {
+  HapticFeedbackTypes,
+} from 'react-native-haptic-feedback';
+import {
+  Appbar,
+  HelperText,
+  TextInput,
+  useTheme,
+} from 'react-native-paper';
+import {
+  HeaderComponent,
+  LargeHeaderComponent,
+} from '../components/AnimatedHeader';
 import { PoweredBy } from '../components/PoweredBy';
 import { useAppSelector } from '../hook';
 import { selectUser } from '../redux/slices';
@@ -24,6 +35,7 @@ const ISSUE_MAX_LENGTH = 200;
 
 export const IssueReport = () => {
   const navigation = useNavigation();
+  const { t } = useTranslation();
   const appTheme = useTheme();
   const currentUser = useAppSelector(selectUser);
 
@@ -47,20 +59,20 @@ export const IssueReport = () => {
     });
 
     HapticFeedback.trigger(HapticFeedbackTypes.effectTick);
-    ToastAndroid.show('Issue reported', ToastAndroid.LONG);
+    ToastAndroid.show(t('issueReport.toast.success'), ToastAndroid.LONG);
     navigation.goBack();
-  }, [currentUser.username, email, issue, navigation]);
+  }, [currentUser.username, email, issue, navigation, t]);
 
   const renderLargeHeader = useCallback((
     props: ScrollLargeHeaderProps
   ) => (
-    <LargeHeaderComponent {...props} title="Report Issue" />
-  ), []);
+    <LargeHeaderComponent {...props} title={t('about.contact.issueReport.title')} />
+  ), [t]);
 
   const renderHeader = useCallback((props: ScrollHeaderProps) => (
     <HeaderComponent
       {...props}
-      title="Report Issue"
+      title={t('about.contact.issueReport.title')}
       headerRight={
         <Appbar.Action
           icon={sendable ? 'send' : 'send-outline'}
@@ -70,7 +82,7 @@ export const IssueReport = () => {
         />
       }
     />
-  ), [appTheme.colors.primary, report, sendable]);
+  ), [appTheme.colors.primary, report, sendable, t]);
 
   return (
     <ScrollViewWithHeaders
@@ -82,13 +94,13 @@ export const IssueReport = () => {
       <KeyboardAvoidingView behavior="padding">
         <View style={styles.inputField}>
           <TextInput
-            label="Issue Description"
+            label={t('issueReport.inputs.description.label')}
             multiline
             numberOfLines={10}
             autoFocus
             value={issue}
             onChangeText={setIssue}
-            placeholder="Please describe the issue you encountered"
+            placeholder={t('issueReport.inputs.description.placeholder')}
             maxLength={ISSUE_MAX_LENGTH}
           />
           <HelperText type="info" visible style={styles.counterHelper}>
@@ -98,10 +110,10 @@ export const IssueReport = () => {
 
         <View style={styles.inputField}>
           <TextInput
-            label="Email (Optional)"
+            label={t('issueReport.inputs.email.label')}
             value={email}
             onChangeText={setEmail}
-            placeholder="Please enter your email address"
+            placeholder={t('issueReport.inputs.email.placeholder')}
             keyboardType="email-address"
             textContentType="emailAddress"
             autoComplete="email"
@@ -115,7 +127,7 @@ export const IssueReport = () => {
             )}
           />
           <HelperText type="error" visible={emailHasErrors}>
-            Email address is invalid!
+            {t('issueReport.inputs.email.invalid')}
           </HelperText>
         </View>
       </KeyboardAvoidingView>
