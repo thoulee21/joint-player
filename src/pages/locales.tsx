@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet } from 'react-native';
-import { Button, RadioButton } from 'react-native-paper';
+import { FlatList, StyleSheet, View } from 'react-native';
+import HapticFeedBack, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
+import { Button, RadioButton, Text, TouchableRipple } from 'react-native-paper';
 import { useAppDispatch, useAppSelector } from '../hook';
 import { selectLocale, setLocale, type Languages } from '../redux/slices';
 
@@ -39,32 +40,55 @@ export const LocalesScreen = () => {
     });
   }, [navigation, renderSaveButton]);
 
-  return (
-    <RadioButton.Group
-      onValueChange={
-        (value) => setLng(value)
-      }
-      value={lng}
+  const langs = useMemo(() => [
+    {
+      label: t('locales.system'),
+      value: 'locale',
+    },
+    {
+      label: '简体中文',
+      value: 'zh-CN',
+    },
+    {
+      label: 'English',
+      value: 'en-US',
+    }
+  ], [t]);
+
+  const renderItem = useCallback(({ item }: {
+    item: { label: string; value: string }
+  }) => (
+    <TouchableRipple
+      onPress={() => {
+        HapticFeedBack.trigger(
+          HapticFeedbackTypes.effectHeavyClick
+        );
+        setLng(item.value);
+      }}
     >
-      <RadioButton.Item
-        label={t('locales.system')}
-        value="locale"
-        position="leading"
-        labelStyle={styles.label}
-      />
-      <RadioButton.Item
-        label="简体中文"
-        value="zh-CN"
-        position="leading"
-        labelStyle={styles.label}
-      />
-      <RadioButton.Item
-        label="English"
-        value="en-US"
-        position="leading"
-        labelStyle={styles.label}
-      />
-    </RadioButton.Group>
+      <View style={styles.row}>
+        <View pointerEvents="none">
+          <RadioButton
+            value={item.value}
+            status={lng === item.value
+              ? 'checked'
+              : 'unchecked'}
+          />
+        </View>
+        <Text style={styles.btnText}>
+          {item.label}
+        </Text>
+      </View>
+    </TouchableRipple>
+  ), [lng]);
+
+  return (
+    <FlatList
+      data={langs}
+      renderItem={renderItem}
+      keyExtractor={item => item.value}
+      extraData={lng}
+    />
   );
 };
 
@@ -72,5 +96,14 @@ const styles = StyleSheet.create({
   label: {
     textAlign: 'left',
     paddingLeft: 10,
-  }
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  btnText: {
+    paddingLeft: 8,
+  },
 });
