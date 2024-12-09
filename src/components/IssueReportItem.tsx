@@ -1,9 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { List } from 'react-native-paper';
 import type { ListLRProps } from '../types/paperListItem';
 
 export const IssueReportItem = () => {
+  const { t } = useTranslation();
   const navigation = useNavigation();
 
   const IssueReportIcon = useCallback((props: ListLRProps) => (
@@ -16,8 +18,8 @@ export const IssueReportItem = () => {
 
   return (
     <List.Item
-      title="Report Issue"
-      description="Report an issue or send feedback"
+      title={t('about.contact.issueReport.title')}
+      description={t('about.contact.issueReport.description')}
       left={IssueReportIcon}
       right={ChevronRight}
       onPress={() => {

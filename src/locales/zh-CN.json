@@ -64,6 +64,19 @@
         },
         "error": "更新应用程序时出错："
       }
+    },
+    "contact": {
+      "email": {
+        "title": "电子邮件"
+      },
+      "section": "联系开发者",
+      "homepage": {
+        "title": "主页"
+      },
+      "issueReport": {
+        "description": "报告问题或发送反馈",
+        "title": "报告问题"
+      }
     }
   },
   "releaseTags": {

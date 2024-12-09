@@ -64,6 +64,19 @@
         "caption": "New update created at {{date}} is available.\n",
         "ask": "Do you want to update now?"
       }
+    },
+    "contact": {
+      "section": "Contact the Developer",
+      "homepage": {
+        "title": "Homepage"
+      },
+      "email": {
+        "title": "E-Mail"
+      },
+      "issueReport": {
+        "title": "Report Issue",
+        "description": "Report an issue or send feedback"
+      }
     }
   },
   "releaseTags": {
