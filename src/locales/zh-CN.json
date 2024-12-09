@@ -40,16 +40,16 @@
           "update": "更新"
         },
         "ask": "您想现在更新吗？",
-        "caption": "在｛｛date｝｝创建的新更新可用。",
+        "caption": "在{{ date }}创建的新更新可用。",
         "title": "更新可用"
       },
       "listItem": {
         "description": {
           "lastCheck": "上次检查时间：",
           "never": "从未",
-          "isDownloading": "正在下载更新。。。",
-          "isChecking": "正在检查更新。。。",
-          "isUpdatePending": "更新正在等待中。。。"
+          "isDownloading": "正在下载更新...",
+          "isChecking": "正在检查更新...",
+          "isUpdatePending": "更新正在等待中..."
         },
         "title": "检查更新"
       },
