@@ -136,6 +136,12 @@
       "languages": {
         "title": "Languages",
         "description": "Change the app language"
+      },
+      "theme": {
+        "title": "Theme Color",
+        "toast": {
+          "copied": "Color copied to clipboard"
+        }
       }
     },
     "data": {
