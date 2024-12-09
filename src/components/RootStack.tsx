@@ -30,7 +30,6 @@ import {
   SwitchUser,
   WebViewScreen,
 } from '../pages';
-import TestScreen from '../pages/testScreen';
 import { DrawerNavi } from './DrawerNavi';
 
 const Stack = createStackNavigator();
@@ -68,7 +67,6 @@ export function RootStack() {
           headerShown: true,
           title: t('stack.aniGallery'),
         }} />
-        <Stack.Screen name="Test" component={TestScreen} options={{ headerShown: true }} />
         <Stack.Screen name="AlbumDetail" component={AlbumDetail} />
         <Stack.Screen name="Settings" component={Settings} />
         <Stack.Screen name="PlaylistDetail" component={PlaylistDetailScreen} />

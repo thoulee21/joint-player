@@ -19,6 +19,8 @@ import { DevSwitchItem } from '../components/DevSwitchItem';
 import { LottieAnimation } from '../components/LottieAnimation';
 import { RestartItem } from '../components/RestartItem';
 import { ViewAppDataItem } from '../components/ViewAppDataItem';
+import { useAppSelector } from '../hook';
+import { selectDevModeEnabled } from '../redux/slices';
 import type { ListLRProps } from '../types/paperListItem';
 import { rootLog } from '../utils/logger';
 
@@ -27,6 +29,7 @@ export function DevScreen() {
   const { height } = useWindowDimensions();
   const appTheme = useTheme();
 
+  const isDev = useAppSelector(selectDevModeEnabled);
   const [isLoaded, setIsLoaded] = useState(false);
   const [authResult, setAuthResult] = useState<LocalAuthenticationResult>();
 
@@ -40,11 +43,11 @@ export function DevScreen() {
         },
       });
 
-      const hasHardware = await LocalAuthentication.hasHardwareAsync();
-      rootLog.debug('hasHardware', hasHardware);
+      // const hasHardware = await LocalAuthentication.hasHardwareAsync();
+      // rootLog.debug('hasHardware', hasHardware);
 
-      const supported = await LocalAuthentication.supportedAuthenticationTypesAsync();
-      rootLog.debug('supported', supported);
+      // const supported = await LocalAuthentication.supportedAuthenticationTypesAsync();
+      // rootLog.debug('supported', supported);
 
       const enrolled = await LocalAuthentication.isEnrolledAsync();
       rootLog.info('enrolled', enrolled);
@@ -123,13 +126,20 @@ export function DevScreen() {
             navigation.push('Logcat' as never);
           }}
         />
+
         <List.Item
           title="Experimental Test"
           description="Test the experimental features"
           left={renderTestIcon}
           right={renderRightIcon}
           onPress={() => {
-            navigation.navigate('Test' as never);
+            if (isDev) {
+              //@ts-expect-error
+              navigation.push(
+                'DrawerNavi',
+                { screen: 'Test' }
+              );
+            }
           }}
         />
       </List.Section>

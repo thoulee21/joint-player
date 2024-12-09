@@ -102,7 +102,8 @@ export function AboutScreen() {
         onPress: () => navigation.push('Dev'),
       }}
     >
-      {t('about.snackBar.caption')} </Snackbar>
+      {t('about.snackBar.caption')}
+    </Snackbar>
   ), [devSnackbarVisible, navigation, t]);
 
   return (

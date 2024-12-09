@@ -105,21 +105,22 @@ export function DrawerItemList({
   );
 
   return (
-    <FlatList
-      data={state.routes}
-      renderItem={renderDrawerItem}
-      keyExtractor={keyExtractor}
-      extraData={state.index}
-      style={{ marginTop: height * 0.1 }}
-      fadingEdgeLength={30}
-      ListFooterComponent={
-        <>
-          <ActionDrawerItems
-            navigation={navigation}
-          />
-          <View style={{ height: height * 0.2 }} />
-        </>
-      }
-    />
+    <>
+      <Drawer.Section>
+        <FlatList
+          data={state.routes}
+          renderItem={renderDrawerItem}
+          keyExtractor={keyExtractor}
+          extraData={state.index}
+          style={{ marginTop: height * 0.1 }}
+          fadingEdgeLength={30}
+        />
+      </Drawer.Section>
+
+      <ActionDrawerItems
+        navigation={navigation}
+      />
+      <View style={{ height: height * 0.2 }} />
+    </>
   );
 }

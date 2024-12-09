@@ -14,13 +14,12 @@ import {
   Icon,
   Portal,
   Text,
-  useTheme,
+  useTheme
 } from 'react-native-paper';
 import {
   useAppDispatch,
   useAppSelector,
 } from '../hook/reduxHooks';
-import { selectDevModeEnabled } from '../redux/slices';
 import {
   initialState as initialUser,
   resetUser,
@@ -32,9 +31,7 @@ export const ActionDrawerItems = ({ navigation }: {
 }) => {
   const dispatch = useAppDispatch();
   const appTheme = useTheme();
-
   const currentUser = useAppSelector(selectUser);
-  const isDev = useAppSelector(selectDevModeEnabled);
 
   const [
     isDialogVisible,
@@ -78,68 +75,56 @@ export const ActionDrawerItems = ({ navigation }: {
 
   return (
     <>
-      {isDev && (
-        <Drawer.Section>
+      <Drawer.Item
+        label="Switch User"
+        icon={renderSwitchUserIcon}
+        onPress={() => {
+          navigation.closeDrawer();
+          navigation.navigate('SwitchUser');
+        }}
+      />
+
+      {!isLoggedOut && (
+        <>
           <Drawer.Item
-            label="Test"
-            icon="test-tube"
+            label="Logout"
+            icon={renderLogoutIcon}
             onPress={() => {
-              navigation.closeDrawer();
-              navigation.navigate('Test');
+              HapticFeedback.trigger(
+                HapticFeedbackTypes.notificationWarning
+              );
+              setIsDialogVisible(true);
             }}
           />
-        </Drawer.Section>
-      )}
-      <Drawer.Section showDivider={false}>
-        <Drawer.Item
-          label="Switch User"
-          icon={renderSwitchUserIcon}
-          onPress={() => {
-            navigation.closeDrawer();
-            navigation.navigate('SwitchUser');
-          }}
-        />
-        {!isLoggedOut && (
-          <>
-            <Drawer.Item
-              label="Logout"
-              icon={renderLogoutIcon}
-              onPress={() => {
-                HapticFeedback.trigger(
-                  HapticFeedbackTypes.notificationWarning
-                );
-                setIsDialogVisible(true);
+
+          <Portal>
+            <Dialog
+              visible={isDialogVisible}
+              onDismiss={() => {
+                setIsDialogVisible(false);
               }}
-            />
-            <Portal>
-              <Dialog
-                visible={isDialogVisible}
-                onDismiss={() => {
-                  setIsDialogVisible(false);
-                }}
-              >
-                <Dialog.Icon icon="logout" size={40} />
-                <Dialog.Title>Logout</Dialog.Title>
-                <Dialog.Content>
-                  <Text>Are you sure to logout?</Text>
-                </Dialog.Content>
-                <Dialog.Actions>
-                  <Button
-                    textColor={appTheme.colors.outline}
-                    onPress={() => {
-                      setIsDialogVisible(false);
-                    }}
-                  >Cancel</Button>
-                  <Button
-                    textColor={appTheme.colors.error}
-                    onPress={logout}
-                  >OK</Button>
-                </Dialog.Actions>
-              </Dialog>
-            </Portal>
-          </>
-        )}
-      </Drawer.Section>
+            >
+              <Dialog.Icon icon="logout" size={40} />
+              <Dialog.Title>Logout</Dialog.Title>
+              <Dialog.Content>
+                <Text>Are you sure to logout?</Text>
+              </Dialog.Content>
+              <Dialog.Actions>
+                <Button
+                  textColor={appTheme.colors.outline}
+                  onPress={() => {
+                    setIsDialogVisible(false);
+                  }}
+                >Cancel</Button>
+                <Button
+                  textColor={appTheme.colors.error}
+                  onPress={logout}
+                >OK</Button>
+              </Dialog.Actions>
+            </Dialog>
+          </Portal>
+        </>
+      )}
     </>
   );
 };
