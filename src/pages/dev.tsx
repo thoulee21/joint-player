@@ -7,7 +7,6 @@ import { useNavigation } from '@react-navigation/native';
 import type { LocalAuthenticationResult } from 'expo-local-authentication';
 import * as LocalAuthentication from 'expo-local-authentication';
 import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { useWindowDimensions, View } from 'react-native';
 import { Divider, List, useTheme } from 'react-native-paper';
 import { AniGalleryItem } from '../components/AniGalleryItem';
 import {
@@ -19,17 +18,13 @@ import { DevSwitchItem } from '../components/DevSwitchItem';
 import { LottieAnimation } from '../components/LottieAnimation';
 import { RestartItem } from '../components/RestartItem';
 import { ViewAppDataItem } from '../components/ViewAppDataItem';
-import { useAppSelector } from '../hook';
-import { selectDevModeEnabled } from '../redux/slices';
 import type { ListLRProps } from '../types/paperListItem';
 import { rootLog } from '../utils/logger';
 
 export function DevScreen() {
   const navigation = useNavigation();
-  const { height } = useWindowDimensions();
   const appTheme = useTheme();
 
-  const isDev = useAppSelector(selectDevModeEnabled);
   const [isLoaded, setIsLoaded] = useState(false);
   const [authResult, setAuthResult] = useState<LocalAuthenticationResult>();
 
@@ -42,12 +37,6 @@ export function DevScreen() {
           backgroundColor: appTheme.colors.background,
         },
       });
-
-      // const hasHardware = await LocalAuthentication.hasHardwareAsync();
-      // rootLog.debug('hasHardware', hasHardware);
-
-      // const supported = await LocalAuthentication.supportedAuthenticationTypesAsync();
-      // rootLog.debug('supported', supported);
 
       const enrolled = await LocalAuthentication.isEnrolledAsync();
       rootLog.info('enrolled', enrolled);
@@ -71,10 +60,6 @@ export function DevScreen() {
       });
     }
   }, [appTheme.colors.background, isLoaded, navigation]);
-
-  const renderTestIcon = useCallback((props: ListLRProps) => (
-    <List.Icon icon="test-tube" {...props} />
-  ), []);
 
   const renderRightIcon = useCallback((props: ListLRProps) => (
     <List.Icon {...props} icon="chevron-right" />
@@ -126,28 +111,10 @@ export function DevScreen() {
             navigation.push('Logcat' as never);
           }}
         />
-
-        <List.Item
-          title="Experimental Test"
-          description="Test the experimental features"
-          left={renderTestIcon}
-          right={renderRightIcon}
-          onPress={() => {
-            if (isDev) {
-              //@ts-expect-error
-              navigation.push(
-                'DrawerNavi',
-                { screen: 'Test' }
-              );
-            }
-          }}
-        />
       </List.Section>
 
       <RestartItem />
       <ClearAllDataItem />
-
-      <View style={{ height: height * 0.35 }} />
     </ScrollViewWithHeaders>
   );
 }
