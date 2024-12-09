@@ -160,6 +160,7 @@
           "caption": "Data imported successfully! Restart the app to apply changes."
         }
       }
-    }
+    },
+    "title": "Settings"
   }
 }

@@ -37,14 +37,14 @@ export function Settings() {
   const renderHeader = useCallback((
     props: ScrollHeaderProps
   ) => (
-    <HeaderComponent {...props} title="Settings" />
-  ), []);
+    <HeaderComponent {...props} title={t('settings.title')} />
+  ), [t]);
 
   const renderLargeHeader = useCallback((
     props: ScrollLargeHeaderProps
   ) => (
-    <LargeHeaderComponent {...props} title="Settings" />
-  ), []);
+    <LargeHeaderComponent {...props} title={t('settings.title')} />
+  ), [t]);
 
   const renderLanguageIcon = useCallback((
     props: ListLRProps
