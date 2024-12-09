@@ -1,0 +1,166 @@
+
+{
+  "about": {
+    "aboutList": {
+      "title": "關於此應用程式"
+    },
+    "changelog": {
+      "description": "查看發行說明",
+      "title": "變更日誌"
+    },
+    "dialog": {
+      "release": {
+        "actions": {
+          "cancel": "不是現在",
+          "download": "下載"
+        },
+        "title": "新版本"
+      }
+    },
+    "snackBar": {
+      "action": {
+        "label": "跳轉"
+      },
+      "caption": "開發人員選項已啟用！"
+    },
+    "version": {
+      "title": "版本"
+    },
+    "update": {
+      "alert": {
+        "available": {
+          "title": "可用更新信息"
+        },
+        "current": {
+          "title": "當前更新信息"
+        }
+      },
+      "dialog": {
+        "actions": {
+          "cancel": "取消",
+          "update": "更新"
+        },
+        "ask": "您想現在更新嗎？",
+        "caption": "在{{date}}創建的新更新可用。\n",
+        "title": "更新可用"
+      },
+      "listItem": {
+        "description": {
+          "lastCheck": "上次檢查時間：",
+          "never": "從未",
+          "isDownloading": "正在下載更新...",
+          "isChecking": "正在檢查更新...",
+          "isUpdatePending": "更新正在等待中..."
+        },
+        "title": "檢查更新"
+      },
+      "toast": {
+        "check": {
+          "error": {
+            "msg": "檢查更新時出錯"
+          },
+          "notAvaliable": {
+            "msg": "沒有可用更新"
+          }
+        },
+        "error": "更新應用程式時出錯："
+      }
+    }
+  },
+  "releaseTags": {
+    "list": {
+      "copy": {
+        "toast": "SHA已複製到剪貼板"
+      },
+      "empty": {
+        "description": "無可用數據",
+        "title": "無數據"
+      },
+      "error": {
+        "title": "獲取數據時出錯"
+      }
+    }
+  },
+  "stack": {
+    "aniGallery": "動畫畫廊",
+    "releaseTags": "發佈標籤",
+    "locales": "更改語言"
+  },
+  "artist": {
+    "error": {
+      "caption": "稍後嘗試刷新"
+    }
+  },
+  "locales": {
+    "save": "保存",
+    "system": "系統默認值"
+  },
+  "lyrics": {
+    "notFound": "未找到歌詞",
+    "error": {
+      "title": "無法加載歌詞"
+    }
+  },
+  "mvDetail": {
+    "error": "請稍後再試",
+    "notFound": "沒有可用的MV",
+    "cellular": {
+      "toast": "在蜂窩數據上播放MV可能會消耗大量數據"
+    }
+  },
+  "changeLog": {
+    "appbar": {
+      "releaseTags": "發佈標籤"
+    },
+    "notFound": "未找到變更日誌"
+  },
+  "searchPlaylist": {
+    "placeholder": "搜索播放列表",
+    "enterKeyword": "請輸入關鍵字"
+  },
+  "switchUser": {
+    "noUsername": "沒有用戶名",
+    "placeholder": "搜索用戶",
+    "caption": "登錄以使用您的自定義設置"
+  },
+  "webview": {
+    "appbar": {
+      "openInBrowser": "在瀏覽器中打開"
+    }
+  },
+  "search": {
+    "placeholder": "搜索歌曲"
+  },
+  "settings": {
+    "appearance": {
+      "languages": {
+        "description": "更改應用程式語言",
+        "title": "語言文字"
+      },
+      "title": "外觀",
+      "theme": {
+        "title": "主題顏色",
+        "toast": {
+          "copied": "顏色複製到剪貼板"
+        }
+      },
+      "blurRadius": {
+        "title": "模糊半徑"
+      },
+      "rippleEffect": {
+        "android": "漣漪效應",
+        "description": "觸摸時啟用{{effect}}",
+        "ios": "高亮效果"
+      }
+    },
+    "data": {
+      "import": {
+        "snackbar": {
+          "caption": "數據導入成功！重新啟動應用程式以應用更改。",
+          "label": "重新啟動"
+        }
+      },
+      "title": "數據管理"
+    }
+  }
+}

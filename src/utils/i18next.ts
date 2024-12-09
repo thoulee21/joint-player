@@ -44,6 +44,9 @@ i18next
       'zh-CN': {
         translation: require('../locales/zh-CN.json'),
       },
+      'zh-TW': {
+        translation: require('../locales/zh-TW.json'),
+      },
     },
     react: {
       useSuspense: false,
