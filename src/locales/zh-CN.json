@@ -40,7 +40,7 @@
           "update": "更新"
         },
         "ask": "您想现在更新吗？",
-        "caption": "在{{ date }}创建的新更新可用。",
+        "caption": "在{{date}}创建的新更新可用。\n",
         "title": "更新可用"
       },
       "listItem": {
