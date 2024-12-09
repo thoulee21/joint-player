@@ -177,6 +177,18 @@
     "item": {
       "switchAccount": {
         "label": "Switch Account"
+      },
+      "account": {
+        "title": "Account"
+      },
+      "player": {
+        "title": "Player"
+      },
+      "favs": {
+        "title": "Favorites"
+      },
+      "playlist": {
+        "title": "Playlists"
       }
     }
   }

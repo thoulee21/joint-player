@@ -3,6 +3,7 @@ import {
   type DrawerContentComponentProps,
 } from '@react-navigation/drawer';
 import React, { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Icon } from 'react-native-paper';
 import { useAppSelector } from '../hook';
 import { Favs, Player, SearchPlaylist, UserDetail } from '../pages';
@@ -34,6 +35,7 @@ const renderDrawerIcon = (
   );
 
 export function DrawerNavi() {
+  const { t } = useTranslation();
   const isDev = useAppSelector(selectDevModeEnabled);
 
   const renderDrawerContent = useCallback((
@@ -56,17 +58,19 @@ export function DrawerNavi() {
       }}
     >
       <Drawer.Screen name="Player" component={Player} options={{
+        title: t('drawer.item.player.title'),
         drawerIcon: renderDrawerIcon('music-circle'),
       }} />
       <Drawer.Screen name="Favorites" component={Favs} options={{
+        title: t('drawer.item.favs.title'),
         drawerIcon: renderDrawerIcon('heart'),
       }} />
       <Drawer.Screen name="SearchPlaylist" component={SearchPlaylist} options={{
-        title: 'Playlist',
+        title: t('drawer.item.playlist.title'),
         drawerIcon: renderDrawerIcon('playlist-music'),
       }} />
       <Drawer.Screen name="UserDetail" component={UserDetail} options={{
-        title: 'Account',
+        title: t('drawer.item.account.title'),
         drawerIcon: renderDrawerIcon('account'),
       }} />
 

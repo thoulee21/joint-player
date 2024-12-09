@@ -1,5 +1,6 @@
 import { DrawerToggleButton } from '@react-navigation/drawer';
 import React, { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { StyleSheet } from 'react-native';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
 import { Appbar, Portal, useTheme } from 'react-native-paper';
@@ -13,6 +14,7 @@ import { favs, setQueueAsync } from '../redux/slices';
 
 export function Favs() {
     const dispatch = useAppDispatch();
+    const { t } = useTranslation();
     const appTheme = useTheme();
 
     const favsValue = useAppSelector(favs);
@@ -34,7 +36,7 @@ export function Favs() {
         <BlurBackground>
             <Appbar.Header style={styles.appbar}>
                 <DrawerToggleButton tintColor={appTheme.colors.onSurface} />
-                <Appbar.Content title="Favorites" />
+                <Appbar.Content title={t('drawer.item.favs.title')} />
 
                 <Appbar.Action
                     icon="delete-forever-outline"

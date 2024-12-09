@@ -177,6 +177,18 @@
     "item": {
       "switchAccount": {
         "label": "切换帐户"
+      },
+      "account": {
+        "title": "账户"
+      },
+      "player": {
+        "title": "主页"
+      },
+      "favs": {
+        "title": "收藏"
+      },
+      "playlist": {
+        "title": "歌单"
       }
     }
   }
