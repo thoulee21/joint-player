@@ -157,11 +157,17 @@
         "snackbar": {
           "caption": "数据导入成功！重新启动应用程序以应用更改。",
           "label": "重新启动"
-        }
+        },
+        "description": "从 JSON 文件导入数据",
+        "toast": {
+          "failed": "导入失败：",
+          "readFailed": "无法读取文件："
+        },
+        "title": "导入数据"
       },
       "title": "数据管理",
       "export": {
-        "description": "将应用程序数据导出到JSON文件",
+        "description": "将应用程序数据导出到 JSON 文件",
         "permission": {
           "buttons": {
             "neutral": "稍后再问我"

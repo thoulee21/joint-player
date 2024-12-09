@@ -158,7 +158,13 @@
         "snackbar": {
           "label": "Restart",
           "caption": "Data imported successfully! Restart the app to apply changes."
-        }
+        },
+        "toast": {
+          "failed": "Import failed:",
+          "readFailed": "Can not read file:"
+        },
+        "title": "Import Data",
+        "description": "Import data from a JSON file"
       },
       "export": {
         "permission": {
