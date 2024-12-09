@@ -44,6 +44,12 @@
     "i18n-ally.extract.ignoredByFiles": {
         "src\\pages\\about.tsx": [
             "Dev"
+        ],
+        "src\\components\\AboutItem.tsx": [
+            "About"
+        ],
+        "src\\components\\DevItem.tsx": [
+            "Dev"
         ]
     }
 }

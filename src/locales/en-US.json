@@ -180,9 +180,21 @@
         "title": "Export Data",
         "description": "Export app data to JSON file",
         "toast": "Exported to："
+      },
+      "cache": {
+        "title": "Clear Cache",
+        "toast": "Cache cleared"
       }
     },
-    "title": "Settings"
+    "title": "Settings",
+    "about": {
+      "title": "About",
+      "description": "View app information"
+    },
+    "dev": {
+      "title": "Developer Options",
+      "description": "Access developer settings"
+    }
   },
   "drawer": {
     "account": {

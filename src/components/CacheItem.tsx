@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ToastAndroid } from 'react-native';
 import { List } from 'react-native-paper';
 import type { ListLRProps } from '../types/paperListItem';
@@ -7,6 +8,8 @@ import { initFocus } from '../utils/initFocus';
 import { mmkvStorage } from '../utils/mmkvStorageProvider';
 
 export const CacheItem = () => {
+  const { t } = useTranslation();
+
   const [cacheSize, setCacheSize] = useState(0);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -38,10 +41,10 @@ export const CacheItem = () => {
 
     setIsLoaded(false);
     ToastAndroid.show(
-      'Cache cleared',
+      t('settings.data.cache.toast'),
       ToastAndroid.SHORT
     );
-  }, []);
+  }, [t]);
 
   const renderCacheIcon = useCallback(
     (props: ListLRProps) => (
@@ -51,7 +54,7 @@ export const CacheItem = () => {
 
   return (
     <List.Item
-      title="Clear Cache"
+      title={t('settings.data.cache.title')}
       description={formatDataSize(cacheSize)}
       left={renderCacheIcon}
       onPress={clearCache}

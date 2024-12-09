@@ -180,9 +180,21 @@
         },
         "title": "导出数据",
         "toast": "已导出至："
+      },
+      "cache": {
+        "title": "清除缓存",
+        "toast": "缓存已清除"
       }
     },
-    "title": "设置"
+    "title": "设置",
+    "about": {
+      "description": "查看应用程序信息",
+      "title": "关于"
+    },
+    "dev": {
+      "description": "访问开发人员设置",
+      "title": "开发人员选项"
+    }
   },
   "drawer": {
     "account": {
