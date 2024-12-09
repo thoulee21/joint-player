@@ -49,7 +49,8 @@ export const SwitchUser = () => {
               HapticFeedback.trigger(
                 HapticFeedbackTypes.effectHeavyClick
               );
-              navigation.navigate('UserDetail' as never);
+              //@ts-expect-error
+              navigation.navigate('DrawerNavi', { screen: 'UserDetail' });
             }}
           >
             <Avatar.Image

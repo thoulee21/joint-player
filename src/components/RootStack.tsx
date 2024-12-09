@@ -28,7 +28,6 @@ import {
   Search,
   Settings,
   SwitchUser,
-  UserDetail,
   WebViewScreen,
 } from '../pages';
 import TestScreen from '../pages/testScreen';
@@ -75,7 +74,6 @@ export function RootStack() {
         <Stack.Screen name="PlaylistDetail" component={PlaylistDetailScreen} />
         <Stack.Screen name="Logcat" component={Logcat} options={{ headerShown: true }} />
         <Stack.Screen name="SwitchUser" component={SwitchUser} />
-        <Stack.Screen name="UserDetail" component={UserDetail} />
         <Stack.Screen name="IssueReport" component={IssueReport} />
         <Stack.Screen name="ChangeLog" component={ChangeLog} options={{ headerShown: true }} />
         <Stack.Screen name="ReleaseTags" component={ReleaseTags} options={{

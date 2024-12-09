@@ -63,7 +63,7 @@ export const UserInfo = ({ userId, style }: {
   const goUser = () => {
     HapticFeedback.trigger(HapticFeedbackTypes.effectClick);
     //@ts-expect-error
-    navigation.navigate('UserDetail');
+    navigation.navigate('DrawerNavi', { screen: 'UserDetail' });
   };
 
   const debugPrint = () => {

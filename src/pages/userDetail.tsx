@@ -5,12 +5,14 @@ import {
   type ScrollHeaderProps,
   type SurfaceComponentProps
 } from '@codeherence/react-native-header';
+import { DrawerToggleButton } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import React, { useCallback } from 'react';
 import { Linking, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Appbar, List, Portal, Text, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BlurBackground } from '../components/BlurBackground';
 import { ImageBlurView } from '../components/ImageBlur';
 import { PlaylistCover } from '../components/PlaylistCover';
 import { PlaylistDisplay } from '../components/PlaylistDisplayItem';
@@ -19,7 +21,6 @@ import { UserAttrs } from '../components/UserAttrs';
 import { UserBackground, UserInfo } from '../components/UserHeader';
 import { useAppSelector } from '../hook';
 import { favs, selectPlaylists, selectUser } from '../redux/slices';
-import { BlurBackground } from '../components/BlurBackground';
 
 export const UserDetail = () => {
   const navigation = useNavigation();
@@ -72,10 +73,7 @@ export const UserDetail = () => {
         ]}
       >
         <View style={styles.row}>
-          <Appbar.BackAction
-            onPress={navigation.goBack}
-            color="white"
-          />
+          <DrawerToggleButton tintColor="white" />
           <Appbar.Action
             icon="open-in-new"
             color="white"
@@ -170,6 +168,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   avatar: {
     marginTop: '25%',
