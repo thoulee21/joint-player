@@ -1,8 +1,7 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useCallback, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Linking, StyleSheet, ToastAndroid, View } from 'react-native';
-import { Appbar, ProgressBar, Tooltip, useTheme } from 'react-native-paper';
+import { StyleSheet, ToastAndroid, View } from 'react-native';
+import { Appbar, ProgressBar, useTheme } from 'react-native-paper';
 import { WebView } from 'react-native-webview';
 import {
   WebViewErrorEvent,
@@ -19,7 +18,6 @@ export interface WebViewParams {
 export const WebViewScreen = () => {
   const route = useRoute();
   const navigation = useNavigation();
-  const { t } = useTranslation();
   const appTheme = useTheme();
 
   const [loadProgress, setLoadProgress] = useState(0);
@@ -60,12 +58,6 @@ export const WebViewScreen = () => {
         />
         <Appbar.Content title={title} />
 
-        <Tooltip title={t('webview.appbar.openInBrowser')}>
-          <Appbar.Action
-            icon="open-in-app"
-            onPress={() => { Linking.openURL(url); }}
-          />
-        </Tooltip>
         <WebViewMenu
           url={url}
           title={title}
