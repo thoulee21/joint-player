@@ -159,6 +159,21 @@
           "label": "Restart",
           "caption": "Data imported successfully! Restart the app to apply changes."
         }
+      },
+      "export": {
+        "permission": {
+          "title": "Storage Permission Required",
+          "message": "This app needs access to your storage to export data",
+          "buttons": {
+            "neutral": "Ask Me Later"
+          },
+          "toast": {
+            "denied": "Storage permission denied"
+          }
+        },
+        "title": "Export Data",
+        "description": "Export app data to JSON file",
+        "toast": "Exported to："
       }
     },
     "title": "Settings"

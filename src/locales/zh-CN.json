@@ -159,7 +159,22 @@
           "label": "重新启动"
         }
       },
-      "title": "数据管理"
+      "title": "数据管理",
+      "export": {
+        "description": "将应用程序数据导出到JSON文件",
+        "permission": {
+          "buttons": {
+            "neutral": "稍后再问我"
+          },
+          "message": "此应用程序需要访问您的存储才能导出数据",
+          "toast": {
+            "denied": "存储权限被拒绝"
+          },
+          "title": "需要存储权限"
+        },
+        "title": "导出数据",
+        "toast": "已导出至："
+      }
     },
     "title": "设置"
   },
