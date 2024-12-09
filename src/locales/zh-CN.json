@@ -162,5 +162,22 @@
       "title": "数据管理"
     },
     "title": "设置"
+  },
+  "drawer": {
+    "account": {
+      "logout": {
+        "dialog": {
+          "ask": "您确定要注销吗？",
+          "ok": "好的"
+        },
+        "label": "注销",
+        "toast": "用户已注销"
+      }
+    },
+    "item": {
+      "switchAccount": {
+        "label": "切换帐户"
+      }
+    }
   }
 }

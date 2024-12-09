@@ -3,6 +3,7 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ToastAndroid } from 'react-native';
 import HapticFeedback, {
   HapticFeedbackTypes,
@@ -30,6 +31,7 @@ export const ActionDrawerItems = ({ navigation }: {
   navigation: any
 }) => {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const appTheme = useTheme();
   const currentUser = useAppSelector(selectUser);
 
@@ -68,15 +70,15 @@ export const ActionDrawerItems = ({ navigation }: {
     navigation.closeDrawer();
 
     ToastAndroid.show(
-      'User logged out',
+      t('drawer.account.logout.toast'),
       ToastAndroid.SHORT
     );
-  }, [dispatch, navigation]);
+  }, [dispatch, navigation, t]);
 
   return (
     <>
       <Drawer.Item
-        label="Switch User"
+        label={t('drawer.item.switchAccount.label')}
         icon={renderSwitchUserIcon}
         onPress={() => {
           navigation.closeDrawer();
@@ -87,7 +89,7 @@ export const ActionDrawerItems = ({ navigation }: {
       {!isLoggedOut && (
         <>
           <Drawer.Item
-            label="Logout"
+            label={t('drawer.account.logout.label')}
             icon={renderLogoutIcon}
             onPress={() => {
               HapticFeedback.trigger(
@@ -105,9 +107,9 @@ export const ActionDrawerItems = ({ navigation }: {
               }}
             >
               <Dialog.Icon icon="logout" size={40} />
-              <Dialog.Title>Logout</Dialog.Title>
+              <Dialog.Title>{t('drawer.account.logout.label')}</Dialog.Title>
               <Dialog.Content>
-                <Text>Are you sure to logout?</Text>
+                <Text>{t('drawer.account.logout.dialog.ask')}</Text>
               </Dialog.Content>
               <Dialog.Actions>
                 <Button
@@ -115,11 +117,15 @@ export const ActionDrawerItems = ({ navigation }: {
                   onPress={() => {
                     setIsDialogVisible(false);
                   }}
-                >Cancel</Button>
+                >
+                  {t('about.update.dialog.actions.cancel')}
+                </Button>
                 <Button
                   textColor={appTheme.colors.error}
                   onPress={logout}
-                >OK</Button>
+                >
+                  {t('drawer.account.logout.dialog.ok')}
+                </Button>
               </Dialog.Actions>
             </Dialog>
           </Portal>

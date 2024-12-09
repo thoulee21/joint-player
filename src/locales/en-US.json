@@ -162,5 +162,22 @@
       }
     },
     "title": "Settings"
+  },
+  "drawer": {
+    "account": {
+      "logout": {
+        "toast": "User logged out",
+        "label": "Logout",
+        "dialog": {
+          "ask": "Are you sure to logout?",
+          "ok": "OK"
+        }
+      }
+    },
+    "item": {
+      "switchAccount": {
+        "label": "Switch Account"
+      }
+    }
   }
 }
