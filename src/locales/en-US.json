@@ -129,5 +129,23 @@
       "releaseTags": "Release tags"
     },
     "notFound": "No changelog found"
+  },
+  "settings": {
+    "appearance": {
+      "title": "Appearance",
+      "languages": {
+        "title": "Languages",
+        "description": "Change the app language"
+      }
+    },
+    "data": {
+      "title": "Data Management",
+      "import": {
+        "snackbar": {
+          "label": "Restart",
+          "caption": "Data imported successfully! Restart the app to apply changes."
+        }
+      }
+    }
   }
 }

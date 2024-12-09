@@ -5,6 +5,7 @@ import {
 } from '@codeherence/react-native-header';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useWindowDimensions, View } from 'react-native';
 import { List, Portal, Snackbar, useTheme } from 'react-native-paper';
 import RNRestart from 'react-native-restart';
@@ -25,6 +26,7 @@ import type { ListLRProps } from '../types/paperListItem';
 export function Settings() {
   const navigation = useNavigation();
   const window = useWindowDimensions();
+  const { t } = useTranslation();
   const appTheme = useTheme();
 
   const [
@@ -62,15 +64,15 @@ export function Settings() {
       LargeHeaderComponent={renderLargeHeader}
     >
       <List.Section
-        title="Appearance"
+        title={t('settings.appearance.title')}
         titleStyle={{
           color: appTheme.colors.secondary,
         }}
       >
         <ThemeColorIndicator />
         <List.Item
-          title="Languages"
-          description="Change the app language"
+          title={t('settings.appearance.languages.title')}
+          description={t('settings.appearance.languages.description')}
           left={renderLanguageIcon}
           right={renderRightIcon}
           onPress={() => {
@@ -82,7 +84,7 @@ export function Settings() {
       </List.Section>
 
       <List.Section
-        title="Data Management"
+        title={t('settings.data.title')}
         titleStyle={{ color: appTheme.colors.secondary }}
       >
         <ExportDataItem />
@@ -103,11 +105,11 @@ export function Settings() {
           onDismiss={() => setRestartBarVisible(false)}
           onIconPress={() => setRestartBarVisible(false)}
           action={{
-            label: 'Restart',
+            label: t('settings.data.import.snackbar.label'),
             onPress: () => RNRestart.Restart(),
           }}
         >
-          Data imported successfully! Restart the app to apply changes.
+          {t('settings.data.import.snackbar.caption')}
         </Snackbar>
       </Portal>
     </ScrollViewWithHeaders>

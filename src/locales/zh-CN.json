@@ -129,5 +129,23 @@
   },
   "search": {
     "placeholder": "搜索歌曲"
+  },
+  "settings": {
+    "appearance": {
+      "languages": {
+        "description": "更改应用程序语言",
+        "title": "语言文字"
+      },
+      "title": "外观"
+    },
+    "data": {
+      "import": {
+        "snackbar": {
+          "caption": "数据导入成功！重新启动应用程序以应用更改。",
+          "label": "重新启动"
+        }
+      },
+      "title": "数据管理"
+    }
   }
 }
