@@ -15,7 +15,7 @@ jobs:
         - name: Setup new yarn
           run: |
             corepack enable
-            yarn set version stable
+            yarn set version 4.5.0
 
         - name: 🏗 Setup Node
           uses: actions/setup-node@v4
