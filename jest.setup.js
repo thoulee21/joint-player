@@ -78,6 +78,9 @@ jest.mock('react-native-track-player', () => {
       Track: 'track',
       Queue: 'queue',
     },
+    AppKilledPlaybackBehavior: {
+      StopPlaybackAndRemoveNotification: 'stop-playback-and-remove-notification',
+    },
   };
 });
 
@@ -94,5 +97,25 @@ jest.mock('react-native-localize', () => {
     usesMetricSystem: jest.fn().mockReturnValue(false),
     addEventListener: jest.fn(),
     removeEventListener: jest.fn(),
+  };
+});
+
+jest.mock('react-native-fs', () => {
+  return {
+    __esModule: true,
+    default: {
+      readDir: jest.fn(),
+      readFile: jest.fn(),
+      writeFile: jest.fn(),
+      appendFile: jest.fn(),
+      unlink: jest.fn(),
+      exists: jest.fn(),
+      mkdir: jest.fn(),
+      moveFile: jest.fn(),
+      copyFile: jest.fn(),
+      downloadFile: jest.fn(),
+      uploadFiles: jest.fn(),
+      touch: jest.fn(),
+    },
   };
 });
