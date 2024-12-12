@@ -6,8 +6,8 @@ import HapticFeedback, {
 } from 'react-native-haptic-feedback';
 import { IconButton, List, useTheme } from 'react-native-paper';
 import TrackPlayer from 'react-native-track-player';
-import { useAppDispatch } from '../hook';
-import { clearAddOneAsync } from '../redux/slices';
+import { useAppDispatch } from '../hook/reduxHooks';
+import { clearAddOneAsync } from '../redux/slices/queue';
 import { TrackType } from '../services/GetTracksService';
 import type { ListLRProps } from '../types/paperListItem';
 import { IndexOfSong } from './IndexOfSong';
@@ -86,6 +86,7 @@ export const SongItem = ({
         icon="drag"
         size={24}
         onLongPress={drag}
+        testID="drag-handle"
       />
     ), [drag]);
 

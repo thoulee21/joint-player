@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import TrackPlayer, { RepeatMode } from 'react-native-track-player';
+import TrackPlayer from 'react-native-track-player';
 import { StateKeys } from '../../utils/stateKeys';
 import { RootState } from '../store';
 
 const initialState = {
-  value: RepeatMode.Queue,
+  value: 2,
 };
 
 export const repeatModeSlice = createSlice({
@@ -12,7 +12,7 @@ export const repeatModeSlice = createSlice({
   initialState,
   reducers: {
     // Use the PayloadAction type to declare the contents of `action.payload`
-    setRepeatMode: (state, action: PayloadAction<RepeatMode>) => {
+    setRepeatMode: (state, action: PayloadAction<number>) => {
       state.value = action.payload;
       TrackPlayer.setRepeatMode(action.payload);
     },
