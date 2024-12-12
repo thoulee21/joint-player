@@ -66,6 +66,7 @@ export const LottieAnimation = forwardRef(({
         <LottieView
           ref={ref}
           key={animation}
+          testID="LottieView"
           source={ANIMATIONS[animation]}
           autoPlay
           loop={loop}
