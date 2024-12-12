@@ -1,8 +1,7 @@
 import { cleanup, fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
 import { Provider as PaperProvider } from 'react-native-paper';
-import { Provider as ReduxProvider } from 'react-redux';
-import { store } from '../../redux/store';
+import { useAppDispatch } from '../../hook/reduxHooks';
 import { TrackType } from '../../services/GetTracksService';
 import { SongItem } from '../SongItem';
 
@@ -16,6 +15,9 @@ jest.mock('../../hook/reduxHooks', () => ({
 
 jest.mock('react-native-haptic-feedback', () => ({
   trigger: jest.fn(),
+  HapticFeedbackTypes: {
+    effectHeavyClick: 'effectHeavyClick',
+  },
 }));
 
 const mockTrack: TrackType = {
@@ -94,24 +96,44 @@ describe('SongItem', () => {
 
   it('renders correctly', () => {
     const { getByText } = render(
-      <ReduxProvider store={store}>
-        <PaperProvider>
-          <SongItem item={mockTrack} index={0} />
-        </PaperProvider>
-      </ReduxProvider>
+      <PaperProvider>
+        <SongItem item={mockTrack} index={0} />
+      </PaperProvider>
     );
 
     expect(getByText('Test Song')).toBeTruthy();
     expect(getByText('Test Artist')).toBeTruthy();
   });
 
+  it('plays the song on press', async () => {
+    const mockDispatch = jest.fn();
+    (useAppDispatch as jest.Mock).mockReturnValue(mockDispatch);
+
+    const { getByText } = render(
+      <PaperProvider>
+        <SongItem item={mockTrack} index={0} />
+      </PaperProvider>
+    );
+
+    fireEvent.press(getByText('Test Song'));
+    expect(mockDispatch).toHaveBeenCalled();
+  });
+
+  it('renders album information if showAlbum is true', () => {
+    const { getByText } = render(
+      <PaperProvider>
+        <SongItem item={mockTrack} index={0} showAlbum />
+      </PaperProvider>
+    );
+
+    expect(getByText('Test Artist\nTest Album')).toBeTruthy();
+  });
+
   it('renders index if showIndex is true', () => {
     const { getByText } = render(
-      <ReduxProvider store={store}>
-        <PaperProvider>
-          <SongItem item={mockTrack} index={1} showIndex />
-        </PaperProvider>
-      </ReduxProvider>
+      <PaperProvider>
+        <SongItem item={mockTrack} index={1} showIndex />
+      </PaperProvider>
     );
 
     expect(getByText('2')).toBeTruthy();
@@ -121,11 +143,9 @@ describe('SongItem', () => {
     const mockDrag = jest.fn();
 
     const { getByTestId } = render(
-      <ReduxProvider store={store}>
-        <PaperProvider>
-          <SongItem item={mockTrack} index={0} drag={mockDrag} />
-        </PaperProvider>
-      </ReduxProvider>
+      <PaperProvider>
+        <SongItem item={mockTrack} index={0} drag={mockDrag} />
+      </PaperProvider>
     );
 
     fireEvent(getByTestId('drag-handle'), 'onLongPress');

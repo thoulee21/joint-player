@@ -119,3 +119,15 @@ jest.mock('react-native-fs', () => {
     },
   };
 });
+
+jest.mock('react-native-haptic-feedback', () => {
+  return {
+    __esModule: true,
+    default: {
+      trigger: jest.fn(),
+    },
+    HapticFeedbackTypes: {
+      effectHeavyClick: 'effectHeavyClick',
+    },
+  };
+});
