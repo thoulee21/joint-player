@@ -61,7 +61,6 @@
           "cancel": "Cancel",
           "update": "Update"
         },
-        "caption": "New update created at {{date}} is available.\n",
         "ask": "Do you want to update now?"
       }
     },

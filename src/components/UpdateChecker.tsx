@@ -7,7 +7,9 @@ import { useTranslation } from 'react-i18next';
 import {
   Alert,
   DeviceEventEmitter,
+  StyleSheet,
   ToastAndroid,
+  View,
 } from 'react-native';
 import HapticFeedback, {
   HapticFeedbackTypes,
@@ -15,6 +17,7 @@ import HapticFeedback, {
 import {
   ActivityIndicator,
   Button,
+  Chip,
   Dialog,
   List,
   Portal,
@@ -175,14 +178,33 @@ export const UpdateChecker = () => {
           onDismiss={() => setDialogVisible(false)}
         >
           <Dialog.Icon icon="information" size={40} />
-          <Dialog.Title>{t('about.update.dialog.title')}</Dialog.Title>
+          <Dialog.Title>
+            {t('about.update.dialog.title')}
+          </Dialog.Title>
 
           <Dialog.Content>
+            {availableUpdate && (
+              <View style={styles.row}>
+                <Chip
+                  icon="calendar"
+                  compact
+                  mode="outlined"
+                  style={styles.chip}
+                >
+                  {availableUpdate.createdAt.toLocaleDateString()}
+                </Chip>
+                <Chip
+                  icon="clock-outline"
+                  compact
+                  mode="outlined"
+                  style={styles.chip}
+                >
+                  {availableUpdate.createdAt.toLocaleTimeString()}
+                </Chip>
+              </View>
+            )}
+
             <Text>
-              {availableUpdate?.createdAt && t(
-                'about.update.dialog.caption',
-                { date: availableUpdate.createdAt.toISOString() }
-              )}
               {t('about.update.dialog.ask')}
             </Text>
           </Dialog.Content>
@@ -208,3 +230,13 @@ export const UpdateChecker = () => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  row: {
+    flexDirection: 'row',
+    marginBottom: 2,
+  },
+  chip: {
+    marginRight: 4,
+  }
+});
