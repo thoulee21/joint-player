@@ -5,26 +5,39 @@ import {
   type ScrollLargeHeaderProps,
 } from '@codeherence/react-native-header';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import React, { useCallback, useMemo, useState } from 'react';
-import { Linking, StatusBar, StyleSheet } from 'react-native';
-import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { ActivityIndicator, Appbar, Divider, IconButton, Menu, Portal, useTheme } from 'react-native-paper';
+import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import { Linking, StatusBar, StyleSheet, View } from 'react-native';
+import HapticFeedback, {
+  HapticFeedbackTypes,
+} from 'react-native-haptic-feedback';
+import {
+  ActivityIndicator,
+  Button,
+  Divider,
+  IconButton,
+  Menu,
+  Portal,
+  useTheme
+} from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import TrackPlayer from 'react-native-track-player';
 import useSWR from 'swr';
 import { HeaderComponent } from '../components/AnimatedHeader';
-import { BlurBackground } from '../components/BlurBackground';
 import { LottieAnimation } from '../components/LottieAnimation';
 import { PlaylistDetailLargeHeader } from '../components/PlaylistDetailLargeHeader';
-import { PlaylistTrack, raw2TrackType } from '../components/PlaylistTrack';
+import {
+  PlaylistTrack,
+  raw2TrackType,
+} from '../components/PlaylistTrack';
 import { TracksHeader } from '../components/TracksHeader';
 import { useAppDispatch, useAppSelector } from '../hook';
 import {
   addPlaylist,
   removePlaylist,
+  selectDevModeEnabled,
   selectPlaylists,
   setQueueAsync,
-  type PlaylistType,
+  type PlaylistType
 } from '../redux/slices';
 import type { TrackType } from '../services/GetTracksService';
 import type { Main, Track } from '../types/playlistDetail';
@@ -37,6 +50,7 @@ export const PlaylistDetailScreen = () => {
 
   const { name, playlistID } = useRoute().params as PlaylistType;
   const playlists = useAppSelector(selectPlaylists);
+  const isDev = useAppSelector(selectDevModeEnabled);
 
   const [attempts, setAttempts] = useState(0);
   const [menuVisible, setMenuVisible] = useState(false);
@@ -171,20 +185,21 @@ export const PlaylistDetailScreen = () => {
     </ScalingView>
   ), [appTheme, data, menuVisible, navigation, playAll, playlistID]);
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: Boolean(
+        isLoading || data?.code !== 200 || error
+      ),
+      headerTitle: name
+    });
+  }, [data?.code, error, isLoading, name, navigation]);
+
   if (isLoading || data?.code !== 200 || error) {
     return (
-      <BlurBackground>
-        <Appbar.Header style={styles.appbar} mode="medium">
-          <Appbar.BackAction onPress={navigation.goBack} />
-          <Appbar.Content title={name} />
-          <Appbar.Action
-            loading={isValidating && !isLoading}
-            icon="refresh"
-            selected
-            onPress={retry}
-          />
-        </Appbar.Header>
-
+      <View style={[
+        styles.root,
+        { backgroundColor: appTheme.colors.surfaceVariant }
+      ]}>
         {isLoading ? (
           <ActivityIndicator
             size="large"
@@ -193,14 +208,23 @@ export const PlaylistDetailScreen = () => {
         ) : (
           <LottieAnimation
             animation="teapot"
-            onPress={retry}
-            caption={
-              // @ts-expect-error
-              `${data?.msg || error?.message}\nTap to retry\nAttempts: ${attempts}`
-            }
-          />
+            // @ts-expect-error
+            caption={`${data?.msg || error?.message}`.concat(
+              isDev ? `\nAttempts: ${attempts}` : ''
+            )}
+          >
+            <Button
+              icon="refresh"
+              style={styles.retry}
+              mode="contained-tonal"
+              loading={isValidating && !isLoading}
+              onPress={retry}
+            >
+              Retry
+            </Button>
+          </LottieAnimation>
         )}
-      </BlurBackground>
+      </View>
     );
   }
 
@@ -224,10 +248,17 @@ export const PlaylistDetailScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+  },
   appbar: {
     backgroundColor: 'transparent'
   },
   loading: {
     marginTop: '50%',
+  },
+  retry: {
+    alignSelf: 'center',
+    margin: '5%',
   }
 });
