@@ -7,9 +7,10 @@ import {
 import Color from 'color';
 import React, { useCallback } from 'react';
 import {
-  FlatList,
+  ScrollView,
+  StyleSheet,
   useWindowDimensions,
-  View
+  View,
 } from 'react-native';
 import { Drawer, useTheme } from 'react-native-paper';
 import { ActionDrawerItems } from './ActionDrawerItems';
@@ -56,7 +57,9 @@ export function DrawerItemList({
       }
     };
 
-    const { title, drawerIcon } = descriptors[item.key].options;
+    const {
+      title, drawerIcon,
+    } = descriptors[item.key].options;
 
     const backgroundColor = focused
       ? Color(appTheme.colors.secondaryContainer)
@@ -100,27 +103,29 @@ export function DrawerItemList({
     );
   }, [appTheme, descriptors, navigation, state]);
 
-  const keyExtractor = useCallback(
-    (item: any) => item.key, []
-  );
-
   return (
-    <>
+    <ScrollView
+      style={styles.items}
+      fadingEdgeLength={20}
+    >
       <Drawer.Section>
-        <FlatList
-          data={state.routes}
-          renderItem={renderDrawerItem}
-          keyExtractor={keyExtractor}
-          extraData={state.index}
-          style={{ marginTop: height * 0.1 }}
-          fadingEdgeLength={30}
-        />
+        {state.routes.map((
+          route: any, index: number
+        ) => (
+          renderDrawerItem({ item: route, index })
+        ))}
       </Drawer.Section>
 
       <ActionDrawerItems
         navigation={navigation}
       />
-      <View style={{ height: height * 0.2 }} />
-    </>
+      <View style={{ height: height * 0.1 }} />
+    </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  items: {
+    marginTop: 60,
+  }
+});
