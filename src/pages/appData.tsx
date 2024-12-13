@@ -51,6 +51,7 @@ export function AppDataScreen() {
           tabBarStyle: {
             backgroundColor: appTheme.colors.background,
           },
+          swipeEnabled: false,
         }}
         screenListeners={() => ({
           state: ({ data }) => {

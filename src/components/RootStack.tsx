@@ -62,7 +62,10 @@ export function RootStack() {
         <Stack.Screen name="Artist" component={Artist} />
         <Stack.Screen name="Dev" component={DevScreen} />
         <Stack.Screen name="About" component={AboutScreen} />
-        <Stack.Screen name="AppData" component={AppDataScreen} options={{ headerShown: true }} />
+        <Stack.Screen name="AppData" component={AppDataScreen} options={{
+          headerShown: true,
+          gestureEnabled: false,
+        }} />
         <Stack.Screen name="AniGallery" component={AniGallery} options={{
           headerShown: true,
           title: t('stack.aniGallery'),
