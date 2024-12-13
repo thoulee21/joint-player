@@ -181,7 +181,7 @@ export const UpdateChecker = () => {
               {availableUpdate?.createdAt
                 && t(
                   'about.update.dialog.caption',
-                  { date: availableUpdate.createdAt.toLocaleString() }
+                  { date: availableUpdate.createdAt.toISOString() }
                 )}
               {t('about.update.dialog.ask')} </Text>
           </Dialog.Content>
