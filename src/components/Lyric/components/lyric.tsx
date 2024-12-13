@@ -15,8 +15,10 @@ import {
 } from 'react-native';
 import {
   useCurrentIndex,
+} from '../hook/useCurrentIndex';
+import {
   useLocalAutoScroll,
-} from '../hook';
+} from '../hook/useLocalAutoScroll';
 import type { LyricLine } from '../lyric';
 import { parseLyric } from '../util';
 

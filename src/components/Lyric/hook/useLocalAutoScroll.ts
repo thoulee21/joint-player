@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
-import { useDebounce, useThrottle } from '../../../hook';
+import { useDebounce } from '../../../hook/useDebounce';
+import { useThrottle } from '../../../hook/useThrottle';
 
 /**
  * Custom hook that manages local auto-scroll behavior.
