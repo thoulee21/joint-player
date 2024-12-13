@@ -1,5 +1,5 @@
-import type { LyricLine } from '../lyric';
-import { parseLyric } from '../util/parseLyric';
+import type { LyricLine } from '../components/Lyric/lyric';
+import { parseLyric } from '../components/Lyric/util/parseLyric';
 
 describe('parseLyric', () => {
   it('parses lyrics correctly', () => {

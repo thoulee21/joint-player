@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react-native';
 import React from 'react';
 import { Text } from 'react-native-paper';
-import { LottieAnimation } from '../LottieAnimation';
+import { LottieAnimation } from '../components/LottieAnimation';
 
 jest.mock('lottie-react-native', () => 'LottieView');
 

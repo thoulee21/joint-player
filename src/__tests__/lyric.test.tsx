@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react-native';
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
-import Lyric from '../components/lyric';
-import type { LyricLine } from '../lyric';
+import Lyric from '../components/Lyric/components/lyric';
+import type { LyricLine } from '../components/Lyric/lyric';
 
 const mockLrc = `[00:12.00]Line 1
 [00:17.20]Line 2

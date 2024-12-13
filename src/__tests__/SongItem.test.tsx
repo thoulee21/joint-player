@@ -1,15 +1,15 @@
 import { cleanup, fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
 import { Provider as PaperProvider } from 'react-native-paper';
-import { useAppDispatch } from '../../hook/reduxHooks';
-import { TrackType } from '../../services/GetTracksService';
-import { SongItem } from '../SongItem';
+import { useAppDispatch } from '../hook/reduxHooks';
+import { TrackType } from '../services/GetTracksService';
+import { SongItem } from '../components/SongItem';
 
 jest.mock('react-native-track-player', () => ({
   play: jest.fn(),
 }));
 
-jest.mock('../../hook/reduxHooks', () => ({
+jest.mock('../hook/reduxHooks', () => ({
   useAppDispatch: jest.fn(),
 }));
 
