@@ -46,9 +46,7 @@ export const SongItem = ({
     );
     await dispatch(clearAddOneAsync(item));
     await TrackPlayer.play();
-    //no dispatch
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [item]);
+  }, [dispatch, item]);
 
   const renderIndex = useCallback((
     props: ListLRProps
