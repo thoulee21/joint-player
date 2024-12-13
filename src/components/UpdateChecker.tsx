@@ -176,14 +176,15 @@ export const UpdateChecker = () => {
         >
           <Dialog.Icon icon="information" size={40} />
           <Dialog.Title>{t('about.update.dialog.title')}</Dialog.Title>
+
           <Dialog.Content>
             <Text>
-              {availableUpdate?.createdAt
-                && t(
-                  'about.update.dialog.caption',
-                  { date: availableUpdate.createdAt.toISOString() }
-                )}
-              {t('about.update.dialog.ask')} </Text>
+              {availableUpdate?.createdAt && t(
+                'about.update.dialog.caption',
+                { date: availableUpdate.createdAt.toISOString() }
+              )}
+              {t('about.update.dialog.ask')}
+            </Text>
           </Dialog.Content>
 
           <Dialog.Actions>
@@ -195,11 +196,9 @@ export const UpdateChecker = () => {
             </Button>
 
             <Button
-              onPress={
-                isUpdatePending
-                  ? () => RNRestart.Restart()
-                  : fetchUpdateAndRestart
-              }
+              onPress={isUpdatePending
+                ? () => RNRestart.Restart()
+                : fetchUpdateAndRestart}
             >
               {t('about.update.dialog.actions.update')}
             </Button>
