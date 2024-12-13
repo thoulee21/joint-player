@@ -92,6 +92,7 @@ export const UpdateChecker = () => {
   }, [availableUpdate, currentlyRunning, isDev, t]);
 
   const fetchUpdateAndRestart = async () => {
+    setDialogVisible(false);
     try {
       await Updates.fetchUpdateAsync();
       RNRestart.Restart();
