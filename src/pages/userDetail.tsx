@@ -7,7 +7,6 @@ import {
 } from '@codeherence/react-native-header';
 import { DrawerToggleButton } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
-import { FlashList } from '@shopify/flash-list';
 import React, { useCallback } from 'react';
 import { Linking, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Appbar, List, Portal, Text, useTheme } from 'react-native-paper';
@@ -31,10 +30,6 @@ export const UserDetail = () => {
   const user = useAppSelector(selectUser);
   const playlists = useAppSelector(selectPlaylists);
   const favorites = useAppSelector(favs);
-
-  const renderPlaylist = useCallback((props: any) => (
-    <PlaylistDisplay {...props} />
-  ), []);
 
   const renderSurface = useCallback((
     { showNavBar }: SurfaceComponentProps
@@ -104,36 +99,6 @@ export const UserDetail = () => {
     </UserBackground>
   ), [insets.top, navigation, user.id]);
 
-  const renderListHeader = useCallback(() => (
-    <>
-      <UserAttrs style={[
-        styles.attrs, {
-          marginTop: height * 0.1,
-        }
-      ]} />
-      <List.Subheader style={{
-        color: appTheme.colors.secondary
-      }}>
-        {playlists.length ? 'Playlists' : null}
-      </List.Subheader>
-
-      {favorites.length >= 1 && (
-        <PlaylistCover
-          artwork={favorites[0].artwork}
-          description={`${favorites[0].title}\n${favorites[0].artist}`}
-          length={favorites.length}
-          name="Favorites"
-          onPress={() => {
-            //@ts-expect-error
-            navigation.navigate('DrawerNavi', {
-              screen: 'Favorites',
-            });
-          }}
-        />
-      )}
-    </>
-  ), [appTheme.colors.secondary, favorites, height, navigation, playlists.length]);
-
   return (
     <Portal.Host>
       <BlurBackground>
@@ -145,12 +110,41 @@ export const UserDetail = () => {
           style={styles.root}
           contentInset={insets}
         >
-          <FlashList
-            data={playlists}
-            renderItem={renderPlaylist}
-            estimatedItemSize={92}
-            ListHeaderComponent={renderListHeader}
-          />
+          <UserAttrs style={[
+            styles.attrs, {
+              marginTop: height * 0.1,
+            }
+          ]} />
+          <List.Subheader style={{
+            color: appTheme.colors.secondary
+          }}>
+            {playlists.length ? 'Playlists' : null}
+          </List.Subheader>
+
+          {favorites.length >= 1 && (
+            <PlaylistCover
+              artwork={favorites[0].artwork}
+              description={`${favorites[0].title}\n${favorites[0].artist}`}
+              length={favorites.length}
+              name="Favorites"
+              onPress={() => {
+                //@ts-expect-error
+                navigation.navigate('DrawerNavi', {
+                  screen: 'Favorites',
+                });
+              }}
+            />
+          )}
+
+          {playlists.map((
+            item, index
+          ) => (
+            <PlaylistDisplay
+              key={item.playlistID}
+              index={index}
+              item={item}
+            />
+          ))}
           <PoweredBy />
         </ScrollViewWithHeaders>
       </BlurBackground>

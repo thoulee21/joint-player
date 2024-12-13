@@ -1,4 +1,3 @@
-import type { ListRenderItemInfo } from '@shopify/flash-list';
 import React from 'react';
 import { List } from 'react-native-paper';
 import useSWR from 'swr';
@@ -7,9 +6,9 @@ import type { PlaylistType } from '../redux/slices/playlists';
 import type { Main } from '../types/playlistDetail';
 import type { Playlist } from '../types/searchPlaylist';
 
-export const PlaylistDisplay = (
-  props: ListRenderItemInfo<PlaylistType>
-) => {
+export const PlaylistDisplay = (props: {
+  item: PlaylistType, index: number
+}) => {
   const { playlistID } = props.item;
 
   const { data, isLoading, error, mutate } = useSWR<Main>(

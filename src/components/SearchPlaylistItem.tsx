@@ -1,13 +1,12 @@
 import { useNavigation } from '@react-navigation/native';
-import type { ListRenderItemInfo } from '@shopify/flash-list';
 import React, { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { List, Text, useTheme } from 'react-native-paper';
 import type { ListLRProps } from '../types/paperListItem';
 import type { Playlist } from '../types/searchPlaylist';
 
-export const PlaylistItem = ({ item }:
-  ListRenderItemInfo<Playlist>
+export const PlaylistItem = (
+  { item }: { item: Playlist }
 ) => {
   const navigation = useNavigation();
   const appTheme = useTheme();
