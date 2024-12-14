@@ -5,11 +5,17 @@ import {
   type BottomSheetModal
 } from '@gorhom/bottom-sheet';
 import React, { useCallback, useEffect } from 'react';
-import { DeviceEventEmitter, StyleSheet, View } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import {
+  Animated,
+  DeviceEventEmitter,
+  StyleSheet,
+} from 'react-native';
 import HapticFeedback, {
   HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
 import { FAB, List, Tooltip } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import TrackPlayer from 'react-native-track-player';
 import { useAppDispatch, useAppSelector } from '../hook';
 import { queue, setQueue, setQueueAsync } from '../redux/slices';
@@ -22,6 +28,8 @@ export function TrackListSheet({ bottomSheetRef }: {
   bottomSheetRef: React.RefObject<BottomSheetModal>;
 }) {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
   const tracks = useAppSelector(queue);
 
   const initQueue = useCallback(async () => {
@@ -55,46 +63,54 @@ export function TrackListSheet({ bottomSheetRef }: {
 
   const renderEmptyIcon = useCallback(
     (props: ListLRProps) => (
-      <List.Icon {...props} icon="music-circle-outline" />
+      <List.Icon {...props} icon="information-outline" />
     ), []
   );
 
   const renderEmptyTrack = useCallback(() => {
     return (
       <List.Item
-        title="No tracks in queue"
-        description="Add some songs to your queue"
+        title={t('tracklist.empty.title')}
+        description={t('tracklist.empty.description')}
         left={renderEmptyIcon}
         style={styles.noTrack}
       />
     );
-  }, [renderEmptyIcon]);
+  }, [renderEmptyIcon, t]);
 
   const keyExtractor = useCallback(
     (item: TrackType) => item.id.toString(), []
   );
 
-  const renderFooter = useCallback((props: BottomSheetFooterProps) => (
-    <BottomSheetFooter {...props}>
-      <View style={styles.footer}>
-        <Tooltip title="Shuffle queue">
+  const renderFooter = useCallback((
+    { animatedFooterPosition }: BottomSheetFooterProps
+  ) => (
+    <BottomSheetFooter
+      animatedFooterPosition={animatedFooterPosition}
+      bottomInset={insets.bottom}
+    >
+      <Animated.View style={styles.footer}>
+        <Tooltip title={t('tracklist.shuffle')}>
           <FAB
             icon="shuffle"
             visible={tracks.length >= 2}
             variant="surface"
+            animated
             onPress={() => {
-              HapticFeedback.trigger(HapticFeedbackTypes.effectClick);
+              HapticFeedback.trigger(
+                HapticFeedbackTypes.effectClick
+              );
 
-              const shuffledQueue = [...tracks].sort(() => (
-                0.5 - Math.random()
-              ));
+              const shuffledQueue = [...tracks].sort(
+                () => (0.5 - Math.random())
+              );
               dispatch(setQueueAsync(shuffledQueue));
             }}
           />
         </Tooltip>
-      </View>
+      </Animated.View>
     </BottomSheetFooter>
-  ), [tracks, dispatch]);
+  ), [insets.bottom, t, tracks, dispatch]);
 
   return (
     <BottomSheetPaper

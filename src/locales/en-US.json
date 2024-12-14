@@ -272,5 +272,12 @@
       }
     },
     "retry": "Retry"
+  },
+  "tracklist": {
+    "shuffle": "Shuffle queue",
+    "empty": {
+      "title": "No tracks in queue",
+      "description": "Add some songs to your queue"
+    }
   }
 }

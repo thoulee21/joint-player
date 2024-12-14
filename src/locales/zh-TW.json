@@ -28,10 +28,10 @@
     "update": {
       "alert": {
         "available": {
-          "title": "可用更新資訊"
+          "title": "可用更新信息"
         },
         "current": {
-          "title": "當前更新資訊"
+          "title": "當前更新信息"
         }
       },
       "dialog": {
@@ -94,7 +94,7 @@
   },
   "stack": {
     "aniGallery": "動畫畫廊",
-    "releaseTags": "發佈標籤",
+    "releaseTags": "發布標籤",
     "locales": "更改語言"
   },
   "artist": {
@@ -121,7 +121,7 @@
   },
   "changeLog": {
     "appbar": {
-      "releaseTags": "發佈標籤"
+      "releaseTags": "發布標籤"
     },
     "notFound": "未找到變更日誌"
   },
@@ -212,7 +212,7 @@
     },
     "title": "設置",
     "about": {
-      "description": "查看應用程式資訊",
+      "description": "查看應用程式信息",
       "title": "關於"
     },
     "dev": {
@@ -268,9 +268,16 @@
   "playlistDetail": {
     "playlist": {
       "menu": {
-        "openInApp": "在外部程式中打開"
+        "openInApp": "在外部程序中打開"
       }
     },
     "retry": "重試"
+  },
+  "tracklist": {
+    "empty": {
+      "description": "向隊列中添加一些歌曲",
+      "title": "隊列中沒有軌道"
+    },
+    "shuffle": "洗牌隊列"
   }
 }

@@ -272,5 +272,12 @@
       }
     },
     "retry": "重试"
+  },
+  "tracklist": {
+    "empty": {
+      "description": "向队列中添加一些歌曲",
+      "title": "队列中没有轨道"
+    },
+    "shuffle": "洗牌队列"
   }
 }
