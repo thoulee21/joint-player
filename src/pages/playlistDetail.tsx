@@ -149,28 +149,10 @@ export const PlaylistDetailScreen = () => {
         length={data?.result.trackCount || 0}
         onPress={playAll}
         right={
-          <Menu
-            visible={menuVisible}
-            onDismiss={() => { setMenuVisible(false); }}
-            statusBarHeight={StatusBar.currentHeight}
-            anchor={
-              <IconButton
-                icon="dots-vertical"
-                size={18}
-                onPress={() => { setMenuVisible(true); }}
-              />
-            }
-          >
-            <Menu.Item
-              title="Open in App"
-              leadingIcon="open-in-new"
-              onPress={() => Linking.openURL(
-                `orpheus://playlist/${playlistID}`
-              )}
-            />
-            <Menu.Item
-              title="Comments"
-              leadingIcon="comment-text-multiple-outline"
+          <View style={styles.row}>
+            <IconButton
+              icon="comment-text-multiple-outline"
+              size={18}
               disabled={data?.result.commentCount === 0}
               onPress={() => {
                 //@ts-expect-error
@@ -179,7 +161,28 @@ export const PlaylistDetailScreen = () => {
                 });
               }}
             />
-          </Menu>
+
+            <Menu
+              visible={menuVisible}
+              onDismiss={() => { setMenuVisible(false); }}
+              statusBarHeight={StatusBar.currentHeight}
+              anchor={
+                <IconButton
+                  icon="dots-vertical"
+                  size={18}
+                  onPress={() => { setMenuVisible(true); }}
+                />
+              }
+            >
+              <Menu.Item
+                title="Open in App"
+                leadingIcon="open-in-new"
+                onPress={() => Linking.openURL(
+                  `orpheus://playlist/${playlistID}`
+                )}
+              />
+            </Menu>
+          </View>
         }
       />
     </ScalingView>
@@ -260,5 +263,8 @@ const styles = StyleSheet.create({
   retry: {
     alignSelf: 'center',
     margin: '5%',
+  },
+  row: {
+    flexDirection: 'row',
   }
 });
