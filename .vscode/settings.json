@@ -50,6 +50,9 @@
         ],
         "src\\components\\DevItem.tsx": [
             "Dev"
+        ],
+        "src\\pages\\playlistDetail.tsx": [
+            "Comments"
         ]
     }
 }

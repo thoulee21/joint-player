@@ -134,6 +134,18 @@
   "webview": {
     "appbar": {
       "openInBrowser": "Open in Browser"
+    },
+    "menu": {
+      "copy": {
+        "toast": "Link copied!",
+        "title": "Copy Link"
+      },
+      "clear": {
+        "toast": "Cache cleared!"
+      },
+      "share": {
+        "title": "Share Link"
+      }
     }
   },
   "changeLog": {
@@ -252,5 +264,13 @@
         "invalid": "Email address is invalid!"
       }
     }
+  },
+  "playlistDetail": {
+    "playlist": {
+      "menu": {
+        "openInApp": "Open in External App"
+      }
+    },
+    "retry": "Retry"
   }
 }

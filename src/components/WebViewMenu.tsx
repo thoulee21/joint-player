@@ -25,10 +25,10 @@ export const WebViewMenu = ({ url, title, webViewRef }: {
     HapticFeedback.trigger('effectTick');
     setMenuVisible(false);
     ToastAndroid.show(
-      'Link copied!',
+      t('webview.menu.copy.toast'),
       ToastAndroid.SHORT
     );
-  }, [url]);
+  }, [t, url]);
 
   const shareLink = useCallback(() => {
     Share.share({
@@ -47,10 +47,10 @@ export const WebViewMenu = ({ url, title, webViewRef }: {
     HapticFeedback.trigger('effectTick');
     setMenuVisible(false);
     ToastAndroid.show(
-      'Cache cleared!',
+      t('webview.menu.clear.toast'),
       ToastAndroid.SHORT
     );
-  }, [webViewRef]);
+  }, [t, webViewRef]);
 
   return (
     <Menu
@@ -74,18 +74,18 @@ export const WebViewMenu = ({ url, title, webViewRef }: {
         }}
       />
       <Menu.Item
-        title="Copy Link"
+        title={t('webview.menu.copy.title')}
         leadingIcon="link"
         onPress={copyLink}
       />
       <Menu.Item
-        title="Share Link"
+        title={t('webview.menu.share.title')}
         leadingIcon="share"
         disabled={!url || !title}
         onPress={shareLink}
       />
       <Menu.Item
-        title="Clear Cache"
+        title={t('settings.data.cache.title')}
         leadingIcon="delete-outline"
         onPress={clearCache}
       />

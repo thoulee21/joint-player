@@ -28,10 +28,10 @@
     "update": {
       "alert": {
         "available": {
-          "title": "可用更新信息"
+          "title": "可用更新資訊"
         },
         "current": {
-          "title": "當前更新信息"
+          "title": "當前更新資訊"
         }
       },
       "dialog": {
@@ -137,6 +137,18 @@
   "webview": {
     "appbar": {
       "openInBrowser": "在瀏覽器中打開"
+    },
+    "menu": {
+      "clear": {
+        "toast": "緩存已清除！"
+      },
+      "copy": {
+        "title": "複製鏈接",
+        "toast": "鏈接已複製！"
+      },
+      "share": {
+        "title": "分享鏈接"
+      }
     }
   },
   "search": {
@@ -200,7 +212,7 @@
     },
     "title": "設置",
     "about": {
-      "description": "查看應用程式信息",
+      "description": "查看應用程式資訊",
       "title": "關於"
     },
     "dev": {
@@ -252,5 +264,13 @@
     "toast": {
       "success": "問題已提交"
     }
+  },
+  "playlistDetail": {
+    "playlist": {
+      "menu": {
+        "openInApp": "在外部程式中打開"
+      }
+    },
+    "retry": "重試"
   }
 }

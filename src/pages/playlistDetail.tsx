@@ -6,6 +6,7 @@ import {
 } from '@codeherence/react-native-header';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Linking, StatusBar, StyleSheet, View } from 'react-native';
 import HapticFeedback, {
   HapticFeedbackTypes,
@@ -45,6 +46,7 @@ import type { Main, Track } from '../types/playlistDetail';
 export const PlaylistDetailScreen = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const appTheme = useTheme();
 
@@ -175,7 +177,7 @@ export const PlaylistDetailScreen = () => {
               }
             >
               <Menu.Item
-                title="Open in App"
+                title={t('playlistDetail.playlist.menu.openInApp')}
                 leadingIcon="open-in-new"
                 onPress={() => Linking.openURL(
                   `orpheus://playlist/${playlistID}`
@@ -186,7 +188,7 @@ export const PlaylistDetailScreen = () => {
         }
       />
     </ScalingView>
-  ), [appTheme, data, menuVisible, navigation, playAll, playlistID]);
+  ), [appTheme.colors.surfaceVariant, data?.result.commentCount, data?.result.commentThreadId, data?.result.trackCount, menuVisible, navigation, playAll, playlistID, t]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -223,7 +225,7 @@ export const PlaylistDetailScreen = () => {
               loading={isValidating && !isLoading}
               onPress={retry}
             >
-              Retry
+              {t('playlistDetail.retry')}
             </Button>
           </LottieAnimation>
         )}
