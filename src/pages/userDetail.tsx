@@ -8,19 +8,36 @@ import {
 import { DrawerToggleButton } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
 import React, { useCallback } from 'react';
-import { Linking, StyleSheet, useWindowDimensions, View } from 'react-native';
-import { Appbar, List, Portal, Text, useTheme } from 'react-native-paper';
+import {
+  Linking,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+} from 'react-native';
+import {
+  Appbar,
+  List,
+  Portal,
+  Text,
+  useTheme,
+} from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BlurBackground } from '../components/BlurBackground';
 import { ImageBlurView } from '../components/ImageBlur';
 import { PlayControlsFAB } from '../components/PlayControlsFAB';
 import { PlaylistCover } from '../components/PlaylistCover';
 import { PlaylistDisplay } from '../components/PlaylistDisplayItem';
 import { PoweredBy } from '../components/PoweredBy';
 import { UserAttrs } from '../components/UserAttrs';
-import { UserBackground, UserInfo } from '../components/UserHeader';
+import {
+  UserBackground,
+  UserInfo,
+} from '../components/UserHeader';
 import { useAppSelector } from '../hook';
-import { favs, selectPlaylists, selectUser } from '../redux/slices';
+import {
+  favs,
+  selectPlaylists,
+  selectUser,
+} from '../redux/slices';
 
 export const UserDetail = () => {
   const navigation = useNavigation();
@@ -40,8 +57,9 @@ export const UserDetail = () => {
       style={StyleSheet.absoluteFill}
     >
       <View style={[
-        StyleSheet.absoluteFill,
-        { backgroundColor: appTheme.colors.background }
+        StyleSheet.absoluteFill, {
+          backgroundColor: appTheme.colors.background,
+        }
       ]} />
     </FadingView>
   ), [appTheme.colors.background]);
@@ -102,55 +120,54 @@ export const UserDetail = () => {
 
   return (
     <Portal.Host>
-      <BlurBackground>
-        <ScrollViewWithHeaders
-          HeaderComponent={renderHeader}
-          LargeHeaderComponent={renderLargeHeader}
-          overScrollMode="never"
-          scrollToOverflowEnabled={false}
-          style={styles.root}
-          contentInset={insets}
-        >
-          <UserAttrs style={[
-            styles.attrs, {
-              marginTop: height * 0.1,
-            }
-          ]} />
-          <List.Subheader style={{
-            color: appTheme.colors.secondary
-          }}>
-            {playlists.length ? 'Playlists' : null}
-          </List.Subheader>
+      <ScrollViewWithHeaders
+        HeaderComponent={renderHeader}
+        LargeHeaderComponent={renderLargeHeader}
+        overScrollMode="never"
+        scrollToOverflowEnabled={false}
+        style={styles.root}
+        contentInset={insets}
+      >
+        <UserAttrs style={[
+          styles.attrs, {
+            marginTop: height * 0.1,
+          }
+        ]} />
+        <List.Subheader style={{
+          color: appTheme.colors.secondary
+        }}>
+          {playlists.length ? 'Playlists' : null}
+        </List.Subheader>
 
-          {favorites.length >= 1 && (
-            <PlaylistCover
-              artwork={favorites[0].artwork}
-              description={`${favorites[0].title}\n${favorites[0].artist}`}
-              length={favorites.length}
-              name="Favorites"
-              onPress={() => {
-                //@ts-expect-error
-                navigation.navigate('DrawerNavi', {
-                  screen: 'Favorites',
-                });
-              }}
-            />
-          )}
+        {favorites.length >= 1 && (
+          <PlaylistCover
+            artwork={favorites[0].artwork}
+            description={`${favorites[0].title}\n${favorites[0].artist}`}
+            length={favorites.length}
+            name="Favorites"
+            onPress={() => {
+              //@ts-expect-error
+              navigation.navigate('DrawerNavi', {
+                screen: 'Favorites',
+              });
+            }}
+          />
+        )}
 
-          {playlists.map((
-            item, index
-          ) => (
-            <PlaylistDisplay
-              key={item.playlistID}
-              index={index}
-              item={item}
-            />
-          ))}
-          <PoweredBy />
-        </ScrollViewWithHeaders>
+        {playlists.map((
+          item, index
+        ) => (
+          <PlaylistDisplay
+            key={item.playlistID}
+            index={index}
+            item={item}
+          />
+        ))}
 
-        <PlayControlsFAB />
-      </BlurBackground>
+        <PoweredBy />
+      </ScrollViewWithHeaders>
+
+      <PlayControlsFAB />
     </Portal.Host>
   );
 };
