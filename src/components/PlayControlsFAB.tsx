@@ -16,16 +16,12 @@ export const PlayControlsFAB = () => {
   return (
     <Portal>
       <FAB.Group
-        icon={playing
-          ? 'pause-circle-outline'
-          : 'play-circle-outline'}
+        icon={bufferingDuringPlay
+          ? 'loading'
+          : playing ? 'pause' : 'play'}
         open={open}
         visible={!!track}
-        label={
-          !bufferingDuringPlay
-            ? playing ? 'Pause' : 'Play'
-            : 'Buffering...'
-        }
+        variant="secondary"
         toggleStackOnLongPress
         onPress={() => {
           HapticFeedback.trigger(
