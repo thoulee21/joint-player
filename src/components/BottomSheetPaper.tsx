@@ -54,7 +54,7 @@ export const BottomSheetPaper = forwardRef<
           backgroundColor: appTheme.colors.outline
         }}
         enableDynamicSizing={false}
-        snapPoints={['35%', '90%', '100%']}
+        snapPoints={['90%']}
         topInset={insets.top}
         enablePanDownToClose
         android_keyboardInputMode="adjustResize"
