@@ -33,7 +33,7 @@ export const UserAttrs = ({ style }: {
     }
   );
 
-  const unlimited = useMemo(() => (
+  const privacyInfo = useMemo(() => (
     data?.profile.privacyItemUnlimit
   ), [data]);
 
@@ -63,20 +63,26 @@ export const UserAttrs = ({ style }: {
 
   return (
     <View style={[styles.attrRow, style]}>
-      {unlimited?.gender && (
-        <Chip icon="account" compact style={styles.attr} key="gender">
+      {privacyInfo?.gender && (
+        <Chip icon="account-outline" compact style={styles.attr} key="gender">
           {data?.profile.gender === 1 ? 'Male' : 'Female'}
         </Chip>
       )}
-      {unlimited?.age && (
-        <Chip icon="cake-variant" compact style={styles.attr} key="birthday">
+      {privacyInfo?.age && (
+        <Chip
+          icon="cake-variant-outline"
+          compact
+          style={styles.attr}
+          key="birthday"
+        >
           {toReadableDate(data?.profile.birthday || 0)}
         </Chip>
       )}
       {data?.bindings
         .filter(b => b.type === 1)
         .map((b) => (
-          <Chip icon="phone"
+          <Chip
+            icon="phone-in-talk"
             compact
             style={styles.attr}
             key="phoneNumber"
@@ -84,7 +90,9 @@ export const UserAttrs = ({ style }: {
               HapticFeedback.trigger(
                 HapticFeedbackTypes.effectHeavyClick
               );
-              Clipboard.setString(b.id);
+              Clipboard.setString(
+                JSON.stringify(b.id)
+              );
               ToastAndroid.show(
                 'Phone number copied',
                 ToastAndroid.SHORT
@@ -101,17 +109,17 @@ export const UserAttrs = ({ style }: {
           </Chip>
         ))}
 
-      <Chip icon="star" compact style={styles.attr} key="level">
+      <Chip icon="star-outline" compact style={styles.attr} key="level">
         {data?.level} level
       </Chip>
       <Chip icon="account-multiple-outline" compact style={styles.attr} key="follows">
         {data?.profile.follows} follows
       </Chip>
-      <Chip icon="account-multiple" compact style={styles.attr} key="followeds">
+      <Chip icon="account-multiple-outline" compact style={styles.attr} key="followeds">
         {data?.profile.followeds} followeds
       </Chip>
 
-      <Chip icon="calendar" compact style={styles.attr} key="villageAge">
+      <Chip icon="calendar-outline" compact style={styles.attr} key="villageAge">
         {Math.floor((data?.createDays || 0) / 365)} years
       </Chip>
       <Chip icon="timer-outline" compact style={styles.attr} key="timeSpentOnMusic">
