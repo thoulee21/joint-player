@@ -13,6 +13,7 @@ import { Appbar, List, Portal, Text, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BlurBackground } from '../components/BlurBackground';
 import { ImageBlurView } from '../components/ImageBlur';
+import { PlayControlsFAB } from '../components/PlayControlsFAB';
 import { PlaylistCover } from '../components/PlaylistCover';
 import { PlaylistDisplay } from '../components/PlaylistDisplayItem';
 import { PoweredBy } from '../components/PoweredBy';
@@ -147,6 +148,8 @@ export const UserDetail = () => {
           ))}
           <PoweredBy />
         </ScrollViewWithHeaders>
+
+        <PlayControlsFAB />
       </BlurBackground>
     </Portal.Host>
   );

@@ -1,5 +1,5 @@
 import React, { useCallback, useRef } from 'react';
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet, useWindowDimensions, View } from 'react-native';
 import DraggableFlatList, {
   ScaleDecorator,
   type RenderItemParams,
@@ -11,10 +11,11 @@ import { Divider, Text, useTheme } from 'react-native-paper';
 import { useAppDispatch, useAppSelector } from '../hook';
 import { favs, setFavs } from '../redux/slices';
 import { TrackType } from '../services/GetTracksService';
-import { SwipeableItemWrapper } from './SwipeableItemWrapper';
 import { LottieAnimation } from './LottieAnimation';
+import { PoweredBy } from './PoweredBy';
 import { AddToQueueButton, DeleteFavButton } from './QuickActions';
 import { SongItem } from './SongItem';
+import { SwipeableItemWrapper } from './SwipeableItemWrapper';
 import { SwipeableUnderlay } from './SwipeableUnderlay';
 
 const NoFavs = () => (
@@ -36,6 +37,7 @@ export const FavsList = () => {
   const dispatch = useAppDispatch();
   const appTheme = useTheme();
 
+  const { height } = useWindowDimensions();
   const favorites = useAppSelector(favs);
   const itemRefs = useRef(new Map());
 
@@ -112,6 +114,12 @@ export const FavsList = () => {
       ItemSeparatorComponent={Divider}
       onDragEnd={updateFavs}
       activationDistance={20}
+      ListFooterComponent={
+        <>
+          <PoweredBy />
+          <View style={{ height: height / 10 }} />
+        </>
+      }
     />
   );
 };
