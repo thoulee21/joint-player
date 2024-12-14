@@ -6,11 +6,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import React, { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  Animated,
-  DeviceEventEmitter,
-  StyleSheet,
-} from 'react-native';
+import { DeviceEventEmitter, StyleSheet, View } from 'react-native';
 import HapticFeedback, {
   HapticFeedbackTypes,
 } from 'react-native-haptic-feedback';
@@ -89,7 +85,7 @@ export function TrackListSheet({ bottomSheetRef }: {
       animatedFooterPosition={animatedFooterPosition}
       bottomInset={insets.bottom}
     >
-      <Animated.View style={styles.footer}>
+      <View style={styles.footer}>
         <Tooltip title={t('tracklist.shuffle')}>
           <FAB
             icon="shuffle"
@@ -108,7 +104,7 @@ export function TrackListSheet({ bottomSheetRef }: {
             }}
           />
         </Tooltip>
-      </Animated.View>
+      </View>
     </BottomSheetFooter>
   ), [insets.bottom, t, tracks, dispatch]);
 
