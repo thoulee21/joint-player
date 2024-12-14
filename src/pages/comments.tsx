@@ -1,28 +1,25 @@
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Appbar } from 'react-native-paper';
-import { BlurBackground } from '../components/BlurBackground';
+import { StyleSheet, View } from 'react-native';
 import { CommentList } from '../components/CommentList';
 
 export function Comments(): React.JSX.Element {
-    const navigation = useNavigation();
-    const { commentThreadId } = useRoute().params as { commentThreadId: string };
+  const { commentThreadId } = useRoute().params as {
+    commentThreadId: string
+  };
 
-    return (
-        <BlurBackground>
-            <Appbar.Header style={styles.header}>
-                <Appbar.BackAction onPress={navigation.goBack} />
-                <Appbar.Content title="Comments" />
-            </Appbar.Header>
-
-            <CommentList commentThreadId={commentThreadId} />
-        </BlurBackground>
-    );
+  return (
+    <View style={styles.root}>
+      <CommentList commentThreadId={commentThreadId} />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    header: {
-        backgroundColor: 'transparent',
-    },
+  root: {
+    flex: 1,
+  },
+  header: {
+    backgroundColor: 'transparent',
+  },
 });

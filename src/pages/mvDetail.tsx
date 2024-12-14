@@ -142,7 +142,7 @@ export function MvDetail() {
   }
 
   return (
-    <BlurBackground>
+    <View style={styles.root}>
       <MvCover>
         <TrackInfoBar
           right={renderResSwitch}
@@ -150,6 +150,7 @@ export function MvDetail() {
         />
         <BottomBtns data={data} goMvPlayer={goMvPlayer} />
       </MvCover>
+
       <CommentList
         commentThreadId={`R_MV_5_${track?.mvid}`}
       />
@@ -162,11 +163,14 @@ export function MvDetail() {
           setValue={setRes as (res: string | null) => void}
         />
       </Portal>
-    </BlurBackground>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+  },
   header: {
     backgroundColor: 'transparent',
   },

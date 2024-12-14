@@ -1,14 +1,40 @@
-import { useNetInfoInstance } from '@react-native-community/netinfo';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { RefreshControl, SectionList, StyleSheet, View } from 'react-native';
-import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { ActivityIndicator, List, Portal, useTheme } from 'react-native-paper';
+import {
+  useNetInfoInstance,
+} from '@react-native-community/netinfo';
+import Color from 'color';
+import React, {
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import {
+  RefreshControl,
+  SectionList,
+  StyleSheet,
+} from 'react-native';
+import HapticFeedback, {
+  HapticFeedbackTypes,
+} from 'react-native-haptic-feedback';
+import {
+  ActivityIndicator,
+  List,
+  Portal,
+  useTheme,
+} from 'react-native-paper';
 import useSWRInfinite from 'swr/infinite';
 import { useDebounce } from '../hook';
-import { Comment, Main as CommentsMain } from '../types/comments';
+import {
+  Comment,
+  Main as CommentsMain,
+} from '../types/comments';
 import type { ListLRProps } from '../types/paperListItem';
 import { CommentItem } from './CommentItem';
-import { NoCommentsItem, NoInternetItem, RetryItem } from './CommentSpecialItems';
+import {
+  NoCommentsItem,
+  NoInternetItem,
+  RetryItem,
+} from './CommentSpecialItems';
 import { ScrollToBtns } from './ScrollToBtns';
 
 export interface Section {
@@ -28,7 +54,9 @@ export function CommentList(
   const [atTop, setAtTop] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  const { data, error, isLoading, mutate, setSize } = useSWRInfinite<CommentsMain>(
+  const {
+    data, error, isLoading, mutate, setSize,
+  } = useSWRInfinite<CommentsMain>(
     (index) => {
       const offset = index * itemPerPage;
       return (
@@ -86,9 +114,7 @@ export function CommentList(
 
     await mutate();
     setRefreshing(false);
-    // no mutate
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [mutate]);
 
   const loadMore = useDebounce(() => {
     if (!isLoading) {
@@ -140,29 +166,38 @@ export function CommentList(
             />
           );
         }
-      } else { return <View />; }
+      } else {
+        return null;
+      }
     }, [
     data, renderCheckIcon, renderLoadingIndicator, sectionFooterStyle
   ]);
 
   const renderSectionHeader = useCallback(
     ({ section }: { section: any }) => (
-      <List.Subheader style={[styles.header, {
-        color: appTheme.colors.secondary,
-      }]}>
+      <List.Subheader style={[
+        styles.header, {
+          color: appTheme.colors.primary,
+          backgroundColor:
+            Color(appTheme.colors.background)
+              .alpha(0.9).string(),
+        }
+      ]}>
         {section.title}
       </List.Subheader>
-    ), [appTheme.colors.secondary]);
+    ), [appTheme.colors.background, appTheme.colors.primary]);
 
-  const renderItem = useCallback(
-    ({ item }: { item: Comment }) => (
-      <CommentItem item={item} />
-    ), []);
+  const renderItem = useCallback((
+    { item }: { item: Comment }
+  ) => (
+    <CommentItem item={item} />
+  ), []);
 
-  const keyExtractor = useCallback(
-    (item: Comment) => (
-      item.commentId.toString()
-    ), []);
+  const keyExtractor = useCallback((
+    item: Comment
+  ) => (
+    item.commentId.toString()
+  ), []);
 
   if (isLoading) {
     return (
@@ -191,7 +226,6 @@ export function CommentList(
         sections={showData}
         keyExtractor={keyExtractor}
         initialNumToRender={5}
-        fadingEdgeLength={50}
         refreshing={refreshing}
         onRefresh={onRefresh}
         refreshControl={
@@ -206,6 +240,7 @@ export function CommentList(
         renderItem={renderItem}
         onEndReached={loadMore}
         onEndReachedThreshold={0.05}
+        stickySectionHeadersEnabled
         renderSectionFooter={renderSectionFooter}
         onScroll={e =>
           setAtTop(e.nativeEvent.contentOffset.y < 5)
@@ -250,4 +285,7 @@ const styles = StyleSheet.create({
   sectionFooter: {
     fontSize: 14,
   },
+  divider: {
+    marginTop: 10,
+  }
 });

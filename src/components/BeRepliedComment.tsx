@@ -1,4 +1,3 @@
-import Color from 'color';
 import React, { memo, useCallback } from 'react';
 import { StyleSheet } from 'react-native';
 import { Avatar, List, useTheme } from 'react-native-paper';
@@ -15,8 +14,7 @@ export const BeRepliedComment = memo((
     styles.beReplied, {
       borderTopStartRadius: appTheme.roundness * 3,
       borderBottomLeftRadius: appTheme.roundness * 3,
-      backgroundColor: Color(appTheme.colors.surface)
-        .fade(0.8).string(),
+      backgroundColor: appTheme.colors.surfaceDisabled,
     }
   ];
 

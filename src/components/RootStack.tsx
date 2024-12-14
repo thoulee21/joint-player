@@ -55,7 +55,7 @@ export function RootStack() {
     }]}>
       <Stack.Navigator screenOptions={screenOptions}>
         <Stack.Screen name="DrawerNavi" component={DrawerNavi} />
-        <Stack.Screen name="Comments" component={Comments} />
+        <Stack.Screen name="Comments" component={Comments} options={{ headerShown: true }} />
         <Stack.Screen name="Lyrics" component={LyricsScreen} />
         <Stack.Screen name="MvPlayer" component={MvPlayer} />
         <Stack.Screen name="MvDetail" component={MvDetail} />
