@@ -30,6 +30,7 @@ import {
   PlaylistTrack,
   raw2TrackType,
 } from '../components/PlaylistTrack';
+import { PoweredBy } from '../components/PoweredBy';
 import { TracksHeader } from '../components/TracksHeader';
 import { useAppDispatch, useAppSelector } from '../hook';
 import {
@@ -125,6 +126,7 @@ export const PlaylistDetailScreen = () => {
         noBottomBorder
         headerStyle={{
           height: 56 + insets.top,
+          backgroundColor: appTheme.colors.surfaceVariant
         }}
         headerRight={
           <IconButton
@@ -137,7 +139,7 @@ export const PlaylistDetailScreen = () => {
         }
       />
     );
-  }, [insets.top, isInPlaylists, name, togglePlist]);
+  }, [appTheme.colors.surfaceVariant, insets.top, isInPlaylists, name, togglePlist]);
 
   const renderLargeHeader = useCallback((
     { scrollY }: ScrollLargeHeaderProps
@@ -155,7 +157,7 @@ export const PlaylistDetailScreen = () => {
             <IconButton
               icon="comment-text-multiple-outline"
               size={18}
-              disabled={data?.result.commentCount === 0}
+              disabled={!data?.result.commentCount}
               onPress={() => {
                 //@ts-expect-error
                 navigation.push('Comments', {
@@ -188,7 +190,7 @@ export const PlaylistDetailScreen = () => {
         }
       />
     </ScalingView>
-  ), [appTheme.colors.surfaceVariant, data?.result.commentCount, data?.result.commentThreadId, data?.result.trackCount, menuVisible, navigation, playAll, playlistID, t]);
+  ), [appTheme.colors.surfaceVariant, data, menuVisible, navigation, playAll, playlistID, t]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -244,9 +246,7 @@ export const PlaylistDetailScreen = () => {
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         ItemSeparatorComponent={Divider}
-        containerStyle={{
-          backgroundColor: appTheme.colors.surfaceVariant,
-        }}
+        ListFooterComponent={<PoweredBy />}
       />
     </Portal.Host>
   );
