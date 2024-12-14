@@ -1,5 +1,5 @@
 import Color from 'color';
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { TextStyle } from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
@@ -81,12 +81,12 @@ export const TrackItem = ({
       />
     ), [active, appTheme.colors.primary]);
 
-  const listStyle = {
+  const listStyle = useMemo(() => ({
     backgroundColor: active
       ? Color(appTheme.colors.secondaryContainer)
         .fade(appTheme.dark ? 0.4 : 0.6).string()
       : undefined,
-  };
+  }), [active, appTheme.colors.secondaryContainer, appTheme.dark]);
 
   return (
     <Animatable.View
@@ -100,7 +100,7 @@ export const TrackItem = ({
         title={item.title}
         description={item.artist}
         onPress={chooseTrack}
-        onLongPress={onLongPress}
+        onLongPress={onLongPress || remove}
         descriptionNumberOfLines={1}
         titleStyle={titleStyle}
         style={listStyle}
