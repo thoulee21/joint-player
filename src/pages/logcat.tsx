@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useLayoutEffect,
   useMemo,
+  useRef,
   useState
 } from 'react';
 import {
@@ -24,6 +25,7 @@ import {
   Button,
   Caption,
   Dialog,
+  FAB,
   IconButton,
   Portal,
   Text,
@@ -35,6 +37,7 @@ import { logFilePath, rootLog } from '../utils/logger';
 
 export const Logcat = () => {
   const navigation = useNavigation();
+  const logsRef = useRef<Animated.FlatList>(null);
   const appTheme = useTheme();
 
   const [isLoaded, setIsLoaded] = useState(false);
@@ -150,8 +153,8 @@ export const Logcat = () => {
   return (
     <>
       <Animated.FlatList
+        ref={logsRef}
         data={logLines}
-        inverted
         style={styles.root}
         contentContainerStyle={styles.content}
         renderItem={renderLogLine}
@@ -169,6 +172,18 @@ export const Logcat = () => {
         ListEmptyComponent={renderEmpty}
         persistentScrollbar
       />
+
+      <Portal>
+        <FAB
+          icon="arrow-down"
+          style={styles.fab}
+          onPress={() => {
+            if (logsRef.current) {
+              logsRef.current.scrollToEnd();
+            }
+          }}
+        />
+      </Portal>
 
       <Portal>
         <Dialog
@@ -218,5 +233,11 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: 'row',
+  },
+  fab: {
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 0
   }
 });
