@@ -4,8 +4,7 @@ import React, {
   useEffect,
   useLayoutEffect,
   useMemo,
-  useRef,
-  useState,
+  useState
 } from 'react';
 import {
   Animated,
@@ -36,7 +35,6 @@ import { logFilePath, rootLog } from '../utils/logger';
 
 export const Logcat = () => {
   const navigation = useNavigation();
-  const logRef = useRef<Animated.FlatList>(null);
   const appTheme = useTheme();
 
   const [isLoaded, setIsLoaded] = useState(false);
@@ -152,8 +150,8 @@ export const Logcat = () => {
   return (
     <>
       <Animated.FlatList
-        ref={logRef}
         data={logLines}
+        inverted
         style={styles.root}
         contentContainerStyle={styles.content}
         renderItem={renderLogLine}
@@ -170,9 +168,6 @@ export const Logcat = () => {
         }
         ListEmptyComponent={renderEmpty}
         persistentScrollbar
-        onLayout={() => {
-          logRef.current?.scrollToEnd();
-        }}
       />
 
       <Portal>
