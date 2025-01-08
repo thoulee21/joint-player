@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useLayoutEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react';
 import {
@@ -35,6 +36,7 @@ import { logFilePath, rootLog } from '../utils/logger';
 
 export const Logcat = () => {
   const navigation = useNavigation();
+  const logRef = useRef<Animated.FlatList>(null);
   const appTheme = useTheme();
 
   const [isLoaded, setIsLoaded] = useState(false);
@@ -113,6 +115,7 @@ export const Logcat = () => {
       if (!isLoaded) {
         readLog().then(() => {
           setIsLoaded(true);
+          logRef.current?.scrollToEnd();
         });
       }
     } catch (e) { rootLog.error(e); }
