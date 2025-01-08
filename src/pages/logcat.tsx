@@ -115,7 +115,6 @@ export const Logcat = () => {
       if (!isLoaded) {
         readLog().then(() => {
           setIsLoaded(true);
-          logRef.current?.scrollToEnd();
         });
       }
     } catch (e) { rootLog.error(e); }
@@ -171,6 +170,9 @@ export const Logcat = () => {
         }
         ListEmptyComponent={renderEmpty}
         persistentScrollbar
+        onLayout={() => {
+          logRef.current?.scrollToEnd();
+        }}
       />
 
       <Portal>
