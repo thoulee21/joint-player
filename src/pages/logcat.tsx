@@ -153,6 +153,7 @@ export const Logcat = () => {
   return (
     <>
       <Animated.FlatList
+        ref={logRef}
         data={logLines}
         style={styles.root}
         contentContainerStyle={styles.content}
