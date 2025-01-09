@@ -151,7 +151,7 @@ export const Logcat = () => {
   ), []);
 
   return (
-    <>
+    <Portal.Host>
       <Animated.FlatList
         ref={logsRef}
         data={logLines}
@@ -176,6 +176,7 @@ export const Logcat = () => {
       <Portal>
         <FAB
           icon="arrow-down"
+          variant="surface"
           style={styles.fab}
           onPress={() => {
             if (logsRef.current) {
@@ -206,18 +207,22 @@ export const Logcat = () => {
             <Button
               textColor={appTheme.colors.outline}
               onPress={() => setDialogVisible(false)}
-            >Cancel</Button>
+            >
+              Cancel
+            </Button>
             <Button
               textColor={appTheme.colors.error}
               onPress={() => {
                 clearLogs();
                 setDialogVisible(false);
               }}
-            >OK</Button>
+            >
+              OK
+            </Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
-    </>
+    </Portal.Host>
   );
 };
 
