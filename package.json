@@ -40,7 +40,7 @@
     "expo": "~51.0.39",
     "expo-local-authentication": "~14.0.1",
     "expo-screen-orientation": "~7.0.5",
-    "expo-updates": "~0.25.27",
+    "expo-updates": "~0.26.18",
     "i18next": "^24.0.5",
     "install-expo-modules": "^0.11.2",
     "lottie-react-native": "^7.1.0",
