@@ -10546,7 +10546,7 @@ __metadata:
     react-native-track-player: "npm:^4.1.1"
     react-native-vector-icons: "npm:^10.2.0"
     react-native-version: "npm:^4.0.0"
-    react-native-video: "npm:6.8.2"
+    react-native-video: "npm:6.10.1"
     react-native-webview: "npm:^13.12.5"
     react-redux: "npm:^9.1.2"
     react-test-renderer: "npm:^18.3.1"
@@ -13499,13 +13499,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-native-video@npm:6.8.2":
-  version: 6.8.2
-  resolution: "react-native-video@npm:6.8.2"
+"react-native-video@npm:6.10.1":
+  version: 6.10.1
+  resolution: "react-native-video@npm:6.10.1"
   peerDependencies:
     react: "*"
     react-native: "*"
-  checksum: 10c0/0d39984e6f29b5ec378a713af05fcfb5730201744fc8bad3c52a30cda8e9eba9594b9137cc3382745c745477bdc865d6f800a35d9ec3725df428f2ecb513064c
+  checksum: 10c0/7292d58c723ad016c53f8adc9c96e5aa5d3f3c960008fa0fb4f3cc60cffc926d176d82db4da82f3e59e782d1608d039acd025a5cd589ee0ab2e1e1a817c18c71
   languageName: node
   linkType: hard
 
