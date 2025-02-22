@@ -130,7 +130,7 @@ export const TrackInfo = () => {
               source={{ uri: imageUri }}
               resizeMode="cover"
             >
-              <FavToggle />
+              <FavToggle style={styles.favToggle} />
             </ImageBackground>
           </TouchableWithoutFeedback>
         </Surface>
@@ -248,5 +248,13 @@ const styles = StyleSheet.create({
   },
   biggerPadding: {
     paddingHorizontal: 24,
+  },
+  favToggle: {
+    //放置于右下角
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    //圆
+    borderRadius: 50,
   },
 });
