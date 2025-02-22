@@ -11,6 +11,7 @@ import { TrackMenu } from '../components/TrackMenu';
 import { Main as LyricMain } from '../types/lyrics';
 import { CommentsMenu } from './CommentsMenu';
 import { DownloadMenu } from './DownloadMenu';
+import { FavToggle } from './FavToggle';
 import { MvMenu } from './MvMenu';
 
 export const TranslateContext = createContext<{
@@ -49,6 +50,7 @@ export const LyricsContainer = ({ children }: PropsWithChildren) => {
 
   const renderRightButtons = useCallback(() => (
     <View style={styles.row}>
+      <FavToggle />
       <TranslateToggle />
       <TrackMenu>
         <MvMenu />
