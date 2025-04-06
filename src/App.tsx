@@ -2,14 +2,15 @@ import NetInfo from "@react-native-community/netinfo";
 import * as Sentry from "@sentry/react-native";
 import React, { useEffect } from "react";
 import RNFS from "react-native-fs";
-import { Provider as ReduxProvider } from "react-redux";
 import {
   configureReanimatedLogger,
   ReanimatedLogLevel,
 } from "react-native-reanimated";
 import TrackPlayer from "react-native-track-player";
+import { Provider as ReduxProvider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { mutate, SWRConfig, SWRConfiguration } from "swr";
+import { AnimatedSplashScreen } from "./components/AnimatedSplashScreen";
 import { AppContainer } from "./components/AppContainer";
 import { RootStack } from "./components/RootStack";
 import { persister, store } from "./redux/store";
@@ -20,7 +21,6 @@ import { logFilePath } from "./utils/logger";
 import { mmkvStorageProvider } from "./utils/mmkvStorageProvider";
 import { fetcher } from "./utils/retryFetcher";
 import "./utils/sentry";
-import { AnimatedSplashScreen } from "./components/AnimatedSplashScreen";
 
 const SWR_CONFIG: SWRConfiguration = {
   fetcher: fetcher,
