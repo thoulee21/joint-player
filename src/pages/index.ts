@@ -20,6 +20,5 @@ export * from "./search";
 export * from "./searchPlaylist";
 export * from "./settings";
 export * from "./switchUser";
-export * from "./testScreen";
 export * from "./userDetail";
 export * from "./webview";
