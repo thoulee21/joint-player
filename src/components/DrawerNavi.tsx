@@ -5,7 +5,7 @@ import {
 import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { Icon } from "react-native-paper";
-import { Favs, Player, SearchPlaylist, UserDetail } from "../pages";
+import { Favs, Player, SearchPlaylist } from "../pages";
 import { BlurBackground } from "./BlurBackground";
 import { DrawerItemList } from "./DrawerItemList";
 import { UserBackground, UserInfo } from "./UserHeader";
@@ -79,14 +79,6 @@ export function DrawerNavi() {
         options={{
           title: t("drawer.item.playlist.title"),
           drawerIcon: renderDrawerIcon("playlist-music"),
-        }}
-      />
-      <Drawer.Screen
-        name="UserDetail"
-        component={UserDetail}
-        options={{
-          title: t("drawer.item.account.title"),
-          drawerIcon: renderDrawerIcon("account"),
         }}
       />
     </Drawer.Navigator>

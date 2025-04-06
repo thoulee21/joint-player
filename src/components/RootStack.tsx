@@ -28,6 +28,7 @@ import {
   Search,
   Settings,
   SwitchUser,
+  UserDetail,
   WebViewScreen,
 } from "../pages";
 import { DrawerNavi } from "./DrawerNavi";
@@ -74,18 +75,12 @@ export function RootStack() {
         <Stack.Screen
           name="AppData"
           component={AppDataScreen}
-          options={{
-            headerShown: true,
-            gestureEnabled: false,
-          }}
+          options={{ headerShown: true, gestureEnabled: false }}
         />
         <Stack.Screen
           name="AniGallery"
           component={AniGallery}
-          options={{
-            headerShown: true,
-            title: t("stack.aniGallery"),
-          }}
+          options={{ headerShown: true, title: t("stack.aniGallery") }}
         />
         <Stack.Screen name="AlbumDetail" component={AlbumDetail} />
         <Stack.Screen name="Settings" component={Settings} />
@@ -105,18 +100,16 @@ export function RootStack() {
         <Stack.Screen
           name="ReleaseTags"
           component={ReleaseTags}
-          options={{
-            headerShown: true,
-            title: t("stack.releaseTags"),
-          }}
+          options={{ headerShown: true, title: t("stack.releaseTags") }}
         />
         <Stack.Screen
           name="Locales"
           component={LocalesScreen}
-          options={{
-            headerShown: true,
-            title: t("stack.locales"),
-          }}
+          options={{ headerShown: true, title: t("stack.locales") }}
+        />
+        <Stack.Screen
+          name="UserDetail"
+          component={UserDetail}
         />
 
         <Stack.Group screenOptions={TransitionPresets.ModalPresentationIOS}>
@@ -132,8 +125,4 @@ export function RootStack() {
   );
 }
 
-const styles = StyleSheet.create({
-  rootView: {
-    flex: 1,
-  },
-});
+const styles = StyleSheet.create({ rootView: { flex: 1 } });

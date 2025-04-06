@@ -41,7 +41,7 @@ export const UserInfo = ({
   const isDev = useAppSelector(selectDevModeEnabled);
 
   const { data } = useSWR<Main>(
-    `https://music.163.com/api/v1/user/detail/${userId || currentUser.id}`,
+    `https://music.163.com/api/v1/user/detail/${userId || currentUser.id}`
   );
 
   const viewAvatar = () => {
@@ -58,7 +58,7 @@ export const UserInfo = ({
   const goUser = () => {
     HapticFeedback.trigger(HapticFeedbackTypes.effectClick);
     //@ts-expect-error
-    navigation.navigate("DrawerNavi", { screen: "UserDetail" });
+    navigation.navigate("UserDetail");
   };
 
   const debugPrint = () => {
@@ -102,30 +102,19 @@ export const UserBackground = ({
   userId,
   children,
   style,
-}: PropsWithChildren<{
-  userId?: number;
-  style?: StyleProp<ImageStyle>;
-}>) => {
+}: PropsWithChildren<{ userId?: number; style?: StyleProp<ImageStyle> }>) => {
   const insets = useSafeAreaInsets();
   const window = useWindowDimensions();
   const appTheme = useTheme();
 
   const currentUser = useAppSelector(selectUser);
   const { data, error, isLoading } = useSWR<Main>(
-    `https://music.163.com/api/v1/user/detail/${userId || currentUser.id}`,
+    `https://music.163.com/api/v1/user/detail/${userId || currentUser.id}`
   );
 
   if (isLoading) {
     return (
-      <View
-        style={[
-          styles.loading,
-          style,
-          {
-            height: window.height * 0.3,
-          },
-        ]}
-      >
+      <View style={[styles.loading, style, { height: window.height * 0.3 }]}>
         <ActivityIndicator />
       </View>
     );
@@ -136,10 +125,7 @@ export const UserBackground = ({
       <Text
         style={[
           styles.errMsg,
-          {
-            color: appTheme.colors.error,
-            marginTop: insets.top,
-          },
+          { color: appTheme.colors.error, marginTop: insets.top },
         ]}
       >
         Error: {error.message}
@@ -158,25 +144,14 @@ export const UserBackground = ({
 };
 
 const styles = StyleSheet.create({
-  avatar: {
-    borderRadius: 50,
-  },
-  errMsg: {
-    textAlign: "center",
-    alignSelf: "center",
-  },
+  avatar: { borderRadius: 50 },
+  errMsg: { textAlign: "center", alignSelf: "center" },
   loading: {
     alignContent: "center",
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "center",
   },
-  signature: {
-    marginTop: "1%",
-  },
-  info: {
-    alignSelf: "center",
-    marginTop: "45%",
-    alignItems: "center",
-  },
+  signature: { marginTop: "1%" },
+  info: { alignSelf: "center", marginTop: "45%", alignItems: "center" },
 });
