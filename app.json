@@ -29,7 +29,8 @@
     "android": {
       "icon": "./assets/icon.png",
       "package": "com.thoulee.jointplayer",
-      "versionCode": 6000001
+      "versionCode": 6000001,
+      "permissions": []
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -51,6 +52,11 @@
           "subdomains": "*"
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "348686d7-2c3a-428c-a66b-2f9bc7216d78"
+      }
+    }
   }
 }
