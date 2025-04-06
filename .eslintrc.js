@@ -1,27 +1,5 @@
+// https://docs.expo.dev/guides/using-eslint/
 module.exports = {
-  root: true,
-  extends: [
-    '@react-native',
-  ],
-  plugins: ['@typescript-eslint'],
-  rules: {
-    '@typescript-eslint/func-call-spacing': 'off',
-    'prettier/prettier': 'off',
-    'react-hooks/exhaustive-deps': 'warn',
-    'react-native/no-inline-styles': 'warn',
-    'linebreak-style': 'off',
-    'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': 'warn',
-    'no-console': 'off',
-    '@typescript-eslint/no-duplicate-enum-values': 'off',
-    'comma-dangle': 'off'
-  },
-  overrides: [
-    {
-      files: ['*.ts', '*.tsx'],
-      rules: {
-        '@typescript-eslint/explicit-module-boundary-types': 'off',
-      },
-    },
-  ],
+  extends: "expo",
+  ignorePatterns: ["/dist/*"],
 };
