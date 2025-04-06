@@ -1,58 +1,48 @@
 {
-    "cSpell.words": [
-        "ahooks",
-        "animatable",
-        "antonov",
-        "apng",
-        "codeherence",
-        "corepack",
-        "dimezis",
-        "Favs",
-        "followeds",
-        "gluestack",
-        "jointplayer",
-        "kesha",
-        "keypath",
-        "KHTML",
-        "Klyric",
-        "KUTX",
-        "linebreak",
-        "Logcat",
-        "marvinpinto",
-        "MMKV",
-        "mvid",
-        "Netease",
-        "persistor",
-        "prazkhanal",
-        "Prefs",
-        "redash",
-        "reduxjs",
-        "RNFS",
-        "soloader",
-        "temurin",
-        "tlyric",
-        "touchables",
-        "Unlimit",
-        "userprofiles"
-    ],
-    "editor.tabSize": 2,
-    "i18n-ally.localesPaths": [
-        "src/locales"
-    ],
-    "i18n-ally.keystyle": "nested",
-    "i18n-ally.sourceLanguage": "en-US",
-    "i18n-ally.extract.ignoredByFiles": {
-        "src\\pages\\about.tsx": [
-            "Dev"
-        ],
-        "src\\components\\AboutItem.tsx": [
-            "About"
-        ],
-        "src\\components\\DevItem.tsx": [
-            "Dev"
-        ],
-        "src\\pages\\playlistDetail.tsx": [
-            "Comments"
-        ]
-    }
+  "cSpell.words": [
+    "ahooks",
+    "animatable",
+    "antonov",
+    "apng",
+    "codeherence",
+    "corepack",
+    "dimezis",
+    "Favs",
+    "followeds",
+    "gluestack",
+    "jointplayer",
+    "kesha",
+    "keypath",
+    "KHTML",
+    "Klyric",
+    "KUTX",
+    "linebreak",
+    "Logcat",
+    "marvinpinto",
+    "MMKV",
+    "mvid",
+    "Netease",
+    "persistor",
+    "prazkhanal",
+    "Prefs",
+    "redash",
+    "reduxjs",
+    "RNFS",
+    "soloader",
+    "temurin",
+    "tlyric",
+    "touchables",
+    "Unlimit",
+    "userprofiles"
+  ],
+  "editor.tabSize": 2,
+  "i18n-ally.localesPaths": ["src/locales"],
+  "i18n-ally.keystyle": "nested",
+  "i18n-ally.sourceLanguage": "en-US",
+  "i18n-ally.extract.ignoredByFiles": {
+    "src\\pages\\about.tsx": ["Dev"],
+    "src\\components\\AboutItem.tsx": ["About"],
+    "src\\components\\DevItem.tsx": ["Dev"],
+    "src\\pages\\playlistDetail.tsx": ["Comments"]
+  }
 }

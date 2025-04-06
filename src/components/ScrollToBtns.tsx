@@ -37,7 +37,7 @@ export const ScrollToBtns = memo(
             });
           },
         })),
-      [commentsRef, showData]
+      [commentsRef, showData],
     );
 
     const onStateChange = useCallback(({ open }: { open: boolean }) => {
@@ -69,5 +69,5 @@ export const ScrollToBtns = memo(
         onLongPress={scrollToTop}
       />
     );
-  }
+  },
 );

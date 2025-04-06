@@ -1,33 +1,30 @@
 {
-    // See https://go.microsoft.com/fwlink/?LinkId=733558
-    // for the documentation about the tasks.json format
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "Assemble Release",
-            "type": "shell",
-            "command": ".\\gradlew clean && .\\gradlew assembleRelease",
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            },
-            "isBackground": true,
-            "problemMatcher": {
-                "owner": "android",
-                "fileLocation": [
-                    "relative",
-                    "${workspaceFolder}"
-                ],
-                "pattern": {
-                    "regexp": "^(.*):(\\d+): error: (.*)$",
-                    "file": 1,
-                    "line": 2,
-                    "message": 3
-                }
-            },
-            "options": {
-                "cwd": "${workspaceFolder}/android",
-            }
-        },
-    ]
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Assemble Release",
+      "type": "shell",
+      "command": ".\\gradlew clean && .\\gradlew assembleRelease",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "android",
+        "fileLocation": ["relative", "${workspaceFolder}"],
+        "pattern": {
+          "regexp": "^(.*):(\\d+): error: (.*)$",
+          "file": 1,
+          "line": 2,
+          "message": 3
+        }
+      },
+      "options": {
+        "cwd": "${workspaceFolder}/android"
+      }
+    }
+  ]
 }

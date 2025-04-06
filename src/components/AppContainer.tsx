@@ -40,7 +40,7 @@ export function AppContainer({ children }: PropsWithChildren) {
       ...MD3LightTheme,
       colors: colorTheme.light,
     }),
-    [colorTheme.light]
+    [colorTheme.light],
   );
 
   const MyDarkTheme = useMemo(
@@ -48,7 +48,7 @@ export function AppContainer({ children }: PropsWithChildren) {
       ...MD3DarkTheme,
       colors: colorTheme.dark,
     }),
-    [colorTheme.dark]
+    [colorTheme.dark],
   );
 
   const { LightTheme: NaviLightTheme, DarkTheme: NaviDarkTheme } = useMemo(
@@ -59,7 +59,7 @@ export function AppContainer({ children }: PropsWithChildren) {
         materialLight: MyLightTheme,
         materialDark: MyDarkTheme,
       }),
-    [MyDarkTheme, MyLightTheme]
+    [MyDarkTheme, MyLightTheme],
   );
 
   useEffect(() => {
