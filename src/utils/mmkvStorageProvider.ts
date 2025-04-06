@@ -1,12 +1,12 @@
-import * as Sentry from '@sentry/react-native';
-import { AppState, AppStateStatus, NativeEventEmitter } from 'react-native';
-import { MMKV } from 'react-native-mmkv';
-import { Cache } from 'swr';
-import { rootLog } from './logger';
+import * as Sentry from "@sentry/react-native";
+import { AppState, AppStateStatus, NativeEventEmitter } from "react-native";
+import { MMKV } from "react-native-mmkv";
+import { Cache } from "swr";
+import { rootLog } from "./logger";
 
 const MAX_CACHE_SIZE = 6 * 1024 * 1024; // 6MB
 
-export const mmkvStorage = new MMKV({ id: 'app-cache' });
+export const mmkvStorage = new MMKV({ id: "app-cache" });
 
 export interface ExtendedCache extends Cache<any> {
   onCacheDeleted(listener: (key: string) => void): void;
@@ -32,7 +32,8 @@ class MMKVStorageProvider implements ExtendedCache {
     try {
       const keys = mmkvStorage.getAllKeys();
       const stores = keys.map((key) => [
-        key, mmkvStorage.getString(key) as string
+        key,
+        mmkvStorage.getString(key) as string,
       ]);
       stores.forEach(([key, value]) => {
         if (value) {
@@ -69,9 +70,7 @@ class MMKVStorageProvider implements ExtendedCache {
             const value = this.cache.get(oldestKey);
             this.cache.delete(oldestKey);
             this.accessOrder.delete(oldestKey);
-            this.cacheSize -= this.getSizeInBytes(
-              JSON.stringify(value)
-            );
+            this.cacheSize -= this.getSizeInBytes(JSON.stringify(value));
             mmkvStorage.delete(oldestKey);
             // 在删除缓存数据后触发重新加载数据的逻辑
             this.handleCacheDeletion(oldestKey);
@@ -106,7 +105,7 @@ class MMKVStorageProvider implements ExtendedCache {
   private handleCacheDeletion(key: string) {
     // 触发重新加载数据的逻辑
     this.reloadingKeys.add(key);
-    this.eventEmitter.emit('cacheDeleted', key);
+    this.eventEmitter.emit("cacheDeleted", key);
   }
 
   get(key: string) {
@@ -127,9 +126,7 @@ class MMKVStorageProvider implements ExtendedCache {
 
       if (this.cache.has(key)) {
         const oldValue = this.cache.get(key);
-        this.cacheSize -= this.getSizeInBytes(
-          JSON.stringify(oldValue)
-        );
+        this.cacheSize -= this.getSizeInBytes(JSON.stringify(oldValue));
       }
 
       this.cache.set(key, value);
@@ -165,29 +162,26 @@ class MMKVStorageProvider implements ExtendedCache {
 
   onCacheDeleted(listener: (key: string) => void) {
     this.listeners.set(listener.toString(), listener);
-    this.eventEmitter.addListener('cacheDeleted', listener);
+    this.eventEmitter.addListener("cacheDeleted", listener);
   }
 
   offCacheDeleted(listener: (key: string) => void) {
     this.listeners.delete(listener.toString());
-    this.eventEmitter.removeAllListeners('cacheDeleted');
-    this.listeners.forEach((
-      savedListener) => {
-      this.eventEmitter.addListener(
-        'cacheDeleted', savedListener
-      );
+    this.eventEmitter.removeAllListeners("cacheDeleted");
+    this.listeners.forEach((savedListener) => {
+      this.eventEmitter.addListener("cacheDeleted", savedListener);
     });
   }
 
   private setupAppStateListener() {
     const handleAppStateChange = async (nextAppState: AppStateStatus) => {
-      if (nextAppState === 'inactive' || nextAppState === 'background') {
+      if (nextAppState === "inactive" || nextAppState === "background") {
         await this.saveCacheToMMKVStorage();
-        rootLog.info('Cache saved to MMKV, app is in background');
+        rootLog.info("Cache saved to MMKV, app is in background");
       }
     };
 
-    AppState.addEventListener('change', handleAppStateChange);
+    AppState.addEventListener("change", handleAppStateChange);
   }
 
   private setupPeriodicSave() {
@@ -199,11 +193,10 @@ class MMKVStorageProvider implements ExtendedCache {
   private async saveCacheToMMKVStorage() {
     try {
       const entries = Array.from(this.cache.entries());
-      const multiSetPairs: [string, string][] = entries.map(
-        ([key, value]) => [
-          key, JSON.stringify(value)
-        ]
-      );
+      const multiSetPairs: [string, string][] = entries.map(([key, value]) => [
+        key,
+        JSON.stringify(value),
+      ]);
       multiSetPairs.forEach(([key, value]) => {
         mmkvStorage.set(key, value);
       });

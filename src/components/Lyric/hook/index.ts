@@ -1,2 +1,2 @@
-export * from './useCurrentIndex';
-export * from './useLocalAutoScroll';
+export * from "./useCurrentIndex";
+export * from "./useLocalAutoScroll";

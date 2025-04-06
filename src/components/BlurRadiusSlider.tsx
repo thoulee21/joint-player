@@ -1,12 +1,12 @@
-import Slider from '@react-native-community/slider';
-import React, { useCallback, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { StyleSheet } from 'react-native';
-import HapticFeedback from 'react-native-haptic-feedback';
-import { List, Text, useTheme } from 'react-native-paper';
-import { useAppDispatch, useAppSelector } from '../hook';
-import { blurRadius, setBlurRadius } from '../redux/slices';
-import type { ListLRProps } from '../types/paperListItem';
+import Slider from "@react-native-community/slider";
+import React, { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet } from "react-native";
+import HapticFeedback from "react-native-haptic-feedback";
+import { List, Text, useTheme } from "react-native-paper";
+import { useAppDispatch, useAppSelector } from "../hook";
+import { blurRadius, setBlurRadius } from "../redux/slices";
+import type { ListLRProps } from "../types/paperListItem";
 
 const SLIDER_STEP = 5;
 
@@ -18,9 +18,12 @@ export function BlurRadiusSlider() {
   const blurRadiusValue = useAppSelector(blurRadius);
   const [showValue, setShowValue] = useState(blurRadiusValue);
 
-  const updateBlurRadius = useCallback((value: number) => {
-    dispatch(setBlurRadius(value));
-  }, [dispatch]);
+  const updateBlurRadius = useCallback(
+    (value: number) => {
+      dispatch(setBlurRadius(value));
+    },
+    [dispatch],
+  );
 
   const onValueChange = useCallback((value: number) => {
     if (value % SLIDER_STEP === 0) {
@@ -28,40 +31,45 @@ export function BlurRadiusSlider() {
     }
   }, []);
 
-  const renderIcon = useCallback((props: ListLRProps) => (
-    <List.Icon {...props} icon="blur-linear" />
-  ), []);
+  const renderIcon = useCallback(
+    (props: ListLRProps) => <List.Icon {...props} icon="blur-linear" />,
+    [],
+  );
 
-  const renderIndicator = useCallback(({ style }: ListLRProps) => (
-    <Text style={[style, styles.indicator]}>
-      {showValue}
-    </Text>
-  ), [showValue]);
+  const renderIndicator = useCallback(
+    ({ style }: ListLRProps) => (
+      <Text style={[style, styles.indicator]}>{showValue}</Text>
+    ),
+    [showValue],
+  );
 
   useEffect(() => {
-    HapticFeedback.trigger('effectHeavyClick');
+    HapticFeedback.trigger("effectHeavyClick");
   }, [showValue]);
 
-  const renderSlider = useCallback((props: any) => (
-    <Slider
-      {...props}
-      style={styles.slider}
-      thumbTintColor={appTheme.colors.primary}
-      minimumTrackTintColor={appTheme.colors.secondary}
-      maximumTrackTintColor={appTheme.colors.tertiary}
-      onSlidingComplete={updateBlurRadius}
-      onValueChange={onValueChange}
-      minimumValue={0}
-      maximumValue={100}
-      lowerLimit={15}
-      step={SLIDER_STEP}
-      value={showValue}
-    />
-  ), [appTheme, showValue, onValueChange, updateBlurRadius]);
+  const renderSlider = useCallback(
+    (props: any) => (
+      <Slider
+        {...props}
+        style={styles.slider}
+        thumbTintColor={appTheme.colors.primary}
+        minimumTrackTintColor={appTheme.colors.secondary}
+        maximumTrackTintColor={appTheme.colors.tertiary}
+        onSlidingComplete={updateBlurRadius}
+        onValueChange={onValueChange}
+        minimumValue={0}
+        maximumValue={100}
+        lowerLimit={15}
+        step={SLIDER_STEP}
+        value={showValue}
+      />
+    ),
+    [appTheme, showValue, onValueChange, updateBlurRadius],
+  );
 
   return (
     <List.Item
-      title={t('settings.appearance.blurRadius.title')}
+      title={t("settings.appearance.blurRadius.title")}
       titleStyle={styles.title}
       left={renderIcon}
       right={renderIndicator}
@@ -79,7 +87,7 @@ const styles = StyleSheet.create({
   indicator: {
     marginLeft: 0,
     width: 25,
-    textAlign: 'center',
+    textAlign: "center",
   },
   itemContainer: {
     paddingLeft: 0,

@@ -5,10 +5,10 @@ import React, {
   useCallback,
   useRef,
   useState,
-} from 'react';
-import { type View } from 'react-native';
+} from "react";
+import { type View } from "react-native";
 
-import { type ImageBlurEffectProps } from '../components/ImageBlurView';
+import { type ImageBlurEffectProps } from "../components/ImageBlurView";
 
 type ImageBlurContextProps = {
   children: ReactNode;
@@ -38,7 +38,7 @@ export const ImageBlurProvider = ({
   const blurProps = useRef<ImageBlurEffectProps | undefined>(undefined);
 
   const pushRef = useCallback((ref: ImageBlurElementRef) => {
-    setBlurElementRefList(prev => (prev ? [...prev, ref] : [ref]));
+    setBlurElementRefList((prev) => (prev ? [...prev, ref] : [ref]));
   }, []);
 
   const getRefList = useCallback(() => {

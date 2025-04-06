@@ -1,6 +1,6 @@
-import { useCallback, useState } from 'react';
-import { useDebounce } from '../../../hook/useDebounce';
-import { useThrottle } from '../../../hook/useThrottle';
+import { useCallback, useState } from "react";
+import { useDebounce } from "../../../hook/useDebounce";
+import { useThrottle } from "../../../hook/useThrottle";
 
 /**
  * Custom hook that manages local auto-scroll behavior.
@@ -13,7 +13,7 @@ import { useThrottle } from '../../../hook/useThrottle';
  */
 export function useLocalAutoScroll(
   autoScroll: boolean,
-  autoScrollAfterUserScroll: number
+  autoScrollAfterUserScroll: number,
 ) {
   const [localAutoScroll, setLocalAutoScroll] = useState(autoScroll);
 

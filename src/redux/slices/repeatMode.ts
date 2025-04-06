@@ -1,7 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import TrackPlayer from 'react-native-track-player';
-import { StateKeys } from '../../utils/stateKeys';
-import { RootState } from '../store';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import TrackPlayer from "react-native-track-player";
+import { StateKeys } from "../../utils/stateKeys";
+import { RootState } from "../store";
 
 const initialState = {
   value: 2,

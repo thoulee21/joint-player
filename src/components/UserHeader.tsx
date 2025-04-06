@@ -1,7 +1,5 @@
-import {
-  useNavigation
-} from '@react-navigation/native';
-import React, { type PropsWithChildren } from 'react';
+import { useNavigation } from "@react-navigation/native";
+import React, { type PropsWithChildren } from "react";
 import {
   Alert,
   StyleSheet,
@@ -9,33 +7,32 @@ import {
   View,
   type ImageStyle,
   type StyleProp,
-  type ViewStyle
-} from 'react-native';
+  type ViewStyle,
+} from "react-native";
 import HapticFeedback, {
   HapticFeedbackTypes,
-} from 'react-native-haptic-feedback';
+} from "react-native-haptic-feedback";
 import {
   ActivityIndicator,
   Avatar,
   Text,
   TouchableRipple,
   useTheme,
-} from 'react-native-paper';
-import {
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
-import useSWR from 'swr';
-import { useAppSelector } from '../hook';
-import {
-  selectDevModeEnabled,
-  selectUser,
-} from '../redux/slices';
-import { Main } from '../types/userDetail';
-import { ImageBlur } from './ImageBlur';
-import { placeholderImg } from './TrackInfo';
+} from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import useSWR from "swr";
+import { useAppSelector } from "../hook";
+import { selectDevModeEnabled, selectUser } from "../redux/slices";
+import { Main } from "../types/userDetail";
+import { ImageBlur } from "./ImageBlur";
+import { placeholderImg } from "./TrackInfo";
 
-export const UserInfo = ({ userId, style }: {
-  userId?: number, style?: StyleProp<ViewStyle>
+export const UserInfo = ({
+  userId,
+  style,
+}: {
+  userId?: number;
+  style?: StyleProp<ViewStyle>;
 }) => {
   const navigation = useNavigation();
   const appTheme = useTheme();
@@ -48,14 +45,12 @@ export const UserInfo = ({ userId, style }: {
   );
 
   const viewAvatar = () => {
-    HapticFeedback.trigger(
-      HapticFeedbackTypes.effectDoubleClick
-    );
+    HapticFeedback.trigger(HapticFeedbackTypes.effectDoubleClick);
     if (data) {
       //@ts-expect-error
-      navigation.push('WebView', {
+      navigation.push("WebView", {
         url: data?.profile.avatarUrl,
-        title: 'Avatar',
+        title: "Avatar",
       });
     }
   };
@@ -63,17 +58,12 @@ export const UserInfo = ({ userId, style }: {
   const goUser = () => {
     HapticFeedback.trigger(HapticFeedbackTypes.effectClick);
     //@ts-expect-error
-    navigation.navigate('DrawerNavi', { screen: 'UserDetail' });
+    navigation.navigate("DrawerNavi", { screen: "UserDetail" });
   };
 
   const debugPrint = () => {
     if (isDev) {
-      Alert.alert(
-        'User Info',
-        JSON.stringify(
-          data, null, 2
-        ),
-      );
+      Alert.alert("User Info", JSON.stringify(data, null, 2));
     }
   };
 
@@ -85,10 +75,7 @@ export const UserInfo = ({ userId, style }: {
         onPress={goUser}
         onLongPress={viewAvatar}
       >
-        <Avatar.Image
-          size={70}
-          source={{ uri: data?.profile.avatarUrl }}
-        />
+        <Avatar.Image size={70} source={{ uri: data?.profile.avatarUrl }} />
       </TouchableRipple>
 
       <Text variant="labelLarge" onPress={debugPrint}>
@@ -96,11 +83,14 @@ export const UserInfo = ({ userId, style }: {
       </Text>
       <Text
         variant="labelMedium"
-        style={[styles.signature, {
-          color: appTheme.dark
-            ? appTheme.colors.onSurfaceDisabled
-            : appTheme.colors.backdrop,
-        }]}
+        style={[
+          styles.signature,
+          {
+            color: appTheme.dark
+              ? appTheme.colors.onSurfaceDisabled
+              : appTheme.colors.backdrop,
+          },
+        ]}
       >
         {data?.profile.signature}
       </Text>
@@ -109,9 +99,12 @@ export const UserInfo = ({ userId, style }: {
 };
 
 export const UserBackground = ({
-  userId, children, style
+  userId,
+  children,
+  style,
 }: PropsWithChildren<{
-  userId?: number, style?: StyleProp<ImageStyle>
+  userId?: number;
+  style?: StyleProp<ImageStyle>;
 }>) => {
   const insets = useSafeAreaInsets();
   const window = useWindowDimensions();
@@ -124,11 +117,15 @@ export const UserBackground = ({
 
   if (isLoading) {
     return (
-      <View style={[
-        styles.loading,
-        style, {
-          height: window.height * 0.3,
-        }]}>
+      <View
+        style={[
+          styles.loading,
+          style,
+          {
+            height: window.height * 0.3,
+          },
+        ]}
+      >
         <ActivityIndicator />
       </View>
     );
@@ -136,10 +133,15 @@ export const UserBackground = ({
 
   if (error) {
     return (
-      <Text style={[styles.errMsg, {
-        color: appTheme.colors.error,
-        marginTop: insets.top
-      }]}>
+      <Text
+        style={[
+          styles.errMsg,
+          {
+            color: appTheme.colors.error,
+            marginTop: insets.top,
+          },
+        ]}
+      >
         Error: {error.message}
       </Text>
     );
@@ -148,8 +150,7 @@ export const UserBackground = ({
   return (
     <ImageBlur
       aspectRatio="landscape"
-      src={data?.profile.backgroundUrl ||
-        placeholderImg}
+      src={data?.profile.backgroundUrl || placeholderImg}
       resizeMode="cover"
       blurChildren={children}
     />
@@ -161,21 +162,21 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   errMsg: {
-    textAlign: 'center',
-    alignSelf: 'center',
+    textAlign: "center",
+    alignSelf: "center",
   },
   loading: {
-    alignContent: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    alignSelf: 'center',
+    alignContent: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    alignSelf: "center",
   },
   signature: {
-    marginTop: '1%',
+    marginTop: "1%",
   },
   info: {
-    alignSelf: 'center',
-    marginTop: '45%',
-    alignItems: 'center',
-  }
+    alignSelf: "center",
+    marginTop: "45%",
+    alignItems: "center",
+  },
 });

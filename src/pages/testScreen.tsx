@@ -1,17 +1,17 @@
-import React from 'react';
+import React from "react";
 import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  View
-} from 'react-native';
-import { Icon, IconButton, Text } from 'react-native-paper';
-import { ImageBlur, ImageBlurView } from '../components/ImageBlur';
+  View,
+} from "react-native";
+import { Icon, IconButton, Text } from "react-native-paper";
+import { ImageBlur, ImageBlurView } from "../components/ImageBlur";
 
-const landscapeImage = 'https://picsum.photos/800/600';
-const portraitImage = 'https://picsum.photos/600/800';
-const squareImage = 'https://picsum.photos/800';
+const landscapeImage = "https://picsum.photos/800/600";
+const portraitImage = "https://picsum.photos/600/800";
+const squareImage = "https://picsum.photos/800";
 
 const App = (): JSX.Element => {
   return (
@@ -30,7 +30,7 @@ const App = (): JSX.Element => {
                 style={styles.plusButtonWrapper}
                 blurProps={{ style: { borderRadius: 9999 } }}
               >
-                <IconButton icon="plus" onPress={() => { }} />
+                <IconButton icon="plus" onPress={() => {}} />
               </ImageBlurView>
             </View>
           }
@@ -124,7 +124,7 @@ const App = (): JSX.Element => {
             <ImageBlurView
               blurProps={{
                 blurRadius: 3,
-                overlay: { backgroundColor: 'blue', opacity: 0.3 },
+                overlay: { backgroundColor: "blue", opacity: 0.3 },
                 style: {
                   borderTopLeftRadius: 8,
                   borderBottomRightRadius: 30,
@@ -148,10 +148,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   imageText: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   plusButtonWrapper: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
     padding: 12,
     marginTop: 4,
   },
@@ -163,38 +163,38 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   square: {
-    height: '100%',
+    height: "100%",
     padding: 16,
-    alignSelf: 'flex-start'
+    alignSelf: "flex-start",
   },
   multiView: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
     padding: 20,
-    position: 'absolute',
-    width: '100%',
+    position: "absolute",
+    width: "100%",
     bottom: 20,
   },
   row: {
-    flexDirection: 'row',
+    flexDirection: "row",
     columnGap: 4,
     marginTop: 8,
   },
   rowLabel: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     columnGap: 4,
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
   },
   label: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
   },
   custom: {
     padding: 16,
-    alignSelf: 'flex-start',
-    justifyContent: 'center',
+    alignSelf: "flex-start",
+    justifyContent: "center",
     left: 20,
-    top: '20%',
+    top: "20%",
   },
 });

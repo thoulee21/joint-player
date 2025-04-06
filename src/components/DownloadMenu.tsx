@@ -3,14 +3,14 @@ import RNBackgroundDownloader, {
   completeHandler,
   setConfig,
   type DownloadTask,
-} from '@kesha-antonov/react-native-background-downloader';
-import React, { useCallback, useEffect, useState } from 'react';
-import { ToastAndroid } from 'react-native';
-import RNFS from 'react-native-fs';
-import { Menu } from 'react-native-paper';
-import { useActiveTrack } from 'react-native-track-player';
-import { rootLog } from '../utils/logger';
-import { useMenuContext } from './TrackMenu';
+} from "@kesha-antonov/react-native-background-downloader";
+import React, { useCallback, useEffect, useState } from "react";
+import { ToastAndroid } from "react-native";
+import RNFS from "react-native-fs";
+import { Menu } from "react-native-paper";
+import { useActiveTrack } from "react-native-track-player";
+import { rootLog } from "../utils/logger";
+import { useMenuContext } from "./TrackMenu";
 
 export const DownloadMenu = () => {
   const track = useActiveTrack();
@@ -27,13 +27,10 @@ export const DownloadMenu = () => {
       .begin(() => {
         setDownloading(true);
         rootLog.debug(`Download started: ${task?.id}`);
-        ToastAndroid.show(
-          'Download started',
-          ToastAndroid.SHORT
-        );
+        ToastAndroid.show("Download started", ToastAndroid.SHORT);
       })
       .progress((percent) => {
-        rootLog.debug('Downloaded: ', percent);
+        rootLog.debug("Downloaded: ", percent);
       })
       .done(() => {
         setDownloading(false);
@@ -41,19 +38,16 @@ export const DownloadMenu = () => {
 
         rootLog.info(`Download completed: ${task?.id}`);
         ToastAndroid.show(
-          'Download completed to download directory',
-          ToastAndroid.SHORT
+          "Download completed to download directory",
+          ToastAndroid.SHORT,
         );
       })
       .error((error) => {
         setDownloading(false);
         completeHandler(task?.id as string);
 
-        rootLog.error('Download canceled due to error: ', error);
-        ToastAndroid.show(
-          'Download canceled due to error',
-          ToastAndroid.SHORT
-        );
+        rootLog.error("Download canceled due to error: ", error);
+        ToastAndroid.show("Download canceled due to error", ToastAndroid.SHORT);
       });
   }, []);
 
@@ -62,10 +56,7 @@ export const DownloadMenu = () => {
       const tasks = await checkForExistingDownloads();
 
       if (tasks.length > 0) {
-        ToastAndroid.show(
-          'Restoring downloads',
-          ToastAndroid.SHORT
-        );
+        ToastAndroid.show("Restoring downloads", ToastAndroid.SHORT);
         tasks.forEach(processDownload);
       }
     };

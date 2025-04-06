@@ -1,13 +1,14 @@
-import React from 'react';
-import { List } from 'react-native-paper';
-import useSWR from 'swr';
-import { PlaylistItem } from '../components/SearchPlaylistItem';
-import type { PlaylistType } from '../redux/slices/playlists';
-import type { Main } from '../types/playlistDetail';
-import type { Playlist } from '../types/searchPlaylist';
+import React from "react";
+import { List } from "react-native-paper";
+import useSWR from "swr";
+import { PlaylistItem } from "../components/SearchPlaylistItem";
+import type { PlaylistType } from "../redux/slices/playlists";
+import type { Main } from "../types/playlistDetail";
+import type { Playlist } from "../types/searchPlaylist";
 
 export const PlaylistDisplay = (props: {
-  item: PlaylistType, index: number
+  item: PlaylistType;
+  index: number;
 }) => {
   const { playlistID } = props.item;
 
@@ -16,11 +17,13 @@ export const PlaylistDisplay = (props: {
     {
       revalidateIfStale: false,
       revalidateOnFocus: false,
-      revalidateOnReconnect: false
-    }
+      revalidateOnReconnect: false,
+    },
   );
 
-  if (isLoading) { return null; }
+  if (isLoading) {
+    return null;
+  }
 
   if (error || data?.code !== 200) {
     return (
@@ -33,10 +36,5 @@ export const PlaylistDisplay = (props: {
     );
   }
 
-  return (
-    <PlaylistItem
-      {...props}
-      item={data.result as unknown as Playlist}
-    />
-  );
+  return <PlaylistItem {...props} item={data.result as unknown as Playlist} />;
 };

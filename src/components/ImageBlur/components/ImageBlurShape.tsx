@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Image,
   type ImageResizeMode,
@@ -7,12 +7,12 @@ import {
   type StyleProp,
   View,
   type ViewStyle,
-} from 'react-native';
+} from "react-native";
 
-import useImageBlur from '../hooks/useImageBlur';
-import { getImageSource } from '../utils/image';
+import useImageBlur from "../hooks/useImageBlur";
+import { getImageSource } from "../utils/image";
 
-import styles from './ImageBlur.styles';
+import styles from "./ImageBlur.styles";
 
 type BlurShapeImage = {
   height: number;
@@ -23,19 +23,19 @@ type BlurShapeImage = {
 export type BlurShapeContainerStyle = StyleProp<
   Omit<
     ViewStyle,
-    | 'overflow'
-    | 'position'
-    | 'height'
-    | 'width'
-    | 'opacity'
-    | 'top'
-    | 'left'
-    | 'bottom'
-    | 'right'
+    | "overflow"
+    | "position"
+    | "height"
+    | "width"
+    | "opacity"
+    | "top"
+    | "left"
+    | "bottom"
+    | "right"
   >
 >;
 
-export type BlurShapeOverlay = Pick<ViewStyle, 'backgroundColor' | 'opacity'>;
+export type BlurShapeOverlay = Pick<ViewStyle, "backgroundColor" | "opacity">;
 
 export type ImageBlurShapeProps = {
   children: React.ReactNode;
@@ -99,9 +99,9 @@ const ImageBlurShape = ({
           blurRadius={
             blurRadius === 0
               ? 0
-              : Platform.OS === 'android'
-              ? blurRadius
-              : blurRadius + minIOSBlur
+              : Platform.OS === "android"
+                ? blurRadius
+                : blurRadius + minIOSBlur
           }
         />
         <View
@@ -110,7 +110,7 @@ const ImageBlurShape = ({
             styles.fitAvailableSpace,
             {
               opacity: blurProps?.overlay?.opacity ?? 0.2,
-              backgroundColor: blurProps?.overlay?.backgroundColor ?? '#000000',
+              backgroundColor: blurProps?.overlay?.backgroundColor ?? "#000000",
             },
             !showBlur && styles.hide,
           ]}
@@ -120,16 +120,22 @@ const ImageBlurShape = ({
   };
 
   const calculateShapePosition = useCallback(() => {
-    if (!blurredElements) {return;}
+    if (!blurredElements) {
+      return;
+    }
 
     blurredElements.forEach((elementRef, index) => {
-      if (!containerRef?.current) {return;}
-      if (!elementRef.current) {return;}
+      if (!containerRef?.current) {
+        return;
+      }
+      if (!elementRef.current) {
+        return;
+      }
 
       elementRef.current.measureLayout(
         containerRef?.current,
         (x, y, width, height) => {
-          setChildrenRect(prev => {
+          setChildrenRect((prev) => {
             if (prev) {
               prev[index] = { x, y, width, height };
 

@@ -1,9 +1,9 @@
-import React, { PropsWithChildren } from 'react';
-import { StyleSheet } from 'react-native';
-import { useAnimatedStyle } from 'react-native-reanimated';
-import { useSwipeableItemParams } from 'react-native-swipeable-item';
-import { TrackType } from '../services/GetTracksService';
-import { QuickActionsWrapper } from './QuickActions';
+import React, { PropsWithChildren } from "react";
+import { StyleSheet } from "react-native";
+import { useAnimatedStyle } from "react-native-reanimated";
+import { useSwipeableItemParams } from "react-native-swipeable-item";
+import { TrackType } from "../services/GetTracksService";
+import { QuickActionsWrapper } from "./QuickActions";
 
 /**
  * SwipeableUnderlay component provides an animated underlay for swipeable items.
@@ -17,51 +17,47 @@ import { QuickActionsWrapper } from './QuickActions';
  * @returns {JSX.Element} The rendered SwipeableUnderlay component.
  */
 export const SwipeableUnderlay = ({
-    children, mode, backgroundColor,
+  children,
+  mode,
+  backgroundColor,
 }: PropsWithChildren<{
-    mode: 'left' | 'right';
-    backgroundColor: string;
+  mode: "left" | "right";
+  backgroundColor: string;
 }>): JSX.Element => {
-    const { percentOpen } = useSwipeableItemParams<TrackType>();
+  const { percentOpen } = useSwipeableItemParams<TrackType>();
 
-    // Fade in on open
-    const animStyle = useAnimatedStyle(
-        () => ({ opacity: percentOpen.value }),
-        [percentOpen]
-    );
+  // Fade in on open
+  const animStyle = useAnimatedStyle(
+    () => ({ opacity: percentOpen.value }),
+    [percentOpen],
+  );
 
-    const underlayStyle = mode === 'right'
-        ? styles.underlayRight
-        : styles.underlayLeft;
+  const underlayStyle =
+    mode === "right" ? styles.underlayRight : styles.underlayLeft;
 
-    return (
-        <QuickActionsWrapper
-            style={[
-                styles.row,
-                underlayStyle,
-                animStyle,
-                { backgroundColor },
-            ]}
-        >
-            {children}
-        </QuickActionsWrapper>
-    );
+  return (
+    <QuickActionsWrapper
+      style={[styles.row, underlayStyle, animStyle, { backgroundColor }]}
+    >
+      {children}
+    </QuickActionsWrapper>
+  );
 };
 
 const styles = StyleSheet.create({
-    row: {
-        flexDirection: 'row',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: 15,
-    },
-    underlayRight: {
-        flex: 1,
-        justifyContent: 'flex-start',
-    },
-    underlayLeft: {
-        flex: 1,
-        justifyContent: 'flex-end',
-    },
+  row: {
+    flexDirection: "row",
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 15,
+  },
+  underlayRight: {
+    flex: 1,
+    justifyContent: "flex-start",
+  },
+  underlayLeft: {
+    flex: 1,
+    justifyContent: "flex-end",
+  },
 });

@@ -1,12 +1,16 @@
-import Clipboard from '@react-native-clipboard/clipboard';
-import React, { useCallback, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Linking, Share, StatusBar, ToastAndroid } from 'react-native';
-import HapticFeedback from 'react-native-haptic-feedback';
-import { Appbar, Menu } from 'react-native-paper';
-import WebView from 'react-native-webview';
+import Clipboard from "@react-native-clipboard/clipboard";
+import React, { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Linking, Share, StatusBar, ToastAndroid } from "react-native";
+import HapticFeedback from "react-native-haptic-feedback";
+import { Appbar, Menu } from "react-native-paper";
+import WebView from "react-native-webview";
 
-export const WebViewMenu = ({ url, title, webViewRef }: {
+export const WebViewMenu = ({
+  url,
+  title,
+  webViewRef,
+}: {
   url: string;
   title: string;
   webViewRef: React.RefObject<WebView>;
@@ -16,18 +20,15 @@ export const WebViewMenu = ({ url, title, webViewRef }: {
 
   const showMenu = useCallback(() => {
     setMenuVisible(true);
-    HapticFeedback.trigger('effectHeavyClick');
+    HapticFeedback.trigger("effectHeavyClick");
   }, []);
 
   const copyLink = useCallback(() => {
     Clipboard.setString(url);
 
-    HapticFeedback.trigger('effectTick');
+    HapticFeedback.trigger("effectTick");
     setMenuVisible(false);
-    ToastAndroid.show(
-      t('webview.menu.copy.toast'),
-      ToastAndroid.SHORT
-    );
+    ToastAndroid.show(t("webview.menu.copy.toast"), ToastAndroid.SHORT);
   }, [t, url]);
 
   const shareLink = useCallback(() => {
@@ -36,7 +37,7 @@ export const WebViewMenu = ({ url, title, webViewRef }: {
       title: title,
     });
 
-    HapticFeedback.trigger('effectTick');
+    HapticFeedback.trigger("effectTick");
   }, [url, title]);
 
   const clearCache = useCallback(() => {
@@ -44,12 +45,9 @@ export const WebViewMenu = ({ url, title, webViewRef }: {
       webViewRef.current.clearCache(true);
     }
 
-    HapticFeedback.trigger('effectTick');
+    HapticFeedback.trigger("effectTick");
     setMenuVisible(false);
-    ToastAndroid.show(
-      t('webview.menu.clear.toast'),
-      ToastAndroid.SHORT
-    );
+    ToastAndroid.show(t("webview.menu.clear.toast"), ToastAndroid.SHORT);
   }, [t, webViewRef]);
 
   return (
@@ -66,7 +64,7 @@ export const WebViewMenu = ({ url, title, webViewRef }: {
       }
     >
       <Menu.Item
-        title={t('webview.appbar.openInBrowser')}
+        title={t("webview.appbar.openInBrowser")}
         leadingIcon="open-in-new"
         onPress={() => {
           Linking.openURL(url);
@@ -74,18 +72,18 @@ export const WebViewMenu = ({ url, title, webViewRef }: {
         }}
       />
       <Menu.Item
-        title={t('webview.menu.copy.title')}
+        title={t("webview.menu.copy.title")}
         leadingIcon="link"
         onPress={copyLink}
       />
       <Menu.Item
-        title={t('webview.menu.share.title')}
+        title={t("webview.menu.share.title")}
         leadingIcon="share"
         disabled={!url || !title}
         onPress={shareLink}
       />
       <Menu.Item
-        title={t('settings.data.cache.title')}
+        title={t("settings.data.cache.title")}
         leadingIcon="delete-outline"
         onPress={clearCache}
       />

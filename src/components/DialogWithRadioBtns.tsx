@@ -1,8 +1,8 @@
-import React, { useCallback, useState } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import React, { useCallback, useState } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
 import HapticFeedBack, {
   HapticFeedbackTypes,
-} from 'react-native-haptic-feedback';
+} from "react-native-haptic-feedback";
 import {
   Button,
   Dialog,
@@ -10,7 +10,7 @@ import {
   Text,
   TouchableRipple,
   useTheme,
-} from 'react-native-paper';
+} from "react-native-paper";
 
 type DialogProps = {
   btns: string[];
@@ -21,7 +21,11 @@ type DialogProps = {
 };
 
 export const DialogWithRadioBtns = ({
-  btns, visible, close, setValue, defaultValue,
+  btns,
+  visible,
+  close,
+  setValue,
+  defaultValue,
 }: DialogProps) => {
   const appTheme = useTheme();
 
@@ -30,30 +34,27 @@ export const DialogWithRadioBtns = ({
   }
   const [checkedItem, setCheckedItem] = useState(defaultValue);
 
-  const renderItem = useCallback(({ item }: { item: string }) => (
-    <TouchableRipple
-      onPress={() => {
-        HapticFeedBack.trigger(
-          HapticFeedbackTypes.effectHeavyClick
-        );
-        setCheckedItem(item);
-      }}
-    >
-      <View style={styles.row}>
-        <View pointerEvents="none">
-          <RadioButton
-            value={item}
-            status={checkedItem === item
-              ? 'checked'
-              : 'unchecked'}
-          />
+  const renderItem = useCallback(
+    ({ item }: { item: string }) => (
+      <TouchableRipple
+        onPress={() => {
+          HapticFeedBack.trigger(HapticFeedbackTypes.effectHeavyClick);
+          setCheckedItem(item);
+        }}
+      >
+        <View style={styles.row}>
+          <View pointerEvents="none">
+            <RadioButton
+              value={item}
+              status={checkedItem === item ? "checked" : "unchecked"}
+            />
+          </View>
+          <Text style={styles.btnText}>{item}</Text>
         </View>
-        <Text style={styles.btnText}>
-          {item}
-        </Text>
-      </View>
-    </TouchableRipple>
-  ), [checkedItem]);
+      </TouchableRipple>
+    ),
+    [checkedItem],
+  );
 
   return (
     <Dialog
@@ -63,34 +64,29 @@ export const DialogWithRadioBtns = ({
       dismissableBackButton={false}
     >
       <Dialog.Icon icon="video-switch-outline" size={60} />
-      <Dialog.Title style={styles.title}>
-        Choose resolution
-      </Dialog.Title>
+      <Dialog.Title style={styles.title}>Choose resolution</Dialog.Title>
 
       <Dialog.ScrollArea style={styles.btnsContainer}>
         <FlatList
           data={btns}
           renderItem={renderItem}
           inverted
-          keyExtractor={item => item}
+          keyExtractor={(item) => item}
           extraData={checkedItem}
         />
       </Dialog.ScrollArea>
 
       <Dialog.Actions>
-        <Button
-          textColor={appTheme.colors.outline}
-          onPress={close}
-        >
+        <Button textColor={appTheme.colors.outline} onPress={close}>
           Cancel
         </Button>
-        <Button onPress={() => {
-          HapticFeedBack.trigger(
-            HapticFeedbackTypes.effectTick
-          );
-          setValue(checkedItem);
-          close();
-        }}>
+        <Button
+          onPress={() => {
+            HapticFeedBack.trigger(HapticFeedbackTypes.effectTick);
+            setValue(checkedItem);
+            close();
+          }}
+        >
           OK
         </Button>
       </Dialog.Actions>
@@ -100,14 +96,14 @@ export const DialogWithRadioBtns = ({
 
 const styles = StyleSheet.create({
   title: {
-    textAlign: 'center',
+    textAlign: "center",
   },
   btnsContainer: {
     paddingHorizontal: 0,
   },
   row: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingHorizontal: 16,
     paddingVertical: 8,
   },

@@ -1,15 +1,17 @@
-import Color from 'color';
-import React, { useCallback, useMemo, useRef } from 'react';
-import { TextStyle } from 'react-native';
-import * as Animatable from 'react-native-animatable';
-import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { IconButton, List, useTheme } from 'react-native-paper';
-import { Style } from 'react-native-paper/lib/typescript/components/List/utils';
-import TrackPlayer, { useActiveTrack } from 'react-native-track-player';
-import { useAppDispatch } from '../hook';
-import { removeFromQueueAsync } from '../redux/slices';
-import { TrackType } from '../services/GetTracksService';
-import type { ListLRProps } from '../types/paperListItem';
+import Color from "color";
+import React, { useCallback, useMemo, useRef } from "react";
+import { TextStyle } from "react-native";
+import * as Animatable from "react-native-animatable";
+import HapticFeedback, {
+  HapticFeedbackTypes,
+} from "react-native-haptic-feedback";
+import { IconButton, List, useTheme } from "react-native-paper";
+import { Style } from "react-native-paper/lib/typescript/components/List/utils";
+import TrackPlayer, { useActiveTrack } from "react-native-track-player";
+import { useAppDispatch } from "../hook";
+import { removeFromQueueAsync } from "../redux/slices";
+import { TrackType } from "../services/GetTracksService";
+import type { ListLRProps } from "../types/paperListItem";
 
 export interface ListRightProps {
   color: string;
@@ -17,7 +19,9 @@ export interface ListRightProps {
 }
 
 export const TrackItem = ({
-  item, index, onLongPress,
+  item,
+  index,
+  onLongPress,
 }: {
   item: TrackType;
   index: number;
@@ -30,10 +34,8 @@ export const TrackItem = ({
 
   const active = currentTrack?.url === item.url;
   const titleStyle: TextStyle = {
-    color: active
-      ? appTheme.colors.primary
-      : appTheme.colors.onBackground,
-    fontWeight: active ? 'bold' : 'normal',
+    color: active ? appTheme.colors.primary : appTheme.colors.onBackground,
+    fontWeight: active ? "bold" : "normal",
   };
 
   const chooseTrack = useCallback(async () => {
@@ -44,49 +46,53 @@ export const TrackItem = ({
   }, [active, index]);
 
   const remove = useCallback(async () => {
-    HapticFeedback.trigger(
-      HapticFeedbackTypes.effectDoubleClick
-    );
+    HapticFeedback.trigger(HapticFeedbackTypes.effectDoubleClick);
     if (aniRef.current?.fadeOutLeft) {
-      const { finished } =
-        await aniRef.current.fadeOutLeft(300);
+      const { finished } = await aniRef.current.fadeOutLeft(300);
       if (finished) {
-        await dispatch(
-          removeFromQueueAsync(index)
-        );
+        await dispatch(removeFromQueueAsync(index));
       }
     }
   }, [dispatch, index]);
 
   const renderRemoveBtn = useCallback(
-    (props: ListRightProps) => (
+    (props: ListRightProps) =>
       active || (
         <IconButton
           {...props}
           icon="close"
-          iconColor={appTheme.dark
-            ? appTheme.colors.onSurfaceDisabled
-            : appTheme.colors.backdrop}
+          iconColor={
+            appTheme.dark
+              ? appTheme.colors.onSurfaceDisabled
+              : appTheme.colors.backdrop
+          }
           onPress={remove}
         />
-      )
-    ), [appTheme, remove, active]);
+      ),
+    [appTheme, remove, active],
+  );
 
   const renderIcon = useCallback(
     ({ color, style }: ListLRProps) => (
       <List.Icon
         style={style}
         color={active ? appTheme.colors.primary : color}
-        icon={active ? 'music-circle' : 'music-circle-outline'}
+        icon={active ? "music-circle" : "music-circle-outline"}
       />
-    ), [active, appTheme.colors.primary]);
+    ),
+    [active, appTheme.colors.primary],
+  );
 
-  const listStyle = useMemo(() => ({
-    backgroundColor: active
-      ? Color(appTheme.colors.secondaryContainer)
-        .fade(appTheme.dark ? 0.4 : 0.6).string()
-      : undefined,
-  }), [active, appTheme.colors.secondaryContainer, appTheme.dark]);
+  const listStyle = useMemo(
+    () => ({
+      backgroundColor: active
+        ? Color(appTheme.colors.secondaryContainer)
+            .fade(appTheme.dark ? 0.4 : 0.6)
+            .string()
+        : undefined,
+    }),
+    [active, appTheme.colors.secondaryContainer, appTheme.dark],
+  );
 
   return (
     <Animatable.View

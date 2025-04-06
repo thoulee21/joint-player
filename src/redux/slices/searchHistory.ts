@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { StateKeys } from '../../utils/stateKeys';
-import { RootState } from '../store';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { StateKeys } from "../../utils/stateKeys";
+import { RootState } from "../store";
 
 const initialState = {
   value: [] as string[],
@@ -15,16 +15,14 @@ export const searchHistorySlice = createSlice({
     },
     addSearchHistory: (state, action: PayloadAction<string>) => {
       const existIndex = state.value.findIndex(
-        (history) => history === action.payload
+        (history) => history === action.payload,
       );
       if (existIndex === -1) {
         state.value.push(action.payload);
       }
     },
     removeSearchHistory: (state, action: PayloadAction<string>) => {
-      state.value = state.value.filter(
-        (history) => history !== action.payload
-      );
+      state.value = state.value.filter((history) => history !== action.payload);
     },
     clearSearchHistory: (state) => {
       state.value = [];
@@ -32,6 +30,12 @@ export const searchHistorySlice = createSlice({
   },
 });
 
-export const { addSearchHistory, clearSearchHistory, removeSearchHistory, setSearchHistory } = searchHistorySlice.actions;
+export const {
+  addSearchHistory,
+  clearSearchHistory,
+  removeSearchHistory,
+  setSearchHistory,
+} = searchHistorySlice.actions;
 
-export const selectSearchHistory = (state: RootState) => state.searchHistory.value;
+export const selectSearchHistory = (state: RootState) =>
+  state.searchHistory.value;

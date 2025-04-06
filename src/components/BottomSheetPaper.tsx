@@ -4,26 +4,19 @@ import {
   type BottomSheetFooterProps,
   BottomSheetModal,
   BottomSheetModalProvider,
-  useBottomSheetSpringConfigs
-} from '@gorhom/bottom-sheet';
-import React, {
-  forwardRef,
-  PropsWithChildren,
-  useCallback,
-} from 'react';
-import { useTheme } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Handle from './AniSheetHandle';
+  useBottomSheetSpringConfigs,
+} from "@gorhom/bottom-sheet";
+import React, { forwardRef, PropsWithChildren, useCallback } from "react";
+import { useTheme } from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Handle from "./AniSheetHandle";
 
 export const BottomSheetPaper = forwardRef<
   BottomSheetModal,
   PropsWithChildren<{
-    footer?: (props: BottomSheetFooterProps) => React.ReactNode
+    footer?: (props: BottomSheetFooterProps) => React.ReactNode;
   }>
->(({
-  children,
-  footer
-}, ref) => {
+>(({ children, footer }, ref) => {
   const appTheme = useTheme();
   const insets = useSafeAreaInsets();
 
@@ -35,7 +28,7 @@ export const BottomSheetPaper = forwardRef<
         appearsOnIndex={0}
       />
     ),
-    []
+    [],
   );
 
   const animationConfigs = useBottomSheetSpringConfigs({
@@ -51,10 +44,10 @@ export const BottomSheetPaper = forwardRef<
       <BottomSheetModal
         ref={ref}
         handleIndicatorStyle={{
-          backgroundColor: appTheme.colors.outline
+          backgroundColor: appTheme.colors.outline,
         }}
         enableDynamicSizing={false}
-        snapPoints={['90%']}
+        snapPoints={["90%"]}
         topInset={insets.top}
         enablePanDownToClose
         android_keyboardInputMode="adjustResize"

@@ -1,16 +1,16 @@
-import Color from 'color';
-import React, { useCallback, useMemo } from 'react';
-import { ViewStyle } from 'react-native';
+import Color from "color";
+import React, { useCallback, useMemo } from "react";
+import { ViewStyle } from "react-native";
 import HapticFeedback, {
   HapticFeedbackTypes,
-} from 'react-native-haptic-feedback';
-import { IconButton, List, useTheme } from 'react-native-paper';
-import TrackPlayer from 'react-native-track-player';
-import { useAppDispatch } from '../hook/reduxHooks';
-import { clearAddOneAsync } from '../redux/slices/queue';
-import { TrackType } from '../services/GetTracksService';
-import type { ListLRProps } from '../types/paperListItem';
-import { IndexOfSong } from './IndexOfSong';
+} from "react-native-haptic-feedback";
+import { IconButton, List, useTheme } from "react-native-paper";
+import TrackPlayer from "react-native-track-player";
+import { useAppDispatch } from "../hook/reduxHooks";
+import { clearAddOneAsync } from "../redux/slices/queue";
+import { TrackType } from "../services/GetTracksService";
+import type { ListLRProps } from "../types/paperListItem";
+import { IndexOfSong } from "./IndexOfSong";
 
 export const SongItem = ({
   item,
@@ -21,46 +21,45 @@ export const SongItem = ({
   drag,
   isActive,
 }: {
-  item: TrackType,
-  index: number,
-  style?: ViewStyle,
-  showAlbum?: boolean,
-  showIndex?: boolean,
-  drag?: () => void,
-  isActive?: boolean,
+  item: TrackType;
+  index: number;
+  style?: ViewStyle;
+  showAlbum?: boolean;
+  showIndex?: boolean;
+  drag?: () => void;
+  isActive?: boolean;
 }) => {
   const dispatch = useAppDispatch();
   const appTheme = useTheme();
 
-  const songStyle = useMemo(() => ([{
-    backgroundColor: isActive
-      ? Color(appTheme.colors.secondaryContainer)
-        .fade(0.1).string()
-      : appTheme.colors.surface,
-  }, style]
-  ), [style, isActive, appTheme]);
+  const songStyle = useMemo(
+    () => [
+      {
+        backgroundColor: isActive
+          ? Color(appTheme.colors.secondaryContainer).fade(0.1).string()
+          : appTheme.colors.surface,
+      },
+      style,
+    ],
+    [style, isActive, appTheme],
+  );
 
   const play = useCallback(async () => {
-    HapticFeedback.trigger(
-      HapticFeedbackTypes.effectHeavyClick
-    );
+    HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
     await dispatch(clearAddOneAsync(item));
     await TrackPlayer.play();
   }, [dispatch, item]);
 
-  const renderIndex = useCallback((
-    props: ListLRProps
-  ) => (
-    <IndexOfSong {...props} index={index} />
-  ), [index]);
+  const renderIndex = useCallback(
+    (props: ListLRProps) => <IndexOfSong {...props} index={index} />,
+    [index],
+  );
 
   const description = useMemo(() => {
-    const artists = item.artists
-      .map(ar => ar.name)
-      .join(', ');
+    const artists = item.artists.map((ar) => ar.name).join(", ");
 
     if (showAlbum) {
-      return artists.concat('\n', item.album);
+      return artists.concat("\n", item.album);
     } else {
       return artists;
     }
@@ -69,24 +68,32 @@ export const SongItem = ({
   const renderMusicImage = useCallback(
     ({ color, style: listStyle }: ListLRProps) => (
       <List.Image
-        style={[listStyle, {
-          borderRadius: appTheme.roundness,
-          backgroundColor: color,
-        }]}
+        style={[
+          listStyle,
+          {
+            borderRadius: appTheme.roundness,
+            backgroundColor: color,
+          },
+        ]}
         source={{ uri: item.artwork }}
       />
-    ), [appTheme.roundness, item.artwork]);
+    ),
+    [appTheme.roundness, item.artwork],
+  );
 
   const renderDragIndicator = useCallback(
-    (props: ListLRProps) => (
-      drag && <IconButton
-        {...props}
-        icon="drag"
-        size={24}
-        onLongPress={drag}
-        testID="drag-handle"
-      />
-    ), [drag]);
+    (props: ListLRProps) =>
+      drag && (
+        <IconButton
+          {...props}
+          icon="drag"
+          size={24}
+          onLongPress={drag}
+          testID="drag-handle"
+        />
+      ),
+    [drag],
+  );
 
   return (
     <List.Item

@@ -1,20 +1,20 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { StateKeys } from '../../utils/stateKeys';
-import { RootState } from '../store';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { StateKeys } from "../../utils/stateKeys";
+import { RootState } from "../store";
 
 const initialState = {
-    value: 50,
+  value: 50,
 };
 
 export const blurRadiusSlice = createSlice({
-    name: StateKeys.BlurRadius,
-    initialState,
-    reducers: {
-        // Use the PayloadAction type to declare the contents of `action.payload`
-        setBlurRadius: (state, action: PayloadAction<number>) => {
-            state.value = action.payload;
-        },
+  name: StateKeys.BlurRadius,
+  initialState,
+  reducers: {
+    // Use the PayloadAction type to declare the contents of `action.payload`
+    setBlurRadius: (state, action: PayloadAction<number>) => {
+      state.value = action.payload;
     },
+  },
 });
 
 export const { setBlurRadius } = blurRadiusSlice.actions;

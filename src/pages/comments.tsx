@@ -1,11 +1,11 @@
-import { useRoute } from '@react-navigation/native';
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { CommentList } from '../components/CommentList';
+import { useRoute } from "@react-navigation/native";
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { CommentList } from "../components/CommentList";
 
 export function Comments(): React.JSX.Element {
   const { commentThreadId } = useRoute().params as {
-    commentThreadId: string
+    commentThreadId: string;
   };
 
   return (
@@ -20,6 +20,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
   },
 });

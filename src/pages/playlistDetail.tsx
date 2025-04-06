@@ -3,14 +3,14 @@ import {
   ScalingView,
   type ScrollHeaderProps,
   type ScrollLargeHeaderProps,
-} from '@codeherence/react-native-header';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import React, { useCallback, useLayoutEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Linking, StatusBar, StyleSheet, View } from 'react-native';
+} from "@codeherence/react-native-header";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import React, { useCallback, useLayoutEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Linking, StatusBar, StyleSheet, View } from "react-native";
 import HapticFeedback, {
   HapticFeedbackTypes,
-} from 'react-native-haptic-feedback';
+} from "react-native-haptic-feedback";
 import {
   ActivityIndicator,
   Button,
@@ -18,31 +18,28 @@ import {
   IconButton,
   Menu,
   Portal,
-  useTheme
-} from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import TrackPlayer from 'react-native-track-player';
-import useSWR from 'swr';
-import { HeaderComponent } from '../components/AnimatedHeader';
-import { LottieAnimation } from '../components/LottieAnimation';
-import { PlaylistDetailLargeHeader } from '../components/PlaylistDetailLargeHeader';
-import {
-  PlaylistTrack,
-  raw2TrackType,
-} from '../components/PlaylistTrack';
-import { PoweredBy } from '../components/PoweredBy';
-import { TracksHeader } from '../components/TracksHeader';
-import { useAppDispatch, useAppSelector } from '../hook';
+  useTheme,
+} from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import TrackPlayer from "react-native-track-player";
+import useSWR from "swr";
+import { HeaderComponent } from "../components/AnimatedHeader";
+import { LottieAnimation } from "../components/LottieAnimation";
+import { PlaylistDetailLargeHeader } from "../components/PlaylistDetailLargeHeader";
+import { PlaylistTrack, raw2TrackType } from "../components/PlaylistTrack";
+import { PoweredBy } from "../components/PoweredBy";
+import { TracksHeader } from "../components/TracksHeader";
+import { useAppDispatch, useAppSelector } from "../hook";
 import {
   addPlaylist,
   removePlaylist,
   selectDevModeEnabled,
   selectPlaylists,
   setQueueAsync,
-  type PlaylistType
-} from '../redux/slices';
-import type { TrackType } from '../services/GetTracksService';
-import type { Main, Track } from '../types/playlistDetail';
+  type PlaylistType,
+} from "../redux/slices";
+import type { TrackType } from "../services/GetTracksService";
+import type { Main, Track } from "../types/playlistDetail";
 
 export const PlaylistDetailScreen = () => {
   const dispatch = useAppDispatch();
@@ -58,17 +55,14 @@ export const PlaylistDetailScreen = () => {
   const [attempts, setAttempts] = useState(0);
   const [menuVisible, setMenuVisible] = useState(false);
 
-  const isInPlaylists = useMemo(() => (
-    playlists.some((pl) => (
-      pl.playlistID === playlistID
-    ))
-  ), [playlistID, playlists]);
+  const isInPlaylists = useMemo(
+    () => playlists.some((pl) => pl.playlistID === playlistID),
+    [playlistID, playlists],
+  );
 
   const togglePlist = useCallback(() => {
     if (name && playlistID) {
-      HapticFeedback.trigger(
-        HapticFeedbackTypes.effectHeavyClick
-      );
+      HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
 
       if (isInPlaylists) {
         dispatch(removePlaylist({ playlistID, name }));
@@ -83,141 +77,150 @@ export const PlaylistDetailScreen = () => {
     {
       revalidateIfStale: false,
       revalidateOnFocus: false,
-      revalidateOnReconnect: false
-    }
+      revalidateOnReconnect: false,
+    },
   );
 
   const retry = useCallback(() => {
-    setAttempts(prev => prev + 1);
-    HapticFeedback.trigger(
-      HapticFeedbackTypes.effectDoubleClick,
-    );
+    setAttempts((prev) => prev + 1);
+    HapticFeedback.trigger(HapticFeedbackTypes.effectDoubleClick);
     mutate();
   }, [mutate]);
 
-  const renderItem = useCallback((
-    { item, index }: { item: Track, index: number }
-  ) => (
-    <PlaylistTrack item={item} index={index} />
-  ), []);
-
-  const keyExtractor = useCallback(
-    (item: Track) => item.id.toString(), []
+  const renderItem = useCallback(
+    ({ item, index }: { item: Track; index: number }) => (
+      <PlaylistTrack item={item} index={index} />
+    ),
+    [],
   );
 
-  const playAll = useCallback(async () => {
-    const tracksData = data?.result.tracks.map(
-      raw => raw2TrackType(raw)
-    );
+  const keyExtractor = useCallback((item: Track) => item.id.toString(), []);
 
-    await dispatch(
-      setQueueAsync(tracksData as TrackType[])
-    );
+  const playAll = useCallback(async () => {
+    const tracksData = data?.result.tracks.map((raw) => raw2TrackType(raw));
+
+    await dispatch(setQueueAsync(tracksData as TrackType[]));
     await TrackPlayer.play();
   }, [data, dispatch]);
 
-  const renderHeader = useCallback((
-    props: ScrollHeaderProps
-  ) => {
-    return (
-      <HeaderComponent
-        {...props}
-        title={name}
-        noBottomBorder
-        headerStyle={{
-          height: 56 + insets.top,
-          backgroundColor: appTheme.colors.surfaceVariant
-        }}
-        headerRight={
-          <IconButton
-            icon={isInPlaylists
-              ? 'playlist-check' : 'playlist-plus'}
-            selected={isInPlaylists}
-            animated
-            onPress={togglePlist}
-          />
-        }
-      />
-    );
-  }, [appTheme.colors.surfaceVariant, insets.top, isInPlaylists, name, togglePlist]);
-
-  const renderLargeHeader = useCallback((
-    { scrollY }: ScrollLargeHeaderProps
-  ) => (
-    <ScalingView
-      scrollY={scrollY}
-      style={{ backgroundColor: appTheme.colors.surfaceVariant }}
-    >
-      <PlaylistDetailLargeHeader playlistID={playlistID} />
-      <TracksHeader
-        length={data?.result.trackCount || 0}
-        onPress={playAll}
-        right={
-          <View style={styles.row}>
+  const renderHeader = useCallback(
+    (props: ScrollHeaderProps) => {
+      return (
+        <HeaderComponent
+          {...props}
+          title={name}
+          noBottomBorder
+          headerStyle={{
+            height: 56 + insets.top,
+            backgroundColor: appTheme.colors.surfaceVariant,
+          }}
+          headerRight={
             <IconButton
-              icon="comment-text-multiple-outline"
-              size={18}
-              disabled={!data?.result.commentCount}
-              onPress={() => {
-                //@ts-expect-error
-                navigation.push('Comments', {
-                  commentThreadId: data?.result.commentThreadId,
-                });
-              }}
+              icon={isInPlaylists ? "playlist-check" : "playlist-plus"}
+              selected={isInPlaylists}
+              animated
+              onPress={togglePlist}
             />
+          }
+        />
+      );
+    },
+    [
+      appTheme.colors.surfaceVariant,
+      insets.top,
+      isInPlaylists,
+      name,
+      togglePlist,
+    ],
+  );
 
-            <Menu
-              visible={menuVisible}
-              onDismiss={() => { setMenuVisible(false); }}
-              statusBarHeight={StatusBar.currentHeight}
-              anchor={
-                <IconButton
-                  icon="dots-vertical"
-                  size={18}
-                  onPress={() => { setMenuVisible(true); }}
-                />
-              }
-            >
-              <Menu.Item
-                title={t('playlistDetail.playlist.menu.openInApp')}
-                leadingIcon="open-in-new"
-                onPress={() => Linking.openURL(
-                  `orpheus://playlist/${playlistID}`
-                )}
+  const renderLargeHeader = useCallback(
+    ({ scrollY }: ScrollLargeHeaderProps) => (
+      <ScalingView
+        scrollY={scrollY}
+        style={{ backgroundColor: appTheme.colors.surfaceVariant }}
+      >
+        <PlaylistDetailLargeHeader playlistID={playlistID} />
+        <TracksHeader
+          length={data?.result.trackCount || 0}
+          onPress={playAll}
+          right={
+            <View style={styles.row}>
+              <IconButton
+                icon="comment-text-multiple-outline"
+                size={18}
+                disabled={!data?.result.commentCount}
+                onPress={() => {
+                  //@ts-expect-error
+                  navigation.push("Comments", {
+                    commentThreadId: data?.result.commentThreadId,
+                  });
+                }}
               />
-            </Menu>
-          </View>
-        }
-      />
-    </ScalingView>
-  ), [appTheme.colors.surfaceVariant, data, menuVisible, navigation, playAll, playlistID, t]);
+
+              <Menu
+                visible={menuVisible}
+                onDismiss={() => {
+                  setMenuVisible(false);
+                }}
+                statusBarHeight={StatusBar.currentHeight}
+                anchor={
+                  <IconButton
+                    icon="dots-vertical"
+                    size={18}
+                    onPress={() => {
+                      setMenuVisible(true);
+                    }}
+                  />
+                }
+              >
+                <Menu.Item
+                  title={t("playlistDetail.playlist.menu.openInApp")}
+                  leadingIcon="open-in-new"
+                  onPress={() =>
+                    Linking.openURL(`orpheus://playlist/${playlistID}`)
+                  }
+                />
+              </Menu>
+            </View>
+          }
+        />
+      </ScalingView>
+    ),
+    [
+      appTheme.colors.surfaceVariant,
+      data,
+      menuVisible,
+      navigation,
+      playAll,
+      playlistID,
+      t,
+    ],
+  );
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerShown: Boolean(
-        isLoading || data?.code !== 200 || error
-      ),
-      headerTitle: name
+      headerShown: Boolean(isLoading || data?.code !== 200 || error),
+      headerTitle: name,
     });
   }, [data?.code, error, isLoading, name, navigation]);
 
   if (isLoading || data?.code !== 200 || error) {
     return (
-      <View style={[
-        styles.root,
-        { backgroundColor: appTheme.colors.surfaceVariant }
-      ]}>
+      <View
+        style={[
+          styles.root,
+          { backgroundColor: appTheme.colors.surfaceVariant },
+        ]}
+      >
         {isLoading ? (
-          <ActivityIndicator
-            size="large"
-            style={styles.loading}
-          />
+          <ActivityIndicator size="large" style={styles.loading} />
         ) : (
           <LottieAnimation
             animation="teapot"
             // @ts-expect-error
             caption={`${data?.msg || error?.message}`.concat(
-              isDev ? `\nAttempts: ${attempts}` : ''
+              isDev ? `\nAttempts: ${attempts}` : "",
             )}
           >
             <Button
@@ -227,7 +230,7 @@ export const PlaylistDetailScreen = () => {
               loading={isValidating && !isLoading}
               onPress={retry}
             >
-              {t('playlistDetail.retry')}
+              {t("playlistDetail.retry")}
             </Button>
           </LottieAnimation>
         )}
@@ -257,16 +260,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   appbar: {
-    backgroundColor: 'transparent'
+    backgroundColor: "transparent",
   },
   loading: {
-    marginTop: '50%',
+    marginTop: "50%",
   },
   retry: {
-    alignSelf: 'center',
-    margin: '5%',
+    alignSelf: "center",
+    margin: "5%",
   },
   row: {
-    flexDirection: 'row',
-  }
+    flexDirection: "row",
+  },
 });

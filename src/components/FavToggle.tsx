@@ -1,11 +1,13 @@
-import React, { useCallback, useMemo } from 'react';
-import type { StyleProp, ViewStyle } from 'react-native';
-import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { IconButton, useTheme } from 'react-native-paper';
-import { useActiveTrack } from 'react-native-track-player';
-import { useAppDispatch, useAppSelector } from '../hook';
-import { addFav, favs, removeFav } from '../redux/slices';
-import { TrackType } from '../services/GetTracksService';
+import React, { useCallback, useMemo } from "react";
+import type { StyleProp, ViewStyle } from "react-native";
+import HapticFeedback, {
+  HapticFeedbackTypes,
+} from "react-native-haptic-feedback";
+import { IconButton, useTheme } from "react-native-paper";
+import { useActiveTrack } from "react-native-track-player";
+import { useAppDispatch, useAppSelector } from "../hook";
+import { addFav, favs, removeFav } from "../redux/slices";
+import { TrackType } from "../services/GetTracksService";
 
 export const FavToggle = ({ style }: { style?: StyleProp<ViewStyle> }) => {
   const dispatch = useAppDispatch();
@@ -20,9 +22,7 @@ export const FavToggle = ({ style }: { style?: StyleProp<ViewStyle> }) => {
 
   const toggleFav = useCallback(() => {
     if (track) {
-      HapticFeedback.trigger(
-        HapticFeedbackTypes.effectHeavyClick
-      );
+      HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
 
       if (isFav) {
         dispatch(removeFav(track as TrackType));
@@ -30,17 +30,16 @@ export const FavToggle = ({ style }: { style?: StyleProp<ViewStyle> }) => {
         dispatch(addFav(track as TrackType));
       }
     }
-  }, [favorites, isFav, track, dispatch]);
+  }, [isFav, track, dispatch]);
 
   return (
     <IconButton
-      icon={isFav ? 'heart' : 'heart-outline'}
+      icon={isFav ? "heart" : "heart-outline"}
       size={24}
-      iconColor={isFav
-        ? appTheme.colors.tertiary
-        : undefined}
+      iconColor={isFav ? appTheme.colors.tertiary : undefined}
       animated
       style={style}
-      onPress={toggleFav} />
+      onPress={toggleFav}
+    />
   );
 };

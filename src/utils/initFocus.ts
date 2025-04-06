@@ -1,4 +1,4 @@
-import { AppState, type AppStateStatus } from 'react-native';
+import { AppState, type AppStateStatus } from "react-native";
 
 export const initFocus = (callback: () => void) => {
   let appState = AppState.currentState;
@@ -6,8 +6,8 @@ export const initFocus = (callback: () => void) => {
   const onAppStateChange = (nextAppState: AppStateStatus) => {
     if (
       /* 如果正在从后台或非 active 模式恢复到 active 模式 */
-      appState.match(/inactive|background/)
-      && nextAppState === 'active'
+      appState.match(/inactive|background/) &&
+      nextAppState === "active"
     ) {
       callback();
     }
@@ -15,9 +15,7 @@ export const initFocus = (callback: () => void) => {
   };
 
   // 订阅 app 状态更改事件
-  const subscription = AppState.addEventListener(
-    'change', onAppStateChange
-  );
+  const subscription = AppState.addEventListener("change", onAppStateChange);
 
   return () => {
     subscription.remove();

@@ -1,7 +1,7 @@
-import Clipboard from '@react-native-clipboard/clipboard';
-import { useNavigation } from '@react-navigation/native';
-import Color from 'color';
-import React, { useCallback, useMemo, useState } from 'react';
+import Clipboard from "@react-native-clipboard/clipboard";
+import { useNavigation } from "@react-navigation/native";
+import Color from "color";
+import React, { useCallback, useMemo, useState } from "react";
 import {
   ImageBackground,
   ScrollView,
@@ -9,11 +9,11 @@ import {
   ToastAndroid,
   TouchableWithoutFeedback,
   useWindowDimensions,
-  View
-} from 'react-native';
+  View,
+} from "react-native";
 import HapticFeedback, {
   HapticFeedbackTypes,
-} from 'react-native-haptic-feedback';
+} from "react-native-haptic-feedback";
 import {
   Badge,
   Button,
@@ -22,19 +22,16 @@ import {
   Surface,
   Text,
   useTheme,
-} from 'react-native-paper';
-import {
-  useActiveTrack,
-  useProgress,
-} from 'react-native-track-player';
-import useSWR from 'swr';
-import { useAppSelector } from '../hook';
-import { selectDevModeEnabled } from '../redux/slices';
-import { Main as LyricMain } from '../types/lyrics';
-import { ArtistNames } from './ArtistNames';
-import { FavToggle } from './FavToggle';
+} from "react-native-paper";
+import { useActiveTrack, useProgress } from "react-native-track-player";
+import useSWR from "swr";
+import { useAppSelector } from "../hook";
+import { selectDevModeEnabled } from "../redux/slices";
+import { Main as LyricMain } from "../types/lyrics";
+import { ArtistNames } from "./ArtistNames";
+import { FavToggle } from "./FavToggle";
 
-export const placeholderImg = 'https://picsum.photos/800';
+export const placeholderImg = "https://picsum.photos/800";
 
 export const TrackInfo = () => {
   const navigation = useNavigation();
@@ -50,7 +47,7 @@ export const TrackInfo = () => {
 
   const imageUri = track?.artwork || placeholderImg;
   const { data } = useSWR<LyricMain>(
-    `https://music.163.com/api/song/lyric?id=${track?.id}&lv=1&kv=1&tv=-1`
+    `https://music.163.com/api/song/lyric?id=${track?.id}&lv=1&kv=1&tv=-1`,
   );
 
   const devModeEnabled = useAppSelector(selectDevModeEnabled);
@@ -63,34 +60,26 @@ export const TrackInfo = () => {
 
   const printTrackData = useCallback(() => {
     if (track && devModeEnabled) {
-      HapticFeedback.trigger(
-        HapticFeedbackTypes.effectHeavyClick
-      );
+      HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
       showDialog();
     }
   }, [devModeEnabled, showDialog, track]);
 
   const copyTrackData = useCallback(() => {
-    Clipboard.setString(
-      JSON.stringify(
-        track, null, 2
-      )
-    );
+    Clipboard.setString(JSON.stringify(track, null, 2));
     ToastAndroid.showWithGravity(
-      'Copied to clipboard',
+      "Copied to clipboard",
       ToastAndroid.SHORT,
-      ToastAndroid.BOTTOM
+      ToastAndroid.BOTTOM,
     );
   }, [track]);
 
   const viewTrackPic = useCallback(() => {
-    HapticFeedback.trigger(
-      HapticFeedbackTypes.effectTick
-    );
+    HapticFeedback.trigger(HapticFeedbackTypes.effectTick);
     if (track?.artwork !== placeholderImg) {
       // @ts-ignore
-      navigation.push('WebView', {
-        title: track?.title || 'Artwork',
+      navigation.push("WebView", {
+        title: track?.title || "Artwork",
         url: imageUri,
       });
     }
@@ -98,9 +87,9 @@ export const TrackInfo = () => {
 
   const goLyrics = useCallback(() => {
     if (track?.id && data?.lrc.lyric) {
-      HapticFeedback.trigger('effectHeavyClick');
+      HapticFeedback.trigger("effectHeavyClick");
       // @ts-ignore
-      navigation.push('Lyrics');
+      navigation.push("Lyrics");
     }
   }, [data?.lrc.lyric, navigation, track?.id]);
 
@@ -109,10 +98,7 @@ export const TrackInfo = () => {
       <View style={styles.container}>
         <Surface
           elevation={5}
-          style={[
-            styles.imgSurface,
-            { borderRadius: appTheme.roundness * 5 },
-          ]}
+          style={[styles.imgSurface, { borderRadius: appTheme.roundness * 5 }]}
         >
           <TouchableWithoutFeedback
             onPress={goLyrics}
@@ -120,7 +106,8 @@ export const TrackInfo = () => {
           >
             <ImageBackground
               style={[
-                styles.artwork, {
+                styles.artwork,
+                {
                   borderRadius: appTheme.roundness * 5,
                   backgroundColor: appTheme.colors.surface,
                   width: window.width * 0.9,
@@ -141,64 +128,51 @@ export const TrackInfo = () => {
             onPress={printTrackData}
             numberOfLines={1}
           >
-            {track?.title ?? 'No Track'}
+            {track?.title ?? "No Track"}
           </Text>
 
           {isTrial && (
             <Badge
               size={17}
               style={[
-                styles.badge, {
+                styles.badge,
+                {
                   color: appTheme.colors.onSurfaceVariant,
                   borderColor: appTheme.colors.outline,
-                  backgroundColor: Color(
-                    appTheme.colors.surface
-                  ).fade(0.8).string(),
-                }
+                  backgroundColor: Color(appTheme.colors.surface)
+                    .fade(0.8)
+                    .string(),
+                },
               ]}
               onPress={() => {
                 ToastAndroid.showWithGravity(
-                  'This is a trial track, not the full version',
+                  "This is a trial track, not the full version",
                   ToastAndroid.SHORT,
-                  ToastAndroid.BOTTOM
+                  ToastAndroid.BOTTOM,
                 );
               }}
-            >Trial</Badge>
+            >
+              Trial
+            </Badge>
           )}
         </View>
         <ArtistNames textStyle={styles.artistsText} />
       </View>
 
       <Portal>
-        <Dialog
-          visible={visible}
-          onDismiss={hideDialog}
-          style={styles.dialog}
-        >
+        <Dialog visible={visible} onDismiss={hideDialog} style={styles.dialog}>
           <Dialog.Title>Track Detail</Dialog.Title>
           <Dialog.ScrollArea style={styles.smallPadding}>
-            <ScrollView
-              contentContainerStyle={styles.biggerPadding}
-            >
-              <Text selectable>
-                {JSON.stringify(
-                  track, null, 2
-                )}
-              </Text>
+            <ScrollView contentContainerStyle={styles.biggerPadding}>
+              <Text selectable>{JSON.stringify(track, null, 2)}</Text>
             </ScrollView>
           </Dialog.ScrollArea>
 
           <Dialog.Actions>
-            <Button
-              icon="content-copy"
-              onPress={copyTrackData}
-            >
+            <Button icon="content-copy" onPress={copyTrackData}>
               Copy
             </Button>
-            <Button
-              textColor={appTheme.colors.outline}
-              onPress={hideDialog}
-            >
+            <Button textColor={appTheme.colors.outline} onPress={hideDialog}>
               Close
             </Button>
           </Dialog.Actions>
@@ -210,38 +184,38 @@ export const TrackInfo = () => {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    marginTop: '4%',
+    alignItems: "center",
+    marginTop: "4%",
   },
   artwork: {
     aspectRatio: 1,
   },
   imgSurface: {
-    marginTop: '2%',
+    marginTop: "2%",
   },
   titleText: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginTop: 30,
-    textAlign: 'center',
+    textAlign: "center",
   },
   badge: {
     borderWidth: 0.5,
     borderRadius: 3,
-    position: 'absolute',
+    position: "absolute",
     right: -30,
     bottom: 5,
   },
   titleView: {
-    maxWidth: '75%',
+    maxWidth: "75%",
   },
   artistsText: {
     fontSize: 16,
-    fontWeight: '200',
-    textAlign: 'center',
+    fontWeight: "200",
+    textAlign: "center",
   },
   dialog: {
-    maxHeight: '80%',
+    maxHeight: "80%",
   },
   smallPadding: {
     paddingHorizontal: 0,
@@ -251,7 +225,7 @@ const styles = StyleSheet.create({
   },
   favToggle: {
     //放置于右下角
-    position: 'absolute',
+    position: "absolute",
     right: 0,
     bottom: 0,
     //圆

@@ -1,41 +1,22 @@
-import {
-  useNetInfoInstance,
-} from '@react-native-community/netinfo';
-import Color from 'color';
-import React, {
-  useCallback,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
-import {
-  RefreshControl,
-  SectionList,
-  StyleSheet,
-} from 'react-native';
+import { useNetInfoInstance } from "@react-native-community/netinfo";
+import Color from "color";
+import React, { useCallback, useMemo, useRef, useState } from "react";
+import { RefreshControl, SectionList, StyleSheet } from "react-native";
 import HapticFeedback, {
   HapticFeedbackTypes,
-} from 'react-native-haptic-feedback';
-import {
-  ActivityIndicator,
-  List,
-  Portal,
-  useTheme,
-} from 'react-native-paper';
-import useSWRInfinite from 'swr/infinite';
-import { useDebounce } from '../hook';
-import {
-  Comment,
-  Main as CommentsMain,
-} from '../types/comments';
-import type { ListLRProps } from '../types/paperListItem';
-import { CommentItem } from './CommentItem';
+} from "react-native-haptic-feedback";
+import { ActivityIndicator, List, Portal, useTheme } from "react-native-paper";
+import useSWRInfinite from "swr/infinite";
+import { useDebounce } from "../hook";
+import { Comment, Main as CommentsMain } from "../types/comments";
+import type { ListLRProps } from "../types/paperListItem";
+import { CommentItem } from "./CommentItem";
 import {
   NoCommentsItem,
   NoInternetItem,
   RetryItem,
-} from './CommentSpecialItems';
-import { ScrollToBtns } from './ScrollToBtns';
+} from "./CommentSpecialItems";
+import { ScrollToBtns } from "./ScrollToBtns";
 
 export interface Section {
   title: string;
@@ -44,9 +25,7 @@ export interface Section {
 
 const itemPerPage = 10;
 
-export function CommentList(
-  { commentThreadId }: { commentThreadId: string }
-) {
+export function CommentList({ commentThreadId }: { commentThreadId: string }) {
   const appTheme = useTheme();
   const { netInfo } = useNetInfoInstance();
   const commentsRef = useRef<SectionList>(null);
@@ -54,16 +33,11 @@ export function CommentList(
   const [atTop, setAtTop] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
-  const {
-    data, error, isLoading, mutate, setSize,
-  } = useSWRInfinite<CommentsMain>(
-    (index) => {
+  const { data, error, isLoading, mutate, setSize } =
+    useSWRInfinite<CommentsMain>((index) => {
       const offset = index * itemPerPage;
-      return (
-        `http://music.163.com/api/v1/resource/comments/${commentThreadId}?offset=${offset}&limit=${itemPerPage}`
-      );
-    }
-  );
+      return `http://music.163.com/api/v1/resource/comments/${commentThreadId}?offset=${offset}&limit=${itemPerPage}`;
+    });
 
   const showData = useMemo(() => {
     const sections: Section[] = [];
@@ -73,14 +47,14 @@ export function CommentList(
 
       if (hotComments.length !== 0) {
         sections.push({
-          title: 'Hot Comments',
+          title: "Hot Comments",
           data: hotComments,
         });
       }
 
       if (latestComments.length !== 0) {
         sections.push({
-          title: 'Latest Comments',
+          title: "Latest Comments",
           data: latestComments,
         });
       }
@@ -88,19 +62,15 @@ export function CommentList(
       for (let index = 1; index < data.length; index++) {
         const commentsData = data[index];
 
-        if (
-          commentsData?.comments && commentsData.comments.length !== 0
-        ) {
+        if (commentsData?.comments && commentsData.comments.length !== 0) {
           const latestSectionIndex = sections.findIndex(
-            section => (
-              section.title === 'Latest Comments'
-            )
+            (section) => section.title === "Latest Comments",
           );
 
           if (latestSectionIndex !== -1) {
-            sections[latestSectionIndex].data =
-              sections[latestSectionIndex].data
-                .concat(commentsData.comments);
+            sections[latestSectionIndex].data = sections[
+              latestSectionIndex
+            ].data.concat(commentsData.comments);
           }
         }
       }
@@ -119,36 +89,38 @@ export function CommentList(
   const loadMore = useDebounce(() => {
     if (!isLoading) {
       if (data && data[data.length - 1].more) {
-        setSize(prev => prev + 1);
+        setSize((prev) => prev + 1);
       }
     }
   });
 
-  const sectionFooterStyle = useMemo(() => [
-    styles.sectionFooter, {
-      color: appTheme.dark
-        ? appTheme.colors.onSurfaceDisabled
-        : appTheme.colors.backdrop,
-    }
-  ], [appTheme]);
+  const sectionFooterStyle = useMemo(
+    () => [
+      styles.sectionFooter,
+      {
+        color: appTheme.dark
+          ? appTheme.colors.onSurfaceDisabled
+          : appTheme.colors.backdrop,
+      },
+    ],
+    [appTheme],
+  );
 
   const renderLoadingIndicator = useCallback(
-    (props: ListLRProps) => (
-      <ActivityIndicator {...props} size={16} />
-    ), []);
+    (props: ListLRProps) => <ActivityIndicator {...props} size={16} />,
+    [],
+  );
 
   const renderCheckIcon = useCallback(
     (props: ListLRProps) => (
-      <List.Icon
-        {...props}
-        icon="check-all"
-        color={appTheme.colors.primary}
-      />
-    ), [appTheme.colors.primary]);
+      <List.Icon {...props} icon="check-all" color={appTheme.colors.primary} />
+    ),
+    [appTheme.colors.primary],
+  );
 
   const renderSectionFooter = useCallback(
     ({ section }: { section: any }) => {
-      if (section.title === 'Latest Comments') {
+      if (section.title === "Latest Comments") {
         if (data && data[data.length - 1].more) {
           return (
             <List.Item
@@ -169,40 +141,41 @@ export function CommentList(
       } else {
         return null;
       }
-    }, [
-    data, renderCheckIcon, renderLoadingIndicator, sectionFooterStyle
-  ]);
+    },
+    [data, renderCheckIcon, renderLoadingIndicator, sectionFooterStyle],
+  );
 
   const renderSectionHeader = useCallback(
     ({ section }: { section: any }) => (
-      <List.Subheader style={[
-        styles.header, {
-          color: appTheme.colors.primary,
-          backgroundColor:
-            Color(appTheme.colors.background)
-              .alpha(0.9).string(),
-        }
-      ]}>
+      <List.Subheader
+        style={[
+          styles.header,
+          {
+            color: appTheme.colors.primary,
+            backgroundColor: Color(appTheme.colors.background)
+              .alpha(0.9)
+              .string(),
+          },
+        ]}
+      >
         {section.title}
       </List.Subheader>
-    ), [appTheme.colors.background, appTheme.colors.primary]);
+    ),
+    [appTheme.colors.background, appTheme.colors.primary],
+  );
 
-  const renderItem = useCallback((
-    { item }: { item: Comment }
-  ) => (
-    <CommentItem item={item} />
-  ), []);
+  const renderItem = useCallback(
+    ({ item }: { item: Comment }) => <CommentItem item={item} />,
+    [],
+  );
 
-  const keyExtractor = useCallback((
-    item: Comment
-  ) => (
-    item.commentId.toString()
-  ), []);
+  const keyExtractor = useCallback(
+    (item: Comment) => item.commentId.toString(),
+    [],
+  );
 
   if (isLoading) {
-    return (
-      <ActivityIndicator style={styles.loading} size="large" />
-    );
+    return <ActivityIndicator style={styles.loading} size="large" />;
   }
 
   if (error) {
@@ -213,9 +186,7 @@ export function CommentList(
     }
   }
 
-  if (
-    (data ?? [])[0]?.total === 0
-  ) {
+  if ((data ?? [])[0]?.total === 0) {
     return <NoCommentsItem />;
   }
 
@@ -242,25 +213,19 @@ export function CommentList(
         onEndReachedThreshold={0.05}
         stickySectionHeadersEnabled
         renderSectionFooter={renderSectionFooter}
-        onScroll={e =>
-          setAtTop(e.nativeEvent.contentOffset.y < 5)
-        }
-        onScrollToIndexFailed={
-          info => {
-            const wait = new Promise(
-              resolve =>
-                setTimeout(resolve, 700)
-            );
-            wait.then(() => {
-              commentsRef.current?.scrollToLocation({
-                sectionIndex: info.index,
-                itemIndex: 0,
-                viewPosition: 0,
-                viewOffset: 0,
-                animated: true,
-              });
+        onScroll={(e) => setAtTop(e.nativeEvent.contentOffset.y < 5)}
+        onScrollToIndexFailed={(info) => {
+          const wait = new Promise((resolve) => setTimeout(resolve, 700));
+          wait.then(() => {
+            commentsRef.current?.scrollToLocation({
+              sectionIndex: info.index,
+              itemIndex: 0,
+              viewPosition: 0,
+              viewOffset: 0,
+              animated: true,
             });
-          }}
+          });
+        }}
       />
       <Portal>
         <ScrollToBtns
@@ -276,16 +241,16 @@ export function CommentList(
 
 const styles = StyleSheet.create({
   loading: {
-    marginTop: '20%',
+    marginTop: "20%",
   },
   header: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   sectionFooter: {
     fontSize: 14,
   },
   divider: {
     marginTop: 10,
-  }
+  },
 });

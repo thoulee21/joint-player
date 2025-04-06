@@ -1,25 +1,32 @@
-import React, { createContext, PropsWithChildren, useCallback, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { ToggleButton } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useActiveTrack } from 'react-native-track-player';
-import useSWR from 'swr';
-import { BlurBackground } from '../components/BlurBackground';
-import { TrackInfoBar } from '../components/TrackInfoBar';
-import { TrackMenu } from '../components/TrackMenu';
-import { Main as LyricMain } from '../types/lyrics';
-import { CommentsMenu } from './CommentsMenu';
-import { DownloadMenu } from './DownloadMenu';
-import { FavToggle } from './FavToggle';
-import { MvMenu } from './MvMenu';
+import React, {
+  createContext,
+  PropsWithChildren,
+  useCallback,
+  useState,
+} from "react";
+import { StyleSheet, View } from "react-native";
+import HapticFeedback, {
+  HapticFeedbackTypes,
+} from "react-native-haptic-feedback";
+import { ToggleButton } from "react-native-paper";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useActiveTrack } from "react-native-track-player";
+import useSWR from "swr";
+import { BlurBackground } from "../components/BlurBackground";
+import { TrackInfoBar } from "../components/TrackInfoBar";
+import { TrackMenu } from "../components/TrackMenu";
+import { Main as LyricMain } from "../types/lyrics";
+import { CommentsMenu } from "./CommentsMenu";
+import { DownloadMenu } from "./DownloadMenu";
+import { FavToggle } from "./FavToggle";
+import { MvMenu } from "./MvMenu";
 
 export const TranslateContext = createContext<{
   translated: boolean;
   toggleTranslate: () => void;
 }>({
   translated: false,
-  toggleTranslate: () => { }
+  toggleTranslate: () => {},
 });
 
 export const LyricsContainer = ({ children }: PropsWithChildren) => {
@@ -29,49 +36,45 @@ export const LyricsContainer = ({ children }: PropsWithChildren) => {
 
   const { data: lyric } = useSWR<LyricMain>(
     track?.id &&
-    `https://music.163.com/api/song/lyric?id=${track?.id}&lv=1&kv=1&tv=-1`
+      `https://music.163.com/api/song/lyric?id=${track?.id}&lv=1&kv=1&tv=-1`,
   );
 
   const toggleTranslate = useCallback(() => {
-    HapticFeedback.trigger(
-      HapticFeedbackTypes.effectHeavyClick
-    );
-    setTranslated(prev => !prev);
+    HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
+    setTranslated((prev) => !prev);
   }, []);
 
-  const TranslateToggle = useCallback(() => (
-    <ToggleButton
-      icon="translate"
-      status={translated ? 'checked' : 'unchecked'}
-      disabled={!lyric?.tlyric.lyric}
-      onPress={toggleTranslate}
-    />
-  ), [translated, lyric, toggleTranslate]);
+  const TranslateToggle = useCallback(
+    () => (
+      <ToggleButton
+        icon="translate"
+        status={translated ? "checked" : "unchecked"}
+        disabled={!lyric?.tlyric.lyric}
+        onPress={toggleTranslate}
+      />
+    ),
+    [translated, lyric, toggleTranslate],
+  );
 
-  const renderRightButtons = useCallback(() => (
-    <View style={styles.row}>
-      <FavToggle />
-      <TranslateToggle />
-      <TrackMenu>
-        <MvMenu />
-        <CommentsMenu />
-        <DownloadMenu />
-      </TrackMenu>
-    </View>
-  ), [TranslateToggle]);
+  const renderRightButtons = useCallback(
+    () => (
+      <View style={styles.row}>
+        <FavToggle />
+        <TranslateToggle />
+        <TrackMenu>
+          <MvMenu />
+          <CommentsMenu />
+          <DownloadMenu />
+        </TrackMenu>
+      </View>
+    ),
+    [TranslateToggle],
+  );
 
   return (
-    <TranslateContext.Provider
-      value={{ translated, toggleTranslate }}
-    >
-      <BlurBackground
-        style={[
-          styles.blurView,
-          { paddingTop: insets.top }
-        ]}>
-        <TrackInfoBar
-          right={renderRightButtons}
-        />
+    <TranslateContext.Provider value={{ translated, toggleTranslate }}>
+      <BlurBackground style={[styles.blurView, { paddingTop: insets.top }]}>
+        <TrackInfoBar right={renderRightButtons} />
         {children}
       </BlurBackground>
     </TranslateContext.Provider>
@@ -80,11 +83,11 @@ export const LyricsContainer = ({ children }: PropsWithChildren) => {
 
 const styles = StyleSheet.create({
   row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
   },
   blurView: {
-    paddingHorizontal: '5%',
+    paddingHorizontal: "5%",
   },
 });

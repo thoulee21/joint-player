@@ -1,16 +1,16 @@
-import Slider from '@react-native-community/slider';
-import React from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
-import { Text, useTheme } from 'react-native-paper';
-import TrackPlayer, { useProgress } from 'react-native-track-player';
-import { formatSeconds } from '../utils';
+import Slider from "@react-native-community/slider";
+import React from "react";
+import { Dimensions, StyleSheet, View } from "react-native";
+import { Text, useTheme } from "react-native-paper";
+import TrackPlayer, { useProgress } from "react-native-track-player";
+import { formatSeconds } from "../utils";
 
 export const Progress = () => {
   const appTheme = useTheme();
   const { position, duration } = useProgress();
 
   // This is a workaround since the slider component only takes absolute widths
-  const progressBarWidth = Dimensions.get('window').width * 0.92;
+  const progressBarWidth = Dimensions.get("window").width * 0.92;
 
   return (
     <View style={styles.container}>
@@ -26,12 +26,8 @@ export const Progress = () => {
       />
 
       <View style={styles.captionContainer}>
-        <Text>
-          {formatSeconds(position)}
-        </Text>
-        <Text>
-          {formatSeconds(duration)}
-        </Text>
+        <Text>{formatSeconds(position)}</Text>
+        <Text>{formatSeconds(duration)}</Text>
       </View>
     </View>
   );
@@ -40,19 +36,19 @@ export const Progress = () => {
 const styles = StyleSheet.create({
   container: {
     height: 80,
-    width: '90%',
-    alignItems: 'center',
-    alignSelf: 'center',
-    justifyContent: 'center',
+    width: "90%",
+    alignItems: "center",
+    alignSelf: "center",
+    justifyContent: "center",
   },
   slider: {
     height: 40,
     marginTop: 30,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   captionContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
   },
 });

@@ -1,20 +1,22 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren } from "react";
 import {
   ImageBackground,
   StyleSheet,
   ViewStyle,
   type StyleProp,
-} from 'react-native';
-import { useActiveTrack } from 'react-native-track-player';
-import { useAppSelector } from '../hook';
-import { blurRadius } from '../redux/slices';
-import { placeholderImg } from './TrackInfo';
+} from "react-native";
+import { useActiveTrack } from "react-native-track-player";
+import { useAppSelector } from "../hook";
+import { blurRadius } from "../redux/slices";
+import { placeholderImg } from "./TrackInfo";
 
 export const BlurBackground = ({
-  children, style, onLoadEnd,
+  children,
+  style,
+  onLoadEnd,
 }: PropsWithChildren<{
-  style?: StyleProp<ViewStyle>,
-  onLoadEnd?: () => void,
+  style?: StyleProp<ViewStyle>;
+  onLoadEnd?: () => void;
 }>) => {
   const blurRadiusValue = useAppSelector(blurRadius);
   const track = useActiveTrack();
@@ -34,6 +36,6 @@ export const BlurBackground = ({
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    display: 'flex',
+    display: "flex",
   },
 });

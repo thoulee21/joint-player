@@ -1,1 +1,1 @@
-export * from './parseLyric';
+export * from "./parseLyric";

@@ -1,9 +1,13 @@
-import React, { useCallback } from 'react';
-import { List, Text, useTheme } from 'react-native-paper';
-import type { ListLRProps } from '../types/paperListItem';
+import React, { useCallback } from "react";
+import { List, Text, useTheme } from "react-native-paper";
+import type { ListLRProps } from "../types/paperListItem";
 
 export const PlaylistCover = ({
-  artwork, length, description, name, onPress
+  artwork,
+  length,
+  description,
+  name,
+  onPress,
 }: {
   artwork: string;
   length: number;
@@ -19,12 +23,17 @@ export const PlaylistCover = ({
         {...props}
         variant="video"
         source={{ uri: artwork }}
-        style={[props.style, {
-          borderTopRightRadius: appTheme.roundness,
-          borderBottomRightRadius: appTheme.roundness,
-        }]}
+        style={[
+          props.style,
+          {
+            borderTopRightRadius: appTheme.roundness,
+            borderBottomRightRadius: appTheme.roundness,
+          },
+        ]}
       />
-    ), [appTheme.roundness, artwork]);
+    ),
+    [appTheme.roundness, artwork],
+  );
 
   const renderCount = useCallback(
     (props: ListLRProps) => (
@@ -35,13 +44,17 @@ export const PlaylistCover = ({
       >
         {length}
       </Text>
-    ), [appTheme.colors.onSurfaceVariant, length]);
+    ),
+    [appTheme.colors.onSurfaceVariant, length],
+  );
 
-  if (!length) { return null; }
+  if (!length) {
+    return null;
+  }
 
   return (
     <List.Item
-      title={name || 'Favorites'}
+      title={name || "Favorites"}
       description={description}
       descriptionNumberOfLines={2}
       onPress={onPress}

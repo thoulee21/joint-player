@@ -1,11 +1,15 @@
-import Clipboard from '@react-native-clipboard/clipboard';
-import React, { useState } from 'react';
-import { Share, StatusBar, ToastAndroid } from 'react-native';
-import HapticFeedback from 'react-native-haptic-feedback';
-import { IconButton, Menu } from 'react-native-paper';
+import Clipboard from "@react-native-clipboard/clipboard";
+import React, { useState } from "react";
+import { Share, StatusBar, ToastAndroid } from "react-native";
+import HapticFeedback from "react-native-haptic-feedback";
+import { IconButton, Menu } from "react-native-paper";
 
-export const DataMoreBtn = ({ data, props }: {
-  data: any, props: { size: number }
+export const DataMoreBtn = ({
+  data,
+  props,
+}: {
+  data: any;
+  props: { size: number };
 }) => {
   const [menuVisible, setMenuVisible] = useState(false);
   return (
@@ -15,10 +19,11 @@ export const DataMoreBtn = ({ data, props }: {
           {...props}
           icon="dots-vertical"
           onPress={() => {
-            HapticFeedback.trigger('effectHeavyClick');
+            HapticFeedback.trigger("effectHeavyClick");
             setMenuVisible(true);
           }}
-        />}
+        />
+      }
       visible={menuVisible}
       onDismiss={() => setMenuVisible(false)}
       statusBarHeight={StatusBar.currentHeight}
@@ -29,24 +34,21 @@ export const DataMoreBtn = ({ data, props }: {
         onPress={() => {
           Clipboard.setString(JSON.stringify(data));
 
-          HapticFeedback.trigger('effectTick');
-          ToastAndroid.show(
-            'Copied to clipboard',
-            ToastAndroid.SHORT
-          );
+          HapticFeedback.trigger("effectTick");
+          ToastAndroid.show("Copied to clipboard", ToastAndroid.SHORT);
           setMenuVisible(false);
         }}
       />
       <Menu.Item
         leadingIcon="share-outline"
         title="Share"
-        disabled={typeof data === 'undefined' || data === ''}
+        disabled={typeof data === "undefined" || data === ""}
         onPress={() => {
           Share.share({
-            message: JSON.stringify(data)
+            message: JSON.stringify(data),
           });
 
-          HapticFeedback.trigger('effectTick');
+          HapticFeedback.trigger("effectTick");
           setMenuVisible(false);
         }}
       />

@@ -1,16 +1,16 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
-    position: 'relative',
-    width: '100%',
+    position: "relative",
+    width: "100%",
   },
-  fitAvailableSpace: { height: '100%', width: '100%' },
+  fitAvailableSpace: { height: "100%", width: "100%" },
   sticked: {
-    position: 'absolute',
+    position: "absolute",
   },
   blurShapeContainer: {
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   hide: { opacity: 0 },
   inset: {

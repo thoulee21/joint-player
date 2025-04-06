@@ -1,5 +1,5 @@
-import fetchRetry from 'fetch-retry';
-import type { Main } from '../types/playlistDetail';
+import fetchRetry from "fetch-retry";
+import type { Main } from "../types/playlistDetail";
 
 export const fetcher = async (url: string): Promise<Main> => {
   const response = await fetchRetry(fetch, {

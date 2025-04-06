@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
-import TrackPlayer from 'react-native-track-player';
-import { getTracks } from '../services/GetTracksService';
-import { SetupService } from '../services/SetupService';
-import { storage } from '../utils/reduxPersistMMKV';
+import { useEffect, useRef, useState } from "react";
+import TrackPlayer from "react-native-track-player";
+import { getTracks } from "../services/GetTracksService";
+import { SetupService } from "../services/SetupService";
+import { storage } from "../utils/reduxPersistMMKV";
 
 /**
  * 自定义 hook 用于设置播放器。
@@ -15,32 +15,34 @@ export function useSetupPlayer() {
   useEffect(() => {
     const init = async () => {
       await SetupService();
-      if (unmountedRef.current) { return; }
+      if (unmountedRef.current) {
+        return;
+      }
 
       setPlayerReady(true);
 
       const queue = await TrackPlayer.getQueue();
-      if (unmountedRef.current) { return; }
+      if (unmountedRef.current) {
+        return;
+      }
 
       if (queue.length <= 0) {
-        const storedRoot = JSON.parse(
-          storage.getString('persist:root') || ''
-        );
-        const searchHistory = JSON.parse(
-          storedRoot.searchHistory
-        ).value;
+        const storedRoot = JSON.parse(storage.getString("persist:root") || "");
+        const searchHistory = JSON.parse(storedRoot.searchHistory).value;
 
         if (searchHistory.length) {
-          await getTracks(
-            searchHistory[searchHistory.length - 1]
-          );
-        } else { await getTracks('Maroon 5'); }
+          await getTracks(searchHistory[searchHistory.length - 1]);
+        } else {
+          await getTracks("Maroon 5");
+        }
       }
     };
 
     init();
 
-    return () => { unmountedRef.current = true; };
+    return () => {
+      unmountedRef.current = true;
+    };
   }, []);
 
   return playerReady;

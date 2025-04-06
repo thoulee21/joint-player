@@ -1,5 +1,5 @@
-import Clipboard from '@react-native-clipboard/clipboard';
-import React, { useMemo } from 'react';
+import Clipboard from "@react-native-clipboard/clipboard";
+import React, { useMemo } from "react";
 import {
   Linking,
   StyleSheet,
@@ -7,20 +7,18 @@ import {
   View,
   type StyleProp,
   type ViewStyle,
-} from 'react-native';
+} from "react-native";
 import HapticFeedback, {
   HapticFeedbackTypes,
-} from 'react-native-haptic-feedback';
-import { Chip, Text, useTheme } from 'react-native-paper';
-import useSWR from 'swr';
-import { useAppSelector } from '../hook/reduxHooks';
-import { selectUser } from '../redux/slices/user';
-import type { Main } from '../types/userDetail';
-import { toReadableDate } from '../utils/toReadableDate';
+} from "react-native-haptic-feedback";
+import { Chip, Text, useTheme } from "react-native-paper";
+import useSWR from "swr";
+import { useAppSelector } from "../hook/reduxHooks";
+import { selectUser } from "../redux/slices/user";
+import type { Main } from "../types/userDetail";
+import { toReadableDate } from "../utils/toReadableDate";
 
-export const UserAttrs = ({ style }: {
-  style?: StyleProp<ViewStyle>
-}) => {
+export const UserAttrs = ({ style }: { style?: StyleProp<ViewStyle> }) => {
   const appTheme = useTheme();
   const user = useAppSelector(selectUser);
 
@@ -29,21 +27,16 @@ export const UserAttrs = ({ style }: {
     {
       revalidateIfStale: false,
       revalidateOnFocus: false,
-      revalidateOnReconnect: false
-    }
+      revalidateOnReconnect: false,
+    },
   );
 
-  const privacyInfo = useMemo(() => (
-    data?.profile.privacyItemUnlimit
-  ), [data]);
+  const privacyInfo = useMemo(() => data?.profile.privacyItemUnlimit, [data]);
 
   if (isLoading || isValidating) {
     return (
       <View style={style}>
-        <Text style={[
-          styles.loading,
-          { color: appTheme.colors.outline }
-        ]}>
+        <Text style={[styles.loading, { color: appTheme.colors.outline }]}>
           Loading...
         </Text>
       </View>
@@ -52,10 +45,7 @@ export const UserAttrs = ({ style }: {
 
   if (error) {
     return (
-      <Text style={[
-        styles.errTxt,
-        { color: appTheme.colors.error }
-      ]}>
+      <Text style={[styles.errTxt, { color: appTheme.colors.error }]}>
         Error: {error.message}
       </Text>
     );
@@ -65,7 +55,7 @@ export const UserAttrs = ({ style }: {
     <View style={[styles.attrRow, style]}>
       {privacyInfo?.gender && (
         <Chip icon="account-outline" compact style={styles.attr} key="gender">
-          {data?.profile.gender === 1 ? 'Male' : 'Female'}
+          {data?.profile.gender === 1 ? "Male" : "Female"}
         </Chip>
       )}
       {privacyInfo?.age && (
@@ -79,7 +69,7 @@ export const UserAttrs = ({ style }: {
         </Chip>
       )}
       {data?.bindings
-        .filter(b => b.type === 1)
+        .filter((b) => b.type === 1)
         .map((b) => (
           <Chip
             icon="phone-in-talk"
@@ -87,21 +77,12 @@ export const UserAttrs = ({ style }: {
             style={styles.attr}
             key="phoneNumber"
             onPress={() => {
-              HapticFeedback.trigger(
-                HapticFeedbackTypes.effectHeavyClick
-              );
-              Clipboard.setString(
-                JSON.stringify(b.id)
-              );
-              ToastAndroid.show(
-                'Phone number copied',
-                ToastAndroid.SHORT
-              );
+              HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
+              Clipboard.setString(JSON.stringify(b.id));
+              ToastAndroid.show("Phone number copied", ToastAndroid.SHORT);
             }}
             onLongPress={() => {
-              HapticFeedback.trigger(
-                HapticFeedbackTypes.effectClick
-              );
+              HapticFeedback.trigger(HapticFeedbackTypes.effectClick);
               Linking.openURL(`tel:${b.id}`);
             }}
           >
@@ -112,17 +93,37 @@ export const UserAttrs = ({ style }: {
       <Chip icon="star-outline" compact style={styles.attr} key="level">
         {data?.level} level
       </Chip>
-      <Chip icon="account-multiple-outline" compact style={styles.attr} key="follows">
+      <Chip
+        icon="account-multiple-outline"
+        compact
+        style={styles.attr}
+        key="follows"
+      >
         {data?.profile.follows} follows
       </Chip>
-      <Chip icon="account-multiple-outline" compact style={styles.attr} key="followeds">
+      <Chip
+        icon="account-multiple-outline"
+        compact
+        style={styles.attr}
+        key="followeds"
+      >
         {data?.profile.followeds} followeds
       </Chip>
 
-      <Chip icon="calendar-outline" compact style={styles.attr} key="villageAge">
+      <Chip
+        icon="calendar-outline"
+        compact
+        style={styles.attr}
+        key="villageAge"
+      >
         {Math.floor((data?.createDays || 0) / 365)} years
       </Chip>
-      <Chip icon="timer-outline" compact style={styles.attr} key="timeSpentOnMusic">
+      <Chip
+        icon="timer-outline"
+        compact
+        style={styles.attr}
+        key="timeSpentOnMusic"
+      >
         {data?.listenSongs.toLocaleString()} hours
       </Chip>
     </View>
@@ -131,20 +132,20 @@ export const UserAttrs = ({ style }: {
 
 const styles = StyleSheet.create({
   attr: {
-    margin: '0.5%',
+    margin: "0.5%",
   },
   attrRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    justifyContent: "center",
+    flexWrap: "wrap",
   },
   loading: {
-    marginTop: '7%',
-    textAlign: 'center',
+    marginTop: "7%",
+    textAlign: "center",
   },
   errTxt: {
-    textAlign: 'center',
-    alignSelf: 'center',
-    marginTop: '25%',
-  }
+    textAlign: "center",
+    alignSelf: "center",
+    marginTop: "25%",
+  },
 });

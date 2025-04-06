@@ -1,45 +1,42 @@
-import { FlashList, type ListRenderItemInfo } from '@shopify/flash-list';
-import React, { useCallback, useMemo, useState } from 'react';
-import { RefreshControl, StyleSheet, useWindowDimensions } from 'react-native';
-import { ActivityIndicator, Text, Tooltip, useTheme } from 'react-native-paper';
-import useSWRInfinite from 'swr/infinite';
-import type { Main, Playlist } from '../types/searchPlaylist';
-import { LottieAnimation } from './LottieAnimation';
-import { PlaylistItem } from './SearchPlaylistItem';
+import { FlashList, type ListRenderItemInfo } from "@shopify/flash-list";
+import React, { useCallback, useMemo, useState } from "react";
+import { RefreshControl, StyleSheet, useWindowDimensions } from "react-native";
+import { ActivityIndicator, Text, Tooltip, useTheme } from "react-native-paper";
+import useSWRInfinite from "swr/infinite";
+import type { Main, Playlist } from "../types/searchPlaylist";
+import { LottieAnimation } from "./LottieAnimation";
+import { PlaylistItem } from "./SearchPlaylistItem";
 
 export const PlaylistSearch = ({ keyword }: { keyword: string }) => {
   const appTheme = useTheme();
   const window = useWindowDimensions();
   const [refreshing, setRefreshing] = useState(false);
 
-  const {
-    data, isLoading, error, mutate, setSize,
-  } = useSWRInfinite<Main>((index) => {
-    const limit = 20;
-    const offset = index * limit;
+  const { data, isLoading, error, mutate, setSize } = useSWRInfinite<Main>(
+    (index) => {
+      const limit = 20;
+      const offset = index * limit;
 
-    return (
-      `http://music.163.com/api/search/get/web?csrf_token=hlpretag=&hlposttag=&s=${keyword}&type=1000&offset=${offset}&total=true&limit=${limit}`
-    );
-  }
+      return `http://music.163.com/api/search/get/web?csrf_token=hlpretag=&hlposttag=&s=${keyword}&type=1000&offset=${offset}&total=true&limit=${limit}`;
+    },
   );
 
-  const showData = useMemo(() => (
-    data?.flatMap(
-      (d) => d.result.playlists || []
-    ) || []
-  ), [data]);
+  const showData = useMemo(
+    () => data?.flatMap((d) => d.result.playlists || []) || [],
+    [data],
+  );
 
-  const renderItem = useCallback((
-    props: ListRenderItemInfo<Playlist>
-  ) => (
-    <Tooltip title={props.item.id.toString()}>
-      <PlaylistItem {...props} />
-    </Tooltip>
-  ), []);
+  const renderItem = useCallback(
+    (props: ListRenderItemInfo<Playlist>) => (
+      <Tooltip title={props.item.id.toString()}>
+        <PlaylistItem {...props} />
+      </Tooltip>
+    ),
+    [],
+  );
 
   const onEndReached = useCallback(() => {
-    setSize(prev => prev + 1);
+    setSize((prev) => prev + 1);
   }, [setSize]);
 
   const onRefresh = useCallback(async () => {
@@ -49,24 +46,20 @@ export const PlaylistSearch = ({ keyword }: { keyword: string }) => {
   }, [mutate]);
 
   if (isLoading) {
-    return (
-      <ActivityIndicator
-        style={styles.loading}
-        size="large"
-      />
-    );
+    return <ActivityIndicator style={styles.loading} size="large" />;
   }
 
   if (error) {
     return (
-      <LottieAnimation
-        animation="breathe"
-      >
+      <LottieAnimation animation="breathe">
         <Text
           variant="bodyLarge"
-          style={[styles.errTxt, {
-            color: appTheme.colors.error
-          }]}
+          style={[
+            styles.errTxt,
+            {
+              color: appTheme.colors.error,
+            },
+          ]}
         >
           {`Failed to load\n${error.message}`}
         </Text>
@@ -105,15 +98,11 @@ export const PlaylistSearch = ({ keyword }: { keyword: string }) => {
         ) : null
       }
       ListFooterComponent={
-        showData.length !== (
-          data?.[data.length - 1]?.result.playlistCount ?? 0
-        ) ? (
+        showData.length !==
+        (data?.[data.length - 1]?.result.playlistCount ?? 0) ? (
           <ActivityIndicator
-            style={showData?.length
-              ? styles.footerLoading
-              : styles.loading}
-            size={showData?.length
-              ? 'small' : 'large'}
+            style={showData?.length ? styles.footerLoading : styles.loading}
+            size={showData?.length ? "small" : "large"}
           />
         ) : null
       }
@@ -123,12 +112,12 @@ export const PlaylistSearch = ({ keyword }: { keyword: string }) => {
 
 const styles = StyleSheet.create({
   footerLoading: {
-    margin: '5%',
+    margin: "5%",
   },
   loading: {
-    marginTop: '50%',
+    marginTop: "50%",
   },
   errTxt: {
-    textAlign: 'center'
-  }
+    textAlign: "center",
+  },
 });

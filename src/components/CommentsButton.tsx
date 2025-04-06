@@ -1,9 +1,9 @@
-import { useNavigation } from '@react-navigation/native';
-import React from 'react';
-import { Appbar } from 'react-native-paper';
-import { useActiveTrack } from 'react-native-track-player';
-import useSWR from 'swr';
-import { Main } from '../types/comments';
+import { useNavigation } from "@react-navigation/native";
+import React from "react";
+import { Appbar } from "react-native-paper";
+import { useActiveTrack } from "react-native-track-player";
+import useSWR from "swr";
+import { Main } from "../types/comments";
 
 export const CommentsButton = () => {
   const navigation = useNavigation();
@@ -12,7 +12,7 @@ export const CommentsButton = () => {
   const { data } = useSWR<Main>(
     `http://music.163.com/api/v1/resource/comments/R_SO_4_${track?.id}`,
   );
-  const disabled = typeof track?.id === 'undefined' || data?.total === 0;
+  const disabled = typeof track?.id === "undefined" || data?.total === 0;
 
   return (
     <Appbar.Action
@@ -20,7 +20,7 @@ export const CommentsButton = () => {
       disabled={disabled}
       onPress={() => {
         // @ts-ignore
-        navigation.push('Comments', {
+        navigation.push("Comments", {
           commentThreadId: `R_SO_4_${track?.id}`,
         });
       }}

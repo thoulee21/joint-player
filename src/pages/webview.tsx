@@ -1,14 +1,14 @@
-import { useNavigation, useRoute } from '@react-navigation/native';
-import React, { useCallback, useRef, useState } from 'react';
-import { StyleSheet, ToastAndroid, View } from 'react-native';
-import { Appbar, ProgressBar, useTheme } from 'react-native-paper';
-import { WebView } from 'react-native-webview';
+import { useNavigation, useRoute } from "@react-navigation/native";
+import React, { useCallback, useRef, useState } from "react";
+import { StyleSheet, ToastAndroid, View } from "react-native";
+import { Appbar, ProgressBar, useTheme } from "react-native-paper";
+import { WebView } from "react-native-webview";
 import {
   WebViewErrorEvent,
   WebViewHttpErrorEvent,
   WebViewProgressEvent,
-} from 'react-native-webview/lib/WebViewTypes';
-import { WebViewMenu } from '../components/WebViewMenu';
+} from "react-native-webview/lib/WebViewTypes";
+import { WebViewMenu } from "../components/WebViewMenu";
 
 export interface WebViewParams {
   url: string;
@@ -24,11 +24,12 @@ export const WebViewScreen = () => {
   const webViewRef = useRef<WebView>(null);
   const { url, title } = route.params as WebViewParams;
 
-  const updateProgress = useCallback((
-    { nativeEvent }: WebViewProgressEvent,
-  ) => {
-    setLoadProgress(nativeEvent.progress);
-  }, []);
+  const updateProgress = useCallback(
+    ({ nativeEvent }: WebViewProgressEvent) => {
+      setLoadProgress(nativeEvent.progress);
+    },
+    [],
+  );
 
   const toastHttpError = useCallback((event: WebViewHttpErrorEvent) => {
     ToastAndroid.show(
@@ -47,9 +48,7 @@ export const WebViewScreen = () => {
   return (
     <View style={styles.container}>
       <Appbar>
-        <Appbar.BackAction
-          onPress={() => navigation.goBack()}
-        />
+        <Appbar.BackAction onPress={() => navigation.goBack()} />
         <Appbar.Action
           icon="reload"
           onPress={() => {
@@ -58,16 +57,9 @@ export const WebViewScreen = () => {
         />
         <Appbar.Content title={title} />
 
-        <WebViewMenu
-          url={url}
-          title={title}
-          webViewRef={webViewRef}
-        />
+        <WebViewMenu url={url} title={title} webViewRef={webViewRef} />
       </Appbar>
-      <ProgressBar
-        animatedValue={loadProgress}
-        visible={loadProgress !== 1}
-      />
+      <ProgressBar animatedValue={loadProgress} visible={loadProgress !== 1} />
 
       <WebView
         ref={webViewRef}

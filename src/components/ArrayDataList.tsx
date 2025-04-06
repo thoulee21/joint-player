@@ -1,37 +1,32 @@
-import React from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
-import { MD3Theme, Text } from 'react-native-paper';
-import { ArrayDataItem } from './ArrayDataItem';
-import { DataItemType } from './DataItem';
+import React from "react";
+import { FlatList, StyleSheet, View } from "react-native";
+import { MD3Theme, Text } from "react-native-paper";
+import { ArrayDataItem } from "./ArrayDataItem";
+import { DataItemType } from "./DataItem";
 
-export const ArrayDataList = ({ item, appTheme }: {
-    item: DataItemType,
-    appTheme: MD3Theme
+export const ArrayDataList = ({
+  item,
+  appTheme,
+}: {
+  item: DataItemType;
+  appTheme: MD3Theme;
 }) => {
-    return <FlatList
-        data={item.data}
-        renderItem={(props) =>
-            <ArrayDataItem {...props}
-                appTheme={appTheme}
-            />
-        }
-        ListEmptyComponent={
-            <Text style={styles.dataText}>
-                Empty Array
-            </Text>
-        }
-        ListFooterComponent={
-            <View style={styles.innerListFooter} />
-        }
-    />;
+  return (
+    <FlatList
+      data={item.data}
+      renderItem={(props) => <ArrayDataItem {...props} appTheme={appTheme} />}
+      ListEmptyComponent={<Text style={styles.dataText}>Empty Array</Text>}
+      ListFooterComponent={<View style={styles.innerListFooter} />}
+    />
+  );
 };
 
 const styles = StyleSheet.create({
-    dataText: {
-        marginHorizontal: 16,
-        marginBottom: 10,
-    },
-    innerListFooter: {
-        height: 15,
-    },
+  dataText: {
+    marginHorizontal: 16,
+    marginBottom: 10,
+  },
+  innerListFooter: {
+    height: 15,
+  },
 });

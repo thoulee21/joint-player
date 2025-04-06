@@ -2,24 +2,24 @@ import {
   ScrollViewWithHeaders,
   type ScrollHeaderProps,
   type ScrollLargeHeaderProps,
-} from '@codeherence/react-native-header';
-import { useNavigation } from '@react-navigation/native';
-import type { LocalAuthenticationResult } from 'expo-local-authentication';
-import * as LocalAuthentication from 'expo-local-authentication';
-import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { Divider, List, useTheme } from 'react-native-paper';
-import { AniGalleryItem } from '../components/AniGalleryItem';
+} from "@codeherence/react-native-header";
+import { useNavigation } from "@react-navigation/native";
+import type { LocalAuthenticationResult } from "expo-local-authentication";
+import * as LocalAuthentication from "expo-local-authentication";
+import React, { useCallback, useLayoutEffect, useState } from "react";
+import { Divider, List, useTheme } from "react-native-paper";
+import { AniGalleryItem } from "../components/AniGalleryItem";
 import {
   HeaderComponent,
   LargeHeaderComponent,
-} from '../components/AnimatedHeader';
-import { ClearAllDataItem } from '../components/ClearAllDataItem';
-import { DevSwitchItem } from '../components/DevSwitchItem';
-import { LottieAnimation } from '../components/LottieAnimation';
-import { RestartItem } from '../components/RestartItem';
-import { ViewAppDataItem } from '../components/ViewAppDataItem';
-import type { ListLRProps } from '../types/paperListItem';
-import { rootLog } from '../utils/logger';
+} from "../components/AnimatedHeader";
+import { ClearAllDataItem } from "../components/ClearAllDataItem";
+import { DevSwitchItem } from "../components/DevSwitchItem";
+import { LottieAnimation } from "../components/LottieAnimation";
+import { RestartItem } from "../components/RestartItem";
+import { ViewAppDataItem } from "../components/ViewAppDataItem";
+import type { ListLRProps } from "../types/paperListItem";
+import { rootLog } from "../utils/logger";
 
 export function DevScreen() {
   const navigation = useNavigation();
@@ -32,23 +32,23 @@ export function DevScreen() {
     const init = async () => {
       navigation.setOptions({
         headerShown: true,
-        headerTitle: 'Developer Options',
+        headerTitle: "Developer Options",
         headerStyle: {
           backgroundColor: appTheme.colors.background,
         },
       });
 
       const enrolled = await LocalAuthentication.isEnrolledAsync();
-      rootLog.info('enrolled', enrolled);
+      rootLog.info("enrolled", enrolled);
 
       const result = await LocalAuthentication.authenticateAsync();
-      rootLog.info('result', result);
+      rootLog.info("result", result);
       setAuthResult(result);
 
       if (result.success) {
-        rootLog.info('Authenticated!');
+        rootLog.info("Authenticated!");
       } else {
-        rootLog.warn('Not authenticated!');
+        rootLog.warn("Not authenticated!");
         navigation.goBack();
       }
     };
@@ -61,28 +61,32 @@ export function DevScreen() {
     }
   }, [appTheme.colors.background, isLoaded, navigation]);
 
-  const renderRightIcon = useCallback((props: ListLRProps) => (
-    <List.Icon {...props} icon="chevron-right" />
-  ), []);
+  const renderRightIcon = useCallback(
+    (props: ListLRProps) => <List.Icon {...props} icon="chevron-right" />,
+    [],
+  );
 
-  const renderLargeHeader = useCallback((
-    props: ScrollLargeHeaderProps
-  ) => (
-    <LargeHeaderComponent {...props} title="Developer Options" />
-  ), []);
+  const renderLargeHeader = useCallback(
+    (props: ScrollLargeHeaderProps) => (
+      <LargeHeaderComponent {...props} title="Developer Options" />
+    ),
+    [],
+  );
 
-  const renderHeader = useCallback((props: ScrollHeaderProps) => (
-    <HeaderComponent {...props} title="Developer Options" />
-  ), []);
+  const renderHeader = useCallback(
+    (props: ScrollHeaderProps) => (
+      <HeaderComponent {...props} title="Developer Options" />
+    ),
+    [],
+  );
 
-  const renderLogcatIcon = useCallback((props: ListLRProps) => (
-    <List.Icon icon="folder-eye-outline" {...props} />
-  ), []);
+  const renderLogcatIcon = useCallback(
+    (props: ListLRProps) => <List.Icon icon="folder-eye-outline" {...props} />,
+    [],
+  );
 
   if (!authResult || !authResult.success) {
-    return (
-      <LottieAnimation animation="rocket" />
-    );
+    return <LottieAnimation animation="rocket" />;
   }
 
   return (
@@ -108,7 +112,7 @@ export function DevScreen() {
           right={renderRightIcon}
           onPress={() => {
             //@ts-expect-error
-            navigation.push('Logcat' as never);
+            navigation.push("Logcat" as never);
           }}
         />
       </List.Section>

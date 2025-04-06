@@ -1,13 +1,15 @@
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { useNavigation } from "@react-navigation/native";
+import React, { useCallback, useLayoutEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { useTheme } from "react-native-paper";
+import Animated, { Easing, FadeIn, FadeOut } from "react-native-reanimated";
 import {
-  createMaterialTopTabNavigator
-} from '@react-navigation/material-top-tabs';
-import { useNavigation } from '@react-navigation/native';
-import React, { useCallback, useLayoutEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { useTheme } from 'react-native-paper';
-import Animated, { Easing, FadeIn, FadeOut } from 'react-native-reanimated';
-import { PackageData, ReduxState, StorageList } from '../components/AppDataScreens';
-import { MMKVStorageIndicator } from '../components/StorageIndicator';
+  PackageData,
+  ReduxState,
+  StorageList,
+} from "../components/AppDataScreens";
+import { MMKVStorageIndicator } from "../components/StorageIndicator";
 
 const TopTab = createMaterialTopTabNavigator();
 
@@ -29,16 +31,17 @@ export function AppDataScreen() {
   const appTheme = useTheme();
   const [routeIndex, setRouteIndex] = useState(0);
 
-  const renderActions = useCallback(() => (
-    <Actions routeIndex={routeIndex} />
-  ), [routeIndex]);
+  const renderActions = useCallback(
+    () => <Actions routeIndex={routeIndex} />,
+    [routeIndex],
+  );
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: renderActions,
       headerStyle: {
         backgroundColor: appTheme.colors.background,
-      }
+      },
     });
   }, [appTheme.colors.background, navigation, renderActions, routeIndex]);
 
@@ -56,23 +59,23 @@ export function AppDataScreen() {
         screenListeners={() => ({
           state: ({ data }) => {
             setRouteIndex(data.state.index);
-          }
+          },
         })}
       >
         <TopTab.Screen
           name="ReduxState"
           component={ReduxState}
-          options={{ title: 'State' }}
+          options={{ title: "State" }}
         />
         <TopTab.Screen
           name="LocalStorage"
           component={StorageList}
-          options={{ title: 'Storage' }}
+          options={{ title: "Storage" }}
         />
         <TopTab.Screen
           name="PackageData"
           component={PackageData}
-          options={{ title: 'Package' }}
+          options={{ title: "Package" }}
         />
       </TopTab.Navigator>
     </View>

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
+import React, { useState } from "react";
+import { Animated, StyleSheet, View } from "react-native";
 import {
   Button,
   Dialog,
@@ -7,20 +7,18 @@ import {
   List,
   Portal,
   Text,
-  useTheme
-} from 'react-native-paper';
-import { useAppDispatch, useAppSelector } from '../hook';
-import {
-  clearSearchHistory,
-  selectSearchHistory
-} from '../redux/slices';
-import { HistoryItem } from './HistoryItem';
+  useTheme,
+} from "react-native-paper";
+import { useAppDispatch, useAppSelector } from "../hook";
+import { clearSearchHistory, selectSearchHistory } from "../redux/slices";
+import { HistoryItem } from "./HistoryItem";
 
 export const SearchHistoryList = ({
-  setKeyword, onPressHistory
+  setKeyword,
+  onPressHistory,
 }: {
-  setKeyword: (keyword: string) => void,
-  onPressHistory: () => void
+  setKeyword: (keyword: string) => void;
+  onPressHistory: () => void;
 }) => {
   const dispatch = useAppDispatch();
   const appTheme = useTheme();
@@ -33,9 +31,7 @@ export const SearchHistoryList = ({
       {searchHistory.length > 0 && (
         <View style={styles.root}>
           <View style={styles.header}>
-            <List.Subheader
-              style={{ color: appTheme.colors.secondary }}
-            >
+            <List.Subheader style={{ color: appTheme.colors.secondary }}>
               Search History
             </List.Subheader>
 
@@ -48,9 +44,7 @@ export const SearchHistoryList = ({
 
           <Animated.ScrollView>
             <View style={styles.list}>
-              {searchHistory.map((
-                item: string, index: number
-              ) => (
+              {searchHistory.map((item: string, index: number) => (
                 <React.Fragment key={`${index}-${item}`}>
                   <HistoryItem
                     item={item}
@@ -72,23 +66,25 @@ export const SearchHistoryList = ({
           <Dialog.Icon icon="information" size={40} />
           <Dialog.Title>Clear Search History</Dialog.Title>
           <Dialog.Content>
-            <Text>
-              Do you want to clear all search history?
-            </Text>
+            <Text>Do you want to clear all search history?</Text>
           </Dialog.Content>
 
           <Dialog.Actions>
             <Button
               textColor={appTheme.colors.outline}
               onPress={() => setDialogVisible(false)}
-            >Cancel</Button>
+            >
+              Cancel
+            </Button>
             <Button
               textColor={appTheme.colors.error}
               onPress={() => {
                 setDialogVisible(false);
                 dispatch(clearSearchHistory());
               }}
-            >OK</Button>
+            >
+              OK
+            </Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>
@@ -101,12 +97,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   list: {
     paddingHorizontal: 12,
-    flexWrap: 'wrap',
-    flexDirection: 'row',
+    flexWrap: "wrap",
+    flexDirection: "row",
   },
 });

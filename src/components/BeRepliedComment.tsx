@@ -1,35 +1,37 @@
-import React, { memo, useCallback } from 'react';
-import { StyleSheet } from 'react-native';
-import { Avatar, List, useTheme } from 'react-native-paper';
-import { BeReplied } from '../types/comments';
-import type { ListLRProps } from '../types/paperListItem';
-import { MoreBtn } from './MoreButton';
+import React, { memo, useCallback } from "react";
+import { StyleSheet } from "react-native";
+import { Avatar, List, useTheme } from "react-native-paper";
+import { BeReplied } from "../types/comments";
+import type { ListLRProps } from "../types/paperListItem";
+import { MoreBtn } from "./MoreButton";
 
-export const BeRepliedComment = memo((
-  { reply }: { reply: BeReplied }
-) => {
+export const BeRepliedComment = memo(({ reply }: { reply: BeReplied }) => {
   const appTheme = useTheme();
 
   const beRepliedStyle = [
-    styles.beReplied, {
+    styles.beReplied,
+    {
       borderTopStartRadius: appTheme.roundness * 3,
       borderBottomLeftRadius: appTheme.roundness * 3,
       backgroundColor: appTheme.colors.surfaceDisabled,
-    }
+    },
   ];
 
-  const renderLeft = useCallback((props: any) => (
-    <Avatar.Image
-      {...props}
-      size={40}
-      source={{ uri: reply.user.avatarUrl }}
-    />
-  ), [reply.user.avatarUrl]);
+  const renderLeft = useCallback(
+    (props: any) => (
+      <Avatar.Image
+        {...props}
+        size={40}
+        source={{ uri: reply.user.avatarUrl }}
+      />
+    ),
+    [reply.user.avatarUrl],
+  );
 
   const renderMoreButton = useCallback(
-    (props: ListLRProps) => (
-      <MoreBtn {...props} data={reply.content} />
-    ), [reply.content]);
+    (props: ListLRProps) => <MoreBtn {...props} data={reply.content} />,
+    [reply.content],
+  );
 
   return (
     <List.Item
@@ -38,7 +40,7 @@ export const BeRepliedComment = memo((
       titleStyle={{ color: appTheme.colors.secondary }}
       description={reply.content}
       descriptionStyle={{
-        color: appTheme.colors.onSurfaceVariant
+        color: appTheme.colors.onSurfaceVariant,
       }}
       descriptionNumberOfLines={20}
       left={renderLeft}
@@ -49,6 +51,6 @@ export const BeRepliedComment = memo((
 
 const styles = StyleSheet.create({
   beReplied: {
-    marginLeft: '10%',
+    marginLeft: "10%",
   },
 });

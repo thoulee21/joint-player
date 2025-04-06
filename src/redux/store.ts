@@ -3,11 +3,11 @@ import {
   ThunkAction,
   combineReducers,
   configureStore,
-} from '@reduxjs/toolkit';
-import * as Sentry from '@sentry/react-native';
-import { persistReducer, persistStore } from 'redux-persist';
-import { reduxStorage } from '../utils/reduxPersistMMKV';
-import { StateKeys } from '../utils/stateKeys';
+} from "@reduxjs/toolkit";
+import * as Sentry from "@sentry/react-native";
+import { persistReducer, persistStore } from "redux-persist";
+import { reduxStorage } from "../utils/reduxPersistMMKV";
+import { StateKeys } from "../utils/stateKeys";
 import {
   blurRadiusSlice,
   darkModeSlice,
@@ -20,7 +20,7 @@ import {
   rippleEffectsSlice,
   searchHistorySlice,
   userSlice,
-} from './slices';
+} from "./slices";
 
 const rootReducers = combineReducers({
   darkMode: darkModeSlice.reducer,
@@ -38,28 +38,24 @@ const rootReducers = combineReducers({
 
 const persistedReducer = persistReducer(
   {
-    key: 'root',
+    key: "root",
     storage: reduxStorage,
-    blacklist: [
-      StateKeys.DarkMode,
-    ],
+    blacklist: [StateKeys.DarkMode],
   },
-  rootReducers
+  rootReducers,
 );
 
 const sentryReduxEnhancer = Sentry.createReduxEnhancer();
 
 export const store = configureStore({
   reducer: persistedReducer,
-  enhancers: (getDefaultEnhancers) => (
-    getDefaultEnhancers().concat(sentryReduxEnhancer)
-  ),
-  middleware: (getDefaultMiddleware) => (
+  enhancers: (getDefaultEnhancers) =>
+    getDefaultEnhancers().concat(sentryReduxEnhancer),
+  middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
       immutableCheck: false,
-    })
-  ),
+    }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

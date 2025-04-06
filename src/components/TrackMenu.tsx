@@ -1,21 +1,21 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import React, {
   createContext,
   useContext,
   useState,
   type PropsWithChildren,
-} from 'react';
-import { StatusBar } from 'react-native';
+} from "react";
+import { StatusBar } from "react-native";
 import HapticFeedback, {
   HapticFeedbackTypes,
-} from 'react-native-haptic-feedback';
-import { IconButton, Menu } from 'react-native-paper';
+} from "react-native-haptic-feedback";
+import { IconButton, Menu } from "react-native-paper";
 
 const MenuContext = createContext<{
   onPostPressed: () => void;
   navigation: any;
 }>({
-  onPostPressed: () => { },
+  onPostPressed: () => {},
   navigation: null,
 });
 
@@ -42,18 +42,18 @@ export function TrackMenu(props: PropsWithChildren) {
           size={24}
           icon="dots-vertical"
           onPress={() => {
-            HapticFeedback.trigger(
-              HapticFeedbackTypes.effectHeavyClick
-            );
+            HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
             openMenu();
           }}
         />
       }
     >
-      <MenuContext.Provider value={{
-        onPostPressed: closeMenu,
-        navigation
-      }}>
+      <MenuContext.Provider
+        value={{
+          onPostPressed: closeMenu,
+          navigation,
+        }}
+      >
         {props.children}
       </MenuContext.Provider>
     </Menu>

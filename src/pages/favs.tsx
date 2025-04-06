@@ -1,17 +1,19 @@
-import { DrawerToggleButton } from '@react-navigation/drawer';
-import React, { useCallback, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { StyleSheet } from 'react-native';
-import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { Appbar, Portal, useTheme } from 'react-native-paper';
-import TrackPlayer from 'react-native-track-player';
-import { BlurBackground } from '../components/BlurBackground';
-import { ConfirmClearFavsDialog } from '../components/ConfirmClearFavsDialog';
-import { FavsList } from '../components/FavsList';
-import { PlayControlsFAB } from '../components/PlayControlsFAB';
-import { TracksHeader } from '../components/TracksHeader';
-import { useAppDispatch, useAppSelector } from '../hook';
-import { favs, setQueueAsync } from '../redux/slices';
+import { DrawerToggleButton } from "@react-navigation/drawer";
+import React, { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet } from "react-native";
+import HapticFeedback, {
+  HapticFeedbackTypes,
+} from "react-native-haptic-feedback";
+import { Appbar, Portal, useTheme } from "react-native-paper";
+import TrackPlayer from "react-native-track-player";
+import { BlurBackground } from "../components/BlurBackground";
+import { ConfirmClearFavsDialog } from "../components/ConfirmClearFavsDialog";
+import { FavsList } from "../components/FavsList";
+import { PlayControlsFAB } from "../components/PlayControlsFAB";
+import { TracksHeader } from "../components/TracksHeader";
+import { useAppDispatch, useAppSelector } from "../hook";
+import { favs, setQueueAsync } from "../redux/slices";
 
 export function Favs() {
   const dispatch = useAppDispatch();
@@ -27,9 +29,7 @@ export function Favs() {
   }, [dispatch, favsValue]);
 
   const showConfirmDialog = useCallback(() => {
-    HapticFeedback.trigger(
-      HapticFeedbackTypes.notificationWarning
-    );
+    HapticFeedback.trigger(HapticFeedbackTypes.notificationWarning);
     setDialogVisible(true);
   }, []);
 
@@ -38,7 +38,7 @@ export function Favs() {
       <BlurBackground>
         <Appbar.Header style={styles.appbar}>
           <DrawerToggleButton tintColor={appTheme.colors.onSurface} />
-          <Appbar.Content title={t('drawer.item.favs.title')} />
+          <Appbar.Content title={t("drawer.item.favs.title")} />
 
           <Appbar.Action
             icon="delete-forever-outline"
@@ -65,9 +65,9 @@ export function Favs() {
 
 const styles = StyleSheet.create({
   appbar: {
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
   },
   loading: {
-    marginTop: '50%',
+    marginTop: "50%",
   },
 });

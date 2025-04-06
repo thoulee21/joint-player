@@ -1,13 +1,13 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import i18next from 'i18next';
-import { getLocales } from 'react-native-localize';
-import { StateKeys } from '../../utils/stateKeys';
-import { RootState } from '../store';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import i18next from "i18next";
+import { getLocales } from "react-native-localize";
+import { StateKeys } from "../../utils/stateKeys";
+import { RootState } from "../store";
 
-export type Languages = 'locale' | 'en-US' | 'zh-CN' | 'zh-TW';
+export type Languages = "locale" | "en-US" | "zh-CN" | "zh-TW";
 
 const initialState = {
-  value: 'locale',
+  value: "locale",
 };
 
 export const localeSlice = createSlice({
@@ -20,9 +20,7 @@ export const localeSlice = createSlice({
 
       const locales = getLocales();
       i18next.changeLanguage(
-        action.payload === 'locale'
-          ? locales[0].languageTag
-          : action.payload
+        action.payload === "locale" ? locales[0].languageTag : action.payload,
       );
     },
   },

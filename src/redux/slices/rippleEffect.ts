@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { Platform } from 'react-native';
-import { RootState } from '../store';
+import { createSlice } from "@reduxjs/toolkit";
+import { Platform } from "react-native";
+import { RootState } from "../store";
 
 const initialState = {
   value: Platform.select({
@@ -11,7 +11,7 @@ const initialState = {
 };
 
 export const rippleEffectsSlice = createSlice({
-  name: 'rippleEffects',
+  name: "rippleEffects",
   initialState,
   reducers: {
     toggleRippleEffect: (state) => {
@@ -23,9 +23,9 @@ export const rippleEffectsSlice = createSlice({
   },
 });
 
-export const { toggleRippleEffect, setRippleEffect } = rippleEffectsSlice.actions;
-
+export const { toggleRippleEffect, setRippleEffect } =
+  rippleEffectsSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
-export const selectRippleEffect = (state: RootState) => state.rippleEffect.value;
-
+export const selectRippleEffect = (state: RootState) =>
+  state.rippleEffect.value;

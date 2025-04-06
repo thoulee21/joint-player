@@ -1,14 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { View, type ViewProps } from 'react-native';
+import React, { useEffect, useRef, useState } from "react";
+import { View, type ViewProps } from "react-native";
 
-import { type ImageBlurElement } from '../contexts/ImageBlurContext';
-import useImageBlur from '../hooks/useImageBlur';
+import { type ImageBlurElement } from "../contexts/ImageBlurContext";
+import useImageBlur from "../hooks/useImageBlur";
 
-import { type ImageBlurRadius } from './ImageBlur';
+import { type ImageBlurRadius } from "./ImageBlur";
 import {
   type BlurShapeContainerStyle,
   type BlurShapeOverlay,
-} from './ImageBlurShape';
+} from "./ImageBlurShape";
 
 export type ImageBlurEffectProps = {
   blurRadius?: ImageBlurRadius;
@@ -16,7 +16,7 @@ export type ImageBlurEffectProps = {
   style?: BlurShapeContainerStyle;
 };
 
-export type ImageBlurViewProps = Omit<ViewProps, 'ref'> & {
+export type ImageBlurViewProps = Omit<ViewProps, "ref"> & {
   blurProps?: ImageBlurEffectProps;
 };
 
@@ -33,7 +33,9 @@ const ImageBlurView = ({
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (mounted) {return;}
+    if (mounted) {
+      return;
+    }
 
     setMounted(true);
     setBlurProps(blurProps);

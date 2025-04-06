@@ -4,13 +4,13 @@ import {
   type HeaderProps,
   type ScrollHeaderProps,
   type ScrollLargeHeaderProps,
-} from '@codeherence/react-native-header';
-import { useNavigation } from '@react-navigation/native';
-import React, { useCallback } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Appbar, IconButton, Text, useTheme } from 'react-native-paper';
-import Animated, { useAnimatedStyle } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+} from "@codeherence/react-native-header";
+import { useNavigation } from "@react-navigation/native";
+import React, { useCallback } from "react";
+import { StyleSheet, View } from "react-native";
+import { Appbar, IconButton, Text, useTheme } from "react-native-paper";
+import Animated, { useAnimatedStyle } from "react-native-reanimated";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export const HeaderComponent = ({
   showNavBar,
@@ -19,8 +19,7 @@ export const HeaderComponent = ({
   headerLeft,
   scrollY,
   ...rst
-}: ScrollHeaderProps & { title: string } & HeaderProps
-) => {
+}: ScrollHeaderProps & { title: string } & HeaderProps) => {
   const navigation = useNavigation();
   const { top } = useSafeAreaInsets();
   const appTheme = useTheme();
@@ -31,15 +30,18 @@ export const HeaderComponent = ({
     };
   });
 
-  const renderSurface = useCallback(() => (
-    <Animated.View
-      style={[
-        StyleSheet.absoluteFill,
-        aniStyle,
-        { backgroundColor: appTheme.colors.elevation.level2 }
-      ]}
-    />
-  ), [aniStyle, appTheme.colors.elevation.level2]);
+  const renderSurface = useCallback(
+    () => (
+      <Animated.View
+        style={[
+          StyleSheet.absoluteFill,
+          aniStyle,
+          { backgroundColor: appTheme.colors.elevation.level2 },
+        ]}
+      />
+    ),
+    [aniStyle, appTheme.colors.elevation.level2],
+  );
 
   return (
     <Header
@@ -48,22 +50,21 @@ export const HeaderComponent = ({
       noBottomBorder
       borderColor={appTheme.colors.outlineVariant}
       headerCenter={
-        <Text
-          variant="titleLarge"
-          numberOfLines={1}
-        >{title}</Text>
+        <Text variant="titleLarge" numberOfLines={1}>
+          {title}
+        </Text>
       }
-      headerStyle={[styles.elevated, {
-        height: 64 + (!ignoreTopSafeArea ? top : 0),
-      }]}
+      headerStyle={[
+        styles.elevated,
+        {
+          height: 64 + (!ignoreTopSafeArea ? top : 0),
+        },
+      ]}
       headerCenterStyle={styles.headerTitle}
       headerLeftStyle={styles.smallHeaderLeft}
       headerLeft={
         <View style={styles.row}>
-          <IconButton
-            icon="arrow-left"
-            onPress={navigation.goBack}
-          />
+          <IconButton icon="arrow-left" onPress={navigation.goBack} />
           {headerLeft}
         </View>
       }
@@ -76,20 +77,17 @@ export const HeaderComponent = ({
 };
 
 export const LargeHeaderComponent = ({
-  scrollY, title
-}: ScrollLargeHeaderProps & { title: string }
-) => {
+  scrollY,
+  title,
+}: ScrollLargeHeaderProps & { title: string }) => {
   const appTheme = useTheme();
   return (
     <ScalingView scrollY={scrollY}>
-      <Appbar.Header
-        mode="medium"
-        statusBarHeight={0}
-      >
+      <Appbar.Header mode="medium" statusBarHeight={0}>
         <Appbar.Content
           title={title}
           titleStyle={{
-            ...appTheme.fonts.headlineMedium
+            ...appTheme.fonts.headlineMedium,
           }}
         />
       </Appbar.Header>
@@ -99,21 +97,21 @@ export const LargeHeaderComponent = ({
 
 const styles = StyleSheet.create({
   smallHeaderLeft: {
-    width: 'auto',
+    width: "auto",
     paddingRight: 0,
   },
   smallHeaderRight: {
-    width: 'auto',
+    width: "auto",
     paddingLeft: 0,
   },
   headerTitle: {
-    textAlign: 'left',
-    justifyContent: 'flex-start',
+    textAlign: "left",
+    justifyContent: "flex-start",
   },
   elevated: {
     elevation: 5,
   },
   row: {
-    flexDirection: 'row',
-  }
+    flexDirection: "row",
+  },
 });

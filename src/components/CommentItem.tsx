@@ -1,16 +1,29 @@
-import Clipboard from '@react-native-clipboard/clipboard';
-import React, { memo, useCallback, useState } from 'react';
-import { Share, StyleSheet, ToastAndroid, TouchableOpacity, View } from 'react-native';
-import HapticFeedback, { HapticFeedbackTypes } from 'react-native-haptic-feedback';
-import { Avatar, Button, Caption, List, Text, useTheme } from 'react-native-paper';
-import type { EllipsizeProp } from 'react-native-paper/src/types';
-import { Comment } from '../types/comments';
-import type { ListLRProps } from '../types/paperListItem';
-import { BeRepliedComment } from './BeRepliedComment';
+import Clipboard from "@react-native-clipboard/clipboard";
+import React, { memo, useCallback, useState } from "react";
+import {
+  Share,
+  StyleSheet,
+  ToastAndroid,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import HapticFeedback, {
+  HapticFeedbackTypes,
+} from "react-native-haptic-feedback";
+import {
+  Avatar,
+  Button,
+  Caption,
+  List,
+  Text,
+  useTheme,
+} from "react-native-paper";
+import type { EllipsizeProp } from "react-native-paper/src/types";
+import { Comment } from "../types/comments";
+import type { ListLRProps } from "../types/paperListItem";
+import { BeRepliedComment } from "./BeRepliedComment";
 
-export const CommentItem = memo((
-  { item }: { item: Comment }
-) => {
+export const CommentItem = memo(({ item }: { item: Comment }) => {
   const appTheme = useTheme();
   const [liked, setLiked] = useState(false);
 
@@ -27,14 +40,9 @@ export const CommentItem = memo((
     <View style={[styles.container, styles.column]}>
       <TouchableOpacity
         onLongPress={() => {
-          HapticFeedback.trigger(
-            HapticFeedbackTypes.effectHeavyClick
-          );
+          HapticFeedback.trigger(HapticFeedbackTypes.effectHeavyClick);
           Clipboard.setString(item.content);
-          ToastAndroid.show(
-            'Copied to clipboard!',
-            ToastAndroid.SHORT
-          );
+          ToastAndroid.show("Copied to clipboard!", ToastAndroid.SHORT);
         }}
       >
         <Text
@@ -45,35 +53,22 @@ export const CommentItem = memo((
         </Text>
       </TouchableOpacity>
 
-      <View
-        style={[
-          styles.container,
-          styles.row,
-          styles.additionalPadding
-        ]}
-      >
+      <View style={[styles.container, styles.row, styles.additionalPadding]}>
         <Button
-          icon={liked ? 'thumb-up' : 'thumb-up-outline'}
-          textColor={!liked
-            ? appTheme.colors.onSurfaceVariant
-            : undefined}
+          icon={liked ? "thumb-up" : "thumb-up-outline"}
+          textColor={!liked ? appTheme.colors.onSurfaceVariant : undefined}
           compact
           onPress={() => {
-            HapticFeedback.trigger(
-              HapticFeedbackTypes.effectClick
-            );
-            setLiked(prev => {
+            HapticFeedback.trigger(HapticFeedbackTypes.effectClick);
+            setLiked((prev) => {
               const newLiked = !prev;
               if (newLiked) {
                 ToastAndroid.show(
-                  'Thanks for showing your support!',
-                  ToastAndroid.SHORT
+                  "Thanks for showing your support!",
+                  ToastAndroid.SHORT,
                 );
               } else {
-                ToastAndroid.show(
-                  'Feedback received!',
-                  ToastAndroid.SHORT
-                );
+                ToastAndroid.show("Feedback received!", ToastAndroid.SHORT);
               }
               return newLiked;
             });
@@ -95,42 +90,49 @@ export const CommentItem = memo((
     </View>
   );
 
-  const renderTitle = useCallback(({
-    ellipsizeMode, color: titleColor, fontSize
-  }: {
-    selectable: boolean;
-    ellipsizeMode: EllipsizeProp | undefined;
-    color: string;
-    fontSize: number;
-  }) => (
-    <View style={[
-      styles.container,
-      styles.row,
-      styles.customTitle
-    ]}>
-      <Text
-        ellipsizeMode={ellipsizeMode}
-        style={{ color: titleColor, fontSize }}
-      >
-        {item.user.nickname}
-      </Text>
-      <Caption>
-        {item.timeStr}
-        {item.ipLocation.location && ` · ${item.ipLocation.location}`}
-      </Caption>
-    </View>
-  ), [item]);
+  const renderTitle = useCallback(
+    ({
+      ellipsizeMode,
+      color: titleColor,
+      fontSize,
+    }: {
+      selectable: boolean;
+      ellipsizeMode: EllipsizeProp | undefined;
+      color: string;
+      fontSize: number;
+    }) => (
+      <View style={[styles.container, styles.row, styles.customTitle]}>
+        <Text
+          ellipsizeMode={ellipsizeMode}
+          style={{ color: titleColor, fontSize }}
+        >
+          {item.user.nickname}
+        </Text>
+        <Caption>
+          {item.timeStr}
+          {item.ipLocation.location && ` · ${item.ipLocation.location}`}
+        </Caption>
+      </View>
+    ),
+    [item],
+  );
 
   const renderLeft = useCallback(
     ({ color, style }: ListLRProps) => (
       <Avatar.Image
-        style={[style, styles.avatar, {
-          backgroundColor: color
-        }]}
+        style={[
+          style,
+          styles.avatar,
+          {
+            backgroundColor: color,
+          },
+        ]}
         source={{ uri: item.user.avatarUrl }}
         size={50}
       />
-    ), [item.user.avatarUrl]);
+    ),
+    [item.user.avatarUrl],
+  );
 
   return (
     <>
@@ -139,7 +141,7 @@ export const CommentItem = memo((
         titleStyle={{ color: appTheme.colors.primary }}
         description={commentContent}
         descriptionStyle={{
-          color: appTheme.colors.onBackground
+          color: appTheme.colors.onBackground,
         }}
         descriptionNumberOfLines={20}
         left={renderLeft}
@@ -156,18 +158,18 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   avatar: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
   },
   row: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   column: {
-    flexDirection: 'column',
+    flexDirection: "column",
   },
   customTitle: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexWrap: 'wrap',
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexWrap: "wrap",
   },
   additionalPadding: {
     paddingTop: 8,
