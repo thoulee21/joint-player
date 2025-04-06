@@ -91,6 +91,7 @@ export const FavsList = memo(() => {
               item={item}
               index={index}
               drag={performDrag}
+              showIndex
               showAlbum
               isActive={isActive}
             />
