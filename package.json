@@ -1,6 +1,6 @@
 {
   "name": "jointplayer",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "main": "index.ts",
   "homepage": "https://github.com/thoulee21/joint-player",
   "displayName": "Joint Player",
