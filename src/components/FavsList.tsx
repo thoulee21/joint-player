@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from "react";
+import React, { memo, useCallback, useRef } from "react";
 import {
   Dimensions,
   StyleSheet,
@@ -38,7 +38,7 @@ const NoFavs = () => (
   </LottieAnimation>
 );
 
-export const FavsList = () => {
+export const FavsList = memo(() => {
   const dispatch = useAppDispatch();
   const appTheme = useTheme();
 
@@ -55,7 +55,7 @@ export const FavsList = () => {
         <DeleteFavButton />
       </SwipeableUnderlay>
     ),
-    [appTheme],
+    [appTheme]
   );
 
   const renderUnderlayLeft = useCallback(
@@ -67,7 +67,7 @@ export const FavsList = () => {
         <AddToQueueButton />
       </SwipeableUnderlay>
     ),
-    [appTheme],
+    [appTheme]
   );
 
   const renderItem = useCallback(
@@ -98,7 +98,7 @@ export const FavsList = () => {
         </ScaleDecorator>
       );
     },
-    [renderUnderlayLeft, renderUnderlayRight],
+    [renderUnderlayLeft, renderUnderlayRight]
   );
 
   const keyExtractor = useCallback((item: TrackType) => item.id.toString(), []);
@@ -107,7 +107,7 @@ export const FavsList = () => {
     ({ data: draggedData }: { data: TrackType[] }) => {
       dispatch(setFavs(draggedData));
     },
-    [dispatch],
+    [dispatch]
   );
 
   return (
@@ -117,9 +117,7 @@ export const FavsList = () => {
       keyExtractor={keyExtractor}
       containerStyle={[
         styles.favs,
-        {
-          backgroundColor: appTheme.colors.surface,
-        },
+        { backgroundColor: appTheme.colors.surface },
       ]}
       ListEmptyComponent={<NoFavs />}
       ItemSeparatorComponent={Divider}
@@ -133,13 +131,11 @@ export const FavsList = () => {
       }
     />
   );
-};
+});
+
+FavsList.displayName = "FavsList";
 
 const styles = StyleSheet.create({
-  favs: {
-    flex: 1,
-  },
-  noFavs: {
-    textAlign: "center",
-  },
+  favs: { flex: 1 },
+  noFavs: { textAlign: "center" },
 });
