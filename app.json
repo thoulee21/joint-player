@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Joint Player",
-    "slug": "joint-player",
+    "slug": "jointplayer",
     "version": "6.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -55,7 +55,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "348686d7-2c3a-428c-a66b-2f9bc7216d78"
+        "projectId": "7cd6ef29-acd5-424e-a325-4e449f660a0b"
       }
     }
   }
