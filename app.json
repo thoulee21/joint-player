@@ -1,21 +1,40 @@
 {
   "expo": {
-    "extra": {
-      "eas": {
-        "projectId": "7cd6ef29-acd5-424e-a325-4e449f660a0b"
-      }
-    },
-    "runtimeVersion": "1.0.0",
+    "name": "jointplayer",
+    "slug": "Joint Player",
+    "version": "5.13.5",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": false,
     "updates": {
       "url": "https://u.expo.dev/7cd6ef29-acd5-424e-a325-4e449f660a0b"
     },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "icon": "./assets/icon.png",
+      "package": "com.thoulee.jointplayer"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
     "plugins": [
+      "./plugin/gradle-properties",
+      "react-native-video",
       [
         "@sentry/react-native/expo",
         {
           "url": "https://sentry.io/",
           "project": "joint-player",
           "organization": "thouworks"
+        }
+      ],
+      [
+        "@config-plugins/detox",
+        {
+          "subdomains": "*"
         }
       ]
     ]
