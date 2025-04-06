@@ -65,7 +65,7 @@ export const CommentItem = memo(({ item }: { item: Comment }) => {
               if (newLiked) {
                 ToastAndroid.show(
                   "Thanks for showing your support!",
-                  ToastAndroid.SHORT,
+                  ToastAndroid.SHORT
                 );
               } else {
                 ToastAndroid.show("Feedback received!", ToastAndroid.SHORT);
@@ -114,24 +114,18 @@ export const CommentItem = memo(({ item }: { item: Comment }) => {
         </Caption>
       </View>
     ),
-    [item],
+    [item]
   );
 
   const renderLeft = useCallback(
     ({ color, style }: ListLRProps) => (
       <Avatar.Image
-        style={[
-          style,
-          styles.avatar,
-          {
-            backgroundColor: color,
-          },
-        ]}
+        style={[style, styles.avatar, { backgroundColor: color }]}
         source={{ uri: item.user.avatarUrl }}
         size={50}
       />
     ),
-    [item.user.avatarUrl],
+    [item.user.avatarUrl]
   );
 
   return (
@@ -140,9 +134,7 @@ export const CommentItem = memo(({ item }: { item: Comment }) => {
         title={renderTitle}
         titleStyle={{ color: appTheme.colors.primary }}
         description={commentContent}
-        descriptionStyle={{
-          color: appTheme.colors.onBackground,
-        }}
+        descriptionStyle={{ color: appTheme.colors.onBackground }}
         descriptionNumberOfLines={20}
         left={renderLeft}
       />
@@ -153,25 +145,17 @@ export const CommentItem = memo(({ item }: { item: Comment }) => {
   );
 });
 
+CommentItem.displayName = "CommentItem";
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  avatar: {
-    alignSelf: "flex-start",
-  },
-  row: {
-    flexDirection: "row",
-  },
-  column: {
-    flexDirection: "column",
-  },
+  container: { flex: 1 },
+  avatar: { alignSelf: "flex-start" },
+  row: { flexDirection: "row" },
+  column: { flexDirection: "column" },
   customTitle: {
     alignItems: "center",
     justifyContent: "space-between",
     flexWrap: "wrap",
   },
-  additionalPadding: {
-    paddingTop: 8,
-  },
+  additionalPadding: { paddingTop: 8 },
 });

@@ -12,9 +12,11 @@ import { UserBackground, UserInfo } from "./UserHeader";
 
 const Drawer = createDrawerNavigator();
 
-const renderDrawerIcon =
-  (focusedIcon: string, noOutline?: boolean) =>
-  ({
+function renderDrawerIcon(
+  iconName: string,
+  noOutline?: boolean,
+): (props: { color: string; focused: boolean; size: number }) => JSX.Element {
+  return function DrawerIcon({
     color,
     focused,
     size,
@@ -22,19 +24,18 @@ const renderDrawerIcon =
     color: string;
     focused: boolean;
     size: number;
-  }) => (
-    <Icon
-      size={size}
-      color={color}
-      source={
-        noOutline
-          ? focusedIcon
-          : focused
-            ? focusedIcon
-            : `${focusedIcon}-outline`
-      }
-    />
-  );
+  }) {
+    return (
+      <Icon
+        size={size}
+        color={color}
+        source={
+          noOutline ? iconName : focused ? iconName : `${iconName}-outline`
+        }
+      />
+    );
+  };
+}
 
 export function DrawerNavi() {
   const { t } = useTranslation();
@@ -48,7 +49,7 @@ export function DrawerNavi() {
         <DrawerItemList {...props} />
       </BlurBackground>
     ),
-    []
+    [],
   );
 
   return (

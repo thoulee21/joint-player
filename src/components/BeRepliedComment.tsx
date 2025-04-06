@@ -25,12 +25,12 @@ export const BeRepliedComment = memo(({ reply }: { reply: BeReplied }) => {
         source={{ uri: reply.user.avatarUrl }}
       />
     ),
-    [reply.user.avatarUrl],
+    [reply.user.avatarUrl]
   );
 
   const renderMoreButton = useCallback(
     (props: ListLRProps) => <MoreBtn {...props} data={reply.content} />,
-    [reply.content],
+    [reply.content]
   );
 
   return (
@@ -39,9 +39,7 @@ export const BeRepliedComment = memo(({ reply }: { reply: BeReplied }) => {
       title={reply.user.nickname}
       titleStyle={{ color: appTheme.colors.secondary }}
       description={reply.content}
-      descriptionStyle={{
-        color: appTheme.colors.onSurfaceVariant,
-      }}
+      descriptionStyle={{ color: appTheme.colors.onSurfaceVariant }}
       descriptionNumberOfLines={20}
       left={renderLeft}
       right={renderMoreButton}
@@ -49,8 +47,6 @@ export const BeRepliedComment = memo(({ reply }: { reply: BeReplied }) => {
   );
 });
 
-const styles = StyleSheet.create({
-  beReplied: {
-    marginLeft: "10%",
-  },
-});
+BeRepliedComment.displayName = "BeRepliedComment";
+
+const styles = StyleSheet.create({ beReplied: { marginLeft: "10%" } });

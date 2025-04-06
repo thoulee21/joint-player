@@ -97,6 +97,8 @@ export const LottieAnimation = forwardRef(
   },
 );
 
+LottieAnimation.displayName = "LottieAnimation";
+
 const styles = StyleSheet.create({
   view: {
     flex: 1,

@@ -42,7 +42,9 @@ const AniPage = ({ name }: { name: AniKeys }) => {
 
 export const AniGallery = () => {
   const renderAniPage = useCallback((name: AniKeys) => {
-    return () => <AniPage name={name} />;
+    return function AniPageWrapper() {
+      return <AniPage name={name} />;
+    };
   }, []);
 
   const AniPages = useMemo(
@@ -77,8 +79,5 @@ export const AniGallery = () => {
 };
 
 const styles = StyleSheet.create({
-  tabBarIndicator: {
-    height: 4,
-    borderRadius: 10,
-  },
+  tabBarIndicator: { height: 4, borderRadius: 10 },
 });

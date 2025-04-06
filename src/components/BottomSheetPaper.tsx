@@ -28,7 +28,7 @@ export const BottomSheetPaper = forwardRef<
         appearsOnIndex={0}
       />
     ),
-    [],
+    []
   );
 
   const animationConfigs = useBottomSheetSpringConfigs({
@@ -43,9 +43,7 @@ export const BottomSheetPaper = forwardRef<
     <BottomSheetModalProvider>
       <BottomSheetModal
         ref={ref}
-        handleIndicatorStyle={{
-          backgroundColor: appTheme.colors.outline,
-        }}
+        handleIndicatorStyle={{ backgroundColor: appTheme.colors.outline }}
         enableDynamicSizing={false}
         snapPoints={["90%"]}
         topInset={insets.top}
@@ -55,9 +53,7 @@ export const BottomSheetPaper = forwardRef<
         animationConfigs={animationConfigs}
         backdropComponent={renderBackdrop}
         handleComponent={Handle}
-        backgroundStyle={{
-          backgroundColor: appTheme.colors.surface,
-        }}
+        backgroundStyle={{ backgroundColor: appTheme.colors.surface }}
         footerComponent={footer}
       >
         {children}
@@ -65,3 +61,5 @@ export const BottomSheetPaper = forwardRef<
     </BottomSheetModalProvider>
   );
 });
+
+BottomSheetPaper.displayName = "BottomSheetPaper";

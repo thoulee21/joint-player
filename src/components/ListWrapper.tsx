@@ -16,3 +16,5 @@ export const ListWrapper = memo(
     );
   },
 );
+
+ListWrapper.displayName = "ListWrapper";
