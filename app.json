@@ -2,26 +2,38 @@
   "expo": {
     "name": "Joint Player",
     "slug": "joint-player",
-    "version": "6.0.0",
+    "version": "6.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": false,
     "owner": "thoulee",
-    "splash": { "image": "", "backgroundColor": "#ffffff" },
-    "runtimeVersion": { "policy": "sdkVersion" },
+    "splash": {
+      "image": "",
+      "backgroundColor": "#ffffff"
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
     "updates": {
       "url": "https://u.expo.dev/7cd6ef29-acd5-424e-a325-4e449f660a0b",
-      "requestHeaders": { "expo-channel-name": "production" }
+      "requestHeaders": {
+        "expo-channel-name": "production"
+      }
     },
-    "ios": { "supportsTablet": true, "buildNumber": "6000000" },
+    "ios": {
+      "supportsTablet": true,
+      "buildNumber": "6000001"
+    },
     "android": {
       "icon": "./assets/icon.png",
       "package": "com.thoulee.jointplayer",
-      "versionCode": 6000000
+      "versionCode": 6000001
     },
-    "web": { "favicon": "./assets/favicon.png" },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
     "plugins": [
       "./plugin/gradle-properties",
       "react-native-video",
@@ -33,7 +45,12 @@
           "organization": "thouworks"
         }
       ],
-      ["@config-plugins/detox", { "subdomains": "*" }]
+      [
+        "@config-plugins/detox",
+        {
+          "subdomains": "*"
+        }
+      ]
     ]
   }
 }
