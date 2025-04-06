@@ -39,6 +39,8 @@ jobs:
           cache: gradle
 
       - name: Build Android Release
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: |
           cd android
           chmod +x ./gradlew
