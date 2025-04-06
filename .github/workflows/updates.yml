@@ -6,39 +6,32 @@ on:
       - update
 
 jobs:
-    update:
-      runs-on: ubuntu-latest
-      steps:
-        - name: 🏗 Setup repo
-          uses: actions/checkout@v4
-        
-        - name: Setup new yarn
-          run: |
-            corepack enable
-            yarn set version 4.5.0
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v4
 
-        - name: 🏗 Setup Node
-          uses: actions/setup-node@v4
-          with:
-            node-version: 18.x
-            cache: yarn
-  
-        - name: 🏗 Setup EAS
-          uses: expo/expo-github-action@v8
-          with:
-            eas-version: latest
-            token: ${{ secrets.EXPO_TOKEN }}
-  
-        - name: 📦 Install dependencies
-          run:
-            yarn install
-        
-        - name: 🚀 Create update
-          run: eas update --channel production --platform android --auto --non-interactive
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.13.0
+          cache: npm
 
-        - name: Upload Source Maps
-          env:
-            SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          run: |
-            npx sentry-expo-upload-sourcemaps dist
-            
+      - name: 📦 Install dependencies
+        run: npm install
+
+      - name: 🏗 Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 🚀 Create update
+        run: eas update --channel production --platform android --auto --non-interactive
+
+      - name: Upload Source Maps
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        run: |
+          npx sentry-expo-upload-sourcemaps dist
