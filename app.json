@@ -10,8 +10,14 @@
     "newArchEnabled": false,
     "owner": "thoulee",
     "splash": {
-      "image": "",
-      "backgroundColor": "#ffffff"
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff",
+      "dark": {
+        "image": "./assets/splash.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#000000"
+      }
     },
     "runtimeVersion": {
       "policy": "sdkVersion"
