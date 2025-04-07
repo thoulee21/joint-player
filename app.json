@@ -20,7 +20,7 @@
       }
     },
     "runtimeVersion": {
-      "policy": "sdkVersion"
+      "policy": "appVersion"
     },
     "updates": {
       "url": "https://u.expo.dev/7cd6ef29-acd5-424e-a325-4e449f660a0b",
@@ -36,7 +36,8 @@
       "icon": "./assets/icon.png",
       "package": "com.thoulee.jointplayer",
       "versionCode": 6000002,
-      "permissions": []
+      "permissions": [],
+      "softwareKeyboardLayoutMode": "pan"
     },
     "web": {
       "favicon": "./assets/favicon.png"
