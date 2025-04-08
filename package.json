@@ -36,7 +36,7 @@
     "@react-navigation/stack": "^7.2.9",
     "@reduxjs/toolkit": "^2.6.1",
     "@sentry/react-native": "~6.3.0",
-    "@shopify/flash-list": "1.7.3",
+    "@shopify/flash-list": "1.8.0",
     "detox": "^20.36.4",
     "expo": "^52.0.44",
     "expo-image": "~2.0.7",
