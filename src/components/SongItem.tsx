@@ -1,4 +1,5 @@
 import Color from "color";
+import { Image } from "expo-image";
 import React, { memo, useCallback, useMemo } from "react";
 import { ViewStyle } from "react-native";
 import HapticFeedback, {
@@ -67,16 +68,19 @@ export const SongItem = memo(
     }, [item.album, item.artists, showAlbum]);
 
     const renderMusicImage = useCallback(
-      ({ color, style: listStyle }: ListLRProps) => (
-        <List.Image
-          style={[
-            listStyle,
-            { borderRadius: appTheme.roundness, backgroundColor: color },
-          ]}
+      (props: ListLRProps) => (
+        <Image
+          style={[props.style, { borderRadius: 5, aspectRatio: 1, height: 60 }]}
           source={{ uri: item.artwork }}
         />
       ),
-      [appTheme.roundness, item.artwork]
+      [item.artwork]
+    );
+
+    const renderLeft = useMemo(
+      () => (props: ListLRProps) =>
+        showIndex ? renderIndex(props) : renderMusicImage(props),
+      [renderIndex, renderMusicImage, showIndex]
     );
 
     const renderDragIndicator = useCallback(
@@ -96,7 +100,7 @@ export const SongItem = memo(
     return (
       <List.Item
         title={item.title}
-        left={showIndex ? renderIndex : renderMusicImage}
+        left={renderLeft}
         right={renderDragIndicator}
         description={description}
         descriptionNumberOfLines={2}

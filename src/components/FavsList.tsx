@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import {
   Dimensions,
   StyleSheet,
@@ -38,7 +38,7 @@ const NoFavs = () => (
   </LottieAnimation>
 );
 
-export const FavsList = memo(() => {
+export const FavsList = () => {
   const dispatch = useAppDispatch();
   const appTheme = useTheme();
 
@@ -91,7 +91,6 @@ export const FavsList = memo(() => {
               item={item}
               index={index}
               drag={performDrag}
-              showIndex
               showAlbum
               isActive={isActive}
             />
@@ -132,9 +131,7 @@ export const FavsList = memo(() => {
       }
     />
   );
-});
-
-FavsList.displayName = "FavsList";
+};
 
 const styles = StyleSheet.create({
   favs: { flex: 1 },
