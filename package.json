@@ -77,7 +77,7 @@
     "react-native-swipeable-item": "^2.0.9",
     "react-native-track-player": "^4.1.1",
     "react-native-video": "^6.11.0",
-    "react-native-web": "~0.19.13",
+    "react-native-web": "~0.20.0",
     "react-native-webview": "13.12.5",
     "react-redux": "^9.2.0",
     "redux-persist": "^6.0.0",
