@@ -2,7 +2,7 @@
   "expo": {
     "name": "Joint Player",
     "slug": "jointplayer",
-    "version": "6.0.2",
+    "version": "6.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "scheme": "myapp",
@@ -30,12 +30,12 @@
     },
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "6000002"
+      "buildNumber": "6001000"
     },
     "android": {
       "icon": "./assets/icon.png",
       "package": "com.thoulee.jointplayer",
-      "versionCode": 6000002,
+      "versionCode": 6001000,
       "permissions": [],
       "softwareKeyboardLayoutMode": "pan"
     },
