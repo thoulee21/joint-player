@@ -83,7 +83,7 @@
     "redux-persist": "^6.0.0",
     "shaka-player": "^4.14.6",
     "swr": "^2.3.3",
-    "user-agents": "^1.1.500"
+    "user-agents": "^1.1.516"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
