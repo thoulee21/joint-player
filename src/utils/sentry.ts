@@ -11,16 +11,16 @@ Sentry.init({
   profilesSampleRate: 1.0,
   attachScreenshot: true,
   attachViewHierarchy: true,
-  _experiments: {
-    replaysSessionSampleRate: 1.0,
-    replaysOnErrorSampleRate: 1.0,
-  },
+  // _experiments: {
+  //   replaysSessionSampleRate: 1.0,
+  //   replaysOnErrorSampleRate: 1.0,
+  // },
   integrations: [
-    Sentry.mobileReplayIntegration({
-      maskAllImages: false,
-      maskAllText: false,
-      maskAllVectors: false,
-    }),
+    // Sentry.mobileReplayIntegration({
+    //   maskAllImages: false,
+    //   maskAllText: false,
+    //   maskAllVectors: false,
+    // }),
     Sentry.reactNativeTracingIntegration(),
   ],
   enabled: !__DEV__,
