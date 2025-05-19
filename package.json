@@ -89,7 +89,7 @@
     "@babel/core": "^7.25.2",
     "@types/color": "^4.2.0",
     "@types/react": "~18.3.12",
-    "eslint": "^8.57.0",
+    "eslint": "^9.27.0",
     "eslint-config-expo": "~8.0.1",
     "prettier": "^3.5.3",
     "react-native-version": "^4.0.0",
